@@ -129,35 +129,43 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   }, [claimReady]);
 
   const handleClaim = async () => {
-    const user = auth.currentUser;
-    if (!user || !claimReady) return;
+  const user = auth.currentUser;
+  if (!user || !claimReady) return;
 
-    const userRef = doc(db, 'users', user.uid);
-    const snap = await getDoc(userRef);
-    const currentBalance = snap.data()?.balance || 0;
-    const today = new Date().toISOString().split('T')[0];
-    const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
+  // ✅ Monetag يعرض إعلان Popunder تلقائيًا عند الضغط (لا داعي لأي كود إضافي هنا)
+  // ⏳ نضيف انتظارًا (15 ثانية) قبل بدء منطق تحصيل المكافأة
+  setTimeout(async () => {
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const snap = await getDoc(userRef);
+      const currentBalance = snap.data()?.balance || 0;
+      const today = new Date().toISOString().split('T')[0];
+      const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
 
-    await updateDoc(userRef, {
-      balance: currentBalance + mined,
-      dailyMined: 0,
-      miningStartTime: serverTimestamp(),
-    });
+      await updateDoc(userRef, {
+        balance: currentBalance + mined,
+        dailyMined: 0,
+        miningStartTime: serverTimestamp(),
+      });
 
-    await setDoc(historyRef, {
-      amount: Math.floor(mined),
-      date: today,
-      updatedAt: serverTimestamp(),
-    });
+      await setDoc(historyRef, {
+        amount: Math.floor(mined),
+        date: today,
+        updatedAt: serverTimestamp(),
+      });
 
-    onClaim(Math.floor(mined));
-    setMined(0);
-    setClaimReady(false);
-    setIsMaxed(false);
-    sentNotification = false;
+      onClaim(Math.floor(mined));
+      setMined(0);
+      setClaimReady(false);
+      setIsMaxed(false);
+      sentNotification = false;
 
-    fetchUserData();
-  };
+      fetchUserData();
+    } catch (error) {
+      console.error('Error claiming mining reward:', error);
+    }
+  }, 15000); // ⏳ 15 ثانية انتظار (للسماح بعرض إعلان Monetag)
+};
 
   const handleStartMining = async () => {
     const user = auth.currentUser;
