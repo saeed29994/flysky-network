@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Test Page</title>
+</head>
+<body>
+  <h1>Test Verify Payment API</h1>
+  <button onclick="sendTestRequest()">Send Test POST Request</button>
+  <div id="result"></div>
+
+  <script>
+    async function sendTestRequest() {
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = '⏳ Sending request...';
+
+      try {
+        const response = await fetch('http://localhost:3001/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            txId: '123456',
+            currency: 'USDT',
+            amount: '10',
+            userEmail: 'test@example.com'
+          })
+        });
+
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          resultDiv.textContent = `✅ Response:\n${JSON.stringify(data, null, 2)}`;
+        } else {
+          const text = await response.text();
+          resultDiv.textContent = `⚠️ Non-JSON Response:\n${text}`;
+        }
+      } catch (err) {
+        resultDiv.textContent = `❌ Error:\n${err}`;
+      }
+    }
+  </script>
+</body>
+</html>
