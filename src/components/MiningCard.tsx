@@ -25,11 +25,15 @@ const MiningCard = ({ plan, onClaim }) => {
     fetchUserData();
   }, []);
 
-  const handleClaim = async () => {
+  const handleClaim = async (e) => {
+    e.preventDefault(); // ✅ منع الانتقال الفوري للرابط
     const user = auth.currentUser;
     if (!user || !claimReady) return;
 
-    // ⏳ نضيف انتظارًا (15 ثانية) قبل بدء منطق تحصيل المكافأة (Monetag يظهر تلقائيًا عند الضغط)
+    // افتح نافذة الإعلان أولًا
+    window.open("//upmonetag.com/2XXXXXX.js", "_blank");
+
+    // ⏳ انتظر 15 ثانية قبل بدء منطق تحصيل المكافأة
     setTimeout(async () => {
       try {
         const userRef = doc(db, 'users', user.uid);
@@ -67,15 +71,15 @@ const MiningCard = ({ plan, onClaim }) => {
       <h2>Your Plan: {plan}</h2>
       <p>Mined Today: {mined}</p>
 
-      {/* ✅ زر Claim Reward داخل رابط Monetag Popunder */}
-      <a href="//upmonetag.com/2XXXXXX.js" target="_blank" rel="noopener noreferrer">
-        <button
-          className="w-full py-2 text-center rounded bg-yellow-400 text-black font-semibold"
-          disabled={!claimReady}
-          onClick={handleClaim}
-        >
-          Claim Reward
-        </button>
+      {/* ✅ زر Claim Reward عبارة عن رابط حقيقي */}
+      <a
+        href="//upmonetag.com/2XXXXXX.js"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handleClaim}
+        className="w-full py-2 text-center rounded bg-yellow-400 text-black font-semibold block"
+      >
+        Claim Reward
       </a>
     </div>
   );
