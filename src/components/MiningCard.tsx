@@ -1,13 +1,17 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 
-const MiningCard = ({ plan, onClaim }) => {
+interface MiningCardProps {
+  plan: string;
+  onClaim: (amount: number) => void;
+}
+
+const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
   const [mined, setMined] = useState(0);
   const [claimReady, setClaimReady] = useState(false);
   const [showClaim, setShowClaim] = useState(false);
-  const [isMaxed, setIsMaxed] = useState(false);
 
   const fetchUserData = async () => {
     const user = auth.currentUser;
@@ -18,7 +22,6 @@ const MiningCard = ({ plan, onClaim }) => {
     if (snap.exists()) {
       setMined(snap.data().dailyMined || 0);
       setClaimReady(snap.data().claimReady || false);
-      setIsMaxed(snap.data().isMaxed || false);
     }
   };
 
@@ -52,7 +55,6 @@ const MiningCard = ({ plan, onClaim }) => {
       onClaim(Math.floor(mined));
       setMined(0);
       setClaimReady(false);
-      setIsMaxed(false);
 
       fetchUserData();
     } catch (error) {
@@ -61,9 +63,7 @@ const MiningCard = ({ plan, onClaim }) => {
   };
 
   const handleWatchAd = () => {
-    // Open Monetag Popunder
     window.open("//upmonetag.com/2XXXXXX.js", "_blank");
-    // Hide Watch Ad button, show Claim Reward after 15 seconds
     setShowClaim(false);
     setTimeout(() => {
       setShowClaim(true);
@@ -75,7 +75,6 @@ const MiningCard = ({ plan, onClaim }) => {
       <h2>Your Plan: {plan}</h2>
       <p>Mined Today: {mined}</p>
 
-      {/* ✅ زر مشاهدة الإعلان يظهر فقط عندما claimReady جاهز */}
       {claimReady && !showClaim && (
         <a
           href="//upmonetag.com/2XXXXXX.js"
@@ -87,11 +86,10 @@ const MiningCard = ({ plan, onClaim }) => {
           }}
           className="w-full py-2 text-center rounded bg-blue-500 text-white font-semibold block"
         >
-          Unlock Reward
+          Watch Ad to Unlock Reward
         </a>
       )}
 
-      {/* ✅ زر Claim Reward يظهر بعد 15 ثانية من مشاهدة الإعلان */}
       {claimReady && showClaim && (
         <button
           className="w-full py-2 text-center rounded bg-yellow-400 text-black font-semibold"
@@ -102,7 +100,6 @@ const MiningCard = ({ plan, onClaim }) => {
         </button>
       )}
 
-      {/* ✅ إذا claimReady غير جاهز ➜ إخفاء الأزرار */}
       {!claimReady && (
         <p className="text-gray-500 text-center mt-2">Reward available every 12 hours</p>
       )}
