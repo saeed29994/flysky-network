@@ -11,7 +11,8 @@ interface MiningCardProps {
 const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
   const [mined, setMined] = useState(0);
   const [claimReady, setClaimReady] = useState(false);
-  const [showClaim, setShowClaim] = useState(false);
+  const [showUnlock, setShowUnlock] = useState(false);
+  const [timer, setTimer] = useState(0);
 
   const fetchUserData = async () => {
     const user = auth.currentUser;
@@ -20,14 +21,34 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
     const userRef = doc(db, 'users', user.uid);
     const snap = await getDoc(userRef);
     if (snap.exists()) {
-      setMined(snap.data().dailyMined || 0);
-      setClaimReady(snap.data().claimReady || false);
+      const data = snap.data();
+      setMined(data.dailyMined || 0);
+      setClaimReady(data.claimReady || false);
+
+      if (!data.claimReady && data.miningStartTime?.seconds) {
+        const lastClaimTime = data.miningStartTime.seconds * 1000;
+        const nextClaimTime = lastClaimTime + 12 * 60 * 60 * 1000;
+        const now = Date.now();
+        const remaining = nextClaimTime - now;
+        if (remaining > 0) setTimer(Math.floor(remaining / 1000));
+      }
     }
   };
 
   useEffect(() => {
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    } else if (!claimReady) {
+      setShowUnlock(true);
+    }
+  }, [timer, claimReady]);
 
   const handleClaim = async () => {
     const user = auth.currentUser;
@@ -55,6 +76,7 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
       onClaim(Math.floor(mined));
       setMined(0);
       setClaimReady(false);
+      setShowUnlock(false);
 
       fetchUserData();
     } catch (error) {
@@ -64,10 +86,15 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
 
   const handleWatchAd = () => {
     window.open("//upmonetag.com/2XXXXXX.js", "_blank");
-    setShowClaim(false);
-    setTimeout(() => {
-      setShowClaim(true);
-    }, 15000);
+    setShowUnlock(false);
+    setClaimReady(true);
+  };
+
+  const formatTime = (seconds: number) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return \`\${h}h \${m}m \${s}s\`;
   };
 
   return (
@@ -75,33 +102,31 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
       <h2>Your Plan: {plan}</h2>
       <p>Mined Today: {mined}</p>
 
-      {claimReady && !showClaim && (
-        <a
-          href="//upmonetag.com/2XXXXXX.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => {
-            e.preventDefault();
-            handleWatchAd();
-          }}
-          className="w-full py-2 text-center rounded bg-blue-500 text-white font-semibold block"
-        >
-          Watch Ad to Unlock Reward
-        </a>
-      )}
-
-      {claimReady && showClaim && (
+      {!claimReady && !showUnlock && (
         <button
-          className="w-full py-2 text-center rounded bg-yellow-400 text-black font-semibold"
-          disabled={!claimReady}
-          onClick={handleClaim}
+          disabled
+          className="w-full py-2 text-center rounded bg-gray-400 text-white font-semibold"
         >
-          Claim Reward
+          Claim available in {formatTime(timer)}
         </button>
       )}
 
-      {!claimReady && (
-        <p className="text-gray-500 text-center mt-2">Reward available every 12 hours</p>
+      {showUnlock && (
+        <button
+          className="w-full py-2 text-center rounded bg-blue-500 text-white font-semibold"
+          onClick={handleWatchAd}
+        >
+          Unlock Rewards
+        </button>
+      )}
+
+      {claimReady && !showUnlock && (
+        <button
+          className="w-full py-2 text-center rounded bg-yellow-400 text-black font-semibold"
+          onClick={handleClaim}
+        >
+          Claim Rewards
+        </button>
       )}
     </div>
   );
