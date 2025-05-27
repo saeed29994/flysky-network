@@ -98,14 +98,14 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
   };
 
   return (
-    <div className="mining-card">
-      <h2>Your Plan: {plan}</h2>
-      <p>Mined Today: {mined}</p>
+    <div className="flex flex-col items-center justify-center space-y-4 p-4 bg-white rounded shadow">
+      <h2 className="text-xl font-bold text-gray-800">Your Plan: {plan}</h2>
+      <p className="text-gray-600">Mined Today: {mined}</p>
 
       {!claimReady && !showUnlock && (
         <button
           disabled
-          className="w-full py-2 text-center rounded bg-gray-400 text-white font-semibold"
+          className="w-full py-2 rounded text-center bg-gray-400 text-white font-semibold cursor-not-allowed"
         >
           Claim available in {formatTime(timer)}
         </button>
@@ -113,8 +113,8 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
 
       {showUnlock && (
         <button
-          className="w-full py-2 text-center rounded bg-blue-500 text-white font-semibold"
           onClick={handleWatchAd}
+          className="w-full py-2 rounded text-center bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors"
         >
           Unlock Rewards
         </button>
@@ -122,8 +122,8 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
 
       {claimReady && !showUnlock && (
         <button
-          className="w-full py-2 text-center rounded bg-yellow-400 text-black font-semibold"
           onClick={handleClaim}
+          className="w-full py-2 rounded text-center bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition-colors"
         >
           Claim Rewards
         </button>
