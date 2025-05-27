@@ -8,7 +8,7 @@ import { chartOptions } from '../utils/chartOptions';
 
 interface MiningCardProps {
   plan: string;
-  onClaim: (amount: number) => void; // ✅ تم إضافة هذا السطر
+  onClaim: (amount: number) => void;
 }
 
 const planLimits: Record<string, number> = {
@@ -107,11 +107,11 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
     setShowUnlock(false);
     fetchData();
 
-    onClaim(minedToday); // ✅ استدعاء onClaim هنا!
+    onClaim(minedToday);
   };
 
   const handleWatchAd = () => {
-    window.open("//upmonetag.com/2XXXXXX.js", "_blank");
+    window.open("https://otieu.com/4/9386723", "_blank"); // ✅ تم إضافة الرابط الجديد
     setShowUnlock(false);
   };
 
