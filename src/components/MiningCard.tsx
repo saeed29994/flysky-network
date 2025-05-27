@@ -8,6 +8,7 @@ import { chartOptions } from '../utils/chartOptions';
 
 interface MiningCardProps {
   plan: string;
+  onClaim: (amount: number) => void; // ✅ تم إضافة هذا السطر
 }
 
 const planLimits: Record<string, number> = {
@@ -17,7 +18,7 @@ const planLimits: Record<string, number> = {
   'first-lifetime': 6000,
 };
 
-const MiningCard: React.FC<MiningCardProps> = ({ plan }) => {
+const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
   const [minedToday, setMinedToday] = useState(0);
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [chartData, setChartData] = useState<any>(null);
@@ -105,6 +106,8 @@ const MiningCard: React.FC<MiningCardProps> = ({ plan }) => {
     setClaimReady(false);
     setShowUnlock(false);
     fetchData();
+
+    onClaim(minedToday); // ✅ استدعاء onClaim هنا!
   };
 
   const handleWatchAd = () => {
