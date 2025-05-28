@@ -1,5 +1,3 @@
-// ⚠️ داخل الملف: MiningCard.tsx
-
 import { useEffect, useState } from 'react';
 import {
   doc,
@@ -47,7 +45,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   const [firstTime, setFirstTime] = useState(false);
   const [isMaxed, setIsMaxed] = useState(false);
   const [history, setHistory] = useState<number[]>([]);
-  const [showUnlock, setShowUnlock] = useState(false); // 👈 إضافة حالة الزر
+  const [showUnlock, setShowUnlock] = useState(false);
 
   const miningRate = planLimits[plan] ? planLimits[plan] / 43200 : 0;
 
@@ -158,7 +156,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     setClaimReady(false);
     setIsMaxed(false);
     sentNotification = false;
-    setShowUnlock(false); // 👈 إعادة تعيين الزر بعد التحصيل
+    setShowUnlock(false);
 
     fetchUserData();
   };
@@ -174,9 +172,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     setFirstTime(false);
   };
 
-  // زر Unlock Rewards: يعرض الإعلان ويظهر زر Claim بعدها
   const handleUnlockRewards = () => {
-    // 👇 إدراج سكربت الإعلان في الصفحة
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.dataset.cfasync = 'false';
@@ -191,8 +187,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     script2.onload = () => (window as any)._czeveqde && (window as any)._czeveqde();
     document.body.appendChild(script2);
 
-    // 👇 بعد عرض الإعلان، نخفي زر Unlock Rewards ونُظهر زر Claim
-    setTimeout(() => setShowUnlock(false), 1000);
+    setShowUnlock(false);
   };
 
   const formatTime = (seconds: number) => {
@@ -232,8 +227,6 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   return (
     <div className="w-full bg-[#0B1622] px-0 pt-4 pb-24">
       <motion.div className="w-full max-w-2xl mx-auto bg-gray-900 p-6 sm:p-8 text-center rounded-xl shadow-xl">
-
-        {/* ✅ معلومات التعدين */}
         <div className="bg-gray-800 p-4 rounded-lg text-sm text-gray-300 text-left mb-4">
           <p>🪙 <span className="text-white font-semibold">Plan:</span> {plan}</p>
           <p>🔋 <span className="text-white font-semibold">Daily Limit:</span> {planLimits[plan]} FSN</p>
@@ -249,17 +242,15 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
         </div>
         <p className="text-sm text-gray-500 mb-4">{claimReady ? '✅ Ready to claim!' : `⏱️ Time remaining: ${formatTime(remainingTime)}`}</p>
 
-        {/* 🔓 زر Unlock Rewards */}
         {claimReady && !showUnlock && (
           <button
-            onClick={() => setShowUnlock(true)}
+            onClick={handleUnlockRewards}
             className="w-full py-2 mb-2 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse"
           >
-            Unlock Rewards
+            Show Ads & Unlock Rewards
           </button>
         )}
 
-        {/* 💰 زر Claim Reward */}
         {(!claimReady || showUnlock) && (
           <button
             onClick={claimReady ? handleClaim : undefined}
@@ -270,18 +261,6 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
           >
             {claimReady ? 'Claim Reward' : 'Mining in Progress'}
           </button>
-        )}
-
-        {/* عند الضغط على Unlock Rewards */}
-        {showUnlock && claimReady && (
-          <div className="mt-4">
-            <button
-              onClick={handleUnlockRewards}
-              className="w-full py-2 rounded-xl font-bold bg-green-600 hover:bg-green-500 text-white transition animate-pulse"
-            >
-              Show Ads & Unlock Rewards
-            </button>
-          </div>
         )}
 
         <div className="mt-6">
