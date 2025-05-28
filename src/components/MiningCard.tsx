@@ -40,6 +40,7 @@ let sentNotification = false;
 
 const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   const [mined, setMined] = useState(0);
+  const [showUnlock, setShowUnlock] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const [claimReady, setClaimReady] = useState(false);
@@ -223,18 +224,23 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
         </div>
         <p className="text-sm text-gray-500 mb-4">{claimReady ? '✅ Ready to claim!' : `⏱️ Time remaining: ${formatTime(remainingTime)}`}</p>
 
-        {claimReady && (
+        {claimReady && showUnlock && (
           <button
-            onClick={() => window.open('https://otieu.com/4/9386723', '_blank')}
+            onClick={() => {
+              window.open('https://otieu.com/4/9386723', '_blank');
+              setShowUnlock(false);
+            }}
             className="w-full py-2 mb-2 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse"
           >
             Show Ads & Unlock Rewards
           </button>
         )}
 
-        {claimReady ? (
+        {claimReady && !showUnlock ? (
           <button
-            onClick={handleClaim}
+            onClick={() => {
+              setShowUnlock(true);
+            }}
             className="w-full py-2 mb-2 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse"
           >
             Claim Reward
