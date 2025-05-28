@@ -6,7 +6,15 @@ import DashboardLayout from './DashboardLayout';
 
 const MAX_ADS_PER_DAY = 5;
 const REWARD_PER_AD = 100;
-const AD_URL = 'https://otieu.com/4/9387035';
+
+// ✅ روابط الإعلانات بالتسلسل
+const adLinks = [
+  'https://otieu.com/4/9386723',
+  'https://otieu.com/4/9386723',
+  'https://otieu.com/4/9387124',
+  'https://otieu.com/4/9387126',
+  'https://otieu.com/4/9387127',
+];
 
 const WatchToEarn = () => {
   const [adsWatchedToday, setAdsWatchedToday] = useState(0);
@@ -41,16 +49,27 @@ const WatchToEarn = () => {
   }, []);
 
   const handleWatchAd = async () => {
-    window.open(AD_URL, '_blank');
-
     const user = auth.currentUser;
     if (!user) return;
 
     const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+
+    let currentIndex = userSnap.data()?.adIndex || 0;
+
+    // ✅ فتح الإعلان المناسب من القائمة
+    const adLink = adLinks[currentIndex];
+    window.open(adLink, '_blank');
+
+    // ✅ تحديث adIndex للرابط التالي (مع التدوير)
+    const nextIndex = (currentIndex + 1) % adLinks.length;
+
+    // ✅ تحديث الإعلانات التي تمت مشاهدتها والمكافأة
     const newWatched = adsWatchedToday + 1;
     const newBalance = balance + REWARD_PER_AD;
 
     await updateDoc(userRef, {
+      adIndex: nextIndex,
       watchedAdsToday: newWatched,
       adsLastWatched: serverTimestamp(),
       balance: newBalance,
@@ -58,7 +77,6 @@ const WatchToEarn = () => {
 
     setAdsWatchedToday(newWatched);
     setBalance(newBalance);
-
     toast.success(`You earned ${REWARD_PER_AD} FSN!`);
   };
 
