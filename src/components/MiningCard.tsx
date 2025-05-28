@@ -156,7 +156,6 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     setClaimReady(false);
     setIsMaxed(false);
     sentNotification = false;
-    setShowUnlock(false);
 
     fetchUserData();
   };
