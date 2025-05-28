@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import {
   doc,
@@ -26,6 +25,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip)
 
 interface MiningCardProps {
   plan: 'economy' | 'business' | 'first-6' | 'first-lifetime';
+  onClaim: (amount: number) => void;
 }
 
 const planLimits: Record<string, number> = {
@@ -37,16 +37,16 @@ const planLimits: Record<string, number> = {
 
 let sentNotification = false;
 
-const MiningCard = ({ plan }: MiningCardProps) => {
+const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   const [mined, setMined] = useState(0);
-  const [showUnlock, setShowUnlock] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const [claimReady, setClaimReady] = useState(false);
   const [firstTime, setFirstTime] = useState(false);
   const [isMaxed, setIsMaxed] = useState(false);
   const [history, setHistory] = useState<number[]>([]);
-  
+  const [showUnlock, setShowUnlock] = useState(false);
+
   const miningRate = planLimits[plan] ? planLimits[plan] / 43200 : 0;
 
   const fetchUserData = async () => {
@@ -110,6 +110,12 @@ const MiningCard = ({ plan }: MiningCardProps) => {
   }, [startTime, plan, claimReady, isMaxed]);
 
   useEffect(() => {
+    if (claimReady) {
+      setShowUnlock(true); // ✅ عند انتهاء التعدين، أظهر زر Unlock
+    }
+  }, [claimReady]);
+
+  useEffect(() => {
     const sendInboxNotification = async () => {
       const user = auth.currentUser;
       if (!user || !claimReady) return;
@@ -129,7 +135,41 @@ const MiningCard = ({ plan }: MiningCardProps) => {
     }
   }, [claimReady]);
 
-  
+  const handleUnlock = () => {
+    window.open('https://otieu.com/4/9386723', '_blank');
+    setShowUnlock(false); // ✅ بعد فتح الإعلان، أخفِ زر Unlock وأظهر زر Claim
+  };
+
+  const handleClaim = async () => {
+    const user = auth.currentUser;
+    if (!user || !claimReady) return;
+
+    const userRef = doc(db, 'users', user.uid);
+    const snap = await getDoc(userRef);
+    const currentBalance = snap.data()?.balance || 0;
+    const today = new Date().toISOString().split('T')[0];
+    const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
+
+    await updateDoc(userRef, {
+      balance: currentBalance + mined,
+      dailyMined: 0,
+      miningStartTime: serverTimestamp(),
+    });
+
+    await setDoc(historyRef, {
+      amount: Math.floor(mined),
+      date: today,
+      updatedAt: serverTimestamp(),
+    });
+
+    onClaim(Math.floor(mined));
+    setMined(0);
+    setClaimReady(false);
+    setIsMaxed(false);
+    sentNotification = false;
+
+    fetchUserData();
+  };
 
   const handleStartMining = async () => {
     const user = auth.currentUser;
@@ -196,29 +236,26 @@ const MiningCard = ({ plan }: MiningCardProps) => {
 
         {claimReady && showUnlock && (
           <button
-            onClick={() => {
-              window.open('https://otieu.com/4/9386723', '_blank');
-              setShowUnlock(false);
-            }}
-            className="w-full py-2 mb-2 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse"
+            onClick={handleUnlock}
+            className="w-full py-2 rounded-xl font-bold bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse transition"
           >
-            Show Ads & Unlock Rewards
+            Unlock Rewards
           </button>
         )}
 
-        {claimReady && !showUnlock ? (
+        {claimReady && !showUnlock && (
           <button
-            onClick={() => {
-              setShowUnlock(true);
-            }}
-            className="w-full py-2 mb-2 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse"
+            onClick={handleClaim}
+            className="w-full py-2 rounded-xl font-bold bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse transition"
           >
             Claim Reward
           </button>
-        ) : (
+        )}
+
+        {!claimReady && (
           <button
             disabled
-            className="w-full py-2 rounded-xl font-bold transition-all duration-300 bg-gray-700 text-gray-400 cursor-not-allowed"
+            className="w-full py-2 rounded-xl font-bold bg-gray-700 text-gray-400 cursor-not-allowed transition"
           >
             Mining in Progress
           </button>
