@@ -174,7 +174,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   };
 
   const handleUnlockRewards = () => {
-    window.open('//fenoofaussut.net/ntfc.php?p=9386736', '_blank');
+    window.open('https://otieu.com/4/9386723', '_blank');
     setShowUnlock(false);
   };
 
