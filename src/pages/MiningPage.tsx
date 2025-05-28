@@ -25,7 +25,7 @@ const MiningPage = () => {
 
   return (
     <div className="min-h-screen bg-[#0B1622] pt-4 pb-24">
-      <MiningCard plan={userPlan} onClaim={() => {}} />
+      <MiningCard plan={userPlan}  />
     </div>
   );
 };
