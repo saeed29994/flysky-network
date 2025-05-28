@@ -130,36 +130,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     }
   }, [claimReady]);
 
-  const handleClaim = async () => {
-    const user = auth.currentUser;
-    if (!user || !claimReady) return;
-
-    const userRef = doc(db, 'users', user.uid);
-    const snap = await getDoc(userRef);
-    const currentBalance = snap.data()?.balance || 0;
-    const today = new Date().toISOString().split('T')[0];
-    const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
-
-    await updateDoc(userRef, {
-      balance: currentBalance + mined,
-      dailyMined: 0,
-      miningStartTime: serverTimestamp(),
-    });
-
-    await setDoc(historyRef, {
-      amount: Math.floor(mined),
-      date: today,
-      updatedAt: serverTimestamp(),
-    });
-
-    onClaim(Math.floor(mined));
-    setMined(0);
-    setClaimReady(false);
-    setIsMaxed(false);
-    sentNotification = false;
-
-    fetchUserData();
-  };
+  
 
   const handleStartMining = async () => {
     const user = auth.currentUser;
