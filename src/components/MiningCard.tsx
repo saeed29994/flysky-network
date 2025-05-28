@@ -230,24 +230,19 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
         </div>
         <p className="text-sm text-gray-500 mb-4">{claimReady ? '✅ Ready to claim!' : `⏱️ Time remaining: ${formatTime(remainingTime)}`}</p>
 
-        {claimReady && !showUnlock && (
+        {claimReady ? (
           <button
-            onClick={handleUnlockRewards}
+            onClick={handleClaim}
             className="w-full py-2 mb-2 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse"
           >
-            Show Ads & Unlock Rewards
+            Claim Reward
           </button>
-        )}
-
-        {(!claimReady || showUnlock) && (
+        ) : (
           <button
-            onClick={claimReady ? handleClaim : undefined}
-            disabled={!claimReady}
-            className={`w-full py-2 rounded-xl font-bold transition-all duration-300 ${
-              claimReady ? 'bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse' : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-            }`}
+            disabled
+            className="w-full py-2 rounded-xl font-bold transition-all duration-300 bg-gray-700 text-gray-400 cursor-not-allowed"
           >
-            {claimReady ? 'Claim Reward' : 'Mining in Progress'}
+            Mining in Progress
           </button>
         )}
 
