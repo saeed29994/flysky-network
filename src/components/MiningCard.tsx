@@ -1,13 +1,30 @@
-
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import {
+  doc,
+  updateDoc,
+  serverTimestamp,
+  getDoc,
+  collection,
+  getDocs,
+  setDoc
+} from 'firebase/firestore';
 import { auth, db } from '../firebase';
-import { doc, getDoc, updateDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { notifyMiningComplete } from '../utils/notifications';
 import { Line } from 'react-chartjs-2';
-import { chartOptions } from '../utils/chartOptions';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+} from 'chart.js';
+import { motion } from 'framer-motion';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
 interface MiningCardProps {
-  plan: string;
+  plan: 'economy' | 'business' | 'first-6' | 'first-lifetime';
   onClaim: (amount: number) => void;
 }
 
@@ -18,155 +35,205 @@ const planLimits: Record<string, number> = {
   'first-lifetime': 6000,
 };
 
-const MiningCard: React.FC<MiningCardProps> = ({ plan, onClaim }) => {
-  const [minedToday, setMinedToday] = useState(0);
+let sentNotification = false;
+
+const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
+  const [mined, setMined] = useState(0);
   const [startTime, setStartTime] = useState<Date | null>(null);
-  const [chartData, setChartData] = useState<any>(null);
+  const [remainingTime, setRemainingTime] = useState<number>(0);
   const [claimReady, setClaimReady] = useState(false);
-  const [showUnlock, setShowUnlock] = useState(false);
+  const [firstTime, setFirstTime] = useState(false);
+  const [isMaxed, setIsMaxed] = useState(false);
+  const [history, setHistory] = useState<number[]>([]);
 
-  const dailyLimit = planLimits[plan] || 0;
+  const miningRate = planLimits[plan] ? planLimits[plan] / 43200 : 0;
 
-  const fetchData = async () => {
+  const fetchUserData = async () => {
     const user = auth.currentUser;
     if (!user) return;
-
     const userRef = doc(db, 'users', user.uid);
     const snap = await getDoc(userRef);
     if (snap.exists()) {
       const data = snap.data();
-      setMinedToday(data.dailyMined || 0);
-      setStartTime(data.miningStartTime?.toDate?.() || null);
-
-      // تحميل بيانات الرسم البياني
-      const historyRef = doc(db, 'users', user.uid);
-      const historySnap = await getDoc(historyRef);
-      if (historySnap.exists()) {
-        const historyData = historySnap.data()?.miningHistory || [];
-        const chartLabels = historyData.map((d: any) => d.date);
-        const chartValues = historyData.map((d: any) => d.amount);
-
-        setChartData({
-          labels: chartLabels,
-          datasets: [
-            {
-              label: 'Mining History',
-              data: chartValues,
-              borderColor: '#facc15',
-              backgroundColor: 'transparent',
-            },
-          ],
-        });
+      const startTimestamp = data.miningStartTime;
+      if (!startTimestamp) {
+        setFirstTime(true);
+      } else {
+        const startDate = typeof startTimestamp.toDate === 'function'
+          ? startTimestamp.toDate()
+          : new Date(startTimestamp);
+        setStartTime(startDate);
+        setMined(data.dailyMined || 0);
+        setFirstTime(false);
       }
     }
+
+    const historyCol = collection(db, `users/${user.uid}/miningHistory`);
+    const historyDocs = await getDocs(historyCol);
+    const amounts: number[] = [];
+
+    historyDocs.forEach((doc) => {
+      const val = doc.data()?.amount;
+      if (typeof val === 'number') {
+        amounts.push(val);
+      }
+    });
+
+    setHistory(amounts.slice(-7));
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchUserData();
+  }, [plan]);
 
   useEffect(() => {
-    if (!startTime) return;
-
+    if (!startTime || claimReady || isMaxed) return;
     const interval = setInterval(() => {
-      const elapsed = (Date.now() - startTime.getTime()) / 1000;
-      if (elapsed >= 43200 || minedToday >= dailyLimit) {
+      const now = new Date();
+      const elapsed = Math.floor((now.getTime() - startTime.getTime()) / 1000);
+      const currentMined = Math.min(planLimits[plan], elapsed * miningRate);
+      setMined(currentMined);
+      if ((elapsed >= 43200 || currentMined >= planLimits[plan]) && !claimReady) {
         setClaimReady(true);
-        setShowUnlock(true);
-        clearInterval(interval);
+        setIsMaxed(true);
+        setRemainingTime(0);
+        if (!sentNotification) {
+          notifyMiningComplete().catch(() => {});
+          sentNotification = true;
+        }
+      } else {
+        setRemainingTime(43200 - elapsed);
       }
     }, 1000);
-
     return () => clearInterval(interval);
-  }, [startTime, minedToday, dailyLimit]);
+  }, [startTime, plan, claimReady, isMaxed]);
+
+  useEffect(() => {
+    const sendInboxNotification = async () => {
+      const user = auth.currentUser;
+      if (!user || !claimReady) return;
+      const inboxRef = doc(collection(db, `users/${user.uid}/inbox`));
+      await setDoc(inboxRef, {
+        title: "🎉 Mining Completed",
+        body: "Your mining session has finished! Click 'Claim Reward' to collect your FSN.",
+        timestamp: serverTimestamp(),
+        read: false,
+        claimed: false,
+        type: "mining-alert",
+      });
+    };
+
+    if (claimReady && !sentNotification) {
+      sendInboxNotification().catch(console.error);
+    }
+  }, [claimReady]);
 
   const handleClaim = async () => {
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user || !claimReady) return;
 
     const userRef = doc(db, 'users', user.uid);
     const snap = await getDoc(userRef);
-    const balance = snap.data()?.balance || 0;
+    const currentBalance = snap.data()?.balance || 0;
+    const today = new Date().toISOString().split('T')[0];
+    const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
 
     await updateDoc(userRef, {
-      balance: balance + minedToday,
+      balance: currentBalance + mined,
       dailyMined: 0,
       miningStartTime: serverTimestamp(),
     });
 
-    const today = new Date().toISOString().split('T')[0];
-    const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
     await setDoc(historyRef, {
-      amount: minedToday,
+      amount: Math.floor(mined),
       date: today,
       updatedAt: serverTimestamp(),
     });
 
-    setMinedToday(0);
+    onClaim(Math.floor(mined));
+    setMined(0);
     setClaimReady(false);
-    setShowUnlock(false);
-    fetchData();
+    setIsMaxed(false);
+    sentNotification = false;
 
-    onClaim(minedToday);
+    fetchUserData();
   };
 
-  const handleWatchAd = () => {
-    window.open("https://otieu.com/4/9386723", "_blank"); // ✅ تم إضافة الرابط الجديد
-    setShowUnlock(false);
+  const handleStartMining = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    const userRef = doc(db, 'users', user.uid);
+    await updateDoc(userRef, {
+      miningStartTime: serverTimestamp(),
+    });
+    setStartTime(new Date());
+    setFirstTime(false);
   };
 
-  const progress = Math.min((minedToday / dailyLimit) * 100, 100);
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hours}h ${minutes}m ${secs}s`;
+  };
+
+  const chartData = {
+    labels: history.map((_, i) => `Day ${i + 1}`),
+    datasets: [
+      {
+        label: 'Mining History',
+        data: history,
+        borderColor: '#facc15',
+        backgroundColor: '#facc15',
+        fill: false,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  if (firstTime) {
+    return (
+      <div className="w-full min-h-[calc(100vh-4rem)] bg-[#0B1622] flex justify-center items-center px-4">
+        <motion.div className="bg-gray-900 p-6 rounded-xl shadow-xl w-full max-w-md text-center">
+          <h2 className="text-xl text-yellow-400 font-bold mb-4">Ready to Start Mining?</h2>
+          <button onClick={handleStartMining} className="bg-yellow-500 hover:bg-yellow-400 text-black w-full py-2 rounded font-bold transition">
+            Start Mining
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-900 text-white p-4 rounded shadow w-full max-w-md mx-auto"
-    >
-      <h2 className="text-xl font-bold mb-2">Your Plan: {plan}</h2>
-      <p className="text-sm mb-4">Daily Limit: {dailyLimit} FSN</p>
+    <div className="w-full bg-[#0B1622] px-0 pt-4 pb-24">
+      <motion.div className="w-full max-w-2xl mx-auto bg-gray-900 p-6 sm:p-8 text-center rounded-xl shadow-xl">
 
-      <div className="w-full bg-gray-700 rounded h-4 overflow-hidden mb-2">
-        <div
-          className="bg-yellow-400 h-4 transition-all"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-      <p className="text-xs mb-4">Progress: {minedToday}/{dailyLimit} FSN</p>
-
-      {showUnlock && (
-        <button
-          onClick={handleWatchAd}
-          className="w-full py-2 rounded bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors"
-        >
-          Unlock Rewards
-        </button>
-      )}
-
-      {claimReady && !showUnlock && (
-        <button
-          onClick={handleClaim}
-          className="w-full py-2 rounded bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition-colors"
-        >
-          Claim Rewards
-        </button>
-      )}
-
-      {!claimReady && !showUnlock && (
-        <button
-          disabled
-          className="w-full py-2 rounded bg-gray-600 text-white font-semibold cursor-not-allowed"
-        >
-          Mining in Progress...
-        </button>
-      )}
-
-      {chartData && (
-        <div className="mt-4">
-          <Line data={chartData} options={chartOptions} />
+        {/* ✅ معلومات التعدين */}
+        <div className="bg-gray-800 p-4 rounded-lg text-sm text-gray-300 text-left mb-4">
+          <p>🪙 <span className="text-white font-semibold">Plan:</span> {plan}</p>
+          <p>🔋 <span className="text-white font-semibold">Daily Limit:</span> {planLimits[plan]} FSN</p>
+          <p>⏱️ <span className="text-white font-semibold">Cycle:</span> 12 hours</p>
+          <p>📤 <span className="text-white font-semibold">Claim Type:</span> Manual</p>
         </div>
-      )}
-    </motion.div>
+
+        <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2">🪙 FSN Daily Mining</h2>
+        <div className="text-4xl font-extrabold text-white mb-2">{Math.floor(mined)} FSN</div>
+        <p className="text-sm text-gray-400 mb-2">Daily Limit: <span className="text-white font-semibold">{planLimits[plan]} FSN</span></p>
+        <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-3">
+          <div className="h-full bg-yellow-500 transition-all duration-500" style={{ width: `${(mined / planLimits[plan]) * 100}%` }} />
+        </div>
+        <p className="text-sm text-gray-500 mb-4">{claimReady ? '✅ Ready to claim!' : `⏱️ Time remaining: ${formatTime(remainingTime)}`}</p>
+        <button onClick={handleClaim} disabled={!claimReady}
+          className={`w-full py-2 rounded-xl font-bold transition-all duration-300 ${
+            claimReady ? 'bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse' : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+          }`}>
+          {claimReady ? 'Claim Reward' : 'Mining in Progress'}
+        </button>
+        <div className="mt-6">
+          <Line data={chartData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
