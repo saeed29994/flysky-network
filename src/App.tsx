@@ -12,17 +12,18 @@ import Inbox from './pages/Inbox';
 import DashboardLayout from './pages/DashboardLayout';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import MembershipPage from './pages/MembershipPage'; // ✅ استخدم MembershipPage فقط
+import MembershipPage from './pages/MembershipPage';
 import ReferralProgram from './pages/ReferralProgram';
 import StakingPage from './pages/Staking';
 import KycPage from './pages/KycPage';
 import MiningPage from './pages/MiningPage';
 import PlayToEarn from './pages/PlayToEarn';
 import Wallet from './pages/Wallet';
+import WatchToEarn from './pages/WatchToEarn'; // ✅ استدعاء الصفحة الجديدة
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
-import { UserPlanProvider } from './contexts/UserPlanContext'; // ✅ استيراد الكونتكست
+import { UserPlanProvider } from './contexts/UserPlanContext';
 
 const publicRoutes = [
   { path: '/', element: <LandingPage /> },
@@ -32,13 +33,13 @@ const publicRoutes = [
   { path: '/verify-email', element: <EmailVerification /> },
   { path: '/inbox', element: <Inbox /> },
   { path: '/membership-page', element: <MembershipPage /> },
-  { path: '/inbox-debug', element: <Inbox_Debug /> }, 
+  { path: '/inbox-debug', element: <Inbox_Debug /> },
 ];
 
 const dashboardRoutes = [
   { path: '/dashboard', element: <Dashboard /> },
   { path: '/profile', element: <Profile /> },
-  { path: '/membership', element: <MembershipPage /> }, // ✅ تم استبداله بـ MembershipPage
+  { path: '/membership', element: <MembershipPage /> },
   { path: '/referral-program', element: <ReferralProgram /> },
   { path: '/referrals', element: <ReferralProgram /> },
   { path: '/referral', element: <Navigate to="/referral-program" replace /> },
@@ -47,6 +48,7 @@ const dashboardRoutes = [
   { path: '/wallet', element: <Wallet /> },
   { path: '/mining', element: <MiningPage /> },
   { path: '/playtoearn', element: <PlayToEarn /> },
+  { path: '/watch-to-earn', element: <WatchToEarn /> }, // ✅ المسار الجديد
 ];
 
 const router = createBrowserRouter([
