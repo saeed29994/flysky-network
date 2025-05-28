@@ -26,7 +26,6 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip)
 
 interface MiningCardProps {
   plan: 'economy' | 'business' | 'first-6' | 'first-lifetime';
-  onClaim: (amount: number) => void;
 }
 
 const planLimits: Record<string, number> = {
@@ -38,7 +37,7 @@ const planLimits: Record<string, number> = {
 
 let sentNotification = false;
 
-const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
+const MiningCard = ({ plan }: MiningCardProps) => {
   const [mined, setMined] = useState(0);
   const [showUnlock, setShowUnlock] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null);
