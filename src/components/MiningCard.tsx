@@ -223,6 +223,15 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
         </div>
         <p className="text-sm text-gray-500 mb-4">{claimReady ? '✅ Ready to claim!' : `⏱️ Time remaining: ${formatTime(remainingTime)}`}</p>
 
+        {claimReady && (
+          <button
+            onClick={() => window.open('https://otieu.com/4/9386723', '_blank')}
+            className="w-full py-2 mb-2 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse"
+          >
+            Show Ads & Unlock Rewards
+          </button>
+        )}
+
         {claimReady ? (
           <button
             onClick={handleClaim}
