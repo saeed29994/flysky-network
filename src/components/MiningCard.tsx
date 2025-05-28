@@ -46,8 +46,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   const [firstTime, setFirstTime] = useState(false);
   const [isMaxed, setIsMaxed] = useState(false);
   const [history, setHistory] = useState<number[]>([]);
-  const [showUnlock, setShowUnlock] = useState(false);
-
+  
   const miningRate = planLimits[plan] ? planLimits[plan] / 43200 : 0;
 
   const fetchUserData = async () => {
@@ -171,11 +170,6 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     });
     setStartTime(new Date());
     setFirstTime(false);
-  };
-
-  const handleUnlockRewards = () => {
-    window.open('https://otieu.com/4/9386723', '_blank');
-    setShowUnlock(false);
   };
 
   const formatTime = (seconds: number) => {
