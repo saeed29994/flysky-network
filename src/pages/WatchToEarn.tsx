@@ -18,7 +18,6 @@ const adLinks = [
 const WatchToEarn = () => {
   const [adsWatched, setAdsWatched] = useState(0);
   const [balance, setBalance] = useState(0);
-  const [adIndex, setAdIndex] = useState(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -35,15 +34,12 @@ const WatchToEarn = () => {
         const hoursDiff = (today.getTime() - lastWatched.getTime()) / (1000 * 60 * 60);
 
         let watchedToday = data?.watchedAdsToday || 0;
-        let index = data?.adIndex || 0;
         if (hoursDiff >= 24) {
           watchedToday = 0;
-          index = 0;
           await updateDoc(userRef, { watchedAdsToday: 0, adIndex: 0 });
         }
 
         setAdsWatched(watchedToday);
-        setAdIndex(index);
         setBalance(data?.balance || 0);
       }
     };
@@ -72,7 +68,6 @@ const WatchToEarn = () => {
     });
 
     setAdsWatched(newWatched);
-    setAdIndex(nextIndex);
     toast.success(`Ad watched successfully!`);
   };
 
@@ -92,7 +87,6 @@ const WatchToEarn = () => {
 
     setBalance(newBalance);
     setAdsWatched(0);
-    setAdIndex(0);
     toast.success(`You earned ${REWARD_FOR_ALL} FSN!`);
   };
 
