@@ -96,6 +96,15 @@ const WatchToEarn = () => {
   return (
     <DashboardLayout>
       <div className="min-h-screen flex flex-col items-center justify-center p-4 text-white max-w-xl mx-auto">
+        {/* ✅ بانر الصورة */}
+        <div className="w-full mb-6">
+          <img
+            src="/watch-to-eaen.png"
+            alt="FSN Coin Rewards Banner"
+            className="w-full h-auto rounded-lg shadow-lg object-cover"
+          />
+        </div>
+
         <Toaster />
 
         <h1 className="text-3xl font-bold text-yellow-400 mb-4 text-center">🎥 Watch to Earn</h1>
