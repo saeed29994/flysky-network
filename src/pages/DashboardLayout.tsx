@@ -108,6 +108,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <Link to="/staking" className="text-white hover:text-yellow-400 text-sm font-semibold">Staking</Link>
           <Link to="/mining" className="text-white hover:text-yellow-400 text-sm font-semibold">Mining</Link>
           <Link to="/playtoearn" className="text-white hover:text-yellow-400 text-sm font-semibold">Play</Link>
+          <Link to="/watchtoearn" className="text-white hover:text-yellow-400 text-sm font-semibold">Watch</Link>
           <Link to="/referral-program" className="text-white hover:text-yellow-400 text-sm font-semibold">Referral</Link>
           <Link to="/wallet" className="text-white hover:text-yellow-400 text-sm font-semibold">Wallet</Link>
           <Link to="/inbox" className="relative text-white hover:text-yellow-400 text-sm font-semibold">
@@ -143,6 +144,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <Link to="/staking" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>📈 Staking</Link>
           <Link to="/membership" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>💳 Membership</Link>
           <Link to="/playtoearn" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🎮 Play to Earn</Link>
+          <Link to="/watchtoearn" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🎥 Watch</Link>
           <Link to="/referral-program" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🤝 Referral</Link>
           <Link to="/wallet" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>👛 Wallet</Link>
           <Link to="/inbox" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>📩 Inbox</Link>
@@ -156,30 +158,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       <main className="pt-20 md:pt-24 pb-24 px-0 w-full bg-[#0B1622]">
         {children}
       </main>
-
-      {/* Bottom Navigation for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 flex justify-around items-center py-2 md:hidden z-50">
-        <Link to="/dashboard" className="text-yellow-400 text-xs flex flex-col items-center">
-          <span className="text-lg">🏠</span>
-          Home
-        </Link>
-        <Link to="/mining" className="text-yellow-400 text-xs flex flex-col items-center">
-          <span className="text-lg">⛏️</span>
-          Mining
-        </Link>
-        <Link to="/staking" className="text-yellow-400 text-xs flex flex-col items-center">
-          <span className="text-lg">📈</span>
-          Staking
-        </Link>
-        <Link to="/wallet" className="text-yellow-400 text-xs flex flex-col items-center">
-          <span className="text-lg">👛</span>
-          Wallet
-        </Link>
-        <button onClick={() => setShowProfileModal(true)} className="text-yellow-400 text-xs flex flex-col items-center">
-          <span className="text-lg">👤</span>
-          Profile
-        </button>
-      </div>
 
       {/* Profile Modal */}
       {showProfileModal && (
