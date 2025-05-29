@@ -95,7 +95,7 @@ const WatchToEarn = () => {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 text-white max-w-xl mx-auto">
+      <div className="min-h-screen flex flex-col items-center justify-start p-4 text-white max-w-xl mx-auto pt-4">
         {/* ✅ بانر الصورة */}
         <div className="w-full mb-6">
           <img

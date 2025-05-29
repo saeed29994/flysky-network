@@ -18,8 +18,8 @@ import StakingPage from './pages/Staking';
 import KycPage from './pages/KycPage';
 import MiningPage from './pages/MiningPage';
 import PlayToEarn from './pages/PlayToEarn';
+import WatchToEarn from './pages/WatchToEarn'; // ✅ إضافة الصفحة الجديدة
 import Wallet from './pages/Wallet';
-import WatchToEarn from './pages/WatchToEarn'; // ✅ استدعاء الصفحة الجديدة
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
