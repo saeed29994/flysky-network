@@ -108,7 +108,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <Link to="/staking" className="text-white hover:text-yellow-400 text-sm font-semibold">Staking</Link>
           <Link to="/mining" className="text-white hover:text-yellow-400 text-sm font-semibold">Mining</Link>
           <Link to="/playtoearn" className="text-white hover:text-yellow-400 text-sm font-semibold">Play</Link>
-          <Link to="/watchtoearn" className="text-white hover:text-yellow-400 text-sm font-semibold">Watch</Link>
+          <Link to="/watch-to-earn" className="text-white hover:text-yellow-400 text-sm font-semibold">Watch</Link>
           <Link to="/referral-program" className="text-white hover:text-yellow-400 text-sm font-semibold">Referral</Link>
           <Link to="/wallet" className="text-white hover:text-yellow-400 text-sm font-semibold">Wallet</Link>
           <Link to="/inbox" className="relative text-white hover:text-yellow-400 text-sm font-semibold">
@@ -144,7 +144,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <Link to="/staking" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>📈 Staking</Link>
           <Link to="/membership" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>💳 Membership</Link>
           <Link to="/playtoearn" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🎮 Play to Earn</Link>
-          <Link to="/watchtoearn" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🎥 Watch</Link>
+          <Link to="/watch-to-earn" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🎥 Watch</Link>
           <Link to="/referral-program" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🤝 Referral</Link>
           <Link to="/wallet" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>👛 Wallet</Link>
           <Link to="/inbox" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>📩 Inbox</Link>
