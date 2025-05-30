@@ -1,8 +1,9 @@
 import admin from 'firebase-admin';
 
 if (!admin.apps.length) {
+  const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
   admin.initializeApp({
-    credential: admin.credential.cert(JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT))
+    credential: admin.credential.cert(serviceAccount),
   });
 }
 
@@ -12,6 +13,7 @@ export default async function handler(req, res) {
   }
 
   const { referrerCode, newUserEmail } = req.body;
+
   if (!referrerCode || !newUserEmail) {
     return res.status(400).json({ error: 'referrerCode and newUserEmail are required.' });
   }
