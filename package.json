@@ -20,7 +20,6 @@
     "axios": "^1.8.4",
     "chart.js": "^4.4.9",
     "coinpayments": "^2.2.0",
-    "cors": "^2.8.5",
     "ethers": "^6.14.0",
     "firebase": "^11.8.0",
     "firebase-admin": "^13.4.0",
