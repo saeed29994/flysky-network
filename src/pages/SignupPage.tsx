@@ -32,7 +32,7 @@ const SignupPage = () => {
       await setDoc(userRef, {
         fullName,
         email,
-        balance: 0, // ✅ المستخدم يبدأ بدون رصيد - تُضاف لاحقًا عند Claim
+        balance: 0,
         plan: 'economy',
         createdAt: serverTimestamp(),
         referralCode: generatedCode,
@@ -66,10 +66,10 @@ const SignupPage = () => {
         type: 'welcome_bonus',
       });
 
-      // 🔥 استدعاء خادم الإحالة الخارجي على Render
+      // ✅ استدعاء خادم الإحالة (API المحلي ضمن المشروع على Vercel)
       if (referralCode) {
         try {
-          const response = await fetch('https://flysky-referral-api.onrender.com/addReferral', {
+          const response = await fetch('/api/addReferral', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
