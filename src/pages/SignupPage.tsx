@@ -18,6 +18,12 @@ const SignupPage = () => {
     setError('');
 
     try {
+      console.log('User entered referral code:', referralCode); // ✅ تحقق من الكود المُدخل
+
+      // إزالة أي فراغات من كود الإحالة
+      const finalReferral = referralCode.trim() !== '' ? referralCode.trim() : '';
+      console.log('Final referral code to save:', finalReferral);
+
       // ✅ إنشاء حساب المستخدم في Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -32,11 +38,11 @@ const SignupPage = () => {
       await setDoc(userRef, {
         fullName,
         email,
-        balance: 0, // ✅ المستخدم يبدأ بدون رصيد - تُضاف لاحقًا عند Claim
+        balance: 0,
         plan: 'economy',
         createdAt: serverTimestamp(),
         referralCode: generatedCode,
-        referredBy: referralCode || '',
+        referredBy: finalReferral,
         language: 'en',
         theme: 'dark',
         kycStatus: 'Not Actived',
@@ -54,6 +60,8 @@ const SignupPage = () => {
         ],
       });
 
+      console.log('User document created successfully in Firestore.');
+
       // ✅ إضافة رسالة الترحيب في صندوق البريد (Inbox)
       const inboxRef = doc(collection(db, 'users', user.uid, 'inbox'));
       await setDoc(inboxRef, {
@@ -66,29 +74,32 @@ const SignupPage = () => {
         type: 'welcome_bonus',
       });
 
-      // 🔥 استدعاء خادم الإحالة الخارجي على Render
-      if (referralCode) {
+      console.log('Welcome bonus message added to inbox.');
+
+      // 🔥 استدعاء خادم الإحالة الخارجي إذا كان هناك كود إحالة
+      if (finalReferral !== '') {
+        console.log('Calling referral API with code:', finalReferral);
         try {
           const response = await fetch('https://flysky-referral-api.onrender.com/addReferral', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              referrerCode: referralCode,
+              referrerCode: finalReferral,
               newUserEmail: email,
             }),
           });
 
           const data = await response.json();
           console.log('Referral API Response:', data);
-        } catch (error) {
-          console.error('Error calling referral API:', error);
+        } catch (apiError) {
+          console.error('Error calling referral API:', apiError);
         }
       }
 
       // ✅ توجيه المستخدم لصفحة "تحقق البريد"
       navigate('/verify-email');
     } catch (err: any) {
-      console.error(err);
+      console.error('Error during signup:', err);
       setError('An unexpected error occurred. Please try again.');
     }
   };
@@ -128,7 +139,7 @@ const SignupPage = () => {
           type="text"
           placeholder="Referral Code (optional)"
           value={referralCode}
-          onChange={(e) => setReferralCode(e.target.value)}
+          onChange={(e) => setReferralCode(e.target.value.trim())} // ✅ إزالة الفراغات الزائدة
           className="w-full p-2 mb-6 rounded bg-gray-800 text-white"
         />
 
