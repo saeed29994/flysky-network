@@ -1,3 +1,5 @@
+// 📁 src/pages/DashboardLayout.tsx
+
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, User, LogOut, Phone, Facebook, Send, MessageCircle } from 'lucide-react';
@@ -114,6 +116,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <Link to="/watch-to-earn" className="text-white hover:text-yellow-400 text-sm font-semibold">Watch</Link>
           <Link to="/referral-program" className="text-white hover:text-yellow-400 text-sm font-semibold">Referral</Link>
           <Link to="/wallet" className="text-white hover:text-yellow-400 text-sm font-semibold">Wallet</Link>
+          <Link to="/about" className="text-white hover:text-yellow-400 text-sm font-semibold">About Us</Link>
           <Link to="/inbox" className="relative text-white hover:text-yellow-400 text-sm font-semibold">
             Inbox {unreadCount > 0 && <span className='ml-1 text-xs text-yellow-400'>({unreadCount})</span>}
           </Link>
@@ -142,7 +145,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       </div>
       {showMobileMenu && (
         <div className="md:hidden fixed top-14 left-0 w-full bg-gray-800 border-t border-gray-700 shadow-lg z-40">
-          {/* ... القوائم ... */}
+          <Link to="/dashboard" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Dashboard</Link>
+          <Link to="/staking" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Staking</Link>
+          <Link to="/mining" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Mining</Link>
+          <Link to="/playtoearn" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Play</Link>
+          <Link to="/watch-to-earn" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Watch</Link>
+          <Link to="/referral-program" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Referral</Link>
+          <Link to="/wallet" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Wallet</Link>
+          <Link to="/about" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">About Us</Link>
+          <Link to="/inbox" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Inbox</Link>
           <button onClick={() => { setShowMobileMenu(false); scrollToContact(); }} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">📞 Contact Us</button>
           <button onClick={handleLogout} className="w-full text-left px-4 py-3 text-red-400 hover:bg-gray-700">🚪 Logout</button>
         </div>
@@ -151,6 +162,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <main className="pt-20 md:pt-24 pb-24 px-0 w-full bg-[#0B1622]">
         {children}
+        {/* Footer */}
         <footer className="text-center text-gray-500 text-xs py-4 flex flex-col items-center space-y-2">
           <div className="flex space-x-4">
             <a href="https://x.com/your_handle" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">
