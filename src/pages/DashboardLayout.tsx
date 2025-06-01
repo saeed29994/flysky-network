@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Phone, Facebook, Send, MessageCircle, X as XIcon } from 'lucide-react';
+import { Menu, X, User, LogOut, Phone, Facebook, Send, MessageCircle } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, getDocs, collection, onSnapshot } from 'firebase/firestore';
@@ -142,16 +142,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       </div>
       {showMobileMenu && (
         <div className="md:hidden fixed top-14 left-0 w-full bg-gray-800 border-t border-gray-700 shadow-lg z-40">
-          <Link to="/dashboard" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🏠 Home</Link>
-          <Link to="/mining" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>⛏️ Mining</Link>
-          <Link to="/staking" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>📈 Staking</Link>
-          <Link to="/membership" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>💳 Membership</Link>
-          <Link to="/playtoearn" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🎮 Play to Earn</Link>
-          <Link to="/watch-to-earn" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🎥 Watch</Link>
-          <Link to="/referral-program" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>🤝 Referral</Link>
-          <Link to="/wallet" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>👛 Wallet</Link>
-          <Link to="/inbox" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>📩 Inbox</Link>
-          <button onClick={() => { setShowProfileModal(true); setShowMobileMenu(false); }} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">👤 Profile</button>
+          {/* ... القوائم ... */}
           <button onClick={() => { setShowMobileMenu(false); scrollToContact(); }} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">📞 Contact Us</button>
           <button onClick={handleLogout} className="w-full text-left px-4 py-3 text-red-400 hover:bg-gray-700">🚪 Logout</button>
         </div>
@@ -163,7 +154,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <footer className="text-center text-gray-500 text-xs py-4 flex flex-col items-center space-y-2">
           <div className="flex space-x-4">
             <a href="https://x.com/your_handle" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">
-              <XIcon size={16} />
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 1200 1227" fill="currentColor">
+                <path d="M1245 0L687.3 618.9 1251.3 1227H1035L518 645.9 0 1227H-216.3L329.2 620.9-216.3 0h216.3l523.4 567.6L1020 0z"/>
+              </svg>
             </a>
             <a href="https://facebook.com/your_page" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">
               <Facebook size={16} />
