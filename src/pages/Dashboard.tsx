@@ -1,9 +1,10 @@
 // 📁 src/pages/Dashboard.tsx
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useUserPlan } from "../contexts/UserPlanContext";
 import { Link } from "react-router-dom";
 import MembershipPage from "./MembershipPage";
+import { saveUserToken } from "../utils/pushNotification"; // ✅ استدعاء الدالة هنا
 import banner5 from "../assets/banner5.jpg";
 import playToEarnBanner from "../assets/playtoearn.jpg";
 import referralProgramBanner from "../assets/Referral_Program.jpg";
@@ -11,6 +12,11 @@ import referralProgramBanner from "../assets/Referral_Program.jpg";
 const Dashboard = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const { loading } = useUserPlan();
+
+  // ✅ تفعيل طلب إذن الإشعارات وحفظ FCM Token عند دخول الصفحة
+  useEffect(() => {
+    saveUserToken().catch(console.error);
+  }, []);
 
   const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

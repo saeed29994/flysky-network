@@ -21,7 +21,7 @@ messaging.onBackgroundMessage(function(payload) {
   const notificationTitle = payload.data?.title || '📢 Notification';
   const notificationOptions = {
     body: payload.data?.body || '',
-    icon: '/fsnicon.jpg',
+    icon: '/fsn-logo.png',
     image: payload.data?.image || undefined,
     data: {
       link: payload.data?.link || 'https://fsncrew.io/mining',
