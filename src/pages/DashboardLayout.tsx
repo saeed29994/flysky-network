@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, X, User, Phone } from 'lucide-react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
@@ -70,6 +70,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     return () => unsubscribe();
   }, [navigate]);
 
+  const scrollToContact = () => {
+    navigate('/dashboard');
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 300);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-yellow-400 text-lg">
@@ -88,15 +98,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <span className="text-yellow-400">Network</span>
         </div>
         <div className="flex items-center space-x-6">
-          <Link to="/dashboard" className="text-white hover:text-yellow-400 text-sm font-semibold">Dashboard</Link>
-          <Link to="/staking" className="text-white hover:text-yellow-400 text-sm font-semibold">Staking</Link>
-          <Link to="/mining" className="text-white hover:text-yellow-400 text-sm font-semibold">Mining</Link>
-          <Link to="/playtoearn" className="text-white hover:text-yellow-400 text-sm font-semibold">Play</Link>
-          <Link to="/watch-to-earn" className="text-white hover:text-yellow-400 text-sm font-semibold">Watch</Link>
-          <Link to="/referral-program" className="text-white hover:text-yellow-400 text-sm font-semibold">Referral</Link>
-          <Link to="/wallet" className="text-white hover:text-yellow-400 text-sm font-semibold">Wallet</Link>
-          <Link to="/about" className="text-white hover:text-yellow-400 text-sm font-semibold">About Us</Link>
-          <button onClick={() => setShowProfileModal(true)} className="flex items-center text-white hover:text-yellow-400 text-sm font-semibold">
+          <Link to="/dashboard" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Dashboard</Link>
+          <Link to="/staking" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Staking</Link>
+          <Link to="/mining" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Mining</Link>
+          <Link to="/playtoearn" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Play</Link>
+          <Link to="/watch-to-earn" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Watch</Link>
+          <Link to="/referral-program" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Referral</Link>
+          <Link to="/wallet" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Wallet</Link>
+          <Link to="/about" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">About Us</Link>
+          <Link to="/inbox" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Inbox</Link>
+          <button onClick={scrollToContact} className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+            <Phone size={16} className="mr-1" /> Contact
+          </button>
+          <button onClick={() => setShowProfileModal(true)} className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
             <User size={16} className="mr-1" /> Profile
           </button>
         </div>
@@ -109,20 +123,24 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <span className="text-sky-400">Sky</span>{' '}
           <span className="text-yellow-400">Network</span>
         </div>
-        <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="text-white">
+        <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="text-yellow-400">
           {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
       {showMobileMenu && (
         <div className="md:hidden fixed top-14 left-0 w-full bg-gray-800 border-t border-gray-700 shadow-lg z-40">
-          <Link to="/dashboard" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Dashboard</Link>
-          <Link to="/staking" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Staking</Link>
-          <Link to="/mining" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Mining</Link>
-          <Link to="/playtoearn" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Play</Link>
-          <Link to="/watch-to-earn" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Watch</Link>
-          <Link to="/referral-program" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Referral</Link>
-          <Link to="/wallet" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Wallet</Link>
-          <Link to="/about" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">About Us</Link>
+          <Link to="/dashboard" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Dashboard</Link>
+          <Link to="/staking" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Staking</Link>
+          <Link to="/mining" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Mining</Link>
+          <Link to="/playtoearn" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Play</Link>
+          <Link to="/watch-to-earn" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Watch</Link>
+          <Link to="/referral-program" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Referral</Link>
+          <Link to="/wallet" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Wallet</Link>
+          <Link to="/about" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">About Us</Link>
+          <Link to="/inbox" className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Inbox</Link>
+          <button onClick={() => { setShowMobileMenu(false); scrollToContact(); }} className="flex items-center w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">
+            <Phone size={16} className="mr-2" /> Contact Us
+          </button>
           <button onClick={() => setShowProfileModal(true)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Profile</button>
         </div>
       )}
@@ -132,11 +150,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         {children}
 
         {/* Bottom Navbar - Mobile Only */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 text-gray-400 flex justify-around items-center py-2 shadow-inner border-t border-gray-700 z-50">
-          <Link to="/dashboard" className="flex flex-col items-center text-xs hover:text-yellow-400">🏠 Home</Link>
-          <Link to="/mining" className="flex flex-col items-center text-xs hover:text-yellow-400">⛏️ Mining</Link>
-          <Link to="/inbox" className="flex flex-col items-center text-xs hover:text-yellow-400">📥 Inbox</Link>
-          <button onClick={() => setShowProfileModal(true)} className="flex flex-col items-center text-xs hover:text-yellow-400">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 text-yellow-400 flex justify-around items-center py-2 shadow-inner border-t border-gray-700 z-50">
+          <Link to="/dashboard" className="flex flex-col items-center text-xs hover:text-yellow-300">🏠 Home</Link>
+          <Link to="/mining" className="flex flex-col items-center text-xs hover:text-yellow-300">⛏️ Mining</Link>
+          <Link to="/inbox" className="flex flex-col items-center text-xs hover:text-yellow-300">📥 Inbox</Link>
+          <button onClick={() => setShowProfileModal(true)} className="flex flex-col items-center text-xs hover:text-yellow-300">
             {avatarUrl ? (
               <img src={avatarUrl} alt="Profile" className="w-6 h-6 rounded-full mb-1 object-cover" />
             ) : (
