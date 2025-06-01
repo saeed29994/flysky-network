@@ -160,8 +160,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <main className="pt-20 md:pt-24 pb-24 px-0 w-full bg-[#0B1622]">
         {children}
-        <footer className="text-center text-gray-500 text-xs py-4">
-          © {new Date().getFullYear()} FlySky Network. All rights reserved.
+        <footer className="text-center text-gray-500 text-xs py-4 flex flex-col items-center space-y-2">
+          <div className="flex space-x-4">
+            <a href="https://twitter.com/your_handle" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">🐦</a>
+            <a href="https://facebook.com/your_page" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">📘</a>
+            <a href="https://t.me/your_channel" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">📢</a>
+            <a href="https://discord.gg/your_server" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">💬</a>
+          </div>
+          <p>© {new Date().getFullYear()} FlySky Network. All rights reserved.</p>
         </footer>
       </main>
 
