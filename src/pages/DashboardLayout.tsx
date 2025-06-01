@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
@@ -20,6 +20,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [subscriptionEnd, setSubscriptionEnd] = useState<string | undefined>(undefined);
   const [avatarUrl, setAvatarUrl] = useState('');
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -79,56 +80,71 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   return (
     <>
+      {/* Navbar Desktop */}
+      <nav className="hidden md:flex fixed top-0 left-0 right-0 z-50 items-center justify-between bg-gray-900 bg-opacity-80 backdrop-blur-md px-8 py-4 shadow-md">
+        <div className="text-2xl font-extrabold">
+          <span className="text-yellow-400">Fly</span>
+          <span className="text-sky-400">Sky</span>{' '}
+          <span className="text-yellow-400">Network</span>
+        </div>
+        <div className="flex items-center space-x-6">
+          <Link to="/dashboard" className="text-white hover:text-yellow-400 text-sm font-semibold">Dashboard</Link>
+          <Link to="/staking" className="text-white hover:text-yellow-400 text-sm font-semibold">Staking</Link>
+          <Link to="/mining" className="text-white hover:text-yellow-400 text-sm font-semibold">Mining</Link>
+          <Link to="/playtoearn" className="text-white hover:text-yellow-400 text-sm font-semibold">Play</Link>
+          <Link to="/watch-to-earn" className="text-white hover:text-yellow-400 text-sm font-semibold">Watch</Link>
+          <Link to="/referral-program" className="text-white hover:text-yellow-400 text-sm font-semibold">Referral</Link>
+          <Link to="/wallet" className="text-white hover:text-yellow-400 text-sm font-semibold">Wallet</Link>
+          <Link to="/about" className="text-white hover:text-yellow-400 text-sm font-semibold">About Us</Link>
+          <button onClick={() => setShowProfileModal(true)} className="flex items-center text-white hover:text-yellow-400 text-sm font-semibold">
+            <User size={16} className="mr-1" /> Profile
+          </button>
+        </div>
+      </nav>
+
+      {/* Navbar Mobile */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-gray-900 shadow-md flex justify-between items-center px-4 py-3">
+        <div className="text-xl font-extrabold text-yellow-400">
+          <span className="text-yellow-400">Fly</span>
+          <span className="text-sky-400">Sky</span>{' '}
+          <span className="text-yellow-400">Network</span>
+        </div>
+        <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="text-white">
+          {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+      {showMobileMenu && (
+        <div className="md:hidden fixed top-14 left-0 w-full bg-gray-800 border-t border-gray-700 shadow-lg z-40">
+          <Link to="/dashboard" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Dashboard</Link>
+          <Link to="/staking" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Staking</Link>
+          <Link to="/mining" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Mining</Link>
+          <Link to="/playtoearn" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Play</Link>
+          <Link to="/watch-to-earn" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Watch</Link>
+          <Link to="/referral-program" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Referral</Link>
+          <Link to="/wallet" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">Wallet</Link>
+          <Link to="/about" className="block w-full text-left px-4 py-3 text-white hover:bg-gray-700">About Us</Link>
+          <button onClick={() => setShowProfileModal(true)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Profile</button>
+        </div>
+      )}
+
+      {/* Main Content */}
       <main className="pt-20 md:pt-24 pb-24 px-0 w-full bg-[#0B1622]">
         {children}
 
         {/* Bottom Navbar - Mobile Only */}
         <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 text-gray-400 flex justify-around items-center py-2 shadow-inner border-t border-gray-700 z-50">
-          <Link to="/dashboard" className="flex flex-col items-center text-xs hover:text-yellow-400">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-            </svg>
-            Home
-          </Link>
-          <Link to="/mining" className="flex flex-col items-center text-xs hover:text-yellow-400">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 11V3h2v8h-2zm-4 8h2v-4H7v4zm8-4h2v4h-2v-4z" />
-            </svg>
-            Mining
-          </Link>
-          <Link to="/inbox" className="flex flex-col items-center text-xs hover:text-yellow-400 relative">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12.79A9 9 0 1112.79 3a9 9 0 018.21 9.79z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12h.01M9 12h.01M12 15h.01" />
-            </svg>
-            Inbox
-          </Link>
-          <button
-            onClick={() => setShowProfileModal(true)}
-            className="flex flex-col items-center text-xs hover:text-yellow-400"
-          >
+          <Link to="/dashboard" className="flex flex-col items-center text-xs hover:text-yellow-400">🏠 Home</Link>
+          <Link to="/mining" className="flex flex-col items-center text-xs hover:text-yellow-400">⛏️ Mining</Link>
+          <Link to="/inbox" className="flex flex-col items-center text-xs hover:text-yellow-400">📥 Inbox</Link>
+          <button onClick={() => setShowProfileModal(true)} className="flex flex-col items-center text-xs hover:text-yellow-400">
             {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt="Profile"
-                className="w-6 h-6 rounded-full mb-1 object-cover"
-              />
+              <img src={avatarUrl} alt="Profile" className="w-6 h-6 rounded-full mb-1 object-cover" />
             ) : (
               <User size={20} className="mb-1" />
             )}
             Profile
           </button>
         </div>
-
-        <footer className="text-center text-gray-500 text-xs py-4 flex flex-col items-center space-y-2">
-          <div className="flex space-x-4">
-            <a href="https://x.com/your_handle" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">X</a>
-            <a href="https://facebook.com/your_page" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">Facebook</a>
-            <a href="https://t.me/your_channel" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">Telegram</a>
-            <a href="https://discord.gg/your_server" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">Discord</a>
-          </div>
-          <p>© {new Date().getFullYear()} FlySky Network. All rights reserved.</p>
-        </footer>
       </main>
 
       {/* Profile Modal */}
