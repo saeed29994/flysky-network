@@ -1,7 +1,7 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, User, Phone } from 'lucide-react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import ProfileModal from '../components/ProfileModal';
@@ -80,6 +80,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     }, 300);
   };
 
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate('/login');
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-yellow-400 text-lg">
@@ -113,6 +118,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <button onClick={() => setShowProfileModal(true)} className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
             <User size={16} className="mr-1" /> Profile
           </button>
+          <button onClick={handleLogout} className="flex items-center text-red-400 hover:text-red-300 text-sm font-semibold">
+            🚪 Logout
+          </button>
         </div>
       </nav>
 
@@ -142,6 +150,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             <Phone size={16} className="mr-2" /> Contact Us
           </button>
           <button onClick={() => setShowProfileModal(true)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Profile</button>
+          <button onClick={handleLogout} className="block w-full text-left px-4 py-3 text-red-400 hover:bg-red-300">🚪 Logout</button>
         </div>
       )}
 
