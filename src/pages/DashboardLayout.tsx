@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, User, LogOut, Phone } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, getDocs, collection, onSnapshot } from 'firebase/firestore';
 import ProfileModal from '../components/ProfileModal';
 
 interface DashboardLayoutProps {
@@ -23,15 +23,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
         navigate('/login');
         return;
       }
 
-      try {
-        const userRef = doc(db, 'users', user.uid);
-        const userSnap = await getDoc(userRef);
+      const userRef = doc(db, 'users', user.uid);
+
+      // ✅ المراقبة اللحظية للتحديثات (KYC وغيره)
+      const unsubscribeSnapshot = onSnapshot(userRef, async (userSnap) => {
         const data = userSnap.data();
 
         setUserName(data?.fullName || '');
@@ -61,11 +62,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         const snapshot = await getDocs(inboxRef);
         const unread = snapshot.docs.filter((doc) => !doc.data().read);
         setUnreadCount(unread.length);
-      } catch (err) {
-        console.error('Error loading user data:', err);
-      }
 
-      setIsLoading(false);
+        setIsLoading(false);
+      });
+
+      // ✅ تنظيف عند إلغاء الاشتراك
+      return () => {
+        unsubscribe();
+        unsubscribeSnapshot();
+      };
     });
 
     return () => unsubscribe();
