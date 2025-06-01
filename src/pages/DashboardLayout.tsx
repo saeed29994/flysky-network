@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Phone } from 'lucide-react';
+import { Menu, X, User, LogOut, Phone, Twitter, Facebook, Send, MessageCircle } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, getDocs, collection, onSnapshot } from 'firebase/firestore';
@@ -162,10 +162,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         {children}
         <footer className="text-center text-gray-500 text-xs py-4 flex flex-col items-center space-y-2">
           <div className="flex space-x-4">
-            <a href="https://twitter.com/your_handle" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">🐦</a>
-            <a href="https://facebook.com/your_page" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">📘</a>
-            <a href="https://t.me/your_channel" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">📢</a>
-            <a href="https://discord.gg/your_server" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">💬</a>
+            <a href="https://twitter.com/your_handle" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">
+              <Twitter size={16} />
+            </a>
+            <a href="https://facebook.com/your_page" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">
+              <Facebook size={16} />
+            </a>
+            <a href="https://t.me/your_channel" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">
+              <Send size={16} />
+            </a>
+            <a href="https://discord.gg/your_server" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">
+              <MessageCircle size={16} />
+            </a>
           </div>
           <p>© {new Date().getFullYear()} FlySky Network. All rights reserved.</p>
         </footer>
