@@ -82,7 +82,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const scrollToContact = () => {
     navigate('/dashboard');
     setTimeout(() => {
-      const contactSection = document.getElementById('contact-us');
+      const contactSection = document.getElementById('contact');
       if (contactSection) {
         contactSection.scrollIntoView({ behavior: 'smooth' });
       }
@@ -152,7 +152,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <Link to="/wallet" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>👛 Wallet</Link>
           <Link to="/inbox" className="block px-4 py-3 text-yellow-400 hover:bg-gray-700" onClick={() => setShowMobileMenu(false)}>📩 Inbox</Link>
           <button onClick={() => { setShowProfileModal(true); setShowMobileMenu(false); }} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">👤 Profile</button>
-          <button onClick={scrollToContact} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">📞 Contact Us</button>
+          <button onClick={() => { setShowMobileMenu(false); scrollToContact(); }} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">📞 Contact Us</button>
           <button onClick={handleLogout} className="w-full text-left px-4 py-3 text-red-400 hover:bg-gray-700">🚪 Logout</button>
         </div>
       )}
@@ -160,6 +160,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <main className="pt-20 md:pt-24 pb-24 px-0 w-full bg-[#0B1622]">
         {children}
+        <footer className="text-center text-gray-500 text-xs py-4">
+          © {new Date().getFullYear()} FlySky Network. All rights reserved.
+        </footer>
       </main>
 
       {/* Profile Modal */}
