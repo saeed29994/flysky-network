@@ -62,29 +62,34 @@ const SignupPage = () => {
         ],
       });
 
-      // ✅ تسجيل الإحالة في Firestore
+      // ✅ تسجيل الإحالة (تجاهل الخطأ إن وُجد)
       if (finalReferral !== '') {
-        const referrerQuery = query(
-          collection(db, 'users'),
-          where('referralCode', '==', finalReferral)
-        );
-        const querySnapshot = await getDocs(referrerQuery);
+        try {
+          const referrerQuery = query(
+            collection(db, 'users'),
+            where('referralCode', '==', finalReferral)
+          );
+          const querySnapshot = await getDocs(referrerQuery);
 
-        if (!querySnapshot.empty) {
-          const referrerDoc = querySnapshot.docs[0];
-          const referrerRef = doc(db, 'users', referrerDoc.id);
+          if (!querySnapshot.empty) {
+            const referrerDoc = querySnapshot.docs[0];
+            const referrerRef = doc(db, 'users', referrerDoc.id);
 
-          await updateDoc(referrerRef, {
-            referralList: arrayUnion({
-              email: email,
-              status: 'Pending',
-              timestamp: Date.now(),
-            }),
-          });
+            await updateDoc(referrerRef, {
+              referralList: arrayUnion({
+                email: email,
+                status: 'Pending',
+                timestamp: Date.now(),
+              }),
+            });
 
-          console.log('Referral registered successfully.');
-        } else {
-          console.log('No referrer found with this code.');
+            console.log('Referral registered successfully.');
+          } else {
+            console.log('No referrer found with this code.');
+          }
+        } catch (err) {
+          console.warn('⚠️ Could not update referralList:', err);
+          // تجاهل الخطأ وأكمل التسجيل
         }
       }
 
@@ -100,6 +105,7 @@ const SignupPage = () => {
         type: 'welcome_bonus',
       });
 
+      // ✅ توجيه المستخدم لصفحة التحقق من البريد
       navigate('/verify-email');
     } catch (err: any) {
       console.error('Error during signup:', err);
@@ -111,7 +117,9 @@ const SignupPage = () => {
     <div className="min-h-screen bg-[#0B1622] flex items-center justify-center px-4">
       <form onSubmit={handleSignup} className="bg-gray-900 p-6 rounded-xl shadow-lg w-full max-w-md">
         <h2 className="text-yellow-400 text-2xl font-bold mb-4">Create Account</h2>
+
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
         <input
           type="text"
           placeholder="Full Name"
@@ -135,6 +143,7 @@ const SignupPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 mb-4 rounded bg-gray-800 text-white"
           required
+          autoComplete="current-password" // تحسين التحذيرات في الكونسول
         />
         <input
           type="text"
@@ -143,6 +152,7 @@ const SignupPage = () => {
           onChange={(e) => setReferralCode(e.target.value.trim())}
           className="w-full p-2 mb-6 rounded bg-gray-800 text-white"
         />
+
         <button type="submit" className="w-full bg-yellow-400 text-black py-2 rounded font-bold hover:bg-yellow-300 transition">
           Sign Up
         </button>
