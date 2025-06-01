@@ -31,7 +31,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
       const userRef = doc(db, 'users', user.uid);
 
-      // ✅ المراقبة اللحظية للتحديثات (KYC وغيره)
       const unsubscribeSnapshot = onSnapshot(userRef, async (userSnap) => {
         const data = userSnap.data();
 
@@ -49,7 +48,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
         const rawKyc = (data?.kycStatus || data?.kyc?.kycStatus || 'Not Actived').toLowerCase();
         const normalizedKyc =
-          rawKyc === 'approved' || rawKyc === 'actived' ? 'Approved' :
+          rawKyc === 'approved' || rawKyc === 'actived' || rawKyc === 'verified' ? 'Approved' :
           rawKyc === 'pending' ? 'Pending' : 'Not Actived';
         setKycStatus(normalizedKyc);
 
@@ -66,7 +65,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         setIsLoading(false);
       });
 
-      // ✅ تنظيف عند إلغاء الاشتراك
       return () => {
         unsubscribe();
         unsubscribeSnapshot();
