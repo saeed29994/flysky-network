@@ -25,6 +25,7 @@ import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import { UserPlanProvider } from './contexts/UserPlanContext';
 
+
 const publicRoutes = [
   { path: '/', element: <LandingPage /> },
   { path: '/signup', element: <SignupPage /> },
