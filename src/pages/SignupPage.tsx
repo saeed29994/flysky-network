@@ -1,7 +1,17 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth, db } from '../firebase';
-import { doc, setDoc, serverTimestamp, collection, updateDoc, arrayUnion } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  serverTimestamp,
+  collection,
+  updateDoc,
+  arrayUnion,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,19 +28,12 @@ const SignupPage = () => {
     setError('');
 
     try {
-      console.log('User entered referral code:', referralCode);
-
       const finalReferral = referralCode.trim() !== '' ? referralCode.trim() : '';
-      console.log('Final referral code to save:', finalReferral);
 
-      // ✅ إنشاء الحساب في Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // ✅ إرسال رابط التحقق
       await sendEmailVerification(user);
 
-      // ✅ إنشاء وثيقة المستخدم في Firestore
       const userRef = doc(db, 'users', user.uid);
       const generatedCode = uuidv4().slice(0, 8);
 
@@ -59,9 +62,33 @@ const SignupPage = () => {
         ],
       });
 
-      console.log('User document created successfully.');
+      // ✅ تسجيل الإحالة في Firestore
+      if (finalReferral !== '') {
+        const referrerQuery = query(
+          collection(db, 'users'),
+          where('referralCode', '==', finalReferral)
+        );
+        const querySnapshot = await getDocs(referrerQuery);
 
-      // ✅ إضافة رسالة الترحيب في inbox
+        if (!querySnapshot.empty) {
+          const referrerDoc = querySnapshot.docs[0];
+          const referrerRef = doc(db, 'users', referrerDoc.id);
+
+          await updateDoc(referrerRef, {
+            referralList: arrayUnion({
+              email: email,
+              status: 'Pending',
+              timestamp: Date.now(),
+            }),
+          });
+
+          console.log('Referral registered successfully.');
+        } else {
+          console.log('No referrer found with this code.');
+        }
+      }
+
+      // ✅ إضافة رسالة الترحيب
       const inboxRef = doc(collection(db, 'users', user.uid, 'inbox'));
       await setDoc(inboxRef, {
         title: '🎉 Welcome to FlySky Network!',
@@ -73,37 +100,6 @@ const SignupPage = () => {
         type: 'welcome_bonus',
       });
 
-      console.log('Welcome bonus message added to inbox.');
-
-      // ✅ تسجيل الإحالة في وثيقة المحيل إذا وُجد كود إحالة
-      if (finalReferral !== '') {
-        console.log('Looking for referrer in Firestore...');
-
-        // ابحث عن المحيل باستخدام referralCode
-        const referrerQuery = await db.collection('users')
-          .where('referralCode', '==', finalReferral)
-          .get();
-
-        if (!referrerQuery.empty) {
-          const referrerDoc = referrerQuery.docs[0];
-          const referrerRef = doc(db, 'users', referrerDoc.id);
-
-          // أضف الإحالة الجديدة إلى referralList
-          await updateDoc(referrerRef, {
-            referralList: arrayUnion({
-              email: email,
-              status: 'Pending', // الحالة الافتراضية
-              timestamp: Date.now(),
-            }),
-          });
-
-          console.log('Referral registered in referrer’s document.');
-        } else {
-          console.log('No referrer found with this code.');
-        }
-      }
-
-      // ✅ توجيه المستخدم لصفحة التحقق من البريد
       navigate('/verify-email');
     } catch (err: any) {
       console.error('Error during signup:', err);
@@ -115,9 +111,7 @@ const SignupPage = () => {
     <div className="min-h-screen bg-[#0B1622] flex items-center justify-center px-4">
       <form onSubmit={handleSignup} className="bg-gray-900 p-6 rounded-xl shadow-lg w-full max-w-md">
         <h2 className="text-yellow-400 text-2xl font-bold mb-4">Create Account</h2>
-
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-
         <input
           type="text"
           placeholder="Full Name"
@@ -149,7 +143,6 @@ const SignupPage = () => {
           onChange={(e) => setReferralCode(e.target.value.trim())}
           className="w-full p-2 mb-6 rounded bg-gray-800 text-white"
         />
-
         <button type="submit" className="w-full bg-yellow-400 text-black py-2 rounded font-bold hover:bg-yellow-300 transition">
           Sign Up
         </button>
