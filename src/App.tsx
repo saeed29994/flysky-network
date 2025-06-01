@@ -1,3 +1,5 @@
+// 📁 src/App.tsx
+
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,13 +20,13 @@ import StakingPage from './pages/Staking';
 import KycPage from './pages/KycPage';
 import MiningPage from './pages/MiningPage';
 import PlayToEarn from './pages/PlayToEarn';
-import WatchToEarn from './pages/WatchToEarn'; // ✅ إضافة الصفحة الجديدة
+import WatchToEarn from './pages/WatchToEarn';
 import Wallet from './pages/Wallet';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import { UserPlanProvider } from './contexts/UserPlanContext';
-
+import AboutUs from './pages/AboutUs'; // ✅ إضافة الصفحة
 
 const publicRoutes = [
   { path: '/', element: <LandingPage /> },
@@ -35,6 +37,7 @@ const publicRoutes = [
   { path: '/inbox', element: <Inbox /> },
   { path: '/membership-page', element: <MembershipPage /> },
   { path: '/inbox-debug', element: <Inbox_Debug /> },
+  { path: '/about', element: <AboutUs /> }, // ✅ المسار المضاف
 ];
 
 const dashboardRoutes = [
@@ -49,7 +52,7 @@ const dashboardRoutes = [
   { path: '/wallet', element: <Wallet /> },
   { path: '/mining', element: <MiningPage /> },
   { path: '/playtoearn', element: <PlayToEarn /> },
-  { path: '/watch-to-earn', element: <WatchToEarn /> }, // ✅ المسار الجديد
+  { path: '/watch-to-earn', element: <WatchToEarn /> },
 ];
 
 const router = createBrowserRouter([
