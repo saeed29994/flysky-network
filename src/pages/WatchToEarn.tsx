@@ -18,6 +18,7 @@ const adLinks = [
 const WatchToEarn = () => {
   const [adsWatched, setAdsWatched] = useState(0);
   const [balance, setBalance] = useState(0);
+  const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,11 +42,36 @@ const WatchToEarn = () => {
 
         setAdsWatched(watchedToday);
         setBalance(data?.balance || 0);
+
+        // ⬇️ منع المستخدم من البدء مجددًا قبل مرور 24 ساعة بعد المطالبة
+        if (watchedToday === 0 && hoursDiff < 24) {
+          const secondsLeft = 24 * 3600 - Math.floor((today.getTime() - lastWatched.getTime()) / 1000);
+          setCountdown(secondsLeft);
+        } else {
+          setCountdown(0);
+        }
       }
     };
 
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    if (countdown <= 0) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [countdown]);
+
+  const formatTime = (seconds: number) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h}h ${m}m ${s}s`;
+  };
 
   const handleWatchAd = async () => {
     const user = auth.currentUser;
@@ -87,6 +113,10 @@ const WatchToEarn = () => {
 
     setBalance(newBalance);
     setAdsWatched(0);
+
+    // ⬇️ بدء العداد التنازلي بعد المطالبة بالمكافأة
+    setCountdown(24 * 3600);
+
     toast.success(`You earned ${REWARD_FOR_ALL} FSN!`);
   };
 
@@ -126,7 +156,11 @@ const WatchToEarn = () => {
           Balance: <span className="font-semibold">{balance} FSN</span>
         </p>
 
-        {!canClaim ? (
+        {countdown > 0 ? (
+          <p className="text-center text-red-400 font-semibold mb-4">
+            Please wait {formatTime(countdown)} before watching ads again.
+          </p>
+        ) : !canClaim ? (
           <button
             onClick={handleWatchAd}
             className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-2 rounded font-bold transition w-full"

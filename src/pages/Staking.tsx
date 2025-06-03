@@ -1,3 +1,4 @@
+/* ... بقية الاستيرادات نفسها */
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
 import {
@@ -192,7 +193,7 @@ const StakingPage = () => {
 
       {user && (
         <>
-          <div className="mb-6">
+          <div className="mb-6 max-w-md mx-auto">
             <StakingCard plan={plan as any} lockedAmount={lockedAmount} />
           </div>
 
