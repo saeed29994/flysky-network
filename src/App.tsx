@@ -1,10 +1,15 @@
 // 📁 src/App.tsx
 
+import { useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { saveUserToken } from './utils/pushNotification'; // ✅ استدعاء الدالة
+import { auth } from './firebase'; // ✅ تأكد أن هذا المسار صحيح
+
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Inbox_Debug from './pages/Inbox_Debug';
 
+import Inbox_Debug from './pages/Inbox_Debug';
 import LandingPage from './pages/LandingPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
@@ -26,7 +31,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import { UserPlanProvider } from './contexts/UserPlanContext';
-import AboutUs from './pages/AboutUs'; // ✅ إضافة الصفحة
+import AboutUs from './pages/AboutUs';
 
 const publicRoutes = [
   { path: '/', element: <LandingPage /> },
@@ -37,7 +42,7 @@ const publicRoutes = [
   { path: '/inbox', element: <Inbox /> },
   { path: '/membership-page', element: <MembershipPage /> },
   { path: '/inbox-debug', element: <Inbox_Debug /> },
-  { path: '/about', element: <AboutUs /> }, // ✅ المسار المضاف
+  { path: '/about', element: <AboutUs /> },
 ];
 
 const dashboardRoutes = [
@@ -80,6 +85,17 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  useEffect(() => {
+    // ✅ تفعيل حفظ التوكن بعد تسجيل الدخول
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        saveUserToken();
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <UserPlanProvider>
       <RouterProvider router={router} />

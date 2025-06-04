@@ -1,9 +1,12 @@
-// 📁 src/utils/pushNotification.ts
-
 import { getToken } from 'firebase/messaging';
-import { messaging } from '../firebase-config';
-import { auth, db } from '../firebase';
-import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { messaging, auth, db } from '../firebase';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  arrayUnion
+} from 'firebase/firestore';
 
 const VAPID_KEY = 'BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rtYj8r8rnI3YEPeJs9OAAV-fpzZYT6siymHDj6rWhyDNl0';
 
@@ -37,7 +40,7 @@ export const saveUserToken = async () => {
       return;
     }
 
-    // ✅ 1️⃣ حفظ التوكن في مجموعة userTokens/userId
+    // ✅ حفظ التوكن في userTokens/{uid}
     const tokenRef = doc(db, 'userTokens', user.uid);
     const tokenSnap = await getDoc(tokenRef);
 
@@ -49,12 +52,18 @@ export const saveUserToken = async () => {
       console.log('✅ Token saved to userTokens.');
     }
 
-    // ✅ 2️⃣ إضافة التوكن إلى fcmTokens في users/userId
+    // ✅ إضافة التوكن إلى مصفوفة fcmTokens داخل users/{uid}
     const userRef = doc(db, 'users', user.uid);
-    await updateDoc(userRef, {
-      fcmTokens: arrayUnion(token),
-    });
-    console.log('✅ Token added to fcmTokens array in users.');
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) {
+      await setDoc(userRef, { fcmTokens: [token] });
+      console.log('✅ Created user document with fcmTokens.');
+    } else {
+      await updateDoc(userRef, {
+        fcmTokens: arrayUnion(token),
+      });
+      console.log('✅ Token added to fcmTokens array in users.');
+    }
 
   } catch (error) {
     console.error('🔥 Error during FCM setup:', error);
