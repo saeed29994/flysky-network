@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, User, Phone } from 'lucide-react';
+import { Menu, X, User, Phone, Home, Wallet, Mail } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, onSnapshot, collection, query, where } from 'firebase/firestore';
@@ -24,7 +24,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
 
   useEffect(() => {
@@ -118,16 +117,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <span className="text-yellow-400">Network</span>
         </div>
         <div className="flex items-center space-x-6">
-          <Link to="/dashboard" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>Dashboard</Link>
-          <Link to="/staking" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>Staking</Link>
-          <Link to="/mining" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>Mining</Link>
-          <Link to="/playtoearn" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>Play</Link>
-          <Link to="/watch-to-earn" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>Watch</Link>
-          <Link to="/referral-program" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>Referral</Link>
-          <Link to="/wallet" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>Wallet</Link>
-          <Link to="/about" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>About Us</Link>
+          <Link to="/dashboard" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Dashboard</Link>
+          <Link to="/staking" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Staking</Link>
+          <Link to="/mining" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Mining</Link>
+          <Link to="/playtoearn" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Play</Link>
+          <Link to="/watch-to-earn" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Watch</Link>
+          <Link to="/referral-program" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Referral</Link>
+          <Link to="/wallet" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Wallet</Link>
+          <Link to="/about" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">About Us</Link>
           <div className="relative">
-            <Link to="/inbox" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold" onClick={() => setShowMobileMenu(false)}>Inbox</Link>
+            <Link to="/inbox" className="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Inbox</Link>
             {hasUnreadMessages && (
               <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 rounded-full"></span>
             )}
@@ -162,25 +161,25 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       </div>
       {showMobileMenu && (
         <div className="md:hidden fixed top-14 left-0 w-full bg-gray-800 border-t border-gray-700 shadow-lg z-40">
-          <Link to="/dashboard" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Dashboard</Link>
-          <Link to="/staking" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Staking</Link>
-          <Link to="/mining" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Mining</Link>
-          <Link to="/playtoearn" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Play</Link>
-          <Link to="/watch-to-earn" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Watch</Link>
-          <Link to="/referral-program" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Referral</Link>
-          <Link to="/wallet" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Wallet</Link>
-          <Link to="/about" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">About Us</Link>
+          <Link to="/dashboard" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Dashboard</Link>
+          <Link to="/staking" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Staking</Link>
+          <Link to="/mining" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Mining</Link>
+          <Link to="/playtoearn" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Play</Link>
+          <Link to="/watch-to-earn" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Watch</Link>
+          <Link to="/referral-program" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Referral</Link>
+          <Link to="/wallet" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Wallet</Link>
+          <Link to="/about" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">About Us</Link>
           <div className="relative">
-            <Link to="/inbox" onClick={() => setShowMobileMenu(false)} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Inbox</Link>
+            <Link to="/inbox" onClick={() => setShowMobileMenu(false)} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Inbox</Link>
             {hasUnreadMessages && (
               <span className="absolute top-2 right-6 inline-block w-2 h-2 bg-red-500 rounded-full"></span>
             )}
           </div>
-          <button onClick={() => { setShowMobileMenu(false); scrollToContact(); }} className="flex items-center w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">
+          <button onClick={() => { setShowMobileMenu(false); scrollToContact(); }} className="flex items-center w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">
             <Phone size={16} className="mr-2" /> Contact Us
           </button>
-          <button onClick={() => { setShowMobileMenu(false); setShowProfileModal(true); }} className="block w-full text-left px-4 py-3 text-yellow-400 hover:bg-gray-700">Profile</button>
-          <button onClick={() => { setShowMobileMenu(false); handleLogout(); }} className="block w-full text-left px-4 py-3 text-red-400 hover:bg-red-300">🚪 Logout</button>
+          <button onClick={() => { setShowMobileMenu(false); setShowProfileModal(true); }} className="block w-full px-4 py-3 text-yellow-400 hover:bg-gray-700">Profile</button>
+          <button onClick={() => { setShowMobileMenu(false); handleLogout(); }} className="block w-full px-4 py-3 text-red-400 hover:bg-red-300">🚪 Logout</button>
         </div>
       )}
 
@@ -201,6 +200,44 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           </footer>
         )}
       </main>
+
+      {/* Bottom Navigation - Mobile */}
+      {!hideFooter && (
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 border-t border-gray-800 flex justify-around items-center py-2 md:hidden">
+          <Link to="/dashboard" className="flex flex-col items-center text-yellow-400 hover:text-yellow-300 text-xs">
+            <Home size={20} className="mb-1" />
+            Home
+          </Link>
+          <Link to="/mining" className="flex flex-col items-center text-yellow-400 hover:text-yellow-300 text-xs">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-1 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2" />
+            </svg>
+            Mining
+          </Link>
+          <Link to="/wallet" className="flex flex-col items-center text-yellow-400 hover:text-yellow-300 text-xs">
+            <Wallet size={20} className="mb-1" />
+            Wallet
+          </Link>
+          <Link to="/inbox" className="relative flex flex-col items-center text-yellow-400 hover:text-yellow-300 text-xs">
+            <Mail size={20} className="mb-1" />
+            Inbox
+            {hasUnreadMessages && (
+              <span className="absolute top-0 right-3 w-2 h-2 bg-red-500 rounded-full"></span>
+            )}
+          </Link>
+          <button
+            onClick={() => setShowProfileModal(true)}
+            className="flex flex-col items-center text-yellow-400 hover:text-yellow-300 text-xs"
+          >
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Avatar" className="w-6 h-6 rounded-full mb-1 object-cover" />
+            ) : (
+              <User size={20} className="mb-1" />
+            )}
+            Profile
+          </button>
+        </nav>
+      )}
 
       {showProfileModal && (
         <ProfileModal

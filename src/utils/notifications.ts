@@ -1,10 +1,16 @@
 // 📁 src/utils/notifications.ts
 
-import { auth, db } from '../firebase';
+import { auth, db, functions } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 
-// إرسال إشعار فردي لمستخدم
-export const sendUserNotification = async (title: string, body: string, imageUrl?: string, clickAction?: string) => {
+// إرسال إشعار باستخدام Cloud Function
+export const sendUserNotification = async (
+  title: string,
+  body: string,
+  imageUrl?: string,
+  clickAction?: string
+) => {
   try {
     const user = auth.currentUser;
     if (!user) {
@@ -12,6 +18,7 @@ export const sendUserNotification = async (title: string, body: string, imageUrl
       return;
     }
 
+    // الحصول على FCM Token
     const tokenRef = doc(db, 'userTokens', user.uid);
     const tokenSnap = await getDoc(tokenRef);
     if (!tokenSnap.exists()) {
@@ -25,37 +32,24 @@ export const sendUserNotification = async (title: string, body: string, imageUrl
       return;
     }
 
-    const payload: any = {
+    // استدعاء Cloud Function
+    const sendNotification = httpsCallable(functions, 'sendPushNotification');
+
+    await sendNotification({
+      tokens: [token],
       title,
       body,
-      tokens: [token],
-      clickAction, // ✅ دعم النقر على الإشعار
-    };
-
-    if (imageUrl) {
-      payload.imageUrl = imageUrl;
-    }
-
-    const response = await fetch('https://flysky-server.onrender.com/sendNotification', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      imageUrl,
+      clickAction,
     });
 
-    const result = await response.json();
-
-    if (result.success) {
-      console.log('✅ Notification sent successfully.');
-    } else {
-      console.error('❌ Failed to send notification:', result.message);
-    }
+    console.log('✅ Notification sent via Firebase Function.');
   } catch (error) {
     console.error('🔥 Error sending notification:', error);
   }
 };
 
-// ✅ اختصارات جاهزة مع clickAction مضاف:
-
+// ✅ اختصارات جاهزة:
 export const notifyNewInboxMessage = async () => {
   await sendUserNotification(
     '📬 New Message',
