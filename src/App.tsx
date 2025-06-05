@@ -1,9 +1,9 @@
 // 📁 src/App.tsx
-
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { saveUserToken } from './utils/pushNotification'; // ✅ استدعاء الدالة
-import { auth } from './firebase'; // ✅ تأكد أن هذا المسار صحيح
+import { saveUserToken } from './utils/pushNotification';
+import { auth, messaging } from './firebase';
+import { onMessage } from 'firebase/messaging';
 
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -86,10 +86,29 @@ const router = createBrowserRouter([
 
 function App() {
   useEffect(() => {
-    // ✅ تفعيل حفظ التوكن بعد تسجيل الدخول
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         saveUserToken();
+
+        // ✅ تسجيل Service Worker
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker
+            .register('/firebase-messaging-sw.js')
+            .then(() => {
+              console.log('✅ Service Worker registered');
+            })
+            .catch((err) => {
+              console.error('❌ SW registration failed', err);
+            });
+        }
+
+        // ✅ استقبال الإشعارات أثناء التصفح
+        if (messaging) {
+          onMessage(messaging, (payload) => {
+            console.log('🔔 Foreground notification:', payload);
+            alert(`${payload.notification?.title}\n${payload.notification?.body}`);
+          });
+        }
       }
     });
 
