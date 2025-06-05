@@ -64,7 +64,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
           ? startTimestamp.toDate()
           : new Date(startTimestamp);
         setStartTime(startDate);
-        setMined(data.dailyMined || 0);
+        setMined(typeof data.dailyMined === 'number' ? data.dailyMined : 0);
         setFirstTime(false);
       }
     }
@@ -92,8 +92,10 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     const interval = setInterval(() => {
       const now = new Date();
       const elapsed = Math.floor((now.getTime() - startTime.getTime()) / 1000);
-      const currentMined = Math.min(planLimits[plan], elapsed * miningRate);
+      const rawMined = elapsed * miningRate;
+      const currentMined = Math.min(planLimits[plan], isNaN(rawMined) ? 0 : rawMined);
       setMined(currentMined);
+
       if ((elapsed >= 43200 || currentMined >= planLimits[plan]) && !claimReady) {
         setClaimReady(true);
         setIsMaxed(true);
@@ -111,7 +113,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
 
   useEffect(() => {
     if (claimReady) {
-      setShowUnlock(true); // ✅ عند انتهاء التعدين، أظهر زر Unlock
+      setShowUnlock(true);
     }
   }, [claimReady]);
 
@@ -137,7 +139,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
 
   const handleUnlock = () => {
     window.open('https://otieu.com/4/9386723', '_blank');
-    setShowUnlock(false); // ✅ بعد فتح الإعلان، أخفِ زر Unlock وأظهر زر Claim
+    setShowUnlock(false);
   };
 
   const handleClaim = async () => {
@@ -227,7 +229,9 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
         </div>
 
         <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2">🪙 FSN Daily Mining</h2>
-        <div className="text-4xl font-extrabold text-white mb-2">{Math.floor(mined)} FSN</div>
+        <div className="text-4xl font-extrabold text-white mb-2">
+          {isNaN(mined) ? 0 : Math.floor(mined)} FSN
+        </div>
         <p className="text-sm text-gray-400 mb-2">Daily Limit: <span className="text-white font-semibold">{planLimits[plan]} FSN</span></p>
         <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-3">
           <div className="h-full bg-yellow-500 transition-all duration-500" style={{ width: `${(mined / planLimits[plan]) * 100}%` }} />

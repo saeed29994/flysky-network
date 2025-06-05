@@ -1,14 +1,18 @@
 import { messaging } from '../firebase';
 import { getToken, onMessage } from 'firebase/messaging';
 
-// ضع هنا مفتاح VAPID الخاص بك من Firebase Console → Cloud Messaging → Web Push certificates
-const VAPID_KEY = 'BKhpE...اكتب مفتاحك هنا...ZTx1U';
+const VAPID_KEY = 'BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rtYj8r8rnI3YEPeJs9OAAV-fpzZYT6siymHDj6rWhyDNl0';
 
 export const requestNotificationPermission = async (): Promise<string | null> => {
   try {
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
       console.warn('🔕 Notification permission not granted');
+      return null;
+    }
+
+    if (!messaging) {
+      console.warn('📴 Firebase messaging not available');
       return null;
     }
 
@@ -21,8 +25,9 @@ export const requestNotificationPermission = async (): Promise<string | null> =>
   }
 };
 
-// استقبال الإشعارات في المقدمة (foreground)
 export const listenToForegroundMessages = () => {
+  if (!messaging) return;
+
   onMessage(messaging, (payload) => {
     console.log('🔔 Foreground notification received:', payload);
 
@@ -30,7 +35,7 @@ export const listenToForegroundMessages = () => {
     if (title || body) {
       new Notification(title || '📬 إشعار جديد', {
         body: body || '',
-        icon: '/logo.png', // 🔁 غيّر هذا إذا أردت أيقونة مخصصة
+        icon: '/fsn-logo.png', // 🔁 غيّر هذا إذا أردت أيقونة مخصصة
       });
     }
   });

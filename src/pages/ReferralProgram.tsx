@@ -104,7 +104,7 @@ const ReferralProgram = () => {
                 Download QR
               </button>
               <p className="text-sm text-gray-400 text-center mt-1">
-                امسح أو حمّل الباركود لمشاركة رابطك
+                Scan or download the QR code to share your link
               </p>
             </div>
           </>
