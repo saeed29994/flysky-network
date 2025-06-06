@@ -1,3 +1,5 @@
+// AdminDashboard.tsx
+
 import { useState, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
 import { db } from '../firebase';
@@ -51,7 +53,7 @@ const AdminDashboard = () => {
     const snapshot = await getDocs(collection(db, 'users'));
     const data: User[] = snapshot.docs.map((doc) => {
       const userData = doc.data();
-      const plan = userData.membership?.plan || 'economy'; // Default if missing
+      const plan = userData.membership?.plan || 'economy';
       const stakingHistory = userData.stakingHistory || [];
 
       let totalStaked = 0;
@@ -90,11 +92,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchUsers();
-
-    const interval = setInterval(() => {
-      fetchUsers();
-    }, 30000);
-
+    const interval = setInterval(() => fetchUsers(), 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -142,11 +140,11 @@ const AdminDashboard = () => {
       membership: {
         plan: newUserPlan,
         planName: newUserPlan,
-        miningEarnings: safeNumber(0),
+        miningEarnings: 0,
         miningStartTime: null,
       },
-      balance: safeNumber(0),
-      dailyMined: safeNumber(0),
+      balance: 0,
+      dailyMined: 0,
       createdAt: new Date(),
       referralCode: '',
       watchedAdsToday: 0,
@@ -172,7 +170,8 @@ const AdminDashboard = () => {
 
   const economyUsers = users.filter((u) => u.plan === 'economy').length;
   const businessUsers = users.filter((u) => u.plan === 'business').length;
-  const firstUsers = users.filter((u) => u.plan?.includes('first')).length;
+  const first6Users = users.filter((u) => u.plan === 'first-6').length;
+  const firstLifetimeUsers = users.filter((u) => u.plan === 'first-lifetime').length;
   const totalUsers = users.length;
   const kycVerified = users.filter((u) => u.kycStatus === 'Verified').length;
   const totalAdsWatched = users.reduce(
@@ -216,13 +215,13 @@ const AdminDashboard = () => {
                 <li>KYC Verified Users: {kycVerified}</li>
                 <li>Economy Plan Users: {economyUsers}</li>
                 <li>Business Plan Users: {businessUsers}</li>
-                <li>First Plan Users: {firstUsers}</li>
+                <li>First-6 Plan Users: {first6Users}</li>
+                <li>First-Lifetime Plan Users: {firstLifetimeUsers}</li>
                 <li>Total Ads Watched Today: {totalAdsWatched}</li>
               </ul>
             </div>
           </Tab.Panel>
 
-          {/* Users Management */}
           <Tab.Panel>
             <div className="bg-gray-900 p-4 rounded shadow text-white">
               <h2 className="text-xl font-bold text-yellow-400 mb-4">
@@ -264,10 +263,7 @@ const AdminDashboard = () => {
                     </thead>
                     <tbody>
                       {filteredUsers.map((user) => (
-                        <tr
-                          key={user.id}
-                          className="border-t border-gray-700 text-white"
-                        >
+                        <tr key={user.id} className="border-t border-gray-700 text-white">
                           <td className="py-2 px-3">{user.fullName}</td>
                           <td className="py-2 px-3">{user.email}</td>
                           <td className="py-2 px-3">{user.plan}</td>
@@ -314,7 +310,8 @@ const AdminDashboard = () => {
                     <option value="">Select Plan</option>
                     <option value="economy">Economy</option>
                     <option value="business">Business</option>
-                    <option value="first">First</option>
+                    <option value="first-6">First-6</option>
+                    <option value="first-lifetime">First-Lifetime</option>
                   </select>
                   <button
                     onClick={() => handleUpdatePlan(editingUserId)}
@@ -327,7 +324,6 @@ const AdminDashboard = () => {
             </div>
           </Tab.Panel>
 
-          {/* KYC Verification */}
           <Tab.Panel>
             <div className="bg-gray-900 p-4 rounded shadow">
               <h2 className="text-xl font-bold text-yellow-400 mb-4">
@@ -347,10 +343,7 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {users.map((user) => (
-                      <tr
-                        key={user.id}
-                        className="border-t border-gray-700 text-white"
-                      >
+                      <tr key={user.id} className="border-t border-gray-700 text-white">
                         <td className="py-2 px-3">{user.fullName}</td>
                         <td className="py-2 px-3">{user.email}</td>
                         <td className="py-2 px-3">{user.kycStatus}</td>
@@ -363,9 +356,7 @@ const AdminDashboard = () => {
                               Verify KYC
                             </button>
                           ) : (
-                            <span className="text-green-400 font-semibold">
-                              Verified
-                            </span>
+                            <span className="text-green-400 font-semibold">Verified</span>
                           )}
                         </td>
                       </tr>
@@ -378,7 +369,6 @@ const AdminDashboard = () => {
         </Tab.Panels>
       </Tab.Group>
 
-      {/* Add User Modal */}
       {showAddUserModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-gray-800 p-6 rounded shadow w-96">
@@ -404,7 +394,8 @@ const AdminDashboard = () => {
             >
               <option value="economy">Economy</option>
               <option value="business">Business</option>
-              <option value="first">First</option>
+              <option value="first-6">First-6</option>
+              <option value="first-lifetime">First-Lifetime</option>
             </select>
             <div className="flex justify-end space-x-2">
               <button
@@ -428,4 +419,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-

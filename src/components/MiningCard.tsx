@@ -24,15 +24,17 @@ import { motion } from 'framer-motion';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
 interface MiningCardProps {
-  plan: 'economy' | 'business' | 'first-6' | 'first-lifetime';
+  plan: 'economy' | 'business' | 'first' | 'first-6' | 'first-lifetime';
   onClaim: (amount: number) => void;
 }
 
+// ✅ تحديث كائن الخطط ليشمل "first"
 const planLimits: Record<string, number> = {
   economy: 600,
   business: 3000,
   'first-6': 6000,
   'first-lifetime': 6000,
+  first: 6000,
 };
 
 let sentNotification = false;
@@ -64,7 +66,15 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
           ? startTimestamp.toDate()
           : new Date(startTimestamp);
         setStartTime(startDate);
-        setMined(typeof data.dailyMined === 'number' ? data.dailyMined : 0);
+
+        let safeMined = 0;
+        if (typeof data.dailyMined === 'number' && !isNaN(data.dailyMined)) {
+          safeMined = data.dailyMined;
+        } else {
+          await updateDoc(userRef, { dailyMined: 0 });
+        }
+
+        setMined(safeMined);
         setFirstTime(false);
       }
     }

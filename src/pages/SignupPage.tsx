@@ -75,26 +75,31 @@ const SignupPage = () => {
     await setDoc(userRef, {
       fullName,
       email,
-      balance: 0,
-      plan: 'economy',
+      balance: 500,
       createdAt: serverTimestamp(),
-      referralCode: generatedCode,
-      referredBy: referralCode || '',
+      dailyMined: 0,
+      lockedFromStaking: 0,
       language: 'en',
       theme: 'dark',
       kycStatus: 'Not Actived',
-      miningStartTime: null,
-      dailyMined: 0,
-      lockedFromStaking: 0,
       stakingEarnings: 0,
       referralReward: 0,
       referrals: 0,
+      referralCode: generatedCode,
+      referredBy: referralCode || '',
+      role: 'user',
       transactionHistory: [
         {
           description: 'Initial balance record (empty)',
           timestamp: Date.now(),
         },
       ],
+      membership: {
+        plan: 'economy',
+        planName: 'economy',
+        miningEarnings: 0,
+        miningStartTime: null,
+      },
     });
 
     if (referralCode !== '') {
