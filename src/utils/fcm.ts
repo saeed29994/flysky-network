@@ -1,4 +1,4 @@
-import { messaging } from '../firebase';
+import { messagingPromise } from '../firebase';
 import { getToken, onMessage } from 'firebase/messaging';
 
 const VAPID_KEY = 'BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rtYj8r8rnI3YEPeJs9OAAV-fpzZYT6siymHDj6rWhyDNl0';
@@ -11,6 +11,7 @@ export const requestNotificationPermission = async (): Promise<string | null> =>
       return null;
     }
 
+    const messaging = await messagingPromise;
     if (!messaging) {
       console.warn('📴 Firebase messaging not available');
       return null;
@@ -25,7 +26,8 @@ export const requestNotificationPermission = async (): Promise<string | null> =>
   }
 };
 
-export const listenToForegroundMessages = () => {
+export const listenToForegroundMessages = async () => {
+  const messaging = await messagingPromise;
   if (!messaging) return;
 
   onMessage(messaging, (payload) => {
@@ -35,7 +37,7 @@ export const listenToForegroundMessages = () => {
     if (title || body) {
       new Notification(title || '📬 إشعار جديد', {
         body: body || '',
-        icon: '/fsn-logo.png', // 🔁 غيّر هذا إذا أردت أيقونة مخصصة
+        icon: '/fsn-logo.png',
       });
     }
   });

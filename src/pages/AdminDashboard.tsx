@@ -1,5 +1,3 @@
-// AdminDashboard.tsx
-
 import { useState, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
 import { db } from '../firebase';
@@ -9,9 +7,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
-  addDoc,
 } from 'firebase/firestore';
-import { safeNumber } from '../utils/safeNumber';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -44,16 +40,11 @@ const AdminDashboard = () => {
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [newPlan, setNewPlan] = useState('');
 
-  const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [newUserName, setNewUserName] = useState('');
-  const [newUserEmail, setNewUserEmail] = useState('');
-  const [newUserPlan, setNewUserPlan] = useState('economy');
-
   const fetchUsers = async () => {
     const snapshot = await getDocs(collection(db, 'users'));
     const data: User[] = snapshot.docs.map((doc) => {
       const userData = doc.data();
-      const plan = userData.membership?.plan || 'economy';
+      const plan = userData.membership?.planName || 'economy';
       const stakingHistory = userData.stakingHistory || [];
 
       let totalStaked = 0;
@@ -77,11 +68,11 @@ const AdminDashboard = () => {
         email: userData.email || '',
         kycStatus: userData.kycStatus || 'Pending',
         plan: plan,
-        balance: safeNumber(userData.balance || 0),
+        balance: userData.balance || 0,
         referralCode: userData.referralCode || '',
-        watchedAdsToday: safeNumber(userData.watchedAdsToday || 0),
+        watchedAdsToday: userData.watchedAdsToday || 0,
         miningStartTime: userData.miningStartTime || '',
-        lockedFromStaking: safeNumber(userData.lockedFromStaking || 0),
+        lockedFromStaking: userData.lockedFromStaking || 0,
         language: userData.language || 'en',
         stakingStatus: stakingDescription,
       };
@@ -111,6 +102,7 @@ const AdminDashboard = () => {
     await updateDoc(userRef, {
       'membership.plan': newPlan,
       'membership.planName': newPlan,
+      plan: newPlan,
     });
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, plan: newPlan } : u))
@@ -127,63 +119,15 @@ const AdminDashboard = () => {
     );
   };
 
-  const handleAddUser = async () => {
-    if (!newUserName || !newUserEmail) {
-      alert('Please fill in all fields.');
-      return;
-    }
-
-    const newUser = {
-      fullName: newUserName,
-      email: newUserEmail,
-      kycStatus: 'Pending',
-      membership: {
-        plan: newUserPlan,
-        planName: newUserPlan,
-        miningEarnings: 0,
-        miningStartTime: null,
-      },
-      balance: 0,
-      dailyMined: 0,
-      createdAt: new Date(),
-      referralCode: '',
-      watchedAdsToday: 0,
-      lockedFromStaking: 0,
-      language: 'en',
-      theme: 'dark',
-      stakingHistory: [],
-    };
-
-    await addDoc(collection(db, 'users'), newUser);
-    setShowAddUserModal(false);
-    setNewUserName('');
-    setNewUserEmail('');
-    setNewUserPlan('economy');
-    fetchUsers();
-  };
-
   const filteredUsers = users.filter(
     (user) =>
       user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const economyUsers = users.filter((u) => u.plan === 'economy').length;
-  const businessUsers = users.filter((u) => u.plan === 'business').length;
-  const first6Users = users.filter((u) => u.plan === 'first-6').length;
-  const firstLifetimeUsers = users.filter((u) => u.plan === 'first-lifetime').length;
-  const totalUsers = users.length;
-  const kycVerified = users.filter((u) => u.kycStatus === 'Verified').length;
-  const totalAdsWatched = users.reduce(
-    (sum, u) => sum + (u.watchedAdsToday || 0),
-    0
-  );
-
   return (
     <div className="min-h-screen bg-gray-950 p-6 text-white">
-      <h1 className="text-3xl font-bold text-yellow-400 mb-8">
-        Admin Dashboard
-      </h1>
+      <h1 className="text-3xl font-bold text-yellow-400 mb-8">Admin Dashboard</h1>
 
       <Tab.Group>
         <Tab.List className="flex space-x-2 rounded-xl bg-gray-800 p-2">
@@ -206,41 +150,20 @@ const AdminDashboard = () => {
 
         <Tab.Panels className="mt-4">
           <Tab.Panel>
-            <div className="bg-gray-900 p-4 rounded shadow">
-              <h2 className="text-xl font-bold text-yellow-400 mb-4">
-                Website Statistics
-              </h2>
-              <ul className="space-y-2">
-                <li>Total Users: {totalUsers}</li>
-                <li>KYC Verified Users: {kycVerified}</li>
-                <li>Economy Plan Users: {economyUsers}</li>
-                <li>Business Plan Users: {businessUsers}</li>
-                <li>First-6 Plan Users: {first6Users}</li>
-                <li>First-Lifetime Plan Users: {firstLifetimeUsers}</li>
-                <li>Total Ads Watched Today: {totalAdsWatched}</li>
-              </ul>
-            </div>
+            <div className="text-white">Dashboard content here...</div>
           </Tab.Panel>
 
           <Tab.Panel>
             <div className="bg-gray-900 p-4 rounded shadow text-white">
-              <h2 className="text-xl font-bold text-yellow-400 mb-4">
-                Users Management
-              </h2>
-              <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-yellow-400 mb-4">Users Management</h2>
+              <div className="mb-4">
                 <input
                   type="text"
                   placeholder="Search by name or email"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-1/2 rounded bg-gray-800 text-white p-2 outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full rounded bg-gray-800 text-white p-2 outline-none focus:ring-2 focus:ring-yellow-400"
                 />
-                <button
-                  onClick={() => setShowAddUserModal(true)}
-                  className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
-                >
-                  Add User
-                </button>
               </div>
 
               {loading ? (
@@ -299,9 +222,7 @@ const AdminDashboard = () => {
 
               {editingUserId && (
                 <div className="mt-4 bg-gray-800 p-4 rounded">
-                  <h3 className="text-yellow-400 font-semibold mb-2">
-                    Update User Plan
-                  </h3>
+                  <h3 className="text-yellow-400 font-semibold mb-2">Update User Plan</h3>
                   <select
                     value={newPlan}
                     onChange={(e) => setNewPlan(e.target.value)}
@@ -314,7 +235,7 @@ const AdminDashboard = () => {
                     <option value="first-lifetime">First-Lifetime</option>
                   </select>
                   <button
-                    onClick={() => handleUpdatePlan(editingUserId)}
+                    onClick={() => handleUpdatePlan(editingUserId!)}
                     className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
                   >
                     Update Plan
@@ -326,9 +247,7 @@ const AdminDashboard = () => {
 
           <Tab.Panel>
             <div className="bg-gray-900 p-4 rounded shadow">
-              <h2 className="text-xl font-bold text-yellow-400 mb-4">
-                KYC Verification
-              </h2>
+              <h2 className="text-xl font-bold text-yellow-400 mb-4">KYC Verification</h2>
               {loading ? (
                 <p className="text-gray-400">Loading users...</p>
               ) : (
@@ -368,52 +287,6 @@ const AdminDashboard = () => {
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
-
-      {showAddUserModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 p-6 rounded shadow w-96">
-            <h2 className="text-xl font-bold text-yellow-400 mb-4">Add New User</h2>
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={newUserName}
-              onChange={(e) => setNewUserName(e.target.value)}
-              className="w-full mb-2 rounded bg-gray-700 text-white p-2"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={newUserEmail}
-              onChange={(e) => setNewUserEmail(e.target.value)}
-              className="w-full mb-2 rounded bg-gray-700 text-white p-2"
-            />
-            <select
-              value={newUserPlan}
-              onChange={(e) => setNewUserPlan(e.target.value)}
-              className="w-full mb-4 rounded bg-gray-700 text-white p-2"
-            >
-              <option value="economy">Economy</option>
-              <option value="business">Business</option>
-              <option value="first-6">First-6</option>
-              <option value="first-lifetime">First-Lifetime</option>
-            </select>
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => setShowAddUserModal(false)}
-                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddUser}
-                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
-              >
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -1,8 +1,7 @@
-// 📁 src/App.tsx
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { saveUserToken } from './utils/pushNotification';
-import { auth, messaging } from './firebase';
+import { requestPermissionAndToken, listenToForegroundMessages } from './utils/pushNotification';
+import { auth, messagingPromise } from './firebase';
 import { onMessage } from 'firebase/messaging';
 
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
@@ -32,6 +31,7 @@ import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import { UserPlanProvider } from './contexts/UserPlanContext';
 import AboutUs from './pages/AboutUs';
+import TestNotification from './pages/TestNotification';
 
 const publicRoutes = [
   { path: '/', element: <LandingPage /> },
@@ -43,6 +43,7 @@ const publicRoutes = [
   { path: '/membership-page', element: <MembershipPage /> },
   { path: '/inbox-debug', element: <Inbox_Debug /> },
   { path: '/about', element: <AboutUs /> },
+  { path: '/test-notification', element: <TestNotification /> },
 ];
 
 const dashboardRoutes = [
@@ -86,11 +87,11 @@ const router = createBrowserRouter([
 
 function App() {
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        saveUserToken();
+        await requestPermissionAndToken();
+        listenToForegroundMessages();
 
-        // ✅ تسجيل Service Worker
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker
             .register('/firebase-messaging-sw.js')
@@ -102,10 +103,10 @@ function App() {
             });
         }
 
-        // ✅ استقبال الإشعارات أثناء التصفح
+        const messaging = await messagingPromise;
         if (messaging) {
           onMessage(messaging, (payload) => {
-            console.log('🔔 Foreground notification:', payload);
+            console.log('🔔 Foreground notification (fallback):', payload);
             alert(`${payload.notification?.title}\n${payload.notification?.body}`);
           });
         }
