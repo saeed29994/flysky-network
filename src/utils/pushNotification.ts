@@ -1,47 +1,50 @@
 // 📁 src/utils/pushNotification.ts
 
-import { messaging } from '../firebase';
-import { getToken, onMessage } from 'firebase/messaging';
+import { messagingPromise } from "../firebase";
+import { getToken, onMessage } from "firebase/messaging";
 
-const VAPID_KEY = 'BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rtYj8r8rnI3YEPeJs9OAAV-fpzZYT6siymHDj6rWhyDNl0';
+const VAPID_KEY = "BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rTyj8r8nl3YEP-eJs9OAAV-fpzZYT6siymHDj6rWhyDNI0";
 
-export const saveUserToken = async () => {
+export const requestPermissionAndToken = async (): Promise<string | null> => {
   try {
     const permission = await Notification.requestPermission();
-
-    if (permission !== 'granted') {
-      console.warn('🔕 Notification permission not granted');
-      return;
+    if (permission !== "granted") {
+      console.warn("🔕 Notification permission not granted");
+      return null;
     }
 
+    const messaging = await messagingPromise;
     if (!messaging) {
-      console.warn('❗️ Firebase messaging is not available');
-      return;
+      console.warn("❗️ Firebase messaging not available");
+      return null;
     }
 
-    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
-    console.log('✅ FCM Token:', token);
+    const token = await getToken(messaging, {
+      vapidKey: VAPID_KEY,
+    });
 
-    // ✉️ يمكنك هنا إرسال التوكن إلى قاعدة البيانات Firestore إن أردت
+    console.log("✅ FCM Token:", token);
+    return token;
   } catch (error) {
-    console.error('❌ Error getting FCM token:', error);
+    console.error("❌ Error getting FCM token:", error);
+    return null;
   }
 };
 
-export const listenToForegroundMessages = () => {
+export const listenToForegroundMessages = async () => {
+  const messaging = await messagingPromise;
   if (!messaging) {
-    console.warn('❗️ Firebase messaging is not available');
+    console.warn("❗ Firebase messaging not available");
     return;
   }
 
   onMessage(messaging, (payload) => {
-    console.log('🔔 Foreground notification:', payload);
-
+    console.log("🔔 Foreground notification:", payload);
     const { title, body } = payload.notification || {};
     if (title || body) {
-      new Notification(title || '📬 إشعار جديد', {
-        body: body || '',
-        icon: '/logo.png',
+      new Notification(title || "📬 إشعار جديد", {
+        body: body || "",
+        icon: "/fsn-logo.png",
       });
     }
   });

@@ -7,7 +7,7 @@ import {
 import { auth, db } from '../firebase';
 import { useNavigate, Link } from 'react-router-dom';
 import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
-import { saveUserToken } from '../utils/pushNotification';
+import { requestPermissionAndToken } from '../utils/pushNotification';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const LoginPage = () => {
@@ -27,7 +27,7 @@ const LoginPage = () => {
       const user = userCredential.user;
 
       if (user.emailVerified) {
-        await saveUserToken();
+        await requestPermissionAndToken();
         navigate('/dashboard');
       } else {
         navigate('/verify-email');
@@ -88,7 +88,7 @@ const LoginPage = () => {
         });
       }
 
-      await saveUserToken();
+      await requestPermissionAndToken();
       navigate('/dashboard');
 
     } catch (err: any) {

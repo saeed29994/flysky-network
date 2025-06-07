@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useUserPlan } from "../contexts/UserPlanContext";
 import { Link } from "react-router-dom";
 import MembershipPage from "./MembershipPage";
-import { saveUserToken } from "../utils/pushNotification"; // ✅ استدعاء الدالة هنا
+import { requestPermissionAndToken } from "../utils/pushNotification"; // ✅ النسخة الجديدة
 import banner5 from "../assets/banner5.jpg";
 import playToEarnBanner from "../assets/playtoearn.jpg";
 import referralProgramBanner from "../assets/Referral_Program.jpg";
@@ -13,9 +13,8 @@ const Dashboard = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const { loading } = useUserPlan();
 
-  // ✅ تفعيل طلب إذن الإشعارات وحفظ FCM Token عند دخول الصفحة
   useEffect(() => {
-    saveUserToken().catch(console.error);
+    requestPermissionAndToken().catch(console.error);
   }, []);
 
   const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -182,10 +181,7 @@ const Dashboard = () => {
       </section>
 
       {/* التواصل */}
-      <section
-        id="contact"
-        className="w-full bg-[#0D1B2A] text-white py-16 px-4"
-      >
+      <section id="contact" className="w-full bg-[#0D1B2A] text-white py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-yellow-400 mb-6 text-center">
             Contact Us
@@ -194,11 +190,7 @@ const Dashboard = () => {
             Have questions? Reach out to our team and we'll get back to you
             shortly.
           </p>
-          <form
-            ref={formRef}
-            onSubmit={sendEmail}
-            className="space-y-4"
-          >
+          <form ref={formRef} onSubmit={sendEmail} className="space-y-4">
             <input
               type="text"
               name="user_name"
