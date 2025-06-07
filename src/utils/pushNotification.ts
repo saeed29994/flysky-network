@@ -1,7 +1,7 @@
-// 📁 src/utils/pushNotification.ts
-
-import { messagingPromise } from "../firebase";
+// src/utils/pushNotification.ts
+import { messagingPromise, auth } from "../firebase";
 import { getToken, onMessage } from "firebase/messaging";
+
 
 const VAPID_KEY = "BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rTyj8r8nl3YEP-eJs9OAAV-fpzZYT6siymHDj6rWhyDNI0";
 
@@ -16,6 +16,13 @@ export const requestPermissionAndToken = async (): Promise<string | null> => {
     const messaging = await messagingPromise;
     if (!messaging) {
       console.warn("❗️ Firebase messaging not available");
+      return null;
+    }
+
+    // Ensure user is logged in
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      console.warn("❗️ User is not authenticated");
       return null;
     }
 
