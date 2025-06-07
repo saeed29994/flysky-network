@@ -1,9 +1,10 @@
-// src/utils/pushNotification.ts
-import { messagingPromise, auth } from "../firebase";
+// 📁 src/utils/pushNotification.ts
+
+import { messagingPromise } from "../firebase";
 import { getToken, onMessage } from "firebase/messaging";
 
-
-const VAPID_KEY = "BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rTyj8r8nl3YEP-eJs9OAAV-fpzZYT6siymHDj6rWhyDNI0";
+const VAPID_KEY =
+  "BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rTyj8r8nl3YEP-eJs9OAAV-fpzZYT6siymHDj6rWhyDNI0";
 
 export const requestPermissionAndToken = async (): Promise<string | null> => {
   try {
@@ -19,14 +20,7 @@ export const requestPermissionAndToken = async (): Promise<string | null> => {
       return null;
     }
 
-    // Ensure user is logged in
-    const currentUser = auth.currentUser;
-    if (!currentUser) {
-      console.warn("❗️ User is not authenticated");
-      return null;
-    }
-
-    const token = await getToken(messaging, {
+    const token = await getToken(messaging!, {
       vapidKey: VAPID_KEY,
     });
 
