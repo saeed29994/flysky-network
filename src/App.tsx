@@ -1,6 +1,11 @@
+// 📁 src/App.tsx
+
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { requestPermissionAndToken, listenToForegroundMessages } from './utils/pushNotification';
+import {
+  requestPermissionAndToken,
+  listenToForegroundMessages
+} from './utils/pushNotification';
 import { auth, messagingPromise } from './firebase';
 import { onMessage } from 'firebase/messaging';
 

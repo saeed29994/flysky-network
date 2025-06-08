@@ -28,7 +28,6 @@ interface MiningCardProps {
   onClaim: (amount: number) => void;
 }
 
-// ✅ تحديث كائن الخطط ليشمل "first"
 const planLimits: Record<string, number> = {
   economy: 600,
   business: 3000,
@@ -153,34 +152,51 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
   };
 
   const handleClaim = async () => {
+    console.log("🟡 handleClaim triggered");
     const user = auth.currentUser;
-    if (!user || !claimReady) return;
+    if (!user || !claimReady) {
+      console.log("⛔️ Not allowed to claim - user or claimReady missing");
+      return;
+    }
 
-    const userRef = doc(db, 'users', user.uid);
-    const snap = await getDoc(userRef);
-    const currentBalance = snap.data()?.balance || 0;
-    const today = new Date().toISOString().split('T')[0];
-    const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const snap = await getDoc(userRef);
+      const currentBalance = snap.data()?.balance || 0;
+      console.log("✅ Step 1: Got user and balance:", currentBalance);
 
-    await updateDoc(userRef, {
-      balance: currentBalance + mined,
-      dailyMined: 0,
-      miningStartTime: serverTimestamp(),
-    });
+      const today = new Date().toISOString().split('T')[0];
+      const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
 
-    await setDoc(historyRef, {
-      amount: Math.floor(mined),
-      date: today,
-      updatedAt: serverTimestamp(),
-    });
+      await updateDoc(userRef, {
+        balance: currentBalance + mined,
+        dailyMined: 0,
+        miningStartTime: serverTimestamp(),
+      });
+      console.log("✅ Step 2: Updated user data");
 
-    onClaim(Math.floor(mined));
-    setMined(0);
-    setClaimReady(false);
-    setIsMaxed(false);
-    sentNotification = false;
+      await setDoc(historyRef, {
+        amount: Math.floor(mined),
+        date: today,
+        updatedAt: serverTimestamp(),
+      });
+      console.log("✅ Step 3: Added to history");
 
-    fetchUserData();
+      onClaim(Math.floor(mined));
+      console.log("✅ Step 4: Called onClaim");
+
+      setMined(0);
+      setClaimReady(false);
+      setIsMaxed(false);
+      sentNotification = false;
+
+      fetchUserData();
+      console.log("✅ Step 5: Refetched data");
+
+    } catch (err) {
+      console.error("🔥 Claim error:", err);
+      alert("❌ Error while claiming reward. See console.");
+    }
   };
 
   const handleStartMining = async () => {
