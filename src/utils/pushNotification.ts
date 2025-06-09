@@ -1,10 +1,9 @@
-// src/utils/pushNotification.ts
 import { getToken, onMessage } from "firebase/messaging";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { auth, db, messagingPromise } from "../firebase";
 
 /**
- * يطلب صلاحية الإشعارات ويحصل على FCM Token، ثم يحفظه في Firestore
+ * يطلب صلاحية الإشعارات ويحصل على FCM Token، ثم يحفظه في userTokens/{uid}
  * @returns Promise<string | null> - FCM Token أو null إذا فشل
  */
 export const requestPermissionAndToken = async (): Promise<string | null> => {
@@ -20,17 +19,15 @@ export const requestPermissionAndToken = async (): Promise<string | null> => {
     });
 
     if (token) {
-      const userRef = doc(db, "users", currentUser.uid);
-      await updateDoc(userRef, {
-        fcmTokens: arrayUnion(token),
-      });
+      const tokenRef = doc(db, "userTokens", currentUser.uid);
+      await setDoc(tokenRef, { token }); // ✅ الحفظ في المسار الصحيح
       console.log("✅ Token saved to Firestore:", token);
       return token;
     }
 
     return null;
   } catch (error) {
-    console.error("❌ Error saving FCM token:", error);
+    console.error("❌ Error getting or saving FCM token:", error);
     return null;
   }
 };
@@ -44,6 +41,7 @@ export const listenToForegroundMessages = () =>
     messagingPromise.then((messaging) => {
       if (messaging) {
         onMessage(messaging, (payload) => {
+          console.log("🔔 Foreground message received:", payload);
           resolve(payload);
         });
       }
@@ -52,6 +50,7 @@ export const listenToForegroundMessages = () =>
 
 /**
  * يحفظ الـ FCM Token للمستخدم الحالي بدون طلب صلاحيات جديدة
+ * مفيد عند إعادة الدخول للتطبيق
  */
 export const saveUserToken = async () => {
   try {
@@ -66,13 +65,11 @@ export const saveUserToken = async () => {
     });
 
     if (token) {
-      const userRef = doc(db, "users", currentUser.uid);
-      await updateDoc(userRef, {
-        fcmTokens: arrayUnion(token),
-      });
-      console.log("✅ Token saved to Firestore:", token);
+      const tokenRef = doc(db, "userTokens", currentUser.uid);
+      await setDoc(tokenRef, { token }); // ✅ نفس التنسيق
+      console.log("✅ Token saved to Firestore (silent):", token);
     }
   } catch (error) {
-    console.error("❌ Error saving FCM token:", error);
+    console.error("❌ Error silently saving FCM token:", error);
   }
 };

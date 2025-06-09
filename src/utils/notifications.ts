@@ -32,11 +32,11 @@ export const sendUserNotification = async (
       return;
     }
 
-    // استدعاء Cloud Function
-    const sendNotification = httpsCallable(functions, 'sendPushNotification');
+    // ✅ استدعاء Cloud Function بالاسم الصحيح
+    const sendNotification = httpsCallable(functions, 'sendFcmNotification');
 
     await sendNotification({
-      tokens: [token],
+      token, // ✅ مفرد
       title,
       body,
       imageUrl,
