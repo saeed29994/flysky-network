@@ -117,53 +117,53 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   <span className="text-yellow-400">Network</span>
 </Link>
         <div className="flex items-center space-x-6">
-  <Link to="/dashboard" className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <Link to="/dashboard" className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <Home size={16} className="mr-1" /> Home
   </Link>
-  <Link to="/staking" className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <Link to="/staking" className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <Wallet size={16} className="mr-1" /> Staking
   </Link>
-  <Link to="/mining" className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <Link to="/mining" className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2" />
     </svg>
     Mining
   </Link>
-  <Link to="/playtoearn" className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <Link to="/playtoearn" className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17l6.25-5-6.25-5v10z" />
     </svg>
     Play
   </Link>
-  <Link to="/watch-to-earn" className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <Link to="/watch-to-earn" className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h16M4 18h16" />
     </svg>
     Watch
   </Link>
-  <Link to="/referral-program" className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <Link to="/referral-program" className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <User size={16} className="mr-1" /> Referral
   </Link>
-  <Link to="/wallet" className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <Link to="/wallet" className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <Wallet size={16} className="mr-1" /> Wallet
   </Link>
-  <Link to="/about" className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <Link to="/about" className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
     </svg>
     About Us
   </Link>
-  <div className="relative flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <div className="relative flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <Mail size={16} className="mr-1" />
     <Link to="/inbox">Inbox</Link>
     {hasUnreadMessages && (
       <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 rounded-full"></span>
     )}
   </div>
-  <button onClick={scrollToContact} className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <button onClick={scrollToContact} className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     <Phone size={16} className="mr-1" /> Contact
   </button>
-  <button onClick={() => setShowProfileModal(true)} className="flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+  <button onClick={() => setShowProfileModal(true)} className="flex items-center text-yellow-400 hover:text-yellow-300 text-xm font-semibold">
     {avatarUrl ? (
       <img src={avatarUrl} alt="Avatar" className="w-6 h-6 rounded-full mr-1 object-cover" />
     ) : (
@@ -171,7 +171,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     )}
     Profile
   </button>
-  <button onClick={handleLogout} className="flex items-center text-red-400 hover:text-red-300 text-sm font-semibold">
+  <button onClick={handleLogout} className="flex items-center text-red-400 hover:text-red-300 text-xm font-semibold">
     <span className="mr-1">🚪</span> Logout
   </button>
 </div>
