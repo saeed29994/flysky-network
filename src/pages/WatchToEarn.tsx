@@ -9,7 +9,7 @@ const REWARD_FOR_ALL = 200;
 
 const adLinks = [
   'https://otieu.com/4/9386723',
-  'https://otieu.com/4/9386723',
+  'https://otieu.com/4/9387035',
   'https://otieu.com/4/9387124',
   'https://otieu.com/4/9387126',
   'https://otieu.com/4/9387127',
@@ -34,7 +34,7 @@ const WatchToEarn = () => {
         const today = new Date();
         const hoursDiff = (today.getTime() - lastWatched.getTime()) / (1000 * 60 * 60);
 
-        let watchedToday = data?.watchedAdsToday || 0;
+        let watchedToday = typeof data?.watchedAdsToday === 'number' ? data.watchedAdsToday : 0;
         if (hoursDiff >= 24) {
           watchedToday = 0;
           await updateDoc(userRef, { watchedAdsToday: 0, adIndex: 0 });
@@ -43,7 +43,6 @@ const WatchToEarn = () => {
         setAdsWatched(watchedToday);
         setBalance(data?.balance || 0);
 
-        // ⬇️ منع المستخدم من البدء مجددًا قبل مرور 24 ساعة بعد المطالبة
         if (watchedToday === 0 && hoursDiff < 24) {
           const secondsLeft = 24 * 3600 - Math.floor((today.getTime() - lastWatched.getTime()) / 1000);
           setCountdown(secondsLeft);
@@ -80,12 +79,16 @@ const WatchToEarn = () => {
     const userRef = doc(db, 'users', user.uid);
     const userSnap = await getDoc(userRef);
 
-    let currentIndex = userSnap.data()?.adIndex || 0;
+    if (!userSnap.exists()) return;
+
+    const currentIndex = userSnap.data()?.adIndex || 0;
+    const currentWatched = userSnap.data()?.watchedAdsToday || 0;
+
     const adLink = adLinks[currentIndex];
     window.open(adLink, '_blank');
 
     const nextIndex = (currentIndex + 1) % adLinks.length;
-    const newWatched = adsWatched + 1;
+    const newWatched = currentWatched + 1;
 
     await updateDoc(userRef, {
       adIndex: nextIndex,
@@ -113,8 +116,6 @@ const WatchToEarn = () => {
 
     setBalance(newBalance);
     setAdsWatched(0);
-
-    // ⬇️ بدء العداد التنازلي بعد المطالبة بالمكافأة
     setCountdown(24 * 3600);
 
     toast.success(`You earned ${REWARD_FOR_ALL} FSN!`);
@@ -126,7 +127,6 @@ const WatchToEarn = () => {
   return (
     <DashboardLayout>
       <div className="min-h-screen flex flex-col items-center justify-start p-4 text-white max-w-xl mx-auto pt-4">
-        {/* ✅ بانر الصورة */}
         <div className="w-full mb-6">
           <img
             src="/watch-to-eaen.png"
