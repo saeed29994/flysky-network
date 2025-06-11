@@ -1,4 +1,3 @@
-/* ... بقية الاستيرادات نفسها */
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
 import {
@@ -48,9 +47,16 @@ const StakingPage = () => {
   const [showCompleted, setShowCompleted] = useState(false);
 
   const returnRate =
-    plan === 'first-lifetime' ? [0.25, 0.4, 0.55] :
-    plan === 'business' ? [0.15, 0.3, 0.45] :
-    [0.05, 0.15, 0.25];
+    plan === 'first-lifetime' ? [0.25, 0.3, 0.6, 0.6] :
+    plan === 'first-6' ? [0.2, 0.3, 0.5, 0.5] :
+    plan === 'business' ? [0.15, 0.18, 0.3, 0.3] :
+    [0, 0, 0.15, 0.25]; // economy
+
+  const durationIndex =
+    duration === '1' ? 0 :
+    duration === '3' ? 1 :
+    duration === '6' ? 2 :
+    3;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -117,7 +123,6 @@ const StakingPage = () => {
       return;
     }
 
-    const durationIndex = durationNum === 1 ? 0 : durationNum === 3 ? 1 : 2;
     const expectedReturn = amountNum * (1 + returnRate[durationIndex]);
     const startDate = Timestamp.now();
     const endDate = Timestamp.fromDate(new Date(Date.now() + durationNum * 30 * 24 * 60 * 60 * 1000));
@@ -232,6 +237,7 @@ const StakingPage = () => {
                 <option value="1">1 Month – {returnRate[0] * 100}%</option>
                 <option value="3">3 Months – {returnRate[1] * 100}%</option>
                 <option value="6">6 Months – {returnRate[2] * 100}%</option>
+                <option value="12">12 Months – {returnRate[3] * 100}%</option>
               </select>
               <button
                 type="submit"
@@ -263,7 +269,7 @@ const StakingPage = () => {
                     return (
                       <div key={stake.id} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
                         <p>💰 <strong>{stake.amount} FSN</strong></p>
-                        <p>⏳ {stake.duration} month(s)</p>
+                        <p>⏳ {stake.duration === 12 ? '12 months' : `${stake.duration} month(s)`}</p>
                         <p>📆 Ends: {end.toLocaleDateString()}</p>
                         <p>💸 Expected Return: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
                         <p className="text-sm text-green-500">🎉 Profit: +{(stake.expectedReturn - stake.amount).toFixed(2)} FSN</p>
@@ -302,7 +308,7 @@ const StakingPage = () => {
                       return (
                         <div key={stake.id} className="bg-gray-900 p-4 rounded-lg border border-green-500">
                           <p>💰 <strong>{stake.amount} FSN</strong></p>
-                          <p>⏳ {stake.duration} month(s)</p>
+                          <p>⏳ {stake.duration === 12 ? '12 months' : `${stake.duration} month(s)`}</p>
                           <p>📆 Ends: {end.toLocaleDateString()}</p>
                           <p>💸 Expected Return: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
                           <p className="text-sm text-green-500">🎉 Profit: +{(stake.expectedReturn - stake.amount).toFixed(2)} FSN</p>

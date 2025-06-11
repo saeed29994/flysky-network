@@ -4,10 +4,10 @@ interface StakingCardProps {
 }
 
 const planFeatures: Record<string, string> = {
-  economy: '30% of your staking balance will be locked for 6 months. Rewards are released monthly.',
-  business: 'Business plan offers higher reward multipliers and faster unlocks.',
-  'first-6': 'First Class (6 months) offers massive returns with shorter lock periods.',
-  'first-lifetime': 'First Class (Lifetime) gives you the highest rewards with permanent benefits.',
+  economy: 'Earn 0% for short terms. Get up to 25% return by locking for 12 months. Best for patient holders.',
+  business: 'Get up to 30% return. Ideal for growing your FSN with better flexibility.',
+  'first-6': 'Up to 50% return over 6 months. High-yield plan for ambitious users.',
+  'first-lifetime': 'Get the highest return (up to 60%) with permanent staking privileges.',
 };
 
 const StakingCard = ({ plan, lockedAmount }: StakingCardProps) => {
