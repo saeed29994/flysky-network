@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -15,7 +15,17 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [logoSpin, setLogoSpin] = useState(true);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLogoSpin(false);
+    }, 3000); // 3 ثوانٍ دوران
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,19 +103,38 @@ const LoginPage = () => {
 
     } catch (err: any) {
       console.error('Google login error:', err);
-      setError('Google login failed. Please try again.');
+      const errMsg = err?.message || '';
+      if (errMsg.includes('A problem occurred while') || errMsg.includes('popup')) {
+        setError('Google login failed. Try using a regular browser like Chrome.');
+      } else {
+        setError('Google login failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-4">
+      {/* شعار واسم الموقع */}
+      <div className="flex items-center mb-6 space-x-3 sm:space-x-5">
+        <img
+          src="/fsn-logo.png"
+          alt="FSN Logo"
+          className={`w-12 h-12 sm:w-16 sm:h-16 ${logoSpin ? 'animate-spin-slow' : ''}`}
+        />
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-center">
+          <span className="text-yellow-400">Fly</span>
+          <span className="text-sky-400">Sky</span>{' '}
+          <span className="text-yellow-400">Network</span>
+        </h1>
+      </div>
+
       <form
         onSubmit={handleLogin}
         className="bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-md text-white"
       >
-        <h1 className="text-2xl font-bold mb-4 text-yellow-400">Login</h1>
+        <h2 className="text-2xl font-bold mb-4 text-yellow-400">Login</h2>
 
         {error && <p className="text-red-400 mb-4 text-sm">{error}</p>}
 

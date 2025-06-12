@@ -1,5 +1,3 @@
-// 📁 src/App.tsx
-
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import {
@@ -9,10 +7,17 @@ import {
 import { auth, messagingPromise } from './firebase';
 import { onMessage } from 'firebase/messaging';
 
-import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+  Outlet,
+} from 'react-router-dom';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// Public Pages
 import Inbox_Debug from './pages/Inbox_Debug';
 import LandingPage from './pages/LandingPage';
 import SignupPage from './pages/SignupPage';
@@ -20,7 +25,13 @@ import LoginPage from './pages/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EmailVerification from './pages/EmailVerification';
 import Inbox from './pages/Inbox';
+import AboutUs from './pages/AboutUs';
+import TestNotification from './pages/TestNotification';
+
+// Protected Layout
 import DashboardLayout from './pages/DashboardLayout';
+
+// Protected Pages
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import MembershipPage from './pages/MembershipPage';
@@ -31,12 +42,16 @@ import MiningPage from './pages/MiningPage';
 import PlayToEarn from './pages/PlayToEarn';
 import WatchToEarn from './pages/WatchToEarn';
 import Wallet from './pages/Wallet';
+import Settings from './pages/Settings';
+
+// Auth
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
+
+// Context
 import { UserPlanProvider } from './contexts/UserPlanContext';
-import AboutUs from './pages/AboutUs';
-import TestNotification from './pages/TestNotification';
+
 
 const publicRoutes = [
   { path: '/', element: <LandingPage /> },
@@ -64,6 +79,7 @@ const dashboardRoutes = [
   { path: '/mining', element: <MiningPage /> },
   { path: '/playtoearn', element: <PlayToEarn /> },
   { path: '/watch-to-earn', element: <WatchToEarn /> },
+  { path: '/settings', element: <Settings /> },
 ];
 
 const router = createBrowserRouter([

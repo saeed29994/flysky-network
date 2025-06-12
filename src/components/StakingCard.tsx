@@ -1,13 +1,14 @@
+// StakingCard.tsx
 interface StakingCardProps {
   plan: 'economy' | 'business' | 'first-6' | 'first-lifetime';
   lockedAmount: number;
 }
 
 const planFeatures: Record<string, string> = {
-  economy: 'Earn 0% for short terms. Get up to 25% return by locking for 12 months. Best for patient holders.',
-  business: 'Get up to 30% return. Ideal for growing your FSN with better flexibility.',
-  'first-6': 'Up to 50% return over 6 months. High-yield plan for ambitious users.',
-  'first-lifetime': 'Get the highest return (up to 60%) with permanent staking privileges.',
+  economy: 'Earn 0% to 40% return. Locking for 12 months gives you the highest reward.',
+  business: 'From 10% to 60% APR based on duration. Best for consistent growth.',
+  'first-6': 'Up to 80% APR for long-term staking. Excellent balance between speed and profit.',
+  'first-lifetime': 'Highest returns up to 100%. Best for committed holders with long-term vision.',
 };
 
 const StakingCard = ({ plan, lockedAmount }: StakingCardProps) => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -23,6 +23,14 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const [referralCode, setReferralCode] = useState('');
   const [error, setError] = useState('');
+  const [logoSpin, setLogoSpin] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLogoSpin(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +80,7 @@ const SignupPage = () => {
       });
 
       await sendEmailVerification(user);
-      await requestPermissionAndToken(); // ✅ بعد التسجيل، طلب الإذن وحفظ التوكن
+      await requestPermissionAndToken();
       navigate('/verify-email');
     } catch (err: any) {
       console.error(err);
@@ -128,7 +136,7 @@ const SignupPage = () => {
         });
       }
 
-      await requestPermissionAndToken(); // ✅ بعد تسجيل Google
+      await requestPermissionAndToken();
       navigate('/dashboard');
     } catch (err: any) {
       console.error(err);
@@ -137,12 +145,27 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-4">
+
+      {/* شعار FlySky Network */}
+      <div className="flex items-center mb-6 space-x-3 sm:space-x-5">
+        <img
+          src="/fsn-logo.png"
+          alt="FSN Logo"
+          className={`w-12 h-12 sm:w-16 sm:h-16 ${logoSpin ? 'animate-spin-slow' : ''}`}
+        />
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-center">
+          <span className="text-yellow-400">Fly</span>
+          <span className="text-sky-400">Sky</span>{' '}
+          <span className="text-yellow-400">Network</span>
+        </h1>
+      </div>
+
       <form
         onSubmit={handleSignup}
         className="bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-md text-white"
       >
-        <h1 className="text-2xl font-bold mb-4 text-yellow-400">Sign Up</h1>
+        <h2 className="text-2xl font-bold mb-4 text-yellow-400">Sign Up</h2>
 
         {error && <p className="text-red-400 mb-4 text-sm">{error}</p>}
 

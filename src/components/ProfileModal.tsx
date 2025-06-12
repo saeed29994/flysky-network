@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Settings } from 'lucide-react';  // استوردت أيقونة Settings
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -121,8 +121,18 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center px-4">
       <div className="bg-gray-900 rounded-xl p-6 w-full max-w-md text-white relative shadow-2xl border border-yellow-500">
-        <button onClick={onClose} className="absolute top-3 right-3 text-gray-300 hover:text-white">
+        {/* زر الإغلاق */}
+        <button onClick={onClose} className="absolute top-3 right-10 text-gray-300 hover:text-white" aria-label="Close modal">
           <X size={20} />
+        </button>
+
+        {/* زر الإعدادات */}
+        <button
+          onClick={() => navigate('/settings')}
+          className="absolute top-3 right-3 text-gray-300 hover:text-white"
+          aria-label="Go to Settings"
+        >
+          <Settings size={20} />
         </button>
 
         <div className="text-center mb-4">

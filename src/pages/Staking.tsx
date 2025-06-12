@@ -42,15 +42,14 @@ const StakingPage = () => {
   const [duration, setDuration] = useState('1');
   const [stakingList, setStakingList] = useState<StakingEntry[]>([]);
   const [lockedAmount, setLockedAmount] = useState(0);
-  const [expectedTotalReturn, setExpectedTotalReturn] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
 
   const returnRate =
-    plan === 'first-lifetime' ? [0.25, 0.3, 0.6, 0.6] :
-    plan === 'first-6' ? [0.2, 0.3, 0.5, 0.5] :
-    plan === 'business' ? [0.15, 0.18, 0.3, 0.3] :
-    [0, 0, 0.15, 0.25]; // economy
+    plan === 'first-lifetime' ? [0.05, 0.2, 0.45, 1.0] :
+    plan === 'first-6' ? [0.03, 0.15, 0.35, 0.8] :
+    plan === 'business' ? [0, 0.10, 0.25, 0.6] :
+    [0, 0, 0.15, 0.4];
 
   const durationIndex =
     duration === '1' ? 0 :
@@ -86,15 +85,9 @@ const StakingPage = () => {
       const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as StakingEntry[];
       setStakingList(list);
 
-      const totalLocked = list
-        .filter((s) => s.status === 'active')
-        .reduce((sum, s) => sum + (s.amount || 0), 0);
-      setLockedAmount(totalLocked);
+      const totalLocked = list.filter((s) => s.status === 'active').reduce((sum, s) => sum + s.amount, 0);
 
-      const totalReturn = list
-        .filter((s) => s.status === 'active')
-        .reduce((sum, s) => sum + (s.expectedReturn || 0), 0);
-      setExpectedTotalReturn(totalReturn);
+      setLockedAmount(totalLocked);
     });
 
     return () => {
@@ -155,35 +148,45 @@ const StakingPage = () => {
     }
   };
 
+  // دالة المطالبة بالمكافآت
   const handleClaim = async (stake: StakingEntry) => {
-    if (!user) return;
+    if (!user) {
+      toast.error("User not authenticated.");
+      return;
+    }
+
+    if (stake.claimed) {
+      toast.error("Rewards already claimed.");
+      return;
+    }
+
+    const now = new Date();
+    const end = stake.endDate.toDate();
+    if (now < end) {
+      toast.error("Staking period not yet completed.");
+      return;
+    }
 
     try {
-      await updateDoc(doc(db, 'users', user.uid, 'staking', stake.id), {
-        status: 'completed',
-        claimed: true
+      // تحديث حالة الستاكينج
+      const stakeDocRef = doc(db, 'users', user.uid, 'staking', stake.id);
+      await updateDoc(stakeDocRef, {
+        claimed: true,
+        status: 'completed'
       });
 
-      await updateDoc(doc(db, 'users', user.uid), {
+      // تحديث رصيد المستخدم
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
         balance: balance + stake.expectedReturn
       });
 
-      toast.success(`🎁 Claimed ${stake.expectedReturn.toFixed(2)} FSN successfully!`);
-    } catch (err) {
-      console.error("❌ Claim failed:", err);
-      toast.error("Claim failed. See console for error.");
+      toast.success("🎉 Rewards claimed successfully!");
+    } catch (error) {
+      console.error("Claim failed:", error);
+      toast.error("Failed to claim rewards.");
     }
   };
-
-  const formatTime = (seconds: number) => {
-    const d = Math.floor(seconds / (3600 * 24));
-    const h = Math.floor((seconds % (3600 * 24)) / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    return `${d}d ${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m`;
-  };
-
-  const activeList = stakingList.filter(s => s.status === 'active');
-  const completedList = stakingList.filter(s => s.status === 'completed');
 
   return (
     <div className="min-h-screen px-4 py-12 bg-gray-950 text-white">
@@ -200,20 +203,8 @@ const StakingPage = () => {
         <>
           <div className="mb-6 max-w-md mx-auto">
             <StakingCard plan={plan as any} lockedAmount={lockedAmount} />
-          </div>
-
-          <div className="text-center text-sm text-gray-300 mb-6">
-            <p>
-              📈 <span className="font-semibold text-yellow-400">Expected Total Return:</span>{' '}
-              <span className="text-green-400 font-bold">{expectedTotalReturn.toFixed(2)} FSN</span>
-            </p>
-          </div>
-
-          <div className="mb-8 bg-gray-900 rounded-xl p-6 text-center shadow-md max-w-md mx-auto">
-            <p className="text-gray-400 text-sm">Your Current Balance</p>
-            <p className="text-4xl font-bold text-yellow-400">{balance} FSN</p>
-            <p className="text-sm text-gray-500 mt-2">
-              Membership: <span className="text-white font-semibold">{getPlanLabel(plan)}</span>
+            <p className="text-center text-sm text-gray-400 mt-2">
+              Current Plan: <span className="text-white font-semibold">{getPlanLabel(plan)}</span>
             </p>
           </div>
 
@@ -250,80 +241,69 @@ const StakingPage = () => {
           </section>
 
           <section className="max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-yellow-300 mb-4">📊 Your Staking Entries</h3>
+            <h3 className="text-xl font-semibold text-yellow-300 mb-4">📊 Staking Records</h3>
 
-            {activeList.length > 0 && (
-              <>
-                <h4 className="text-lg font-bold text-green-400 mb-2">🟢 Active Staking</h4>
-                <div className="grid gap-4">
-                  {activeList.map((stake) => {
-                    const now = new Date();
+            <h4 className="text-lg font-bold text-green-400 mb-2">🟢 Active Staking</h4>
+            {stakingList.filter(s => s.status === 'active').length > 0 ? (
+              <div className="grid gap-4">
+                {stakingList.filter(s => s.status === 'active').map((stake) => {
+                  const now = new Date();
+                  const end = stake.endDate.toDate();
+                  const start = stake.startDate.toDate();
+                  const totalDuration = (end.getTime() - start.getTime()) / 1000;
+                  const elapsed = (now.getTime() - start.getTime()) / 1000;
+                  const remaining = Math.max(0, Math.floor((end.getTime() - now.getTime()) / 1000));
+                  const percent = Math.min(100, Math.floor((elapsed / totalDuration) * 100));
+                  const canClaim = stake.status === 'active' && remaining <= 0;
+
+                  return (
+                    <div key={stake.id} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                      <p>💰 <strong>{stake.amount} FSN</strong></p>
+                      <p>⏳ {stake.duration === 12 ? '12 months' : `${stake.duration} month(s)`}</p>
+                      <p>📆 Ends: {end.toLocaleDateString()}</p>
+                      <p>💸 Expected Return: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
+                      <div className="w-full bg-gray-700 rounded-full h-2.5 mt-4">
+                        <div className="bg-yellow-400 h-2.5 rounded-full" style={{ width: `${percent}%` }}></div>
+                      </div>
+                      <button
+                        onClick={() => handleClaim(stake)}
+                        disabled={!canClaim || stake.claimed}
+                        className={`mt-4 w-full py-2 rounded font-semibold shadow ${canClaim ? 'bg-green-500 hover:bg-green-600 text-black' : 'bg-gray-600 text-gray-300 cursor-not-allowed'}`}
+                      >
+                        {canClaim ? '🎁 Claim Rewards' : `⏳ Claim in: ${Math.floor(remaining / (3600 * 24))}d`}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-gray-500">No active staking records.</p>
+            )}
+
+            <h4 className="text-lg font-bold text-gray-400 cursor-pointer mt-6" onClick={() => setShowCompleted(!showCompleted)}>
+              ✅ Completed Staking {showCompleted ? '▲' : '▼'}
+            </h4>
+            {showCompleted && (
+              stakingList.filter(s => s.status === 'completed').length > 0 ? (
+                <div className="grid gap-4 mt-2">
+                  {stakingList.filter(s => s.status === 'completed').map((stake) => {
                     const end = stake.endDate.toDate();
-                    const start = stake.startDate.toDate();
-                    const totalDuration = (end.getTime() - start.getTime()) / 1000;
-                    const elapsed = (now.getTime() - start.getTime()) / 1000;
-                    const remaining = Math.max(0, Math.floor((end.getTime() - now.getTime()) / 1000));
-                    const percent = Math.min(100, Math.floor((elapsed / totalDuration) * 100));
-                    const canClaim = stake.status === 'active' && remaining <= 0;
-
                     return (
-                      <div key={stake.id} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                      <div key={stake.id} className="bg-gray-900 p-4 rounded-lg border border-green-500">
                         <p>💰 <strong>{stake.amount} FSN</strong></p>
                         <p>⏳ {stake.duration === 12 ? '12 months' : `${stake.duration} month(s)`}</p>
                         <p>📆 Ends: {end.toLocaleDateString()}</p>
                         <p>💸 Expected Return: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
-                        <p className="text-sm text-green-500">🎉 Profit: +{(stake.expectedReturn - stake.amount).toFixed(2)} FSN</p>
-                        <span className="inline-block mt-2 px-3 py-1 text-xs rounded-full font-semibold bg-yellow-600 text-yellow-100">
-                          {stake.status}
-                        </span>
-                        <div className="w-full bg-gray-700 rounded-full h-2.5 mt-4">
-                          <div className="bg-yellow-400 h-2.5 rounded-full" style={{ width: `${percent}%` }}></div>
+                        <div className="mt-4 w-full py-2 rounded font-semibold text-green-400 bg-gray-700 text-center border border-green-400">
+                          ✅ Claimed
                         </div>
-                        <button
-                          onClick={() => handleClaim(stake)}
-                          disabled={!canClaim || stake.claimed}
-                          className={`mt-4 w-full py-2 rounded font-semibold shadow ${canClaim ? 'bg-green-500 hover:bg-green-600 text-black' : 'bg-gray-600 text-gray-300 cursor-not-allowed'}`}
-                        >
-                          {canClaim ? '🎁 Claim Rewards' : `⏳ Claim in: ${formatTime(remaining)}`}
-                        </button>
                       </div>
                     );
                   })}
                 </div>
-              </>
-            )}
-
-            {completedList.length > 0 && (
-              <>
-                <h4
-                  className="text-lg font-bold text-gray-400 cursor-pointer mt-6"
-                  onClick={() => setShowCompleted(!showCompleted)}
-                >
-                  ✅ Completed Staking {showCompleted ? '▲' : '▼'}
-                </h4>
-                {showCompleted && (
-                  <div className="grid gap-4 mt-2">
-                    {completedList.map((stake) => {
-                      const end = stake.endDate.toDate();
-                      return (
-                        <div key={stake.id} className="bg-gray-900 p-4 rounded-lg border border-green-500">
-                          <p>💰 <strong>{stake.amount} FSN</strong></p>
-                          <p>⏳ {stake.duration === 12 ? '12 months' : `${stake.duration} month(s)`}</p>
-                          <p>📆 Ends: {end.toLocaleDateString()}</p>
-                          <p>💸 Expected Return: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
-                          <p className="text-sm text-green-500">🎉 Profit: +{(stake.expectedReturn - stake.amount).toFixed(2)} FSN</p>
-                          <span className="inline-block mt-2 px-3 py-1 text-xs rounded-full font-semibold bg-green-700 text-green-300">
-                            completed
-                          </span>
-                          <div className="mt-4 w-full py-2 rounded font-semibold text-green-400 bg-gray-700 text-center border border-green-400">
-                            ✅ Claimed
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </>
+              ) : (
+                <p className="text-gray-500">No completed staking yet.</p>
+              )
             )}
           </section>
         </>
