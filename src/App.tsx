@@ -27,6 +27,7 @@ import EmailVerification from './pages/EmailVerification';
 import Inbox from './pages/Inbox';
 import AboutUs from './pages/AboutUs';
 import TestNotification from './pages/TestNotification';
+import TermsPage from './pages/TermsPage'; // ✅ استيراد صفحة الشروط
 
 // Protected Layout
 import DashboardLayout from './pages/DashboardLayout';
@@ -52,7 +53,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Context
 import { UserPlanProvider } from './contexts/UserPlanContext';
 
-
 const publicRoutes = [
   { path: '/', element: <LandingPage /> },
   { path: '/signup', element: <SignupPage /> },
@@ -64,6 +64,7 @@ const publicRoutes = [
   { path: '/inbox-debug', element: <Inbox_Debug /> },
   { path: '/about', element: <AboutUs /> },
   { path: '/test-notification', element: <TestNotification /> },
+  { path: '/terms', element: <TermsPage /> }, // ✅ إضافة مسار صفحة الشروط
 ];
 
 const dashboardRoutes = [

@@ -2,7 +2,7 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}", // تأكد أن هذا يشمل جميع المسارات
+    "./src/**/*.{js,ts,jsx,tsx}"
   ],
   safelist: [
     "text-yellow-400",

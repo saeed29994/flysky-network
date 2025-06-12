@@ -24,6 +24,7 @@ const SignupPage = () => {
   const [referralCode, setReferralCode] = useState('');
   const [error, setError] = useState('');
   const [logoSpin, setLogoSpin] = useState(true);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -146,8 +147,6 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-4">
-
-      {/* شعار FlySky Network */}
       <div className="flex items-center mb-6 space-x-3 sm:space-x-5">
         <img
           src="/fsn-logo.png"
@@ -199,14 +198,36 @@ const SignupPage = () => {
         <input
           type="text"
           placeholder="Referral Code (Optional)"
-          className="w-full p-2 mb-4 rounded bg-gray-800 border border-gray-700"
+          className="w-full p-2 mb-3 rounded bg-gray-800 border border-gray-700"
           value={referralCode}
           onChange={(e) => setReferralCode(e.target.value)}
         />
 
+        <div className="flex items-start mb-4 text-sm">
+          <input
+            id="terms"
+            type="checkbox"
+            checked={acceptedTerms}
+            onChange={() => setAcceptedTerms(!acceptedTerms)}
+            className="mr-2 mt-1"
+            required
+          />
+          <label htmlFor="terms" className="text-gray-300">
+            I agree to the
+            <Link to="/terms" className="text-yellow-400 hover:underline ml-1" target="_blank">
+              Terms and Conditions
+            </Link>
+          </label>
+        </div>
+
         <button
           type="submit"
-          className="bg-yellow-500 hover:bg-yellow-400 text-black w-full py-2 rounded font-semibold transition"
+          disabled={!acceptedTerms}
+          className={`w-full py-2 rounded font-semibold transition ${
+            acceptedTerms
+              ? 'bg-yellow-500 hover:bg-yellow-400 text-black'
+              : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+          }`}
         >
           Sign Up
         </button>
