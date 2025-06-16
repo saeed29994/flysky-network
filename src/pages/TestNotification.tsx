@@ -28,12 +28,12 @@ const TestNotification = () => {
         token: token.trim(),
         title,
         body,
+        imageUrl: '', // ✅ إرسال imageUrl حتى لو فارغ
         clickAction,
       };
 
       console.log('📦 Sending payload:', payload);
 
-      // تحقق من القيم قبل الإرسال
       if (!payload.token || !payload.title || !payload.body) {
         toast.error('❌ Missing required fields: token, title, or body');
         return;
