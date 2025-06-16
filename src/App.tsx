@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import {
   requestPermissionAndToken,
-  listenToForegroundMessages
+  listenToForegroundMessages,
 } from './utils/pushNotification';
 import { auth, messagingPromise } from './firebase';
 import { onMessage } from 'firebase/messaging';
@@ -27,7 +27,7 @@ import EmailVerification from './pages/EmailVerification';
 import Inbox from './pages/Inbox';
 import AboutUs from './pages/AboutUs';
 import TestNotification from './pages/TestNotification';
-import TermsPage from './pages/TermsPage'; // ✅ استيراد صفحة الشروط
+import TermsPage from './pages/TermsPage';
 
 // Protected Layout
 import DashboardLayout from './pages/DashboardLayout';
@@ -64,7 +64,8 @@ const publicRoutes = [
   { path: '/inbox-debug', element: <Inbox_Debug /> },
   { path: '/about', element: <AboutUs /> },
   { path: '/test-notification', element: <TestNotification /> },
-  { path: '/terms', element: <TermsPage /> }, // ✅ إضافة مسار صفحة الشروط
+  { path: '/terms', element: <TermsPage /> },
+  { path: '/test-notification', element: <TestNotification /> },
 ];
 
 const dashboardRoutes = [
@@ -111,7 +112,8 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        await requestPermissionAndToken();
+        // ✅ تمرير UID إلى دالة توليد وحفظ التوكن
+        await requestPermissionAndToken(user.uid);
         listenToForegroundMessages();
 
         if ('serviceWorker' in navigator) {

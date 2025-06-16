@@ -33,6 +33,23 @@ const SignupPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const sendWelcomeMessage = async (uid: string) => {
+    const inboxRef = doc(db, 'users', uid, 'inbox', 'welcome');
+    const inboxSnap = await getDoc(inboxRef);
+
+    if (!inboxSnap.exists()) {
+      await setDoc(inboxRef, {
+        title: '🎉 Welcome to FlySky Network!',
+        body: 'You’ve earned a 500 FSN welcome bonus. Click below to claim your reward',
+        timestamp: Date.now(),
+        read: false,
+        claimed: false,
+        amount: 500,
+        type: 'welcome_bonus',
+      });
+    }
+  };
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -62,6 +79,7 @@ const SignupPage = () => {
         stakingEarnings: 0,
         referralReward: 0,
         referrals: 0,
+        agreedToTerms: true,
         transactionHistory: [
           {
             description: 'Initial balance record (500 FSN)',
@@ -70,18 +88,9 @@ const SignupPage = () => {
         ],
       });
 
-      await setDoc(doc(db, 'users', user.uid, 'inbox', 'welcome'), {
-        title: '🎉 Welcome to FlySky Network!',
-        body: 'You’ve earned a 500 FSN welcome bonus. Click below to claim your reward',
-        timestamp: Date.now(),
-        read: false,
-        claimed: false,
-        amount: 500,
-        type: 'welcome_bonus',
-      });
-
+      await sendWelcomeMessage(user.uid);
       await sendEmailVerification(user);
-      await requestPermissionAndToken();
+      await requestPermissionAndToken(user.uid);
       navigate('/verify-email');
     } catch (err: any) {
       console.error(err);
@@ -91,6 +100,11 @@ const SignupPage = () => {
 
   const handleGoogleSignup = async () => {
     setError('');
+
+    if (!acceptedTerms) {
+      setError('You must accept the Terms and Conditions before signing up with Google.');
+      return;
+    }
 
     try {
       const provider = new GoogleAuthProvider();
@@ -118,6 +132,7 @@ const SignupPage = () => {
           stakingEarnings: 0,
           referralReward: 0,
           referrals: 0,
+          agreedToTerms: true,
           transactionHistory: [
             {
               description: 'Initial balance record (500 FSN)',
@@ -125,19 +140,10 @@ const SignupPage = () => {
             },
           ],
         });
-
-        await setDoc(doc(db, 'users', user.uid, 'inbox', 'welcome'), {
-          title: '🎉 Welcome to FlySky Network!',
-          body: 'You’ve earned a 500 FSN welcome bonus. Click below to claim your reward',
-          timestamp: Date.now(),
-          read: false,
-          claimed: false,
-          amount: 500,
-          type: 'welcome_bonus',
-        });
       }
 
-      await requestPermissionAndToken();
+      await sendWelcomeMessage(user.uid);
+      await requestPermissionAndToken(user.uid);
       navigate('/dashboard');
     } catch (err: any) {
       console.error(err);
@@ -237,7 +243,12 @@ const SignupPage = () => {
         <button
           type="button"
           onClick={handleGoogleSignup}
-          className="flex items-center justify-center bg-white text-black py-2 px-4 rounded font-semibold shadow hover:bg-gray-100 transition w-full"
+          disabled={!acceptedTerms}
+          className={`flex items-center justify-center py-2 px-4 rounded font-semibold shadow transition w-full ${
+            acceptedTerms
+              ? 'bg-white text-black hover:bg-gray-100'
+              : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+          }`}
         >
           <img
             src="https://developers.google.com/identity/images/g-logo.png"

@@ -22,8 +22,7 @@ const LoginPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLogoSpin(false);
-    }, 3000); // 3 ثوانٍ دوران
-
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -37,12 +36,11 @@ const LoginPage = () => {
       const user = userCredential.user;
 
       if (user.emailVerified) {
-        await requestPermissionAndToken();
+        await requestPermissionAndToken(user.uid); // ✅ تمرير uid
         navigate('/dashboard');
       } else {
         navigate('/verify-email');
       }
-
     } catch (err: any) {
       console.error(err);
       setError(getFirebaseErrorMessage(err.code));
@@ -98,9 +96,8 @@ const LoginPage = () => {
         });
       }
 
-      await requestPermissionAndToken();
+      await requestPermissionAndToken(user.uid); // ✅ تمرير uid
       navigate('/dashboard');
-
     } catch (err: any) {
       console.error('Google login error:', err);
       const errMsg = err?.message || '';
@@ -116,7 +113,6 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-4">
-      {/* شعار واسم الموقع */}
       <div className="flex items-center mb-6 space-x-3 sm:space-x-5">
         <img
           src="/fsn-logo.png"

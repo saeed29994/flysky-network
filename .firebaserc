@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "flysky-site"
-  }
+    "default": "flysky-network"
+  },
+  "targets": {},
+  "etags": {}
 }

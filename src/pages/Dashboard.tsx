@@ -1,20 +1,24 @@
 // 📁 src/pages/Dashboard.tsx
 
-import { useEffect, useRef } from "react";
-import { useUserPlan } from "../contexts/UserPlanContext";
-import { Link } from "react-router-dom";
-import MembershipPage from "./MembershipPage";
-import { requestPermissionAndToken } from "../utils/pushNotification"; // ✅ النسخة الجديدة
-import banner5 from "../assets/banner5.jpg";
-import playToEarnBanner from "../assets/playtoearn.jpg";
-import referralProgramBanner from "../assets/Referral_Program.jpg";
+import { useEffect, useRef } from 'react';
+import { useUserPlan } from '../contexts/UserPlanContext';
+import { Link } from 'react-router-dom';
+import MembershipPage from './MembershipPage';
+import { requestPermissionAndToken } from '../utils/pushNotification';
+import { auth } from '../firebase'; // ✅ ضروري لجلب uid
+import banner5 from '../assets/banner5.jpg';
+import playToEarnBanner from '../assets/playtoearn.jpg';
+import referralProgramBanner from '../assets/Referral_Program.jpg';
 
 const Dashboard = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const { loading } = useUserPlan();
 
   useEffect(() => {
-    requestPermissionAndToken().catch(console.error);
+    const user = auth.currentUser;
+    if (user?.uid) {
+      requestPermissionAndToken(user.uid).catch(console.error);
+    }
   }, []);
 
   const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,15 +26,15 @@ const Dashboard = () => {
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
-    const name = formData.get("user_name");
-    const email = formData.get("user_email");
-    const message = formData.get("message");
+    const name = formData.get('user_name');
+    const email = formData.get('user_email');
+    const message = formData.get('message');
 
     if (name && email && message) {
-      alert("Thanks for contacting us! We will get back to you soon.");
+      alert('Thanks for contacting us! We will get back to you soon.');
       formRef.current.reset();
     } else {
-      alert("Please fill out all fields.");
+      alert('Please fill out all fields.');
     }
   };
 

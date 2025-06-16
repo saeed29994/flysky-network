@@ -1,75 +1,70 @@
-import { getToken, onMessage } from "firebase/messaging";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db, messagingPromise } from "../firebase";
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
-/**
- * يطلب صلاحية الإشعارات ويحصل على FCM Token، ثم يحفظه في userTokens/{uid}
- * @returns Promise<string | null> - FCM Token أو null إذا فشل
- */
-export const requestPermissionAndToken = async (): Promise<string | null> => {
+// ✅ إعداد Firebase
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const messaging = getMessaging(app);
+
+// ✅ طلب الإذن وحفظ التوكن
+export const requestPermissionAndToken = async (uid: string) => {
   try {
-    const currentUser = auth.currentUser;
-    if (!currentUser) return null;
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      console.warn('🔒 Notification permission not granted');
+      return;
+    }
 
-    const messaging = await messagingPromise;
-    if (!messaging) return null;
+    const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+    console.log('📦 Loaded VAPID KEY:', vapidKey);
+
+    if (typeof vapidKey !== 'string') {
+      console.error('🚫 VAPID key is not a string:', typeof vapidKey, vapidKey);
+      return;
+    }
+
+    if (!vapidKey) {
+      console.error('🚫 VAPID key is missing (empty)');
+      return;
+    }
+
+    if (vapidKey.indexOf('BCN7') === -1) {
+      console.error('🚫 VAPID key seems invalid format:', vapidKey);
+      return;
+    }
 
     const token = await getToken(messaging, {
-      vapidKey: "BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rTyj8r8nl3YEP-eJs9OAAV-fpzZYT6siymHDj6rWhyDNI0",
+      vapidKey,
     });
 
     if (token) {
-      const tokenRef = doc(db, "userTokens", currentUser.uid);
-      await setDoc(tokenRef, { token }); // ✅ الحفظ في المسار الصحيح
-      console.log("✅ Token saved to Firestore:", token);
-      return token;
+      console.log('✅ FCM Token:', token);
+      await setDoc(doc(db, 'userTokens', uid), {
+        token,
+        updatedAt: serverTimestamp(),
+      });
+    } else {
+      console.warn('⚠️ Failed to retrieve FCM token');
     }
-
-    return null;
-  } catch (error) {
-    console.error("❌ Error getting or saving FCM token:", error);
-    return null;
+  } catch (error: any) {
+    console.error('❌ Error getting permission or token:', error?.message || error);
   }
 };
 
-/**
- * يستمع إلى الإشعارات أثناء عمل التطبيق في الواجهة الأمامية
- * @returns Promise<Payload>
- */
-export const listenToForegroundMessages = () =>
-  new Promise((resolve) => {
-    messagingPromise.then((messaging) => {
-      if (messaging) {
-        onMessage(messaging, (payload) => {
-          console.log("🔔 Foreground message received:", payload);
-          resolve(payload);
-        });
-      }
-    });
+// ✅ استقبال إشعارات أثناء استخدام الموقع (Foreground)
+export const listenToForegroundMessages = () => {
+  onMessage(messaging, (payload) => {
+    console.log('📥 Foreground message received:', payload);
+    // يمكنك هنا عرض toast أو modal حسب تصميمك
   });
-
-/**
- * يحفظ الـ FCM Token للمستخدم الحالي بدون طلب صلاحيات جديدة
- * مفيد عند إعادة الدخول للتطبيق
- */
-export const saveUserToken = async () => {
-  try {
-    const currentUser = auth.currentUser;
-    if (!currentUser) return;
-
-    const messaging = await messagingPromise;
-    if (!messaging) return;
-
-    const token = await getToken(messaging, {
-      vapidKey: "BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rTyj8r8nl3YEP-eJs9OAAV-fpzZYT6siymHDj6rWhyDNI0",
-    });
-
-    if (token) {
-      const tokenRef = doc(db, "userTokens", currentUser.uid);
-      await setDoc(tokenRef, { token }); // ✅ نفس التنسيق
-      console.log("✅ Token saved to Firestore (silent):", token);
-    }
-  } catch (error) {
-    console.error("❌ Error silently saving FCM token:", error);
-  }
 };
