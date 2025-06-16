@@ -5,10 +5,9 @@ import { getFunctions, connectFunctionsEmulator, httpsCallable } from 'firebase/
 import { app } from '../firebase';
 import { toast } from 'react-toastify';
 
-// ✅ إعداد Cloud Functions
 const functions = getFunctions(app);
 
-// ✅ ربط مع المحاكي فقط عند التشغيل محليًا
+// ✅ ربط مع المحاكي فقط إذا كنا على localhost
 if (location.hostname === 'localhost') {
   connectFunctionsEmulator(functions, 'localhost', 5001);
 }
@@ -24,14 +23,25 @@ const TestNotification = () => {
       }
 
       const sendFcmNotification = httpsCallable(functions, 'sendFcmNotification');
-      const res = await sendFcmNotification({
-        token,
-        title: '🚀 Test Notification (Local)',
-        body: 'This is a test from Firebase Emulator!',
-        clickAction: 'http://localhost:5173/dashboard',
-      });
 
-      console.log('✅ Response:', res);
+      // ✅ بيانات الإشعار
+      const title = '🚀 Test Notification';
+      const body = 'This is a test notification!';
+      const clickAction =
+        location.hostname === 'localhost'
+          ? 'http://localhost:5173/dashboard'
+          : 'https://fsncrew.io/dashboard';
+
+      const payload = {
+        token,
+        title,
+        body,
+        clickAction,
+      };
+
+      console.log('📦 Sending payload:', payload);
+      await sendFcmNotification(payload);
+
       toast.success('✅ Notification sent successfully!');
     } catch (error: any) {
       console.error('❌ Error sending notification:', error);
@@ -42,7 +52,7 @@ const TestNotification = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0D1B2A] text-white px-4">
       <div className="max-w-xl w-full space-y-6 text-center">
-        <h1 className="text-3xl font-bold">📩 Test FCM Notification (Local)</h1>
+        <h1 className="text-3xl font-bold">📩 Test FCM Notification</h1>
 
         <input
           type="text"
