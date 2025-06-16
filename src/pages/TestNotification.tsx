@@ -17,14 +17,6 @@ const TestNotification = () => {
 
   const sendNotification = async () => {
     try {
-      if (!token.trim()) {
-        toast.warn('⚠️ Please enter a valid FCM token.');
-        return;
-      }
-
-      const sendFcmNotification = httpsCallable(functions, 'sendFcmNotification');
-
-      // ✅ بيانات الإشعار
       const title = '🚀 Test Notification';
       const body = 'This is a test notification!';
       const clickAction =
@@ -33,13 +25,21 @@ const TestNotification = () => {
           : 'https://fsncrew.io/dashboard';
 
       const payload = {
-        token,
+        token: token.trim(),
         title,
         body,
         clickAction,
       };
 
       console.log('📦 Sending payload:', payload);
+
+      // تحقق من القيم قبل الإرسال
+      if (!payload.token || !payload.title || !payload.body) {
+        toast.error('❌ Missing required fields: token, title, or body');
+        return;
+      }
+
+      const sendFcmNotification = httpsCallable(functions, 'sendFcmNotification');
       await sendFcmNotification(payload);
 
       toast.success('✅ Notification sent successfully!');
