@@ -1,3 +1,5 @@
+// 📁 public/firebase-messaging-sw.js
+
 importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js');
 
@@ -14,21 +16,23 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ✅ استقبال الإشعارات في الخلفية
+// ✅ استقبال الإشعارات في الخلفية (يدعم notification و data)
 messaging.onBackgroundMessage(function(payload) {
   console.log('[🔥 PAYLOAD RECEIVED]', payload);
 
-  const notificationTitle = payload.data?.title || '📢 Notification';
+  const title = payload.notification?.title || payload.data?.title || '📢 Notification';
+  const body = payload.notification?.body || payload.data?.body || '';
+  const image = payload.notification?.image || payload.data?.image || undefined;
+  const link = payload.data?.link || 'https://fsncrew.io/mining';
+
   const notificationOptions = {
-    body: payload.data?.body || '',
+    body,
     icon: '/fsn-logo.png',
-    image: payload.data?.image || undefined,
-    data: {
-      link: payload.data?.link || 'https://fsncrew.io/mining',
-    },
+    image,
+    data: { link },
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(title, notificationOptions);
 });
 
 // ✅ فتح الرابط عند الضغط على الإشعار
