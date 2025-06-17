@@ -1,7 +1,6 @@
 {
   "projects": {
-    "default": "flysky-network",
-    "flysky-site": "flysky-network",
+    "default": "flysky-site",
     "fsn": "flysky-site"
   },
   "targets": {},

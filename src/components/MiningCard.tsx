@@ -1,3 +1,5 @@
+// 📁 MiningCard.tsx
+
 import { useEffect, useState } from 'react';
 import {
   doc,
@@ -6,11 +8,12 @@ import {
   getDoc,
   collection,
   getDocs,
-  setDoc
+  setDoc,
 } from 'firebase/firestore';
-import { auth, db } from '../firebase';
+import { auth, db, functions } from '../firebase';
 import { notifyMiningComplete } from '../utils/notifications';
 import { Line } from 'react-chartjs-2';
+import { httpsCallable } from 'firebase/functions';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -146,24 +149,14 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     }
   }, [claimReady]);
 
-  const handleUnlock = () => {
-    window.open('https://otieu.com/4/9386723', '_blank');
-    setShowUnlock(false);
-  };
-
   const handleClaim = async () => {
-    console.log("🟡 handleClaim triggered");
     const user = auth.currentUser;
-    if (!user || !claimReady) {
-      console.log("⛔️ Not allowed to claim - user or claimReady missing");
-      return;
-    }
+    if (!user || !claimReady) return;
 
     try {
       const userRef = doc(db, 'users', user.uid);
       const snap = await getDoc(userRef);
       const currentBalance = snap.data()?.balance || 0;
-      console.log("✅ Step 1: Got user and balance:", currentBalance);
 
       const today = new Date().toISOString().split('T')[0];
       const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
@@ -173,17 +166,35 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
         dailyMined: 0,
         miningStartTime: serverTimestamp(),
       });
-      console.log("✅ Step 2: Updated user data");
 
       await setDoc(historyRef, {
         amount: Math.floor(mined),
         date: today,
         updatedAt: serverTimestamp(),
       });
-      console.log("✅ Step 3: Added to history");
 
       onClaim(Math.floor(mined));
-      console.log("✅ Step 4: Called onClaim");
+
+      const tokenSnap = await getDoc(doc(db, 'userTokens', user.uid));
+      const fcmToken = tokenSnap.exists() ? tokenSnap.data().token : null;
+
+      if (fcmToken) {
+        const sendNotification = httpsCallable(functions, 'sendPushNotification');
+
+        await sendNotification({
+          title: '🎉 Reward Claimed!',
+          body: `You've successfully claimed ${Math.floor(mined)} FSN.`,
+          token: fcmToken,
+          clickAction: 'https://fsncrew.io/mining',
+        });
+
+        await sendNotification({
+          title: '✅ Claimed Successfully',
+          body: 'Your FSN has been added to your balance.',
+          token: fcmToken,
+          clickAction: 'https://fsncrew.io/mining',
+        });
+      }
 
       setMined(0);
       setClaimReady(false);
@@ -191,8 +202,6 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
       sentNotification = false;
 
       fetchUserData();
-      console.log("✅ Step 5: Refetched data");
-
     } catch (err) {
       console.error("🔥 Claim error:", err);
       alert("❌ Error while claiming reward. See console.");
@@ -266,7 +275,10 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
 
         {claimReady && showUnlock && (
           <button
-            onClick={handleUnlock}
+            onClick={() => {
+              window.open('https://otieu.com/4/9386723', '_blank');
+              setShowUnlock(false);
+            }}
             className="w-full py-2 rounded-xl font-bold bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse transition"
           >
             Unlock Rewards

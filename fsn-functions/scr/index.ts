@@ -8,22 +8,15 @@ import { getMessaging } from 'firebase-admin/messaging';
 initializeApp();
 
 // ✅ Cloud Function: إرسال إشعار FCM إلى مستخدم واحد
-export const sendFcmNotification = onCall(async (data) => {
-  // ✅ طباعة البيانات المستلمة للتصحيح
-  console.log('📥 Incoming raw data:', data);
+export const sendPushNotification = onCall(async (request) => {
+  const { token, title, body, imageUrl, clickAction } = request.data; // ← تأكد من استخدام .data
 
-  // ✅ تفكيك القيم من الكائن مباشرة
-  const token = data.token;
-  const title = data.title;
-  const body = data.body;
-  const imageUrl = data.imageUrl;
-  const clickAction = data.clickAction;
-
-  // ✅ التحقق من القيم المطلوبة
+  // ✅ تحقق من الحقول المطلوبة
   if (!token || !title || !body) {
     throw new Error('Missing required fields: token, title, body');
   }
 
+  // ✅ إعداد الرسالة
   const message = {
     token,
     notification: {
@@ -45,7 +38,7 @@ export const sendFcmNotification = onCall(async (data) => {
   try {
     const response = await getMessaging().send(message);
     console.log('✅ Notification sent:', response);
-    return { success: true };
+    return { success: true, id: response };
   } catch (error) {
     console.error('❌ Failed to send FCM notification:', error);
     throw new Error('FCM notification failed');
