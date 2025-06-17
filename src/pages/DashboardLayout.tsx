@@ -5,6 +5,8 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, onSnapshot, collection, query, where } from 'firebase/firestore';
 import ProfileModal from '../components/ProfileModal';
+import { deleteCurrentToken } from '../utils/pushNotification';
+
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -95,9 +97,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   };
 
   const handleLogout = async () => {
-    await signOut(auth);
-    navigate('/login');
-  };
+  try {
+    await deleteCurrentToken(); // ✅ حذف توكن FCM من الجهاز
+    await signOut(auth);        // ✅ تسجيل الخروج من Firebase
+    navigate('/login');         // ✅ إعادة التوجيه لصفحة الدخول
+  } catch (error) {
+    console.error('❌ Logout failed:', error);
+  }
+};
+
 
   if (isLoading) {
     return (

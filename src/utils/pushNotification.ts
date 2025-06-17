@@ -1,4 +1,4 @@
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage, deleteToken } from 'firebase/messaging';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -16,7 +16,21 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const messaging = getMessaging(app);
 
-// ✅ طلب الإذن وحفظ التوكن
+// ✅ حذف التوكن الحالي - يمكن استدعاؤها عند تسجيل الخروج
+export const deleteCurrentToken = async () => {
+  try {
+    const result = await deleteToken(messaging);
+    if (result) {
+      console.log('🧹 Token deleted from device.');
+    } else {
+      console.warn('⚠️ No token found to delete.');
+    }
+  } catch (error) {
+    console.error('❌ Failed to delete token:', error);
+  }
+};
+
+// ✅ طلب الإذن وحفظ التوكن الجديد
 export const requestPermissionAndToken = async (uid: string) => {
   try {
     const permission = await Notification.requestPermission();
@@ -28,23 +42,16 @@ export const requestPermissionAndToken = async (uid: string) => {
     const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
     console.log('📦 Loaded VAPID KEY:', vapidKey);
 
-    if (typeof vapidKey !== 'string') {
-      console.error('🚫 VAPID key is not a string:', typeof vapidKey, vapidKey);
+    if (!vapidKey || typeof vapidKey !== 'string' || !vapidKey.startsWith('BCN7')) {
+      console.error('🚫 Invalid VAPID key:', vapidKey);
       return;
     }
 
-    if (!vapidKey) {
-      console.error('🚫 VAPID key is missing (empty)');
-      return;
-    }
-
-    if (vapidKey.indexOf('BCN7') === -1) {
-      console.error('🚫 VAPID key seems invalid format:', vapidKey);
-      return;
-    }
-
+    // ✅ استخدام service worker لضمان دقة التوكن
+    const swReg = await navigator.serviceWorker.ready;
     const token = await getToken(messaging, {
       vapidKey,
+      serviceWorkerRegistration: swReg,
     });
 
     if (token) {
