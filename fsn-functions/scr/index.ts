@@ -4,13 +4,22 @@ import { onCall } from 'firebase-functions/v2/https';
 import { initializeApp } from 'firebase-admin/app';
 import { getMessaging } from 'firebase-admin/messaging';
 
-// ✅ تهيئة Firebase Admin
+// ✅ تهيئة Firebase Admin SDK
 initializeApp();
 
 // ✅ Cloud Function: إرسال إشعار FCM إلى مستخدم واحد
 export const sendFcmNotification = onCall(async (data) => {
-  const { token, title, body, imageUrl, clickAction } = data;
+  // ✅ طباعة البيانات المستلمة للتصحيح
+  console.log('📥 Incoming raw data:', data);
 
+  // ✅ تفكيك القيم من الكائن مباشرة
+  const token = data.token;
+  const title = data.title;
+  const body = data.body;
+  const imageUrl = data.imageUrl;
+  const clickAction = data.clickAction;
+
+  // ✅ التحقق من القيم المطلوبة
   if (!token || !title || !body) {
     throw new Error('Missing required fields: token, title, body');
   }

@@ -1,6 +1,8 @@
 {
   "projects": {
-    "default": "flysky-network"
+    "default": "flysky-network",
+    "flysky-site": "flysky-network",
+    "fsn": "flysky-site"
   },
   "targets": {},
   "etags": {}
