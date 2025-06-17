@@ -1,7 +1,7 @@
 // 📁 src/utils/pushNotification.ts
 
-import { getMessaging, getToken, onMessage, deleteToken } from 'firebase/messaging';
-import { auth, db, messaging } from '../firebase';
+import { getToken, onMessage, deleteToken } from 'firebase/messaging';
+import { db, messaging } from '../firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 // ✅ طلب الإذن وحفظ التوكن مع بيانات إضافية
