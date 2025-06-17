@@ -5,6 +5,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getMessaging } from 'firebase/messaging';
 import { getFunctions } from 'firebase/functions';
+import { getStorage } from 'firebase/storage'; // ✅ أضف هذا السطر
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -21,6 +22,9 @@ const db = getFirestore(app);
 const messaging = getMessaging(app);
 const functions = getFunctions(app);
 
+// ✅ تحديد bucket الصحيح لتفادي مشاكل CORS
+const storage = getStorage(app, "gs://flysky-site.firebasestorage.app");
+
 const messagingPromise = Promise.resolve(messaging);
 
-export { app, auth, db, functions, messaging, messagingPromise };
+export { app, auth, db, functions, messaging, messagingPromise, storage }; // ✅ أضف storage للتصدير

@@ -3,10 +3,12 @@ import { useUserPlan } from '../contexts/UserPlanContext';
 import SubscribeModal from '../components/SubscribeModal';
 import { collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db } from '../firebase';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { storage } from '../firebase';
+
 
 interface Plan {
   id: string;
@@ -55,7 +57,6 @@ const MembershipPage = () => {
 
     try {
       setUploading(true);
-      const storage = getStorage();
       const storageRef = ref(storage, `manualPayments/${user.uid}/${Date.now()}-${proofFile.name}`);
       await uploadBytes(storageRef, proofFile);
       const downloadURL = await getDownloadURL(storageRef);
