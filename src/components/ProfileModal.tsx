@@ -1,8 +1,11 @@
+// ✅ النسخة المعدلة لتخزين الأفاتار في Firebase Storage بدلًا من Cloudinary
+
 import React, { useState, useEffect } from 'react';
-import { X, Settings } from 'lucide-react';  // استوردت أيقونة Settings
+import { X, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import toast from 'react-hot-toast';
 
 interface ProfileModalProps {
@@ -24,7 +27,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   plan,
   kycStatus,
   subscriptionEnd,
-  onUpgrade
+  onUpgrade,
 }) => {
   const navigate = useNavigate();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -45,32 +48,34 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
     fetchAvatar();
   }, []);
 
-  const uploadImageToCloudinary = async (file: File): Promise<string | null> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'Avatar');
+  const uploadImageToFirebase = async (file: File): Promise<string | null> => {
+    return new Promise((resolve, reject) => {
+      const user = auth.currentUser;
+      if (!user) return reject('User not authenticated');
 
-    try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/dytflr9cy/image/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const storage = getStorage();
+      const storageRef = ref(storage, `avatars/${user.uid}/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-      const data = await res.json();
-      return data.secure_url || null;
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
+      uploadTask.on(
+        'state_changed',
+        null,
+        (error) => reject(error),
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !auth.currentUser) return;
 
-    const imageUrl = await uploadImageToCloudinary(file);
+    const imageUrl = await uploadImageToFirebase(file);
     if (!imageUrl) {
-      toast.error("❌ Failed to upload image");
+      toast.error('❌ Failed to upload image');
       return;
     }
 
@@ -78,11 +83,11 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       const userRef = doc(db, 'users', auth.currentUser.uid);
       await updateDoc(userRef, { avatarUrl: imageUrl });
       setAvatarUrl(imageUrl);
-      toast.success("✅ Avatar updated successfully!");
+      toast.success('✅ Avatar updated successfully!');
       setShowUploadInput(false);
     } catch (err) {
       console.error(err);
-      toast.error("❌ Failed to save avatar URL");
+      toast.error('❌ Failed to save avatar URL');
     }
   };
 
@@ -121,12 +126,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center px-4">
       <div className="bg-gray-900 rounded-xl p-6 w-full max-w-md text-white relative shadow-2xl border border-yellow-500">
-        {/* زر الإغلاق */}
         <button onClick={onClose} className="absolute top-3 right-10 text-gray-300 hover:text-white" aria-label="Close modal">
           <X size={20} />
         </button>
 
-        {/* زر الإعدادات */}
         <button
           onClick={() => navigate('/settings')}
           className="absolute top-3 right-3 text-gray-300 hover:text-white"
@@ -153,7 +156,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
               </div>
             )}
 
-            {/* ✏️ أيقونة القلم */}
             {isOwner && (
               <div
                 className="absolute bottom-0 right-0 bg-gray-800 border border-white p-1 rounded-full shadow-md cursor-pointer"
@@ -170,7 +172,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
               </div>
             )}
 
-            {/* زر اختيار الصورة */}
             {showUploadInput && isOwner && (
               <input
                 type="file"

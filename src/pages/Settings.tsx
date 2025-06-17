@@ -1,9 +1,12 @@
+// 📁 Settings.tsx
+
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Settings = () => {
   const [fullName, setFullName] = useState("");
@@ -62,44 +65,34 @@ const Settings = () => {
     }
   };
 
-  const uploadImageToCloudinary = async (file: File): Promise<string | null> => {
+  const uploadImageToFirebase = async (file: File): Promise<string | null> => {
     setIsUploading(true);
     setUploadProgress(0);
 
-    const url = "https://api.cloudinary.com/v1_1/dytflr9cy/image/upload";
-    const preset = "Avatar";
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", preset);
-
     return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", url);
+      const user = auth.currentUser;
+      if (!user) return reject("User not authenticated");
 
-      xhr.upload.onprogress = (event) => {
-        if (event.lengthComputable) {
-          const percentComplete = Math.round((event.loaded / event.total) * 100);
-          setUploadProgress(percentComplete);
+      const storage = getStorage();
+      const storageRef = ref(storage, `avatars/${user.uid}/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          setUploadProgress(progress);
+        },
+        (error) => {
+          setIsUploading(false);
+          reject(error);
+        },
+        async () => {
+          setIsUploading(false);
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
         }
-      };
-
-      xhr.onload = () => {
-        setIsUploading(false);
-        if (xhr.status === 200) {
-          const response = JSON.parse(xhr.responseText);
-          resolve(response.secure_url);
-        } else {
-          reject(new Error("Upload failed"));
-        }
-      };
-
-      xhr.onerror = () => {
-        setIsUploading(false);
-        reject(new Error("Upload error"));
-      };
-
-      xhr.send(formData);
+      );
     });
   };
 
@@ -110,7 +103,7 @@ const Settings = () => {
     }
 
     try {
-      const imageUrl = await uploadImageToCloudinary(selectedFile);
+      const imageUrl = await uploadImageToFirebase(selectedFile);
       if (!imageUrl) throw new Error("No image URL returned");
 
       if (!auth.currentUser) return;

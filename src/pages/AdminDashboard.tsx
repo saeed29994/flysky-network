@@ -1,3 +1,5 @@
+// 📁 AdminDashboard.tsx
+
 import { useState, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
 import { db } from '../firebase';
@@ -20,11 +22,6 @@ interface User {
   kycStatus: string;
   plan: string;
   balance: number;
-  referralCode: string;
-  watchedAdsToday: number;
-  miningStartTime: string | null;
-  lockedFromStaking: number;
-  language: string;
   stakingStatus: string;
 }
 
@@ -52,6 +49,7 @@ const AdminDashboard = () => {
   const [manualPayments, setManualPayments] = useState<ManualPayment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [kycSearchQuery, setKycSearchQuery] = useState('');
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [newPlan, setNewPlan] = useState('');
 
@@ -84,11 +82,6 @@ const AdminDashboard = () => {
         kycStatus: userData.kycStatus || 'Pending',
         plan: plan,
         balance: userData.balance || 0,
-        referralCode: userData.referralCode || '',
-        watchedAdsToday: userData.watchedAdsToday || 0,
-        miningStartTime: userData.miningStartTime || '',
-        lockedFromStaking: userData.lockedFromStaking || 0,
-        language: userData.language || 'en',
         stakingStatus: stakingDescription,
       };
     });
@@ -150,7 +143,15 @@ const AdminDashboard = () => {
   const filteredUsers = users.filter(
     (user) =>
       user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.id.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredKycUsers = users.filter(
+    (user) =>
+      user.fullName.toLowerCase().includes(kycSearchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(kycSearchQuery.toLowerCase()) ||
+      user.id.toLowerCase().includes(kycSearchQuery.toLowerCase())
   );
 
   return (
@@ -178,7 +179,16 @@ const AdminDashboard = () => {
 
         <Tab.Panels className="mt-4">
           <Tab.Panel>
-            <div className="text-white">Dashboard content here...</div>
+            <div className="text-white">
+              <h2 className="text-xl font-bold mb-4">📊 Site Statistics</h2>
+              <ul className="space-y-2 text-sm">
+                <li>Total Registered Users: {users.length}</li>
+                <li>Verified KYC Users: {users.filter(u => u.kycStatus === 'Verified').length}</li>
+                <li>Business Plans: {users.filter(u => u.plan === 'business').length}</li>
+                <li>First Class Plans: {users.filter(u => u.plan.startsWith('first')).length}</li>
+                <li>Total Balance in System: {users.reduce((sum, u) => sum + u.balance, 0)} FSN</li>
+              </ul>
+            </div>
           </Tab.Panel>
 
           <Tab.Panel>
@@ -187,7 +197,7 @@ const AdminDashboard = () => {
               <div className="mb-4">
                 <input
                   type="text"
-                  placeholder="Search by name or email"
+                  placeholder="Search by name, email, or user ID"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full rounded bg-gray-800 text-white p-2 outline-none focus:ring-2 focus:ring-yellow-400"
@@ -200,28 +210,24 @@ const AdminDashboard = () => {
                   <table className="min-w-full bg-gray-800 rounded text-sm">
                     <thead>
                       <tr className="bg-gray-700 text-gray-300">
+                        <th className="py-2 px-3 text-left">User ID</th>
                         <th className="py-2 px-3 text-left">Name</th>
                         <th className="py-2 px-3 text-left">Email</th>
                         <th className="py-2 px-3 text-left">Plan</th>
                         <th className="py-2 px-3 text-left">Balance</th>
-                        <th className="py-2 px-3 text-left">Referral</th>
-                        <th className="py-2 px-3 text-left">Ads Today</th>
                         <th className="py-2 px-3 text-left">Staking</th>
-                        <th className="py-2 px-3 text-left">Language</th>
                         <th className="py-2 px-3 text-left">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredUsers.map((user) => (
                         <tr key={user.id} className="border-t border-gray-700 text-white">
+                          <td className="py-2 px-3 text-xs break-all">{user.id}</td>
                           <td className="py-2 px-3">{user.fullName}</td>
                           <td className="py-2 px-3">{user.email}</td>
                           <td className="py-2 px-3">{user.plan}</td>
                           <td className="py-2 px-3">{user.balance}</td>
-                          <td className="py-2 px-3">{user.referralCode}</td>
-                          <td className="py-2 px-3">{user.watchedAdsToday}</td>
                           <td className="py-2 px-3">{user.stakingStatus}</td>
-                          <td className="py-2 px-3">{user.language}</td>
                           <td className="py-2 px-3 space-x-2">
                             <button
                               onClick={() =>
@@ -274,12 +280,22 @@ const AdminDashboard = () => {
           <Tab.Panel>
             <div className="bg-gray-900 p-4 rounded shadow">
               <h2 className="text-xl font-bold text-yellow-400 mb-4">KYC Verification</h2>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  placeholder="Search by name, email, or user ID"
+                  value={kycSearchQuery}
+                  onChange={(e) => setKycSearchQuery(e.target.value)}
+                  className="w-full rounded bg-gray-800 text-white p-2 outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
               {loading ? (
                 <p className="text-gray-400">Loading users...</p>
               ) : (
                 <table className="min-w-full bg-gray-800 rounded text-sm">
                   <thead>
                     <tr className="bg-gray-700 text-gray-300">
+                      <th className="py-2 px-3 text-left">User ID</th>
                       <th className="py-2 px-3 text-left">Name</th>
                       <th className="py-2 px-3 text-left">Email</th>
                       <th className="py-2 px-3 text-left">KYC Status</th>
@@ -287,8 +303,9 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((user) => (
+                    {filteredKycUsers.map((user) => (
                       <tr key={user.id} className="border-t border-gray-700 text-white">
+                        <td className="py-2 px-3 text-xs break-all">{user.id}</td>
                         <td className="py-2 px-3">{user.fullName}</td>
                         <td className="py-2 px-3">{user.email}</td>
                         <td className="py-2 px-3">{user.kycStatus}</td>
@@ -357,6 +374,9 @@ const AdminDashboard = () => {
                               Approve
                             </button>
                             <button
+
+                        // 🟡 نهاية تبويب الدفع اليدوي
+
                               onClick={async () => {
                                 await updateDoc(doc(db, 'manualPayments', p.id), { status: 'rejected' });
                                 fetchManualPayments();
