@@ -28,13 +28,28 @@ interface User {
   stakingStatus: string;
 }
 
+interface ManualPayment {
+  id: string;
+  uid: string;
+  currency: string;
+  proofUrl: string;
+  fileName: string;
+  txLink: string;
+  fromAddress: string;
+  timestamp: any;
+  status: string;
+}
+
 const AdminDashboard = () => {
   const [tabs] = useState([
     { name: 'Dashboard' },
     { name: 'Users Management' },
     { name: 'KYC Verification' },
+    { name: 'Manual Payments' },
   ]);
+
   const [users, setUsers] = useState<User[]>([]);
+  const [manualPayments, setManualPayments] = useState<ManualPayment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
@@ -81,9 +96,22 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
+  const fetchManualPayments = async () => {
+    const snapshot = await getDocs(collection(db, 'manualPayments'));
+    const payments: ManualPayment[] = snapshot.docs.map((doc) => ({
+      ...(doc.data() as ManualPayment),
+      id: doc.id,
+    }));
+    setManualPayments(payments);
+  };
+
   useEffect(() => {
     fetchUsers();
-    const interval = setInterval(() => fetchUsers(), 30000);
+    fetchManualPayments();
+    const interval = setInterval(() => {
+      fetchUsers();
+      fetchManualPayments();
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -165,7 +193,6 @@ const AdminDashboard = () => {
                   className="w-full rounded bg-gray-800 text-white p-2 outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
-
               {loading ? (
                 <p className="text-gray-400">Loading users...</p>
               ) : (
@@ -219,7 +246,6 @@ const AdminDashboard = () => {
                   </table>
                 </div>
               )}
-
               {editingUserId && (
                 <div className="mt-4 bg-gray-800 p-4 rounded">
                   <h3 className="text-yellow-400 font-semibold mb-2">Update User Plan</h3>
@@ -282,6 +308,69 @@ const AdminDashboard = () => {
                     ))}
                   </tbody>
                 </table>
+              )}
+            </div>
+          </Tab.Panel>
+
+          <Tab.Panel>
+            <div className="bg-gray-900 p-4 rounded shadow text-white">
+              <h2 className="text-xl font-bold text-yellow-400 mb-4">Manual Payments</h2>
+              {manualPayments.length === 0 ? (
+                <p className="text-gray-400">No manual payments found.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full bg-gray-800 rounded text-sm">
+                    <thead>
+                      <tr className="bg-gray-700 text-gray-300">
+                        <th className="py-2 px-3 text-left">User ID</th>
+                        <th className="py-2 px-3 text-left">Currency</th>
+                        <th className="py-2 px-3 text-left">TX Link</th>
+                        <th className="py-2 px-3 text-left">From Address</th>
+                        <th className="py-2 px-3 text-left">Status</th>
+                        <th className="py-2 px-3 text-left">Proof</th>
+                        <th className="py-2 px-3 text-left">Date</th>
+                        <th className="py-2 px-3 text-left">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {manualPayments.map((p) => (
+                        <tr key={p.id} className="border-t border-gray-700 text-white">
+                          <td className="py-2 px-3">{p.uid}</td>
+                          <td className="py-2 px-3">{p.currency}</td>
+                          <td className="py-2 px-3 break-all max-w-[120px]">
+                            <a href={p.txLink} target="_blank" className="text-blue-400 underline">View</a>
+                          </td>
+                          <td className="py-2 px-3 break-all max-w-[120px]">{p.fromAddress}</td>
+                          <td className="py-2 px-3">{p.status}</td>
+                          <td className="py-2 px-3">
+                            <a href={p.proofUrl} target="_blank" className="text-green-400 underline">Image</a>
+                          </td>
+                          <td className="py-2 px-3">{p.timestamp?.toDate().toLocaleString()}</td>
+                          <td className="py-2 px-3 space-x-1">
+                            <button
+                              onClick={async () => {
+                                await updateDoc(doc(db, 'manualPayments', p.id), { status: 'approved' });
+                                fetchManualPayments();
+                              }}
+                              className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded"
+                            >
+                              Approve
+                            </button>
+                            <button
+                              onClick={async () => {
+                                await updateDoc(doc(db, 'manualPayments', p.id), { status: 'rejected' });
+                                fetchManualPayments();
+                              }}
+                              className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
+                            >
+                              Reject
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           </Tab.Panel>
