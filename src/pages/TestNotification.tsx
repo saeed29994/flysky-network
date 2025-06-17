@@ -25,10 +25,10 @@ const TestNotification = () => {
           : 'https://fsncrew.io/dashboard';
 
       const payload = {
-        token: token.trim(),
-        title,
-        body,
-        imageUrl: '', // ✅ إرسال imageUrl حتى لو فارغ
+        token: String(token).trim(),
+        title: String(title).trim(),
+        body: String(body).trim(),
+        imageUrl: '', // ✅ مضمون
         clickAction,
       };
 
