@@ -5,8 +5,10 @@ import { X, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase';
 import toast from 'react-hot-toast';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -53,7 +55,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       const user = auth.currentUser;
       if (!user) return reject('User not authenticated');
 
-      const storage = getStorage();
       const storageRef = ref(storage, `avatars/${user.uid}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 

@@ -6,7 +6,10 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from '../firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+
+
 
 const Settings = () => {
   const [fullName, setFullName] = useState("");
@@ -73,7 +76,6 @@ const Settings = () => {
       const user = auth.currentUser;
       if (!user) return reject("User not authenticated");
 
-      const storage = getStorage();
       const storageRef = ref(storage, `avatars/${user.uid}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
