@@ -9,14 +9,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
 import { requestPermissionAndToken } from '../utils/pushNotification';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [logoSpin, setLogoSpin] = useState(true);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,17 +28,20 @@ const LoginPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       if (user.emailVerified) {
-        await requestPermissionAndToken(user.uid); // ✅ تمرير uid
+        await requestPermissionAndToken(user.uid);
         navigate('/dashboard');
       } else {
         navigate('/verify-email');
@@ -52,7 +57,6 @@ const LoginPage = () => {
   const handleGoogleLogin = async () => {
     setError('');
     setLoading(true);
-
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
@@ -86,8 +90,8 @@ const LoginPage = () => {
         });
 
         await setDoc(doc(db, 'users', user.uid, 'inbox', 'welcome'), {
-          title: '🎉 Welcome to FlySky Network!',
-          body: 'You’ve earned a 500 FSN welcome bonus. Click below to claim your reward',
+          title: t('inbox.welcomeTitle'),
+          body: t('inbox.welcomeBody'),
           timestamp: Date.now(),
           read: false,
           claimed: false,
@@ -96,15 +100,15 @@ const LoginPage = () => {
         });
       }
 
-      await requestPermissionAndToken(user.uid); // ✅ تمرير uid
+      await requestPermissionAndToken(user.uid);
       navigate('/dashboard');
     } catch (err: any) {
       console.error('Google login error:', err);
       const errMsg = err?.message || '';
       if (errMsg.includes('A problem occurred while') || errMsg.includes('popup')) {
-        setError('Google login failed. Try using a regular browser like Chrome.');
+        setError(t('auth.googlePopupError'));
       } else {
-        setError('Google login failed. Please try again.');
+        setError(t('auth.googleGenericError'));
       }
     } finally {
       setLoading(false);
@@ -130,13 +134,13 @@ const LoginPage = () => {
         onSubmit={handleLogin}
         className="bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-md text-white"
       >
-        <h2 className="text-2xl font-bold mb-4 text-yellow-400">Login</h2>
+        <h2 className="text-2xl font-bold mb-4 text-yellow-400">{t('auth.loginTitle')}</h2>
 
         {error && <p className="text-red-400 mb-4 text-sm">{error}</p>}
 
         <input
           type="email"
-          placeholder="Email"
+          placeholder={t('auth.email')}
           className="w-full p-2 mb-3 rounded bg-gray-800 border border-gray-700"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -145,7 +149,7 @@ const LoginPage = () => {
 
         <input
           type="password"
-          placeholder="Password"
+          placeholder={t('auth.password')}
           className="w-full p-2 mb-2 rounded bg-gray-800 border border-gray-700"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -154,7 +158,7 @@ const LoginPage = () => {
 
         <div className="text-right mb-4">
           <Link to="/forgot-password" className="text-sm text-yellow-400 hover:underline">
-            Forgot Password?
+            {t('auth.forgotPassword')}
           </Link>
         </div>
 
@@ -163,10 +167,10 @@ const LoginPage = () => {
           disabled={loading}
           className="bg-yellow-500 hover:bg-yellow-400 text-black w-full py-2 rounded font-semibold transition"
         >
-          {loading ? 'Logging in...' : 'Login'}
+          {loading ? t('auth.loggingIn') : t('auth.login')}
         </button>
 
-        <div className="text-center text-white my-4">OR</div>
+        <div className="text-center text-white my-4">{t('auth.or')}</div>
 
         <button
           type="button"
@@ -179,16 +183,28 @@ const LoginPage = () => {
             alt="Google Logo"
             className="w-5 h-5 mr-3"
           />
-          {loading ? 'Please wait...' : 'Login with Google'}
+          {loading ? t('auth.pleaseWait') : t('auth.loginWithGoogle')}
         </button>
 
         <p className="mt-4 text-sm text-gray-400 text-center">
-          Don’t have an account?{' '}
+          {t('auth.noAccount')}{' '}
           <Link to="/signup" className="text-yellow-400 hover:underline">
-            Sign Up
+            {t('auth.signUp')}
           </Link>
         </p>
       </form>
+
+      {/* Language Selector */}
+      <div className="mt-4">
+        <select
+          onChange={(e) => i18n.changeLanguage(e.target.value)}
+          defaultValue={i18n.language}
+          className="bg-gray-800 text-white px-3 py-1 rounded border border-gray-600"
+        >
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+      </div>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 {
   "functions": {
     "source": "fsn-functions",
-    "codebase": "default",
     "ignore": [
       "node_modules",
       ".git",

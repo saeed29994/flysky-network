@@ -3,6 +3,7 @@ import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import toast, { Toaster } from 'react-hot-toast';
 import DashboardLayout from './DashboardLayout';
+import { useTranslation } from 'react-i18next';
 
 const REQUIRED_ADS = 5;
 const REWARD_FOR_ALL = 200;
@@ -16,6 +17,7 @@ const adLinks = [
 ];
 
 const WatchToEarn = () => {
+  const { t } = useTranslation();
   const [adsWatched, setAdsWatched] = useState(0);
   const [balance, setBalance] = useState(0);
   const [countdown, setCountdown] = useState(0);
@@ -97,7 +99,7 @@ const WatchToEarn = () => {
     });
 
     setAdsWatched(newWatched);
-    toast.success(`Ad watched successfully!`);
+    toast.success(t("watchToEarn.adWatched"));
   };
 
   const handleClaimReward = async () => {
@@ -118,7 +120,7 @@ const WatchToEarn = () => {
     setAdsWatched(0);
     setCountdown(24 * 3600);
 
-    toast.success(`You earned ${REWARD_FOR_ALL} FSN!`);
+    toast.success(t("watchToEarn.rewardClaimed", { amount: REWARD_FOR_ALL }));
   };
 
   const progressPercent = (adsWatched / REQUIRED_ADS) * 100;
@@ -137,9 +139,12 @@ const WatchToEarn = () => {
 
         <Toaster />
 
-        <h1 className="text-3xl font-bold text-yellow-400 mb-4 text-center">🎥 Watch to Earn</h1>
+        <h1 className="text-3xl font-bold text-yellow-400 mb-4 text-center">
+          🎥 {t("watchToEarn.title")}
+        </h1>
+
         <p className="mb-4 text-center text-gray-300">
-          Earn rewards by watching short ads! Watch <strong>{REQUIRED_ADS}</strong> ads to unlock <strong>{REWARD_FOR_ALL} FSN</strong> bonus.
+          {t("watchToEarn.description", { count: REQUIRED_ADS, reward: REWARD_FOR_ALL })}
         </p>
 
         <div className="w-full bg-gray-700 rounded-full h-4 mb-4 overflow-hidden">
@@ -150,34 +155,34 @@ const WatchToEarn = () => {
         </div>
 
         <p className="mb-2 text-center">
-          Watched: <span className="font-semibold">{adsWatched}/{REQUIRED_ADS}</span>
+          {t("watchToEarn.watched")}: <span className="font-semibold">{adsWatched}/{REQUIRED_ADS}</span>
         </p>
         <p className="mb-4 text-center">
-          Balance: <span className="font-semibold">{balance} FSN</span>
+          {t("watchToEarn.balance")}: <span className="font-semibold">{balance} FSN</span>
         </p>
 
         {countdown > 0 ? (
           <p className="text-center text-red-400 font-semibold mb-4">
-            Please wait {formatTime(countdown)} before watching ads again.
+            {t("watchToEarn.waitMessage", { time: formatTime(countdown) })}
           </p>
         ) : !canClaim ? (
           <button
             onClick={handleWatchAd}
             className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-2 rounded font-bold transition w-full"
           >
-            Watch Ad
+            {t("watchToEarn.watchAd")}
           </button>
         ) : (
           <button
             onClick={handleClaimReward}
             className="bg-green-500 hover:bg-green-400 text-black px-6 py-2 rounded font-bold transition w-full"
           >
-            Claim Rewards
+            {t("watchToEarn.claimRewards")}
           </button>
         )}
 
         <div className="mt-6 text-sm text-center text-gray-400">
-          Note: You must watch 5 ads each day to claim your reward. Enjoy and earn!
+          {t("watchToEarn.note")}
         </div>
       </div>
     </DashboardLayout>

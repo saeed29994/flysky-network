@@ -1,22 +1,54 @@
 // 📁 src/utils/sendNotification.ts
 
+import { auth, db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
-import { app } from '../firebase'; // ✅ تم دمج كل شيء في firebase.ts
 
-const functions = getFunctions(app);
+const functions = getFunctions();
 
 interface NotificationPayload {
   title: string;
   body: string;
-  tokens: string[]; // قائمة التوكنات
-  link?: string;    // رابط عند الضغط على الإشعار
+  link?: string;
+  imageUrl?: string;
 }
 
-export const sendNotification = async (payload: NotificationPayload) => {
+export const sendNotification = async ({
+  title,
+  body,
+  link,
+  imageUrl,
+}: NotificationPayload) => {
   try {
+    const user = auth.currentUser;
+    if (!user) {
+      console.warn('⛔ No authenticated user found.');
+      return;
+    }
+
+    const tokenRef = doc(db, 'userTokens', user.uid);
+    const tokenSnap = await getDoc(tokenRef);
+    if (!tokenSnap.exists()) {
+      console.warn('⚠️ No push token found for user.');
+      return;
+    }
+
+    const { token } = tokenSnap.data() as { token: string };
+    if (!token) {
+      console.warn('❌ Invalid token.');
+      return;
+    }
+
     const sendPush = httpsCallable(functions, 'sendPushNotification');
-    const result = await sendPush(payload);
-    console.log('✅ Notification result:', result.data);
+    const result = await sendPush({
+      title,
+      body,
+      link,
+      imageUrl,
+      tokens: [token], // ✅ التوكن كـ array
+    });
+
+    console.log('✅ Notification sent:', result.data);
     return result.data;
   } catch (error) {
     console.error('❌ Failed to send notification:', error);

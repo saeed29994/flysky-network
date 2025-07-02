@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import MiningCard from '../components/MiningCard';
+import { useTranslation } from 'react-i18next'; // ✅ استيراد الترجمة
 
 const MiningPage = () => {
+  const { t } = useTranslation(); // ✅ تفعيل الترجمة
+
   const [userPlan, setUserPlan] = useState<'economy' | 'business' | 'first-6' | 'first-lifetime'>('economy');
   const [balance, setBalance] = useState(0);
 
@@ -45,7 +48,7 @@ const MiningPage = () => {
   return (
     <div className="min-h-screen bg-[#0B1622] pt-4 pb-24">
       <div className="text-center text-white mb-4">
-        <h1 className="text-xl font-bold">My Balance: {balance} FSN</h1>
+        <h1 className="text-xl font-bold">{t('balance')}: {balance} FSN</h1> {/* ✅ استخدام الترجمة */}
       </div>
       <MiningCard plan={userPlan} onClaim={handleClaim} />
     </div>

@@ -1,19 +1,8 @@
-// 📁 MiningCard.tsx
-
-import { useEffect, useState } from 'react';
-import {
-  doc,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
-  collection,
-  getDocs,
-  setDoc,
-} from 'firebase/firestore';
-import { auth, db, functions } from '../firebase';
+import { useEffect, useState, useRef } from 'react';
+import { doc, updateDoc, serverTimestamp, getDoc, collection, getDocs } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 import { notifyMiningComplete } from '../utils/notifications';
 import { Line } from 'react-chartjs-2';
-import { httpsCallable } from 'firebase/functions';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,6 +12,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
@@ -39,9 +29,10 @@ const planLimits: Record<string, number> = {
   first: 6000,
 };
 
-let sentNotification = false;
-
 const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
+  const { t } = useTranslation();
+  const sentNotification = useRef(false);
+
   const [mined, setMined] = useState(0);
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [remainingTime, setRemainingTime] = useState<number>(0);
@@ -112,9 +103,9 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
         setClaimReady(true);
         setIsMaxed(true);
         setRemainingTime(0);
-        if (!sentNotification) {
+        if (!sentNotification.current) {
           notifyMiningComplete().catch(() => {});
-          sentNotification = true;
+          sentNotification.current = true;
         }
       } else {
         setRemainingTime(43200 - elapsed);
@@ -128,85 +119,6 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
       setShowUnlock(true);
     }
   }, [claimReady]);
-
-  useEffect(() => {
-    const sendInboxNotification = async () => {
-      const user = auth.currentUser;
-      if (!user || !claimReady) return;
-      const inboxRef = doc(collection(db, `users/${user.uid}/inbox`));
-      await setDoc(inboxRef, {
-        title: "🎉 Mining Completed",
-        body: "Your mining session has finished! Click 'Claim Reward' to collect your FSN.",
-        timestamp: serverTimestamp(),
-        read: false,
-        claimed: false,
-        type: "mining-alert",
-      });
-    };
-
-    if (claimReady && !sentNotification) {
-      sendInboxNotification().catch(console.error);
-    }
-  }, [claimReady]);
-
-  const handleClaim = async () => {
-    const user = auth.currentUser;
-    if (!user || !claimReady) return;
-
-    try {
-      const userRef = doc(db, 'users', user.uid);
-      const snap = await getDoc(userRef);
-      const currentBalance = snap.data()?.balance || 0;
-
-      const today = new Date().toISOString().split('T')[0];
-      const historyRef = doc(db, `users/${user.uid}/miningHistory`, today);
-
-      await updateDoc(userRef, {
-        balance: currentBalance + mined,
-        dailyMined: 0,
-        miningStartTime: serverTimestamp(),
-      });
-
-      await setDoc(historyRef, {
-        amount: Math.floor(mined),
-        date: today,
-        updatedAt: serverTimestamp(),
-      });
-
-      onClaim(Math.floor(mined));
-
-      const tokenSnap = await getDoc(doc(db, 'userTokens', user.uid));
-      const fcmToken = tokenSnap.exists() ? tokenSnap.data().token : null;
-
-      if (fcmToken) {
-        const sendNotification = httpsCallable(functions, 'sendPushNotification');
-
-        await sendNotification({
-          title: '🎉 Reward Claimed!',
-          body: `You've successfully claimed ${Math.floor(mined)} FSN.`,
-          token: fcmToken,
-          clickAction: 'https://fsncrew.io/mining',
-        });
-
-        await sendNotification({
-          title: '✅ Claimed Successfully',
-          body: 'Your FSN has been added to your balance.',
-          token: fcmToken,
-          clickAction: 'https://fsncrew.io/mining',
-        });
-      }
-
-      setMined(0);
-      setClaimReady(false);
-      setIsMaxed(false);
-      sentNotification = false;
-
-      fetchUserData();
-    } catch (err) {
-      console.error("🔥 Claim error:", err);
-      alert("❌ Error while claiming reward. See console.");
-    }
-  };
 
   const handleStartMining = async () => {
     const user = auth.currentUser;
@@ -244,9 +156,9 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     return (
       <div className="w-full min-h-[calc(100vh-4rem)] bg-[#0B1622] flex justify-center items-center px-4">
         <motion.div className="bg-gray-900 p-6 rounded-xl shadow-xl w-full max-w-md text-center">
-          <h2 className="text-xl text-yellow-400 font-bold mb-4">Ready to Start Mining?</h2>
+          <h2 className="text-xl text-yellow-400 font-bold mb-4">{t('readyToMine')}</h2>
           <button onClick={handleStartMining} className="bg-yellow-500 hover:bg-yellow-400 text-black w-full py-2 rounded font-bold transition">
-            Start Mining
+            {t('startMining')}
           </button>
         </motion.div>
       </div>
@@ -257,21 +169,23 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     <div className="w-full bg-[#0B1622] px-0 pt-4 pb-24">
       <motion.div className="w-full max-w-2xl mx-auto bg-gray-900 p-6 sm:p-8 text-center rounded-xl shadow-xl">
         <div className="bg-gray-800 p-4 rounded-lg text-sm text-gray-300 text-left mb-4">
-          <p>🪙 <span className="text-white font-semibold">Plan:</span> {plan}</p>
-          <p>🔋 <span className="text-white font-semibold">Daily Limit:</span> {planLimits[plan]} FSN</p>
-          <p>⏱️ <span className="text-white font-semibold">Cycle:</span> 12 hours</p>
-          <p>📤 <span className="text-white font-semibold">Claim Type:</span> Manual</p>
+          <p>🪙 <span className="text-white font-semibold">{t(`planNames.${plan}`)}:</span></p>
+          <p>🔋 <span className="text-white font-semibold">{t('dailyLimit')}:</span> {planLimits[plan]} FSN</p>
+          <p>⏱️ <span className="text-white font-semibold">{t('cycle')}:</span> 12 {t('hours')}</p>
+          <p>📤 <span className="text-white font-semibold">{t('claimType')}:</span> {t('manual')}</p>
         </div>
 
-        <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2">🪙 FSN Daily Mining</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2">🪙 {t('fsnDailyMining')}</h2>
         <div className="text-4xl font-extrabold text-white mb-2">
           {isNaN(mined) ? 0 : Math.floor(mined)} FSN
         </div>
-        <p className="text-sm text-gray-400 mb-2">Daily Limit: <span className="text-white font-semibold">{planLimits[plan]} FSN</span></p>
+        <p className="text-sm text-gray-400 mb-2">{t('dailyLimitLabel')}: <span className="text-white font-semibold">{planLimits[plan]} FSN</span></p>
         <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-3">
           <div className="h-full bg-yellow-500 transition-all duration-500" style={{ width: `${(mined / planLimits[plan]) * 100}%` }} />
         </div>
-        <p className="text-sm text-gray-500 mb-4">{claimReady ? '✅ Ready to claim!' : `⏱️ Time remaining: ${formatTime(remainingTime)}`}</p>
+        <p className="text-sm text-gray-500 mb-4">
+          {claimReady ? t('readyToClaim') : `⏱️ ${t('timeRemaining')}: ${formatTime(remainingTime)}`}
+        </p>
 
         {claimReady && showUnlock && (
           <button
@@ -281,16 +195,31 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
             }}
             className="w-full py-2 rounded-xl font-bold bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse transition"
           >
-            Unlock Rewards
+            {t('unlockRewards')}
           </button>
         )}
 
         {claimReady && !showUnlock && (
           <button
-            onClick={handleClaim}
+            onClick={async () => {
+              onClaim(Math.floor(mined));
+              setClaimReady(false);
+              setIsMaxed(false);
+              setShowUnlock(false);
+              sentNotification.current = false;
+              const user = auth.currentUser;
+              if (user) {
+                const userRef = doc(db, 'users', user.uid);
+                await updateDoc(userRef, {
+                  miningStartTime: serverTimestamp(),
+                  dailyMined: 0,
+                });
+                setStartTime(new Date());
+              }
+            }}
             className="w-full py-2 rounded-xl font-bold bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse transition"
           >
-            Claim Reward
+            {t('claim')}
           </button>
         )}
 
@@ -299,7 +228,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
             disabled
             className="w-full py-2 rounded-xl font-bold bg-gray-700 text-gray-400 cursor-not-allowed transition"
           >
-            Mining in Progress
+            {t('miningInProgress')}
           </button>
         )}
 

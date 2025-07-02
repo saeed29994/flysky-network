@@ -12,6 +12,7 @@ import {
 import { onAuthStateChanged } from 'firebase/auth';
 import toast, { Toaster } from 'react-hot-toast';
 import StakingCard from '../components/StakingCard';
+import { useTranslation } from 'react-i18next';
 
 interface StakingEntry {
   id: string;
@@ -25,16 +26,17 @@ interface StakingEntry {
   claimed: boolean;
 }
 
-const getPlanLabel = (plan: string) => {
+const getPlanLabel = (plan: string, t: any) => {
   switch (plan) {
-    case 'business': return 'Business Class';
-    case 'first-6': return 'First Class (6 Months)';
-    case 'first-lifetime': return 'First Class (Lifetime)';
-    default: return 'Economy';
+    case 'business': return t('plans.business');
+    case 'first-6': return t('first6');
+    case 'first-lifetime': return t('firstLifetime');
+    default: return t('plans.economy');
   }
 };
 
 const StakingPage = () => {
+  const { t } = useTranslation();
   const [user, setUser] = useState<any>(null);
   const [balance, setBalance] = useState(0);
   const [plan, setPlan] = useState('economy');
@@ -98,21 +100,18 @@ const StakingPage = () => {
 
   const handleStake = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      toast.error("User not loaded.");
-      return;
-    }
+    if (!user) return toast.error(t('error.userNotLoaded'));
 
     const amountNum = parseFloat(amount);
     const durationNum = parseInt(duration);
 
     if (isNaN(amountNum) || isNaN(durationNum)) {
-      toast.error("Invalid amount or duration.");
+      toast.error(t('error.invalidAmount'));
       return;
     }
 
     if (amountNum > balance) {
-      toast.error('❌ You cannot stake more than your balance.');
+      toast.error(t('error.exceedsBalance'));
       return;
     }
 
@@ -138,64 +137,51 @@ const StakingPage = () => {
         balance: balance - amountNum
       });
 
-      toast.success('✅ Staking created successfully!');
+      toast.success(t('success.stakeCreated'));
       setAmount('');
     } catch (error) {
       console.error('❌ Error creating stake:', error);
-      toast.error('Failed to create stake. See console for details.');
+      toast.error(t('error.stakeFailed'));
     } finally {
       setLoading(false);
     }
   };
 
-  // دالة المطالبة بالمكافآت
   const handleClaim = async (stake: StakingEntry) => {
-    if (!user) {
-      toast.error("User not authenticated.");
-      return;
-    }
-
-    if (stake.claimed) {
-      toast.error("Rewards already claimed.");
-      return;
-    }
+    if (!user) return toast.error(t('error.notAuthenticated'));
+    if (stake.claimed) return toast.error(t('error.alreadyClaimed'));
 
     const now = new Date();
     const end = stake.endDate.toDate();
-    if (now < end) {
-      toast.error("Staking period not yet completed.");
-      return;
-    }
+    if (now < end) return toast.error(t('error.notEndedYet'));
 
     try {
-      // تحديث حالة الستاكينج
       const stakeDocRef = doc(db, 'users', user.uid, 'staking', stake.id);
       await updateDoc(stakeDocRef, {
         claimed: true,
         status: 'completed'
       });
 
-      // تحديث رصيد المستخدم
       const userDocRef = doc(db, 'users', user.uid);
       await updateDoc(userDocRef, {
         balance: balance + stake.expectedReturn
       });
 
-      toast.success("🎉 Rewards claimed successfully!");
+      toast.success(t('success.claimed'));
     } catch (error) {
       console.error("Claim failed:", error);
-      toast.error("Failed to claim rewards.");
+      toast.error(t('error.claimFailed'));
     }
   };
 
   return (
     <div className="min-h-screen px-4 py-12 bg-gray-950 text-white">
       <Toaster position="top-center" reverseOrder={false} />
-      <h1 className="text-3xl font-bold text-center text-yellow-400 mb-10">🔥 FSN Staking</h1>
+      <h1 className="text-3xl font-bold text-center text-yellow-400 mb-10">🔥 FSN {t('staking')}</h1>
 
       {!user && (
         <div className="bg-red-700 text-white text-center p-3 rounded mb-4">
-          🚫 Waiting for user authentication...
+          🚫 {t('loading.user')}
         </div>
       )}
 
@@ -204,17 +190,17 @@ const StakingPage = () => {
           <div className="mb-6 max-w-md mx-auto">
             <StakingCard plan={plan as any} lockedAmount={lockedAmount} />
             <p className="text-center text-sm text-gray-400 mt-2">
-              Current Plan: <span className="text-white font-semibold">{getPlanLabel(plan)}</span>
+              {t('plan.current')} <span className="text-white font-semibold">{getPlanLabel(plan, t)}</span>
             </p>
           </div>
 
           <section className="bg-gray-900 p-6 rounded-xl max-w-2xl mx-auto mb-8 shadow-lg">
-            <h2 className="text-xl text-yellow-300 font-bold text-center mb-1">{getPlanLabel(plan)} PLAN</h2>
-            <p className="text-center text-sm text-gray-400 mb-4">Start a new stake based on your plan</p>
+            <h2 className="text-xl text-yellow-300 font-bold text-center mb-1">{getPlanLabel(plan, t)} {t('plan.title')}</h2>
+            <p className="text-center text-sm text-gray-400 mb-4">{t('plan.startNew')}</p>
             <form onSubmit={handleStake} className="space-y-4">
               <input
                 type="number"
-                placeholder="Amount to Stake"
+                placeholder={t('form.amount')}
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 className="w-full p-3 rounded bg-gray-800 border border-gray-700"
@@ -225,25 +211,25 @@ const StakingPage = () => {
                 onChange={(e) => setDuration(e.target.value)}
                 className="w-full p-3 rounded bg-gray-800 border border-gray-700"
               >
-                <option value="1">1 Month – {returnRate[0] * 100}%</option>
-                <option value="3">3 Months – {returnRate[1] * 100}%</option>
-                <option value="6">6 Months – {returnRate[2] * 100}%</option>
-                <option value="12">12 Months – {returnRate[3] * 100}%</option>
+                <option value="1">1 {t('duration.month')} – {returnRate[0] * 100}%</option>
+                <option value="3">3 {t('duration.months')} – {returnRate[1] * 100}%</option>
+                <option value="6">6 {t('duration.months')} – {returnRate[2] * 100}%</option>
+                <option value="12">12 {t('duration.months')} – {returnRate[3] * 100}%</option>
               </select>
               <button
                 type="submit"
                 disabled={loading}
                 className="w-full bg-yellow-500 hover:bg-yellow-600 text-black py-3 rounded font-semibold"
               >
-                {loading ? 'Processing...' : '🚀 Start Staking'}
+                {loading ? t('loading.processing') : '🚀 ' + t('startStaking')}
               </button>
             </form>
           </section>
 
           <section className="max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-yellow-300 mb-4">📊 Staking Records</h3>
+            <h3 className="text-xl font-semibold text-yellow-300 mb-4">📊 {t('stakingRecords')}</h3>
 
-            <h4 className="text-lg font-bold text-green-400 mb-2">🟢 Active Staking</h4>
+            <h4 className="text-lg font-bold text-green-400 mb-2">🟢 {t('activeStaking')}</h4>
             {stakingList.filter(s => s.status === 'active').length > 0 ? (
               <div className="grid gap-4">
                 {stakingList.filter(s => s.status === 'active').map((stake) => {
@@ -259,9 +245,9 @@ const StakingPage = () => {
                   return (
                     <div key={stake.id} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
                       <p>💰 <strong>{stake.amount} FSN</strong></p>
-                      <p>⏳ {stake.duration === 12 ? '12 months' : `${stake.duration} month(s)`}</p>
-                      <p>📆 Ends: {end.toLocaleDateString()}</p>
-                      <p>💸 Expected Return: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
+                      <p>⏳ {stake.duration === 12 ? '12 ' + t('duration.months') : `${stake.duration} ` + t('duration.month')}</p>
+                      <p>📅 {t('stakingSection.endsOn')}: {end.toLocaleDateString()}</p>
+                      <p>💸 {t('stakingSection.expectedReturn')}: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
                       <div className="w-full bg-gray-700 rounded-full h-2.5 mt-4">
                         <div className="bg-yellow-400 h-2.5 rounded-full" style={{ width: `${percent}%` }}></div>
                       </div>
@@ -270,18 +256,18 @@ const StakingPage = () => {
                         disabled={!canClaim || stake.claimed}
                         className={`mt-4 w-full py-2 rounded font-semibold shadow ${canClaim ? 'bg-green-500 hover:bg-green-600 text-black' : 'bg-gray-600 text-gray-300 cursor-not-allowed'}`}
                       >
-                        {canClaim ? '🎁 Claim Rewards' : `⏳ Claim in: ${Math.floor(remaining / (3600 * 24))}d`}
+                        {canClaim ? '🎁 ' + t('stakingSection.claimRewards') : `⏳ ${t('stakingSection.claimIn')}: ${Math.floor(remaining / (3600 * 24))}d`}
                       </button>
                     </div>
                   );
                 })}
               </div>
             ) : (
-              <p className="text-gray-500">No active staking records.</p>
+              <p className="text-gray-500">{t('noActiveStaking')}</p>
             )}
 
             <h4 className="text-lg font-bold text-gray-400 cursor-pointer mt-6" onClick={() => setShowCompleted(!showCompleted)}>
-              ✅ Completed Staking {showCompleted ? '▲' : '▼'}
+              ✅ {t('completedStaking')} {showCompleted ? '▲' : '▼'}
             </h4>
             {showCompleted && (
               stakingList.filter(s => s.status === 'completed').length > 0 ? (
@@ -291,18 +277,18 @@ const StakingPage = () => {
                     return (
                       <div key={stake.id} className="bg-gray-900 p-4 rounded-lg border border-green-500">
                         <p>💰 <strong>{stake.amount} FSN</strong></p>
-                        <p>⏳ {stake.duration === 12 ? '12 months' : `${stake.duration} month(s)`}</p>
-                        <p>📆 Ends: {end.toLocaleDateString()}</p>
-                        <p>💸 Expected Return: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
+                        <p>⏳ {stake.duration === 12 ? '12 ' + t('duration.months') : `${stake.duration} ` + t('duration.month')}</p>
+                        <p>📅 {t('stakingSection.endsOn')}: {end.toLocaleDateString()}</p>
+                        <p>💸 {t('stakingSection.expectedReturn')}: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
                         <div className="mt-4 w-full py-2 rounded font-semibold text-green-400 bg-gray-700 text-center border border-green-400">
-                          ✅ Claimed
+                          ✅ {t('claimed')}
                         </div>
                       </div>
                     );
                   })}
                 </div>
               ) : (
-                <p className="text-gray-500">No completed staking yet.</p>
+                <p className="text-gray-500">{t('noCompletedStaking')}</p>
               )
             )}
           </section>

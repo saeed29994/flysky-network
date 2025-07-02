@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useUserPlan } from '../contexts/UserPlanContext';
 import SubscribeModal from '../components/SubscribeModal';
-import { collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { storage } from '../firebase';
-
 
 interface Plan {
   id: string;
@@ -18,40 +17,48 @@ interface Plan {
 }
 
 const MembershipPage = () => {
+  const { t } = useTranslation();
   const { currentPlan, subscriptionEnd } = useUserPlan();
   const [modalPlan, setModalPlan] = useState<null | { index: number; price: string }>(null);
-  const [plans, setPlans] = useState<Plan[]>([]);
   const [selectedCurrency, setSelectedCurrency] = useState('usdt-bep20');
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [txLink, setTxLink] = useState('');
   const [fromAddress, setFromAddress] = useState('');
-
-  useEffect(() => {
-    const fetchPlans = async () => {
-      const snapshot = await getDocs(collection(db, 'plans'));
-      const fetchedPlans: Plan[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Plan[];
-      setPlans(fetchedPlans);
-    };
-    fetchPlans();
-  }, []);
-
   const now = Math.floor(Date.now() / 1000);
   const isExpired = subscriptionEnd ? subscriptionEnd < now : true;
 
+  const plans: Plan[] = [
+    {
+      id: 'business',
+      name: 'plan.business',
+      price: 10,
+      features: ['advancedMining', 'prioritySupport', 'stakingAccess', 'fasterMining'],
+    },
+    {
+      id: 'first',
+      name: 'plan.first',
+      price: 49,
+      features: ['allBusinessFeatures', 'fasterMining', 'eventAccess', 'prioritySupport', 'highestMining', 'premiumAccess'],
+    },
+    {
+      id: 'first-lifetime',
+      name: 'plan.first-lifetime',
+      price: 99,
+      features: ['highestMining', 'lifetimeAccess', 'premiumAccess', 'prioritySupport', 'unlockedForever', 'lifetimePerks', 'eventAccess'],
+    },
+  ];
+
   const handleProofUpload = async () => {
     if (!proofFile || !txLink || !fromAddress) {
-      toast.error('❌ Please complete all required fields.');
+      toast.error('❌ ' + t('fillAllFields'));
       return;
     }
 
     const auth = getAuth();
     const user = auth.currentUser;
     if (!user) {
-      toast.error('❌ You must be logged in.');
+      toast.error('❌ ' + t('notAuthenticated'));
       return;
     }
 
@@ -72,13 +79,13 @@ const MembershipPage = () => {
         status: 'pending',
       });
 
-      toast.success('✅ Your payment proof has been uploaded and is pending review.');
+      toast.success('✅ ' + t('success.stakeCreated'));
       setProofFile(null);
       setTxLink('');
       setFromAddress('');
     } catch (err) {
       console.error('❌ Upload failed:', err);
-      toast.error('❌ Upload failed. Please check your internet or file and try again.');
+      toast.error('❌ ' + t('stakingSection.error.stakeFailed'));
     } finally {
       setUploading(false);
     }
@@ -86,22 +93,21 @@ const MembershipPage = () => {
 
   return (
     <div className="max-w-5xl mx-auto text-white px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8 text-center">Your Membership</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">{t('membershipPage.title')}</h1>
 
       <p className="text-center mb-2">
-        Current Plan: <span className="font-semibold capitalize">{currentPlan || 'Not subscribed'}</span>
+        {t('membershipPage.currentPlan')}: <span className="font-semibold capitalize">{currentPlan || t('membershipPage.notSubscribed')}</span>
       </p>
 
       {subscriptionEnd && (
         <p className="text-center mb-8 text-sm text-gray-300">
-          {isExpired ? 'Expired on' : 'Expires on'}: {new Date(subscriptionEnd * 1000).toLocaleDateString()}
+          {isExpired ? t('membershipPage.expiredOn') : t('membershipPage.expiresOn')}: {new Date(subscriptionEnd * 1000).toLocaleDateString()}
         </p>
       )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {plans.filter(plan => plan.id !== 'economy').map((plan, index) => {
+        {plans.map((plan, index) => {
           const isActive = plan.id === currentPlan && !isExpired;
-
           let bonus = 0;
           let bgColor = 'bg-[#1B263B]';
 
@@ -122,24 +128,24 @@ const MembershipPage = () => {
               className={`border rounded-xl p-6 shadow-md transition-all 
               ${isActive ? 'border-yellow-400 bg-yellow-100 text-black' : `${bgColor} text-white`}`}
             >
-              <h2 className="text-xl font-bold mb-2">{plan.name}</h2>
+              <h2 className="text-xl font-bold mb-2">{t(plan.name)}</h2>
               <p className="mb-1 text-lg">{plan.price} BUSD</p>
               <p className="mb-1 text-sm font-semibold">
-                🎁 Bonus: <span className="text-yellow-400 font-bold">{bonus.toLocaleString()} FSN</span>
+                {t('membershipPage.bonus')}: <span className="text-yellow-400 font-bold">{bonus.toLocaleString()} FSN</span>
               </p>
               <ul className="mb-6 text-sm space-y-1 text-left">
-                {plan.features.map((feature: string, i: number) => (
-                  <li key={i}>✔️ {feature}</li>
+                {plan.features.map((feature, i) => (
+                  <li key={i}>✔️ {t(`feature.${feature}`)}</li>
                 ))}
               </ul>
               {isActive ? (
-                <button className="w-full bg-green-500 text-white font-bold py-2 rounded" disabled>Activated</button>
+                <button className="w-full bg-green-500 text-white font-bold py-2 rounded" disabled>{t('membershipPage.activated')}</button>
               ) : (
                 <button
                   className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-2 rounded"
                   onClick={() => setModalPlan({ index, price: String(plan.price) })}
                 >
-                  {plan.id === currentPlan && isExpired ? 'Renew' : 'Subscribe'}
+                  {plan.id === currentPlan && isExpired ? t('membershipPage.renew') : t('membershipPage.subscribe')}
                 </button>
               )}
             </div>
@@ -148,26 +154,26 @@ const MembershipPage = () => {
       </div>
 
       {modalPlan && (
-        <SubscribeModal planIndex={modalPlan.index} price={modalPlan.price} onClose={() => setModalPlan(null)} />
+        <SubscribeModal planId={String(modalPlan.index)} price={modalPlan.price} onClose={() => setModalPlan(null)} />
       )}
 
-      {/* الدفع اليدوي */}
+      {/* 👇 قسم الدفع اليدوي */}
       <div className="mt-20 border-t border-gray-700 pt-10 px-4 sm:px-6 lg:px-8 w-full max-w-full">
-        <h2 className="text-2xl font-bold text-yellow-400 text-center mb-6">Manual Payment Option</h2>
+        <h2 className="text-2xl font-bold text-yellow-400 text-center mb-6">{t('membershipPage.manualPaymentTitle')}</h2>
 
         <div className="bg-yellow-100 text-black text-sm p-4 rounded mb-6 max-w-2xl w-full mx-auto">
-          <p className="mb-2 font-semibold">📌 Instructions:</p>
+          <p className="mb-2 font-semibold">{t('membershipPage.instructions.title')}</p>
           <ul className="list-disc list-inside space-y-1">
-            <li>Send the exact amount to the wallet address shown below based on your selected currency.</li>
-            <li>You <strong>must</strong> provide a valid <span className="text-blue-700">Transaction Link</span> and <span className="text-blue-700">Sender Wallet Address</span>.</li>
-            <li>Upload a clear screenshot of the payment confirmation showing: amount, currency, receiver address, and time.</li>
-            <li className="text-red-600">❌ Do not reuse an old transaction hash or send from an unknown wallet.</li>
-            <li className="text-green-600">✅ Submissions will be verified within 24 hours.</li>
+            <li>{t('membershipPage.instructions.step1')}</li>
+            <li>{t('membershipPage.instructions.step2')}</li>
+            <li>{t('membershipPage.instructions.step3')}</li>
+            <li className="text-red-600">{t('membershipPage.instructions.step4')}</li>
+            <li className="text-green-600">{t('membershipPage.instructions.step5')}</li>
           </ul>
         </div>
 
         <div className="w-full max-w-md mx-auto mb-6 px-2">
-          <label className="block text-sm font-medium text-white mb-2">Select Currency</label>
+          <label className="block text-sm font-medium text-white mb-2">{t('membershipPage.selectCurrency')}</label>
           <select
             className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
             onChange={(e) => setSelectedCurrency(e.target.value)}
@@ -182,7 +188,7 @@ const MembershipPage = () => {
         </div>
 
         <div className="text-center mb-6 px-2">
-          <p className="text-sm text-gray-400 mb-1">Send to this wallet address:</p>
+          <p className="text-sm text-gray-400 mb-1">{t('membershipPage.sendTo')}</p>
           <div className="bg-gray-800 text-yellow-300 px-4 py-2 rounded inline-block font-mono break-all">
             {selectedCurrency === 'usdt-trc20'
               ? 'TDwudwKdrHTQKsLoLABavJ9VQrX5nYVYM7'
@@ -192,7 +198,7 @@ const MembershipPage = () => {
 
         <div className="w-full max-w-md mx-auto space-y-4 px-2">
           <div>
-            <label className="block text-sm text-white font-medium mb-1">Transaction Link</label>
+            <label className="block text-sm text-white font-medium mb-1">{t('membershipPage.transactionLink')}</label>
             <input
               type="text"
               value={txLink}
@@ -204,7 +210,7 @@ const MembershipPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm text-white font-medium mb-1">From Wallet Address</label>
+            <label className="block text-sm text-white font-medium mb-1">{t('membershipPage.fromAddress')}</label>
             <input
               type="text"
               value={fromAddress}
@@ -216,7 +222,7 @@ const MembershipPage = () => {
           </div>
 
           <div>
-            <label className="block mb-2 text-sm text-white font-medium">Upload Proof of Payment</label>
+            <label className="block mb-2 text-sm text-white font-medium">{t('membershipPage.uploadProof')}</label>
             <input
               type="file"
               accept="image/*"
@@ -232,7 +238,7 @@ const MembershipPage = () => {
               onClick={handleProofUpload}
               disabled={uploading || !txLink || !fromAddress || !proofFile}
             >
-              {uploading ? 'Uploading...' : 'Submit Proof'}
+              {uploading ? t('membershipPage.uploading') : t('membershipPage.submitProof')}
             </button>
           </div>
         </div>

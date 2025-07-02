@@ -11,13 +11,22 @@ import {
   setDoc,
   serverTimestamp,
   getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
 } from 'firebase/firestore';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { requestPermissionAndToken } from '../utils/pushNotification';
+import { sendNotification as sendFCMNotification } from '../utils/sendNotification';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 
 const SignupPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
@@ -27,11 +36,18 @@ const SignupPage = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLogoSpin(false);
-    }, 3000);
+    const timer = setTimeout(() => setLogoSpin(false), 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const refFromUrl = searchParams.get('ref');
+    if (refFromUrl) setReferralCode(refFromUrl);
+  }, [searchParams]);
+
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
 
   const sendWelcomeMessage = async (uid: string) => {
     const inboxRef = doc(db, 'users', uid, 'inbox', 'welcome');
@@ -47,6 +63,49 @@ const SignupPage = () => {
         amount: 500,
         type: 'welcome_bonus',
       });
+
+      await sendFCMNotification({
+        title: '🎁 Welcome Bonus',
+        body: 'You received a 500 FSN welcome reward!',
+      });
+    }
+  };
+
+  const registerReferral = async (referredCode: string, referredEmail: string) => {
+    try {
+      const q = query(collection(db, 'users'), where('referralCode', '==', referredCode));
+      const querySnapshot = await getDocs(q);
+
+      let refUserRef = null;
+      let refData = null;
+
+      if (!querySnapshot.empty) {
+        const refUser = querySnapshot.docs[0];
+        refUserRef = refUser.ref;
+        refData = refUser.data();
+      } else {
+        const altRef = doc(db, 'users', referredCode);
+        const altSnap = await getDoc(altRef);
+        if (altSnap.exists()) {
+          refUserRef = altRef;
+          refData = altSnap.data();
+        }
+      }
+
+      if (refUserRef && refData) {
+        const referralList = refData.referralList || [];
+        referralList.push({
+          email: referredEmail,
+          status: 'Pending',
+        });
+
+        await setDoc(refUserRef, { referralList }, { merge: true });
+        console.log('✅ Referral registered successfully.');
+      } else {
+        console.warn('⚠️ No matching referrer found for code:', referredCode);
+      }
+    } catch (err) {
+      console.error('❌ Failed to update referral list:', err);
     }
   };
 
@@ -55,7 +114,7 @@ const SignupPage = () => {
     setError('');
 
     try {
-      const finalReferral = referralCode.trim() !== '' ? referralCode.trim() : '';
+      const finalReferral = referralCode.trim();
 
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -69,7 +128,7 @@ const SignupPage = () => {
         plan: 'economy',
         createdAt: serverTimestamp(),
         referralCode: generatedReferralCode,
-        referredBy: finalReferral,
+        referredBy: finalReferral || '',
         language: 'en',
         theme: 'dark',
         kycStatus: 'Not Actived',
@@ -88,6 +147,8 @@ const SignupPage = () => {
         ],
       });
 
+      if (finalReferral) await registerReferral(finalReferral, email);
+
       await sendWelcomeMessage(user.uid);
       await sendEmailVerification(user);
       await requestPermissionAndToken(user.uid);
@@ -99,30 +160,25 @@ const SignupPage = () => {
   };
 
   const handleGoogleSignup = async () => {
-    setError('');
-
-    if (!acceptedTerms) {
-      setError('You must accept the Terms and Conditions before signing up with Google.');
-      return;
-    }
-
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      if (!userDoc.exists()) {
+      const userRef = doc(db, 'users', user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
         const generatedReferralCode = uuidv4().slice(0, 8);
 
-        await setDoc(doc(db, 'users', user.uid), {
+        await setDoc(userRef, {
           fullName: user.displayName || '',
           email: user.email || '',
           balance: 500,
           plan: 'economy',
           createdAt: serverTimestamp(),
           referralCode: generatedReferralCode,
-          referredBy: '',
+          referredBy: referralCode.trim() || '',
           language: 'en',
           theme: 'dark',
           kycStatus: 'Not Actived',
@@ -140,130 +196,91 @@ const SignupPage = () => {
             },
           ],
         });
+
+        if (referralCode.trim()) await registerReferral(referralCode.trim(), user.email || '');
+        await sendWelcomeMessage(user.uid);
+        await requestPermissionAndToken(user.uid);
       }
 
-      await sendWelcomeMessage(user.uid);
-      await requestPermissionAndToken(user.uid);
-      navigate('/dashboard');
+      navigate('/verify-email');
     } catch (err: any) {
       console.error(err);
-      setError('Google signup failed. Please try again.');
+      setError(err.message || 'Google signup failed');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-4">
-      <div className="flex items-center mb-6 space-x-3 sm:space-x-5">
-        <img
-          src="/fsn-logo.png"
-          alt="FSN Logo"
-          className={`w-12 h-12 sm:w-16 sm:h-16 ${logoSpin ? 'animate-spin-slow' : ''}`}
-        />
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-center">
-          <span className="text-yellow-400">Fly</span>
-          <span className="text-sky-400">Sky</span>{' '}
-          <span className="text-yellow-400">Network</span>
-        </h1>
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-900 to-slate-800 text-white p-6">
+      <img
+        src="/fsn-logo.png"
+        alt="Logo"
+        className={`w-20 h-20 mb-2 ${logoSpin ? 'animate-spin-slow' : ''}`}
+      />
+      <h1 className="text-4xl font-bold mb-6">
+        <span className="text-yellow-400">Fly</span>
+        <span className="text-cyan-400">Sky</span>
+        <span className="text-yellow-400"> Network</span>
+      </h1>
+      <h2 className="text-2xl font-semibold mb-6">{t('auth.createAccount')}</h2>
 
-      <form
-        onSubmit={handleSignup}
-        className="bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-md text-white"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-yellow-400">Sign Up</h2>
+      <form onSubmit={handleSignup} className="w-full max-w-md space-y-4">
+        <input type="text" placeholder={t('auth.fullName')} value={fullName} onChange={(e) => setFullName(e.target.value)} required className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none" />
+        <input type="email" placeholder={t('auth.email')} value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none" />
+        <input type="password" placeholder={t('auth.password')} value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none" />
+        <input type="text" placeholder={t('auth.referralCode')} value={referralCode} onChange={(e) => setReferralCode(e.target.value)} className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none" />
 
-        {error && <p className="text-red-400 mb-4 text-sm">{error}</p>}
+        <label className="flex items-center text-sm text-gray-300">
+          <input type="checkbox" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} required className="mr-2" />
+          {t('auth.agreeTo')}{' '}
+          <Link to="/terms" className="text-yellow-400 underline">
+            {t('auth.terms')}
+          </Link>
+        </label>
 
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="w-full p-2 mb-3 rounded bg-gray-800 border border-gray-700"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 mb-3 rounded bg-gray-800 border border-gray-700"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 mb-2 rounded bg-gray-800 border border-gray-700"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Referral Code (Optional)"
-          className="w-full p-2 mb-3 rounded bg-gray-800 border border-gray-700"
-          value={referralCode}
-          onChange={(e) => setReferralCode(e.target.value)}
-        />
-
-        <div className="flex items-start mb-4 text-sm">
-          <input
-            id="terms"
-            type="checkbox"
-            checked={acceptedTerms}
-            onChange={() => setAcceptedTerms(!acceptedTerms)}
-            className="mr-2 mt-1"
-            required
-          />
-          <label htmlFor="terms" className="text-gray-300">
-            I agree to the
-            <Link to="/terms" className="text-yellow-400 hover:underline ml-1" target="_blank">
-              Terms and Conditions
-            </Link>
-          </label>
-        </div>
+        {error && <p className="text-red-400 text-sm">{error}</p>}
 
         <button
           type="submit"
           disabled={!acceptedTerms}
-          className={`w-full py-2 rounded font-semibold transition ${
+          className={`w-full py-2 rounded-md font-semibold transition ${
             acceptedTerms
-              ? 'bg-yellow-500 hover:bg-yellow-400 text-black'
-              : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+              ? 'bg-yellow-500 text-black hover:bg-yellow-400'
+              : 'bg-gray-500 text-gray-300 cursor-not-allowed'
           }`}
         >
-          Sign Up
+          {t('auth.signUp')}
         </button>
-
-        <div className="text-center text-white my-4">OR</div>
 
         <button
           type="button"
           onClick={handleGoogleSignup}
           disabled={!acceptedTerms}
-          className={`flex items-center justify-center py-2 px-4 rounded font-semibold shadow transition w-full ${
+          className={`w-full py-2 rounded-md font-semibold transition ${
             acceptedTerms
-              ? 'bg-white text-black hover:bg-gray-100'
-              : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+              ? 'bg-white text-black hover:bg-gray-200'
+              : 'bg-gray-500 text-gray-300 cursor-not-allowed'
           }`}
         >
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="Google Logo"
-            className="w-5 h-5 mr-3"
-          />
-          Sign Up with Google
+          {t('auth.signUpWithGoogle')}
         </button>
 
-        <p className="mt-4 text-sm text-gray-400 text-center">
-          Already have an account?{' '}
-          <Link to="/login" className="text-yellow-400 hover:underline">
-            Login
+        <p className="text-center text-sm text-gray-400">
+          {t('auth.haveAccount')}{' '}
+          <Link to="/login" className="text-yellow-400">
+            {t('auth.login')}
           </Link>
         </p>
+
+        <div className="text-center pt-4">
+          <select
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
+            defaultValue={i18n.language}
+            className="bg-gray-800 text-white px-3 py-1 rounded border border-gray-600"
+          >
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+          </select>
+        </div>
       </form>
     </div>
   );

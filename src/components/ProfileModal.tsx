@@ -1,4 +1,4 @@
-// ✅ النسخة المعدلة لتخزين الأفاتار في Firebase Storage بدلًا من Cloudinary
+// 📁 ProfileModal.tsx
 
 import React, { useState, useEffect } from 'react';
 import { X, Settings } from 'lucide-react';
@@ -8,7 +8,8 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { storage } from '../firebase';
 import toast from 'react-hot-toast';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   onUpgrade,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [showUploadInput, setShowUploadInput] = useState(false);
 
@@ -104,24 +106,24 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
 
   const getKYCStatus = () => {
     if (kycStatus === 'Approved')
-      return <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full">✅ Approved</span>;
+      return <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full">{t('kycApproved')}</span>;
     if (kycStatus === 'Pending')
-      return <span className="bg-yellow-400 text-black text-xs px-3 py-1 rounded-full">🕓 Pending</span>;
+      return <span className="bg-yellow-400 text-black text-xs px-3 py-1 rounded-full">{t('kycPending')}</span>;
     return (
       <button
         onClick={() => navigate('/kyc')}
         className="bg-red-500 text-white text-xs px-3 py-1 rounded-full hover:bg-red-600 transition"
       >
-        ❌ Not Verified – Complete KYC
+        {t('notVerified')}
       </button>
     );
   };
 
   const statusMessage = () => {
-    if (kycStatus !== 'Approved') return '⚠️ Complete your KYC to access full features.';
-    if (plan === 'economy') return '🚀 You are on the free plan. Upgrade to unlock more benefits.';
-    if (plan === 'business') return '🎯 Business Class gives you enhanced access. First Class unlocks full potential.';
-    return '👑 You are enjoying full access with First Class membership.';
+    if (kycStatus !== 'Approved') return t('statusMsg.kyc');
+    if (plan === 'economy') return t('statusMsg.economy');
+    if (plan === 'business') return t('statusMsg.business');
+    return t('statusMsg.first');
   };
 
   return (
@@ -189,18 +191,18 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
 
         <div className="space-y-3 mt-6 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-400">Membership</span>
+            <span className="text-gray-400">{t('membership')}</span>
             {getPlanBadge()}
           </div>
 
           <div className="flex justify-between">
-            <span className="text-gray-400">KYC Status</span>
+            <span className="text-gray-400">{t('kycStatus')}</span>
             {getKYCStatus()}
           </div>
 
           {subscriptionEnd && (
             <div className="flex justify-between">
-              <span className="text-gray-400">Expires On</span>
+              <span className="text-gray-400">{t('expiresOn')}</span>
               <span className="text-white">{subscriptionEnd}</span>
             </div>
           )}
@@ -214,9 +216,13 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
               onClick={onUpgrade}
               className="mt-4 bg-yellow-500 text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400"
             >
-              🚀 Upgrade Membership
+              {t('upgrade')}
             </button>
           )}
+
+          <div className="mt-6 flex justify-center">
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
     </div>

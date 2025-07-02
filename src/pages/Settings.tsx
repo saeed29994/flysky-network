@@ -1,22 +1,32 @@
-// 📁 Settings.tsx
+// 📁 Settings.tsx (translated and updated with corrected translation keys)
 
 import React, { useEffect, useState } from "react";
-import { auth, db } from "../firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "firebase/auth";
+import { useTranslation } from "react-i18next";
+import { auth, db, storage } from "../firebase";
+import {
+  doc,
+  getDoc,
+  updateDoc
+} from "firebase/firestore";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { storage } from '../firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-
-
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Settings = () => {
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [plan, setPlan] = useState("economy");
   const [subscriptionEnd, setSubscriptionEnd] = useState("");
+  const [language, setLanguage] = useState(i18n.language || "en");
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -26,8 +36,6 @@ const Settings = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -46,6 +54,7 @@ const Settings = () => {
         if (data.membership?.subscriptionEnd) {
           setSubscriptionEnd(new Date(data.membership.subscriptionEnd).toLocaleDateString());
         }
+        setLanguage(data.language || i18n.language);
       }
     };
     fetchUserData();
@@ -100,7 +109,7 @@ const Settings = () => {
 
   const handleSaveAvatar = async () => {
     if (!selectedFile) {
-      toast.error("Please select an image first.");
+      toast.error(t("settingsSection.selectImage"));
       return;
     }
 
@@ -115,28 +124,28 @@ const Settings = () => {
       setAvatarUrl(imageUrl);
       setSelectedFile(null);
       setPreviewUrl(null);
-      toast.success("Avatar updated successfully!");
+      toast.success(t("settingsSection.avatarUpdated"));
       setUploadProgress(0);
     } catch (error) {
-      toast.error("Failed to upload avatar.");
+      toast.error(t("settingsSection.uploadFailed"));
       setUploadProgress(0);
     }
   };
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      toast.error("Please fill in all password fields.");
+      toast.error(t("settingsSection.fillAllFields"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error("New password and confirmation do not match.");
+      toast.error(t("settingsSection.passwordMismatch"));
       return;
     }
 
     const user = auth.currentUser;
     if (!user || !user.email) {
-      toast.error("User not authenticated.");
+      toast.error(t("settingsSection.notAuthenticated"));
       return;
     }
 
@@ -147,9 +156,21 @@ const Settings = () => {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      toast.success("Password updated successfully!");
+      toast.success(t("settingsSection.passwordUpdated"));
     } catch {
-      toast.error("Failed to update password. Please check your current password.");
+      toast.error(t("settingsSection.updateFailed"));
+    }
+  };
+
+  const handleLanguageChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLang = e.target.value;
+    setLanguage(newLang);
+    i18n.changeLanguage(newLang);
+
+    const user = auth.currentUser;
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      await updateDoc(docRef, { language: newLang });
     }
   };
 
@@ -157,7 +178,7 @@ const Settings = () => {
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 bg-[#0B1622] text-white rounded-lg overflow-hidden">
       {/* Profile Section */}
       <section className="mb-10">
-        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">Profile Information</h2>
+        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">{t("settingsSection.profileTitle")}</h2>
         <div className="flex flex-col sm:flex-row items-center gap-6 mb-4">
           {(previewUrl || avatarUrl) ? (
             <img
@@ -167,7 +188,7 @@ const Settings = () => {
             />
           ) : (
             <div className="w-24 h-24 rounded-full border-2 border-yellow-400 flex items-center justify-center text-sm text-gray-400 bg-gray-800">
-              No Image
+              {t("settingsSection.noImage")}
             </div>
           )}
           <input
@@ -184,7 +205,7 @@ const Settings = () => {
               disabled={isUploading}
               className={`px-4 py-2 rounded bg-yellow-400 text-black font-semibold w-full sm:w-auto ${isUploading ? "opacity-50 cursor-not-allowed" : "hover:bg-yellow-500"}`}
             >
-              Save Avatar
+              {t("settingsSection.saveAvatar")}
             </button>
             {isUploading && (
               <div className="mt-2 bg-gray-700 h-2 rounded overflow-hidden">
@@ -198,7 +219,7 @@ const Settings = () => {
         )}
 
         <div className="mb-4">
-          <label className="block mb-1">Full Name</label>
+          <label className="block mb-1">{t("settingsSection.fullName")}</label>
           <input
             type="text"
             value={fullName}
@@ -208,7 +229,7 @@ const Settings = () => {
         </div>
 
         <div>
-          <label className="block mb-1">Email</label>
+          <label className="block mb-1">{t("settingsSection.email")}</label>
           <input
             type="email"
             value={email}
@@ -220,13 +241,13 @@ const Settings = () => {
 
       {/* Account Status */}
       <section className="mb-10">
-        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">Account Status</h2>
+        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">{t("settingsSection.accountTitle")}</h2>
         <p className="mb-2">
-          Current Plan: <span className="font-semibold text-yellow-400">{plan}</span>
+          {t("settingsSection.currentPlan")} <span className="font-semibold text-yellow-400">{plan}</span>
         </p>
         {subscriptionEnd && (
           <p className="mb-4">
-            Subscription Ends On: <span>{subscriptionEnd}</span>
+            {t("settingsSection.subscriptionEnds")} <span>{subscriptionEnd}</span>
           </p>
         )}
         {!(plan === "first" || plan === "first-lifetime" || plan === "first_lifetime") && (
@@ -234,16 +255,16 @@ const Settings = () => {
             onClick={() => navigate("/membership")}
             className="bg-yellow-400 text-black px-4 py-2 rounded"
           >
-            Upgrade Plan
+            {t("settingsSection.upgrade")}
           </button>
         )}
       </section>
 
       {/* Password Change */}
-      <section>
-        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">Change Password</h2>
+      <section className="mb-10">
+        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">{t("settingsSection.passwordTitle")}</h2>
         <div className="mb-4">
-          <label className="block mb-1">Current Password</label>
+          <label className="block mb-1">{t("settingsSection.currentPassword")}</label>
           <input
             type="password"
             value={currentPassword}
@@ -252,7 +273,7 @@ const Settings = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1">New Password</label>
+          <label className="block mb-1">{t("settingsSection.newPassword")}</label>
           <input
             type="password"
             value={newPassword}
@@ -261,7 +282,7 @@ const Settings = () => {
           />
         </div>
         <div className="mb-6">
-          <label className="block mb-1">Confirm New Password</label>
+          <label className="block mb-1">{t("settingsSection.confirmPassword")}</label>
           <input
             type="password"
             value={confirmPassword}
@@ -273,8 +294,21 @@ const Settings = () => {
           onClick={handleChangePassword}
           className="bg-yellow-400 text-black px-4 py-2 rounded"
         >
-          Change Password
+          {t("settingsSection.changePassword")}
         </button>
+      </section>
+
+      {/* Language Selection */}
+      <section>
+        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">{t("settingsSection.languageTitle")}</h2>
+        <select
+          value={language}
+          onChange={handleLanguageChange}
+          className="bg-gray-800 text-white px-4 py-2 rounded"
+        >
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
       </section>
     </div>
   );

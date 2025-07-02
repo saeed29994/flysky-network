@@ -6,16 +6,17 @@ import {
 } from './utils/pushNotification';
 import { auth, messagingPromise } from './firebase';
 import { onMessage } from 'firebase/messaging';
-
 import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
   Outlet,
 } from 'react-router-dom';
-
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+// i18n RTL support ✅
+import { useTranslation } from 'react-i18next';
 
 // Public Pages
 import Inbox_Debug from './pages/Inbox_Debug';
@@ -65,7 +66,6 @@ const publicRoutes = [
   { path: '/about', element: <AboutUs /> },
   { path: '/test-notification', element: <TestNotification /> },
   { path: '/terms', element: <TermsPage /> },
-  { path: '/test-notification', element: <TestNotification /> },
 ];
 
 const dashboardRoutes = [
@@ -109,22 +109,23 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // ✅ تمرير UID إلى دالة توليد وحفظ التوكن
         await requestPermissionAndToken(user.uid);
         listenToForegroundMessages();
 
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker
             .register('/firebase-messaging-sw.js')
-            .then(() => {
-              console.log('✅ Service Worker registered');
-            })
-            .catch((err) => {
-              console.error('❌ SW registration failed', err);
-            });
+            .then(() => console.log('✅ Service Worker registered'))
+            .catch((err) => console.error('❌ SW registration failed', err));
         }
 
         const messaging = await messagingPromise;

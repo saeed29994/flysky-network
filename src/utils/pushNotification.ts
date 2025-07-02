@@ -1,45 +1,43 @@
-// 📁 src/utils/pushNotification.ts
-
 import { getToken, onMessage, deleteToken } from 'firebase/messaging';
 import { db, messaging } from '../firebase';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, serverTimestamp } from 'firebase/firestore';
 
-// ✅ طلب الإذن وحفظ التوكن مع بيانات إضافية
+// ✅ طلب الإذن وحفظ التوكن داخل حقل fcmTokens في وثيقة المستخدم
 export const requestPermissionAndToken = async (uid: string) => {
   try {
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
-      console.warn('🔒 Notification permission not granted');
+      console.warn('🔒 تم رفض إذن الإشعارات');
       return;
     }
 
     const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
     const token = await getToken(messaging, { vapidKey });
 
-    console.log('📱 Device Info:', {
+    console.log('📱 معلومات الجهاز:', {
       userAgent: navigator.userAgent,
       token,
       permission: Notification.permission,
     });
 
     if (token) {
-      await setDoc(doc(db, 'userTokens', uid), {
-        token,
-        userAgent: navigator.userAgent,
-        permission: Notification.permission,
-        updatedAt: serverTimestamp(),
+      const userRef = doc(db, 'users', uid);
+      await updateDoc(userRef, {
+        fcmTokens: arrayUnion(token),
+        lastTokenUpdate: serverTimestamp(),
+        lastUserAgent: navigator.userAgent,
       });
 
-      console.log('✅ Token saved to Firestore');
+      console.log('✅ تم حفظ التوكن داخل حقل fcmTokens');
     } else {
-      console.warn('⚠️ No FCM token retrieved');
+      console.warn('⚠️ لم يتم الحصول على توكن FCM');
     }
   } catch (error: any) {
-    console.error('❌ Error requesting token:', error?.message || error);
+    console.error('❌ خطأ أثناء طلب التوكن:', error?.message || error);
   }
 };
 
-// ✅ حذف التوكن من المتصفح
+// ✅ حذف التوكن الحالي من المتصفح فقط
 export const deleteCurrentToken = async () => {
   try {
     const currentToken = await getToken(messaging, {
@@ -48,16 +46,16 @@ export const deleteCurrentToken = async () => {
 
     if (currentToken) {
       await deleteToken(messaging);
-      console.log('🗑️ Token deleted from browser');
+      console.log('🗑️ تم حذف التوكن من المتصفح');
     }
   } catch (error) {
-    console.error('❌ Error deleting token:', error);
+    console.error('❌ خطأ أثناء حذف التوكن:', error);
   }
 };
 
-// ✅ استقبال الإشعارات أثناء فتح التطبيق
+// ✅ الاستماع للإشعارات في وضع foreground
 export const listenToForegroundMessages = () => {
   onMessage(messaging, (payload) => {
-    console.log('📥 Foreground FCM message:', payload);
+    console.log('📥 تم استقبال إشعار أثناء فتح التطبيق:', payload);
   });
 };

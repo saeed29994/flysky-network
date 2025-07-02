@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { Copy } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const ReferralCard = () => {
+  const { t } = useTranslation();
   const [verifiedCount, setVerifiedCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
   const [referralLink, setReferralLink] = useState('');
@@ -47,9 +49,9 @@ const ReferralCard = () => {
 
   return (
     <div className="bg-gray-800 p-6 rounded-xl shadow-lg text-white max-w-md w-full mt-6">
-      <h3 className="text-xl font-bold mb-4">Referral Program</h3>
+      <h3 className="text-xl font-bold mb-4">{t('referralProgram')}</h3>
       <p className="text-sm text-gray-300 mb-2">
-        Invite your friends and earn FSN when they join.
+        {t('inviteFriendsEarn')}
       </p>
 
       {referralLink && (
@@ -64,11 +66,11 @@ const ReferralCard = () => {
           </button>
         </div>
       )}
-      {copied && <p className="text-green-400 text-sm">Copied!</p>}
+      {copied && <p className="text-green-400 text-sm">{t('copied')}</p>}
 
       <div className="mt-4">
         <p className="text-sm text-gray-300 mb-1">
-          Verified Referrals: {verifiedCount}/30
+          {t('verifiedReferrals')}: {verifiedCount}/30
         </p>
         <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden mb-2">
           <div
@@ -78,7 +80,7 @@ const ReferralCard = () => {
         </div>
 
         <p className="text-sm text-gray-300 mb-1">
-          Pending Referrals: {pendingCount}/30
+          {t('pendingReferrals')}: {pendingCount}/30
         </p>
         <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden">
           <div
@@ -89,15 +91,15 @@ const ReferralCard = () => {
       </div>
 
       <div className="mt-4 text-sm text-yellow-300">
-        Current Reward per Verified Referral: {getRewardPerReferral()} FSN
+        {t('currentReward')}: {getRewardPerReferral()} FSN
       </div>
 
       <div className="mt-4 text-xs text-gray-400">
-        <p>Reward Tiers:</p>
+        <p>{t('rewardTiers')}:</p>
         <ul className="list-disc list-inside">
-          <li>First 10 verified referrals: 100 FSN each</li>
-          <li>Next 10 verified referrals: 200 FSN each</li>
-          <li>Final 10 verified referrals: 300 FSN each</li>
+          <li>{t('bonusTier1')}</li>
+          <li>{t('bonusTier2')}</li>
+          <li>{t('bonusTier3')}</li>
         </ul>
       </div>
     </div>

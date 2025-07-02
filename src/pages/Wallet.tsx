@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 const Wallet = () => {
+  const { t } = useTranslation();
   const [balance, setBalance] = useState(0);
   const [lockedInStaking, setLockedInStaking] = useState(0);
   const [referralRewards, setReferralRewards] = useState(0);
@@ -48,46 +50,46 @@ const Wallet = () => {
   }, []);
 
   const chartData = [
-    { name: 'Available', value: balance },
-    { name: 'Locked in Staking', value: lockedInStaking },
+    { name: t('availableBalance'), value: balance },
+    { name: t('lockedInStaking'), value: lockedInStaking },
   ];
 
   const chartColors = ['#FFD700', '#FF8C00'];
 
   if (loading) {
-    return <div className="text-white text-center py-12">Loading wallet data...</div>;
+    return <div className="text-white text-center py-12">{t('loadingWallet')}</div>;
   }
 
   return (
     <div className="min-h-screen bg-gray-950 text-white px-4 py-10 flex flex-col items-center">
-      <h1 className="text-3xl font-bold text-yellow-400 mb-8">💼 Wallet Overview</h1>
+      <h1 className="text-3xl font-bold text-yellow-400 mb-8">{t('walletOverview')}</h1>
 
       <div className="w-full max-w-xl grid gap-6">
         <div className="bg-gray-900 p-6 rounded-xl shadow-lg">
-          <h2 className="text-lg font-semibold mb-2">Total Balance</h2>
+          <h2 className="text-lg font-semibold mb-2">{t('totalBalance')}</h2>
           <p className="text-2xl font-bold">{totalBalance.toLocaleString()} FSN</p>
         </div>
 
         <div className="bg-gray-900 p-6 rounded-xl shadow-lg">
-          <h2 className="text-lg font-semibold mb-2">Available Balance</h2>
+          <h2 className="text-lg font-semibold mb-2">{t('availableBalance')}</h2>
           <p className="text-2xl font-bold">{balance.toLocaleString()} FSN</p>
         </div>
 
         <div className="bg-gray-900 p-6 rounded-xl shadow-lg">
-          <h2 className="text-lg font-semibold mb-2">Locked in Staking</h2>
+          <h2 className="text-lg font-semibold mb-2">{t('lockedInStaking')}</h2>
           <p className="text-2xl font-bold">{lockedInStaking.toLocaleString()} FSN</p>
         </div>
 
         <div className="bg-gray-900 p-6 rounded-xl shadow-lg">
-          <h2 className="text-lg font-semibold mb-2">Referral Rewards (Approved Only)</h2>
+          <h2 className="text-lg font-semibold mb-2">{t('referralRewards')}</h2>
           <p className="text-2xl font-bold">{referralRewards.toLocaleString()} FSN</p>
         </div>
       </div>
 
       <div className="my-10">
-        <h2 className="text-xl font-semibold mb-4">💹 Balance Distribution</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('balanceDistribution')}</h2>
         {totalBalance === 0 ? (
-          <p className="text-gray-400 italic">No balance data to display.</p>
+          <p className="text-gray-400 italic">{t('noBalanceData')}</p>
         ) : (
           <PieChart width={300} height={300}>
             <Pie
@@ -109,10 +111,10 @@ const Wallet = () => {
         )}
       </div>
 
-      <h2 className="text-xl font-semibold mb-4">📜 Transaction History</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('transactionHistory')}</h2>
       <div className="w-full max-w-xl bg-gray-900 p-4 rounded-xl shadow">
         {transactions.length === 0 ? (
-          <p className="text-gray-400 italic">You have no recorded transactions yet.</p>
+          <p className="text-gray-400 italic">{t('noTransactions')}</p>
         ) : (
           transactions.map((tx: any, index) => (
             <div key={index} className="border-b border-gray-700 py-2">
