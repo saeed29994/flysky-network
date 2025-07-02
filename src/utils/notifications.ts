@@ -4,7 +4,7 @@ import { auth, db, functions } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 
-// ✅ إرسال إشعار باستخدام Cloud Function
+// ✅ إرسال إشعار FCM عام (من خلال sendPushNotification)
 export const sendUserNotification = async ({
   title,
   body,
@@ -25,7 +25,6 @@ export const sendUserNotification = async ({
       return;
     }
 
-    // الحصول على FCM Token
     const tokenRef = doc(db, 'userTokens', userId);
     const tokenSnap = await getDoc(tokenRef);
     if (!tokenSnap.exists()) {
@@ -40,50 +39,27 @@ export const sendUserNotification = async ({
     }
 
     const sendNotification = httpsCallable(functions, 'sendPushNotification');
-
     await sendNotification({
-      token,
+      userId,
       title,
       body,
       imageUrl,
       clickAction,
     });
 
-    console.log('✅ Notification sent via Firebase Function.');
-  } catch (error) {
-    console.error('🔥 Error sending notification:', error);
+    console.log('✅ Notification sent to user:', userId);
+  } catch (error: any) {
+    console.error('❌ Error sending notification:', error.message);
   }
 };
 
-// ✅ اختصارات جاهزة:
-export const notifyNewInboxMessage = async () => {
-  await sendUserNotification({
-    title: '📬 New Message',
-    body: 'You have received a new message in your inbox.',
-    clickAction: '/inbox',
-  });
-};
-
-export const notifyMiningComplete = async (redirectUrl = '/mining') => {
-  await sendUserNotification({
-    title: '⛏️ Mining Complete!',
-    body: 'Claim your rewards now!',
-    clickAction: redirectUrl,
-  });
-};
-
-export const notifyRewardClaimed = async () => {
-  await sendUserNotification({
-    title: '🎁 Reward Claimed',
-    body: 'You have successfully claimed your mining reward.',
-    clickAction: '/mining',
-  });
-};
-
-export const notifyAccountUpdate = async () => {
-  await sendUserNotification({
-    title: '🔧 Account Updated',
-    body: 'Your account information has been updated.',
-    clickAction: '/profile',
-  });
+// ✅ إشعار عند اكتمال التعدين (notifyMiningComplete)
+export const notifyMiningComplete = async () => {
+  try {
+    const callFn = httpsCallable(functions, 'notifyMiningComplete');
+    const result = await callFn();
+    console.log('✅ Mining completion notification sent:', result);
+  } catch (error: any) {
+    console.error('❌ Error calling notifyMiningComplete:', error.message);
+  }
 };

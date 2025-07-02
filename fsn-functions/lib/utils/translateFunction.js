@@ -33,37 +33,39 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.syncReferralList = void 0;
+exports.translateFunction = void 0;
 const functions = __importStar(require("firebase-functions"));
-const admin = __importStar(require("firebase-admin"));
-admin.initializeApp();
-exports.syncReferralList = functions.firestore
-    .document('users/{userId}')
-    .onWrite(async (change, context) => {
-    const newData = change.after.data();
-    const oldData = change.before.data();
-    // تحقق من أن المستخدم تم التحقق منه
-    if (!newData || newData.kycStatus !== 'Verified')
-        return;
-    const referredBy = newData.referredBy;
-    const referredEmail = newData.email;
-    if (!referredBy || !referredEmail)
-        return;
-    // ابحث عن حساب المحيل باستخدام referralCode
-    const usersRef = admin.firestore().collection('users');
-    const refQuery = await usersRef.where('referralCode', '==', referredBy).limit(1).get();
-    if (refQuery.empty)
-        return;
-    const refUserDoc = refQuery.docs[0];
-    const refUserId = refUserDoc.id;
-    const refUserData = refUserDoc.data();
-    const referralList = refUserData.referralList || [];
-    const alreadyExists = referralList.find((r) => r.email === referredEmail);
-    if (alreadyExists) {
-        alreadyExists.status = 'Verified';
+const translateText_1 = require("./translateText");
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://fsncrew.io",
+    "https://www.fsncrew.io"
+];
+exports.translateFunction = functions.https.onRequest(async (req, res) => {
+    const origin = req.headers.origin;
+    // ✅ إعداد CORS
+    if (origin && allowedOrigins.includes(origin)) {
+        res.set("Access-Control-Allow-Origin", origin);
+        res.set("Access-Control-Allow-Credentials", "true");
     }
-    else {
-        referralList.push({ email: referredEmail, status: 'Verified', claimed: false });
+    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    // ✅ رد فوري لطلبات preflight
+    if (req.method === "OPTIONS") {
+        res.status(204).send("");
+        return;
     }
-    await usersRef.doc(refUserId).update({ referralList });
+    try {
+        const { text, targetLang } = req.body;
+        if (!text || !targetLang) {
+            res.status(400).json({ error: "Missing text or targetLang" });
+            return;
+        }
+        const translated = await (0, translateText_1.translateText)(text, targetLang);
+        res.status(200).json({ translation: translated });
+    }
+    catch (error) {
+        console.error("🔥 Translation Error:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 });

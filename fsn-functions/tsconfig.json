@@ -2,16 +2,13 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
-    "lib": ["ESNext"],
-    "moduleResolution": "node",
+    "lib": ["es2020"],
     "outDir": "lib",
-    "rootDir": "src",
+    "rootDir": "functions/src",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "noImplicitAny": true
+    "skipLibCheck": true
   },
-  "include": ["src"],
-  "exclude": ["lib", "node_modules"]
+  "include": ["functions/src/**/*"]
 }

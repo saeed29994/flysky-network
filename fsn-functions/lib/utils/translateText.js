@@ -2,22 +2,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translateText = void 0;
 const v2_1 = require("@google-cloud/translate/build/src/v2");
-// ✅ تهيئة خدمة الترجمة باستخدام Google Cloud Translate API
+/**
+ * إعداد خدمة Google Translate باستخدام الإعدادات التلقائية
+ * (تأكد من أن متغيرات البيئة أو حساب الخدمة مفعّلة بشكل صحيح)
+ */
 const translate = new v2_1.Translate();
 /**
- * يترجم النص إلى اللغة المطلوبة.
+ * يترجم النص إلى اللغة المطلوبة باستخدام Google Cloud Translate API.
  * @param text النص المطلوب ترجمته
  * @param targetLang رمز اللغة الهدف (مثلاً: 'ar', 'en', 'fr')
- * @returns النص المترجم أو النص الأصلي إذا فشلت الترجمة
+ * @returns النص المترجم، أو يعيد النص الأصلي في حالة حدوث خطأ
  */
 const translateText = async (text, targetLang) => {
     try {
         const [translated] = await translate.translate(text, targetLang);
         return Array.isArray(translated) ? translated[0] : translated;
     }
-    catch (err) {
-        console.error('❌ Translation failed:', err);
-        return text; // fallback للنص الأصلي
+    catch (error) {
+        console.error('❌ Translation failed:', error);
+        return text;
     }
 };
 exports.translateText = translateText;
