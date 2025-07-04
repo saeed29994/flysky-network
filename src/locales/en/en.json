@@ -80,6 +80,73 @@
   "saveAvatar": "Save Avatar"
 },
 
+"kyc": {
+    "title": "KYC Verification Guide",
+
+    "uploadAllDocuments": "Please upload all required documents.",
+    "uploadSuccess": "✅ Documents uploaded successfully! Your KYC status is now Pending.",
+    "uploadFailed": "❌ Upload failed. Please try again.",
+    "uploading": "Uploading...",
+    "submit": "Submit Documents",
+
+    "idsAccepted": {
+      "title": "Which IDs are acceptable?",
+      "option1": "Passport, national ID card, driver’s license, or any government-issued ID.",
+      "option2": "ID must be valid and unexpired.",
+      "option3": "Must show profile photo and date of birth.",
+      "option4": "All information must be clear and readable."
+    },
+
+    "idPhotos": {
+      "title": "How to properly take photos of your ID?",
+      "option1": "Photos must be in color.",
+      "option2": "ID must be original — no screenshots, copies, or photos of screens.",
+      "option3": "All corners of the document must be visible.",
+      "option4": "Both front and back must be uploaded (unless ID has one side only)."
+    },
+
+    "selfie": {
+      "title": "Selfie Holding ID Instructions",
+      "option1": "Use same ID submitted above.",
+      "option2": "ID must be facing camera clearly and fully visible.",
+      "option3": "Your face must be unobstructed (no masks, glasses, hats, etc.).",
+      "option4": "Use a well-lit environment.",
+      "option5": "Ensure ID and face are clear and not blocked."
+    },
+
+    "samples": {
+      "front": "Front ID Sample",
+      "back": "Back ID Sample",
+      "selfie": "Selfie Sample"
+    },
+
+    "uploadSection": {
+      "title": "Upload Documents",
+      "front": "Front of ID",
+      "back": "Back of ID",
+      "selfie": "Selfie Holding ID"
+    },
+
+    "disclaimer": {
+      "title": "Disclaimer",
+      "content": "This guide is provided by FlySky Network for informational purposes only. The information collected is used solely for identity verification. Crypto/digital asset investments involve risk. Consult your legal/tax/investment professional if needed."
+    },
+
+    "faq": {
+      "title": "FAQ",
+      "q1": "What happens after I upload my documents?",
+      "a1": "Our team will review them within 1–3 business days. You’ll be notified of approval or rejection.",
+      "q2": "Can I use my driver’s license?",
+      "a2": "Yes, as long as it’s government-issued and shows your photo and date of birth.",
+      "q3": "What if my ID has no back side?",
+      "a3": "If your ID (like a passport) has only one side, just upload the front only.",
+      "q4": "What file formats are accepted?",
+      "a4": "We accept images in JPG, PNG, or JPEG format.",
+      "q5": "What if my KYC was rejected?",
+      "a5": "You will receive a reason. You can re-upload corrected documents."
+      }
+    },
+
 "auth": {
   "loginTitle": "Login",
   "email": "Email",
