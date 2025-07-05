@@ -178,10 +178,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           {footerItems}
         </aside>
 
-        <main className="flex-1 pt-16 md:pt-0 px-2 md:px-6">{children}</main>
+        <main className="flex-1 pt-16 md:pt-0 px-2 md:px-6 pb-28">{children}</main>
 
         {!hideFooter && (
-          <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 text-yellow-400 flex justify-around py-2 z-40">
+          <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 text-yellow-400 grid grid-cols-5 text-center py-2 z-40">
             <div className="flex flex-col items-center">
               <Link to="/dashboard">
                 <Home size={20} />

@@ -19,6 +19,13 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "redirects": [
+      {
+        "source": "**",
+        "destination": "https://www.fsncrew.io",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "**",
