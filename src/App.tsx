@@ -45,6 +45,8 @@ import PlayToEarn from './pages/PlayToEarn';
 import WatchToEarn from './pages/WatchToEarn';
 import Wallet from './pages/Wallet';
 import Settings from './pages/Settings';
+import UploadBanner from './pages/UploadBanner';
+
 
 // Auth
 import AdminDashboard from './pages/AdminDashboard';
@@ -66,6 +68,7 @@ const publicRoutes = [
   { path: '/about', element: <AboutUs /> },
   { path: '/test-notification', element: <TestNotification /> },
   { path: '/terms', element: <TermsPage /> },
+  { path: '/upload-banner', element: <UploadBanner /> },
 ];
 
 const dashboardRoutes = [

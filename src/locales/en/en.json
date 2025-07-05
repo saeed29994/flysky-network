@@ -264,6 +264,7 @@
   "profile": "Profile",
   "logout": "Logout",
   "settings": "Settings",
+
   "contactSection": {
     "title": "Contact Us",
     "description": "Have questions? Reach out and we’ll get back to you soon.",
@@ -324,7 +325,26 @@
     "claimRewards": "Claim Rewards",
     "note": "Note: You must watch 5 ads each day to claim your reward. Enjoy and earn!",
     "adWatched": "Ad watched successfully!",
-    "rewardClaimed": "You earned {{amount}} FSN!"
+    "rewardClaimed": "You earned {{amount}} FSN!",
+ "title": "Watch Ads & Earn",
+  "description": "Watch {{count}} ads to earn {{reward}} FSN daily.",
+  "watched": "Ads watched",
+  "balance": "Your current balance",
+  "watchAd": "Watch Ad",
+  "claimRewards": "Claim Reward",
+  "rewardClaimed": "🎉 You successfully claimed {{amount}} FSN!",
+  "adWatched": "✅ Ad has been counted!",
+  "waitMessage": "Please wait until the countdown ends: {{time}}",
+  "note": "🎁 Complete daily ad views to earn your reward.",
+  "adModalTitle": "Watch the ad and wait for the countdown",
+  "timer": "Time remaining:",
+  "seconds": "seconds",
+  "openAd": "Open Ad",
+"stayOnPage": "The ad has opened in a new tab. Please stay on this page until the countdown ends.",
+  "confirmAdWatched": "Confirm Ad Watched",
+"shareAd": "📢 Share Ad",
+"shareBonusReceived": "✅ You've received 50 FSN for sharing!",
+"shareAlreadyClaimed": "❌ You can only earn the share bonus once per day."
   },
 
   "menu": {

@@ -21,6 +21,10 @@ const WatchToEarn = () => {
   const [adsWatched, setAdsWatched] = useState(0);
   const [balance, setBalance] = useState(0);
   const [countdown, setCountdown] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [adTimer, setAdTimer] = useState(20);
+  const [timerFinished, setTimerFinished] = useState(false);
+  const [adStarted, setAdStarted] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -58,6 +62,17 @@ const WatchToEarn = () => {
   }, []);
 
   useEffect(() => {
+    if (adStarted && adTimer > 0) {
+      const interval = setInterval(() => {
+        setAdTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    } else if (adStarted && adTimer === 0) {
+      setTimerFinished(true);
+    }
+  }, [adStarted, adTimer]);
+
+  useEffect(() => {
     if (countdown <= 0) return;
 
     const timer = setInterval(() => {
@@ -74,7 +89,14 @@ const WatchToEarn = () => {
     return `${h}h ${m}m ${s}s`;
   };
 
-  const handleWatchAd = async () => {
+  const handleWatchAd = () => {
+    setShowModal(true);
+    setAdTimer(20);
+    setTimerFinished(false);
+    setAdStarted(false);
+  };
+
+  const handleConfirmAdWatched = async () => {
     const user = auth.currentUser;
     if (!user) return;
 
@@ -85,10 +107,6 @@ const WatchToEarn = () => {
 
     const currentIndex = userSnap.data()?.adIndex || 0;
     const currentWatched = userSnap.data()?.watchedAdsToday || 0;
-
-    const adLink = adLinks[currentIndex];
-    window.open(adLink, '_blank');
-
     const nextIndex = (currentIndex + 1) % adLinks.length;
     const newWatched = currentWatched + 1;
 
@@ -100,6 +118,7 @@ const WatchToEarn = () => {
 
     setAdsWatched(newWatched);
     toast.success(t("watchToEarn.adWatched"));
+    closeModal();
   };
 
   const handleClaimReward = async () => {
@@ -121,6 +140,13 @@ const WatchToEarn = () => {
     setCountdown(24 * 3600);
 
     toast.success(t("watchToEarn.rewardClaimed", { amount: REWARD_FOR_ALL }));
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setAdTimer(20);
+    setTimerFinished(false);
+    setAdStarted(false);
   };
 
   const progressPercent = (adsWatched / REQUIRED_ADS) * 100;
@@ -185,6 +211,48 @@ const WatchToEarn = () => {
           {t("watchToEarn.note")}
         </div>
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center">
+          <div className="bg-gray-900 rounded-lg p-6 w-11/12 max-w-md shadow-lg text-white relative">
+            <h2 className="text-xl font-bold mb-4 text-center">{t("watchToEarn.adModalTitle")}</h2>
+            <p className="text-center text-yellow-400 mb-2">
+              ⏳ {t("watchToEarn.timer")} {adTimer} {t("watchToEarn.seconds")}
+            </p>
+
+            {!timerFinished ? (
+              <button
+                onClick={() => {
+                  window.open(adLinks[adsWatched % adLinks.length], "_blank");
+                  setAdStarted(true);
+                }}
+                className="w-full bg-yellow-500 text-black font-bold py-2 rounded-lg mt-4"
+              >
+                {t("watchToEarn.openAd")}
+              </button>
+            ) : (
+              <button
+                onClick={handleConfirmAdWatched}
+                className="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-2 rounded-lg mt-4"
+              >
+                ✅ {t("watchToEarn.confirmAdWatched")}
+              </button>
+            )}
+
+            <p className="text-center text-sm text-gray-400 mt-2">
+              📢 {t("watchToEarn.stayOnPage")}
+            </p>
+
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-gray-400 hover:text-white"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 };
