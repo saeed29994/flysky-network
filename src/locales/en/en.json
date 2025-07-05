@@ -344,7 +344,14 @@
   "confirmAdWatched": "Confirm Ad Watched",
 "shareAd": "📢 Share Ad",
 "shareBonusReceived": "✅ You've received 50 FSN for sharing!",
-"shareAlreadyClaimed": "❌ You can only earn the share bonus once per day."
+"shareAlreadyClaimed": "❌ You can only earn the share bonus once per day.",
+"shareAdTitle": "Share & Earn",
+  "shareAdDesc": "Share this banner on X to earn 50 FSN once per day.",
+  "shareOn X": "Share on X",
+  "shareBonusReceived": "✅ You've earned 50 FSN for sharing!",
+  "shareAlreadyClaimed": "❌ Share bonus already claimed today.",
+ "shareBonusReceived": "✅ You've received 50 FSN for sharing the banner!",
+  "shareAlreadyClaimed": "❌ You've already claimed the bonus within the last 12 hours."
   },
 
   "menu": {

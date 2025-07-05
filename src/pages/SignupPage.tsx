@@ -15,6 +15,7 @@ import {
   query,
   where,
   getDocs,
+  Timestamp,
 } from 'firebase/firestore';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -125,6 +126,8 @@ const SignupPage = () => {
         fullName,
         email,
         balance: 500,
+        watchedAdsToday: 0,
+        adsLastWatched: Timestamp.fromMillis(0),
         plan: 'economy',
         createdAt: serverTimestamp(),
         referralCode: generatedReferralCode,
@@ -175,6 +178,8 @@ const SignupPage = () => {
           fullName: user.displayName || '',
           email: user.email || '',
           balance: 500,
+          watchedAdsToday: 0,
+          adsLastWatched: Timestamp.fromMillis(0),
           plan: 'economy',
           createdAt: serverTimestamp(),
           referralCode: generatedReferralCode,
@@ -210,7 +215,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-900 to-slate-800 text-white p-6">
+   <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-900 to-slate-800 text-white p-6">
       <img
         src="/fsn-logo.png"
         alt="Logo"

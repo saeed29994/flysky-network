@@ -1,3 +1,5 @@
+// 📁 src/pages/WatchToEarn.tsx
+
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
@@ -149,6 +151,40 @@ const WatchToEarn = () => {
     setAdStarted(false);
   };
 
+  const handleShareAd = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const tweetText = encodeURIComponent(`🎁 Earn free crypto daily with FlySky Network!
+Watch ads, mine tokens, invite friends, and get rewarded.
+
+Join now 👉 https://www.fsncrew.io/
+
+📸 Banner: https://2u.pw/Np639
+
+#FSN #WatchToEarn #CryptoAirdrop`);
+
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(tweetUrl, '_blank');
+
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+    const data = userSnap.data();
+    const lastShared = data?.adSharedAt?.toDate?.() || new Date(0);
+    const now = new Date();
+
+    const hoursSinceLast = (now.getTime() - lastShared.getTime()) / (1000 * 60 * 60);
+    if (hoursSinceLast >= 12) {
+      await updateDoc(userRef, {
+        balance: (data?.balance || 0) + 50,
+        adSharedAt: serverTimestamp(),
+      });
+      toast.success(t("watchToEarn.shareBonusReceived"));
+    } else {
+      toast.error(t("watchToEarn.shareAlreadyClaimed"));
+    }
+  };
+
   const progressPercent = (adsWatched / REQUIRED_ADS) * 100;
   const canClaim = adsWatched >= REQUIRED_ADS;
 
@@ -156,98 +192,71 @@ const WatchToEarn = () => {
     <DashboardLayout>
       <div className="min-h-screen flex flex-col items-center justify-start p-4 text-white max-w-xl mx-auto pt-4">
         <div className="w-full mb-6">
-          <img
-            src="/watch-to-eaen.png"
-            alt="FSN Coin Rewards Banner"
-            className="w-full h-auto rounded-lg shadow-lg object-cover"
-          />
+          <img src="/watch-to-eaen.png" alt="FSN Coin Rewards Banner" className="w-full h-auto rounded-lg shadow-lg object-cover" />
         </div>
 
         <Toaster />
 
-        <h1 className="text-3xl font-bold text-yellow-400 mb-4 text-center">
-          🎥 {t("watchToEarn.title")}
-        </h1>
-
-        <p className="mb-4 text-center text-gray-300">
-          {t("watchToEarn.description", { count: REQUIRED_ADS, reward: REWARD_FOR_ALL })}
-        </p>
+        <h1 className="text-3xl font-bold text-yellow-400 mb-4 text-center">🎥 {t("watchToEarn.title")}</h1>
+        <p className="mb-4 text-center text-gray-300">{t("watchToEarn.description", { count: REQUIRED_ADS, reward: REWARD_FOR_ALL })}</p>
 
         <div className="w-full bg-gray-700 rounded-full h-4 mb-4 overflow-hidden">
-          <div
-            className="bg-yellow-400 h-4 transition-all duration-300"
-            style={{ width: `${progressPercent}%` }}
-          ></div>
+          <div className="bg-yellow-400 h-4 transition-all duration-300" style={{ width: `${progressPercent}%` }}></div>
         </div>
 
-        <p className="mb-2 text-center">
-          {t("watchToEarn.watched")}: <span className="font-semibold">{adsWatched}/{REQUIRED_ADS}</span>
-        </p>
-        <p className="mb-4 text-center">
-          {t("watchToEarn.balance")}: <span className="font-semibold">{balance} FSN</span>
-        </p>
+        <p className="mb-2 text-center">{t("watchToEarn.watched")}: <span className="font-semibold">{adsWatched}/{REQUIRED_ADS}</span></p>
+        <p className="mb-4 text-center">{t("watchToEarn.balance")}: <span className="font-semibold">{balance} FSN</span></p>
 
         {countdown > 0 ? (
           <p className="text-center text-red-400 font-semibold mb-4">
             {t("watchToEarn.waitMessage", { time: formatTime(countdown) })}
           </p>
         ) : !canClaim ? (
-          <button
-            onClick={handleWatchAd}
-            className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-2 rounded font-bold transition w-full"
-          >
+          <button onClick={handleWatchAd} className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-2 rounded font-bold transition w-full">
             {t("watchToEarn.watchAd")}
           </button>
         ) : (
-          <button
-            onClick={handleClaimReward}
-            className="bg-green-500 hover:bg-green-400 text-black px-6 py-2 rounded font-bold transition w-full"
-          >
+          <button onClick={handleClaimReward} className="bg-green-500 hover:bg-green-400 text-black px-6 py-2 rounded font-bold transition w-full">
             {t("watchToEarn.claimRewards")}
           </button>
         )}
+
+        <div className="my-8 w-full text-center">
+          <img src="https://2u.pw/Np639" alt="FSN Banner" className="w-full rounded-lg shadow-lg mb-4" />
+          <h3 className="text-lg font-bold text-yellow-400 mb-2">📢 {t("watchToEarn.shareAdTitle")}</h3>
+          <p className="text-gray-300 mb-4">{t("watchToEarn.shareAdDesc")}</p>
+          <button onClick={handleShareAd} className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded font-semibold transition">
+            {t("watchToEarn.shareOn X")}
+          </button>
+        </div>
 
         <div className="mt-6 text-sm text-center text-gray-400">
           {t("watchToEarn.note")}
         </div>
       </div>
 
-      {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center">
           <div className="bg-gray-900 rounded-lg p-6 w-11/12 max-w-md shadow-lg text-white relative">
             <h2 className="text-xl font-bold mb-4 text-center">{t("watchToEarn.adModalTitle")}</h2>
-            <p className="text-center text-yellow-400 mb-2">
-              ⏳ {t("watchToEarn.timer")} {adTimer} {t("watchToEarn.seconds")}
-            </p>
+            <p className="text-center text-yellow-400 mb-2">⏳ {t("watchToEarn.timer")} {adTimer} {t("watchToEarn.seconds")}</p>
 
             {!timerFinished ? (
-              <button
-                onClick={() => {
-                  window.open(adLinks[adsWatched % adLinks.length], "_blank");
-                  setAdStarted(true);
-                }}
-                className="w-full bg-yellow-500 text-black font-bold py-2 rounded-lg mt-4"
-              >
+              <button onClick={() => {
+                window.open(adLinks[adsWatched % adLinks.length], "_blank");
+                setAdStarted(true);
+              }} className="w-full bg-yellow-500 text-black font-bold py-2 rounded-lg mt-4">
                 {t("watchToEarn.openAd")}
               </button>
             ) : (
-              <button
-                onClick={handleConfirmAdWatched}
-                className="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-2 rounded-lg mt-4"
-              >
+              <button onClick={handleConfirmAdWatched} className="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-2 rounded-lg mt-4">
                 ✅ {t("watchToEarn.confirmAdWatched")}
               </button>
             )}
 
-            <p className="text-center text-sm text-gray-400 mt-2">
-              📢 {t("watchToEarn.stayOnPage")}
-            </p>
+            <p className="text-center text-sm text-gray-400 mt-2">📢 {t("watchToEarn.stayOnPage")}</p>
 
-            <button
-              onClick={closeModal}
-              className="absolute top-2 right-2 text-gray-400 hover:text-white"
-            >
+            <button onClick={closeModal} className="absolute top-2 right-2 text-gray-400 hover:text-white">
               ✕
             </button>
           </div>
