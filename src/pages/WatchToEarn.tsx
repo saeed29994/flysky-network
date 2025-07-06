@@ -151,40 +151,6 @@ const WatchToEarn = () => {
     setAdStarted(false);
   };
 
-  const handleShareAd = async () => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const tweetText = encodeURIComponent(`🎁 Earn free crypto daily with FlySky Network!
-Watch ads, mine tokens, invite friends, and get rewarded.
-
-Join now 👉 https://www.fsncrew.io/
-
-📸 Banner: https://2u.pw/Np639
-
-#FSN #WatchToEarn #CryptoAirdrop`);
-
-    const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
-    window.open(tweetUrl, '_blank');
-
-    const userRef = doc(db, 'users', user.uid);
-    const userSnap = await getDoc(userRef);
-    const data = userSnap.data();
-    const lastShared = data?.adSharedAt?.toDate?.() || new Date(0);
-    const now = new Date();
-
-    const hoursSinceLast = (now.getTime() - lastShared.getTime()) / (1000 * 60 * 60);
-    if (hoursSinceLast >= 12) {
-      await updateDoc(userRef, {
-        balance: (data?.balance || 0) + 50,
-        adSharedAt: serverTimestamp(),
-      });
-      toast.success(t("watchToEarn.shareBonusReceived"));
-    } else {
-      toast.error(t("watchToEarn.shareAlreadyClaimed"));
-    }
-  };
-
   const progressPercent = (adsWatched / REQUIRED_ADS) * 100;
   const canClaim = adsWatched >= REQUIRED_ADS;
 
@@ -220,15 +186,6 @@ Join now 👉 https://www.fsncrew.io/
             {t("watchToEarn.claimRewards")}
           </button>
         )}
-
-        <div className="my-8 w-full text-center">
-          <img src="https://2u.pw/Np639" alt="FSN Banner" className="w-full rounded-lg shadow-lg mb-4" />
-          <h3 className="text-lg font-bold text-yellow-400 mb-2">📢 {t("watchToEarn.shareAdTitle")}</h3>
-          <p className="text-gray-300 mb-4">{t("watchToEarn.shareAdDesc")}</p>
-          <button onClick={handleShareAd} className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded font-semibold transition">
-            {t("watchToEarn.shareOn X")}
-          </button>
-        </div>
 
         <div className="mt-6 text-sm text-center text-gray-400">
           {t("watchToEarn.note")}
