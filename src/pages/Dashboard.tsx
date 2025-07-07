@@ -1,3 +1,4 @@
+// 📁 src/pages/Dashboard.tsx
 import { useEffect, useRef, useState } from 'react';
 import { useUserPlan } from '../contexts/UserPlanContext';
 import { Link } from 'react-router-dom';
@@ -231,7 +232,7 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* Contact */}
+     {/* Contact */}
       <section id="contact" className="w-full bg-[#0D1B2A] text-white py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-yellow-400 mb-6 text-center">

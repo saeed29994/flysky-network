@@ -4,22 +4,24 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 import en from './locales/en/en.json';
 import ar from './locales/ar/ar.json';
+import zh from './locales/zh-CN/zh-CN.json'; // ✅ تمت إضافة الصينية
 
 i18n
-  .use(LanguageDetector) // ✅ للكشف عن اللغة تلقائيًا من localStorage أو المتصفح
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
       en: { translation: en },
       ar: { translation: ar },
+      zh: { translation: zh }, // ✅ إضافة الصينية
     },
     fallbackLng: 'en',
-    supportedLngs: ['en', 'ar'],
+    supportedLngs: ['en', 'ar', 'zh'], // ✅ دعم الصينية
     interpolation: {
       escapeValue: false,
     },
     detection: {
-      order: ['localStorage', 'navigator'], // ✅ أولاً من localStorage ثم من المتصفح
+      order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
     },
   });

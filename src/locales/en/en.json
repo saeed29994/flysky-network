@@ -19,6 +19,14 @@
     "month": "Month",
     "months": "Months"
   },
+
+"followPopup": {
+  "title": "Follow us on X",
+  "message": "Get rewarded! Follow our official account on X (@fsncrew) and claim 100 FSN instantly.",
+  "button": "Follow us & claim 100 FSN",
+  "close": "Maybe later"
+},
+
   "startStaking": "Start Staking",
   "stakingRecords": "Staking Records",
   "activeStaking": "Active Staking",
