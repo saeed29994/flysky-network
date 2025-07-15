@@ -156,9 +156,9 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     return (
       <div className="w-full min-h-[calc(100vh-4rem)] bg-[#0B1622] flex justify-center items-center px-4">
         <motion.div className="bg-gray-900 p-6 rounded-xl shadow-xl w-full max-w-md text-center">
-          <h2 className="text-xl text-yellow-400 font-bold mb-4">{t('readyToMine')}</h2>
+          <h2 className="text-xl text-yellow-400 font-bold mb-4">{t('miningPage.readyToMine')}</h2>
           <button onClick={handleStartMining} className="bg-yellow-500 hover:bg-yellow-400 text-black w-full py-2 rounded font-bold transition">
-            {t('startMining')}
+            {t('miningPage.startMining')}
           </button>
         </motion.div>
       </div>
@@ -169,22 +169,24 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
     <div className="w-full bg-[#0B1622] px-0 pt-4 pb-24">
       <motion.div className="w-full max-w-2xl mx-auto bg-gray-900 p-6 sm:p-8 text-center rounded-xl shadow-xl">
         <div className="bg-gray-800 p-4 rounded-lg text-sm text-gray-300 text-left mb-4">
-          <p>🪙 <span className="text-white font-semibold">{t(`planNames.${plan}`)}:</span></p>
-          <p>🔋 <span className="text-white font-semibold">{t('dailyLimit')}:</span> {planLimits[plan]} FSN</p>
-          <p>⏱️ <span className="text-white font-semibold">{t('cycle')}:</span> 12 {t('hours')}</p>
-          <p>📤 <span className="text-white font-semibold">{t('claimType')}:</span> {t('manual')}</p>
+          <p>🪙 <span className="text-white font-semibold">{t(`miningPage.planNames.${plan}`)}:</span></p>
+          <p>🔋 <span className="text-white font-semibold">{t('miningPage.dailyLimit')}:</span> {planLimits[plan]} FSN</p>
+          <p>⏱️ <span className="text-white font-semibold">{t('miningPage.cycle')}:</span> 12 {t('miningPage.hours')}</p>
+          <p>📤 <span className="text-white font-semibold">{t('miningPage.claimType')}:</span> {t('miningPage.manual')}</p>
         </div>
 
-        <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2">🪙 {t('fsnDailyMining')}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2">🪙 {t('miningPage.fsnDailyMining')}</h2>
         <div className="text-4xl font-extrabold text-white mb-2">
           {isNaN(mined) ? 0 : Math.floor(mined)} FSN
         </div>
-        <p className="text-sm text-gray-400 mb-2">{t('dailyLimitLabel')}: <span className="text-white font-semibold">{planLimits[plan]} FSN</span></p>
+        <p className="text-sm text-gray-400 mb-2">{t('miningPage.dailyLimitLabel')}: <span className="text-white font-semibold">{planLimits[plan]} FSN</span></p>
         <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-3">
           <div className="h-full bg-yellow-500 transition-all duration-500" style={{ width: `${(mined / planLimits[plan]) * 100}%` }} />
         </div>
         <p className="text-sm text-gray-500 mb-4">
-          {claimReady ? t('readyToClaim') : `⏱️ ${t('timeRemaining')}: ${formatTime(remainingTime)}`}
+          {claimReady
+            ? t('miningPage.readyToClaim')
+            : `⏱️ ${t('miningPage.timeRemaining')}: ${formatTime(remainingTime)}`}
         </p>
 
         {claimReady && showUnlock && (
@@ -195,7 +197,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
             }}
             className="w-full py-2 rounded-xl font-bold bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse transition"
           >
-            {t('unlockRewards')}
+            {t('miningPage.unlockRewards')}
           </button>
         )}
 
@@ -219,7 +221,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
             }}
             className="w-full py-2 rounded-xl font-bold bg-yellow-500 hover:bg-yellow-400 text-black animate-pulse transition"
           >
-            {t('claim')}
+            {t('miningPage.claim')}
           </button>
         )}
 
@@ -228,7 +230,7 @@ const MiningCard = ({ plan, onClaim }: MiningCardProps) => {
             disabled
             className="w-full py-2 rounded-xl font-bold bg-gray-700 text-gray-400 cursor-not-allowed transition"
           >
-            {t('miningInProgress')}
+            {t('miningPage.miningInProgress')}
           </button>
         )}
 

@@ -47,6 +47,8 @@
   },
 
   "dashboard": {
+    "bannerTitle": "欢迎来到 FlySky 网络",
+   "bannerSubtitle": "探索、赚取、成长",
     "miningTitle": "每日挖矿概览",
     "miningDesc": "根据您的会员计划每日赚取 FSN 代币。升级计划可获得更多奖励。",
     "startMining": "立即开始挖矿",
@@ -93,15 +95,113 @@
   "saveAvatar": "保存头像"
 },
 
-"kyc": {
-  "title": "KYC 身份验证指南",
-
-  "uploadAllDocuments": "请上传所有所需文件。",
-  "uploadSuccess": "✅ 文件上传成功！您的 KYC 状态现为待审核。",
-  "uploadFailed": "❌ 上传失败。请重试。",
-  "uploading": "正在上传...",
-  "submit": "提交文件"
-},
+ "kyc": {
+    "title": "身份验证 (KYC)",
+    "idsAccepted": {
+      "title": "可接受的身份证件",
+      "option1": "国民身份证",
+      "option2": "护照",
+      "option3": "驾照",
+      "option4": "居留许可证"
+    },
+    "idPhotos": {
+      "title": "身份证照片要求",
+      "option1": "照片需清晰，四角完整可见。",
+      "option2": "无眩光、阴影或模糊。",
+      "option3": "身份证不得过期。",
+      "option4": "所有信息必须清晰可读。"
+    },
+    "samples": {
+      "front": "正面示例",
+      "back": "背面示例",
+      "selfie": "自拍示例"
+    },
+    "selfie": {
+      "title": "自拍与身份证要求",
+      "option1": "将身份证放在脸旁。",
+      "option2": "脸部与身份证需清晰可见。",
+      "option3": "禁止使用滤镜或编辑图片。",
+      "option4": "光线良好，背景中性。",
+      "option5": "不得遮挡身份证任意部分。"
+    },
+    "uploadSection": {
+      "title": "上传文件",
+      "front": "上传身份证正面",
+      "back": "上传身份证背面",
+      "selfie": "上传自拍与身份证"
+    },
+    "uploadAllDocuments": "请上传所有所需文件。",
+    "uploadSuccess": "文件上传成功，正在审核中。",
+    "uploadFailed": "文件上传失败，请重试。",
+    "uploading": "正在上传...",
+    "submit": "提交审核",
+    "disclaimer": {
+      "title": "重要提示",
+      "content": "您的个人资料将被安全存储，仅用于身份验证用途。我们不会将您的信息透露给第三方。"
+    },
+ "miningPage": {
+    "balance": "余额",
+    "readyToMine": "准备开始挖矿了吗？",
+    "startMining": "开始挖矿",
+    "planNames": {
+      "economy": "经济舱",
+      "business": "商务舱",
+      "first": "头等舱",
+      "first-6": "头等舱（6个月）",
+      "first-lifetime": "头等舱（终身）"
+    },
+    "dailyLimit": "每日上限",
+    "dailyLimitLabel": "每日上限",
+    "cycle": "周期",
+    "hours": "小时",
+    "claimType": "领取方式",
+    "manual": "手动",
+    "fsnDailyMining": "每日 FSN 挖矿",
+    "timeRemaining": "剩余时间",
+    "readyToClaim": "⏳ 奖励已准备好领取！",
+    "unlockRewards": "解锁奖励",
+    "claim": "领取奖励",
+    "miningInProgress": "挖矿进行中",
+     "fsnDailyMining": "FSN 每日挖矿",
+  "dailyLimit": "每日上限",
+  "cycle": "周期",
+  "claimType": "领取方式",
+  "manual": "手动",
+  "dailyLimitLabel": "每日上限",
+  "readyToClaim": "✅ 可领取！",
+  "timeRemaining": "剩余时间",
+  "unlockRewards": "解锁奖励",
+  "miningInProgress": "挖矿进行中",
+  "followUs": "关注我们于",
+  "facebook": "Facebook",
+  "telegram": "Telegram",
+  "discord": "Discord",
+  "rightsReserved": "© 2025 FlySky Network. 保留所有权利。",
+  "walletOverview": "💼 钱包概览",
+  "totalBalance": "总余额",
+  "availableBalance": "可用余额",
+  "lockedInStaking": "质押中金额",
+  "referralRewards": "推荐奖励（仅限已验证）",
+  "balanceDistribution": "💹 余额分布",
+  "noBalanceData": "暂无余额数据可显示。",
+  "transactionHistory": "📜 交易记录",
+  "noTransactions": "暂无交易记录。",
+  "loadingWallet": "正在加载钱包数据..."
+  },
+    "faq": {
+      "title": "常见问题",
+      "q1": "为什么需要完成KYC认证？",
+      "a1": "为保障安全并符合金融监管要求。",
+      "q2": "审核需要多长时间？",
+      "a2": "通常在24至72小时内完成。",
+      "q3": "如果我的KYC被拒绝怎么办？",
+      "a3": "我们将通知您拒绝原因，并允许重新提交。",
+      "q4": "我可以稍后更新文件吗？",
+      "a4": "可以，您可以随时重新提交更新后的文件。",
+      "q5": "我的信息安全吗？",
+      "a5": "是的，所有数据都会被加密并安全存储。"
+    }
+  },
 
   "idsAccepted": {
     "title": "哪些身份证明是可接受的？",
@@ -258,6 +358,14 @@
   "business": "🎯 商务计划提供更多功能。头等舱享有全部特权。",
   "first": "👑 您正在享受头等舱会员的全部功能。"
 },
+"contact": {
+  "title": "联系我们",
+  "description": "有任何问题或反馈？我们非常乐意听取您的意见。",
+  "name": "您的姓名",
+  "email": "您的邮箱",
+  "message": "您的留言",
+  "send": "发送信息"
+},
 
 "referralProgram": "推荐计划",
 "yourReferralLink": "您的推荐链接",
@@ -309,34 +417,6 @@
   "referralBonus.fcmBody": "一个新推荐已验证成功。准备领取您的奖励吧！"
 },
 
-"fsnDailyMining": {
-  "fsnDailyMining": "FSN 每日挖矿",
-  "dailyLimit": "每日上限",
-  "cycle": "周期",
-  "claimType": "领取方式",
-  "manual": "手动",
-  "dailyLimitLabel": "每日上限",
-  "readyToClaim": "✅ 可领取！",
-  "timeRemaining": "剩余时间",
-  "unlockRewards": "解锁奖励",
-  "miningInProgress": "挖矿进行中",
-  "followUs": "关注我们于",
-  "facebook": "Facebook",
-  "telegram": "Telegram",
-  "discord": "Discord",
-  "rightsReserved": "© 2025 FlySky Network. 保留所有权利。",
-  "walletOverview": "💼 钱包概览",
-  "totalBalance": "总余额",
-  "availableBalance": "可用余额",
-  "lockedInStaking": "质押中金额",
-  "referralRewards": "推荐奖励（仅限已验证）",
-  "balanceDistribution": "💹 余额分布",
-  "noBalanceData": "暂无余额数据可显示。",
-  "transactionHistory": "📜 交易记录",
-  "noTransactions": "暂无交易记录。",
-  "loadingWallet": "正在加载钱包数据..."
-},
-
 "watchToEarn": {
   "title": "观看广告赚取奖励",
   "description": "通过观看 {{count}} 个广告每日可赚取 {{reward}} FSN。",
@@ -384,48 +464,59 @@
   "fillAllFields": "请填写所有字段。"
 },
 
-"about": {
-  "title": "关于我们",
-  "intro": "FlySky Network 是下一代数字经济平台，将挖矿、质押、游戏和 NFT 融合为一体，打造无缝体验。我们致力于构建一个充满活力的生态系统，让用户在娱乐环境中赚取、交易和增长资产。",
-  "visionTitle": "我们的愿景",
-  "vision": "成为最具吸引力和回报的数字经济平台，使全球用户在不断发展的数字世界中蓬勃发展。",
-  "missionTitle": "我们的使命",
-  "mission": "我们致力于通过提供可访问的挖矿、公平的质押、有趣的游戏和动态的 NFT 市场，弥合传统金融与数字世界之间的差距。",
-  "featuresTitle": "我们的服务"
-},
-
-  "features": {
-    "mining": "通过我们高效节能的活动证明模型开始赚取 FSN 代币。",
-    "staking": "质押您的数字代币，在支持网络的同时实现资产增长。",
-    "gaming": "畅玩精彩游戏，用您的技能赢取真实数字资产。",
-    "nft": "交易独特的 NFT，并在游戏中解锁专属物品与收藏品。"
+ "about": {
+    "title": "关于我们",
+    "intro": "FlySky Network 是一个去中心化生态系统，将挖矿、质押、游戏和 NFT 融合于一个统一平台。",
+    "visionTitle": "我们的愿景",
+    "vision": "打造一个可持续且公平的数字经济，通过去中心化技术赋能用户赚取并成长。",
+    "missionTitle": "我们的使命",
+    "mission": "我们致力于提供一个整合娱乐、区块链奖励和社区参与的统一平台。",
+    "featuresTitle": "平台主要特色：",
+    "features": {
+      "mining": "⛏️ 活跃证明挖矿",
+      "staking": "📈 灵活的质押计划",
+      "gaming": "🎮 Battle Legend 游戏集成",
+      "nft": "🖼️ NFT 资产市场"
+    },
+    "whitepaper": {
+      "title": "白皮书概览",
+      "overview": "FlySky Network 的白皮书概述了平台的核心组成、机制和目标。",
+      "introTitle": "简介",
+      "intro": "FlySky 推出了一种公平的分发模型，以奖励活跃用户 FSN 代币。",
+      "tokenTitle": "代币销售",
+      "tokenIntro": "FSN 代币将分多个阶段分发，确保广泛且公平的访问。",
+      "phase": "初期阶段侧重于社区挖矿和早期质押。",
+      "mainSale": "随后将进行主代币销售，并制定清晰的分配规则。",
+      "uses": "FSN 可用于质押、游戏内购买、NFT 和治理。",
+      "gameTitle": "Battle Legend 游戏",
+      "gameIntro": "一款与 FSN 代币经济集成的生存类区块链游戏。",
+      "gameDetails": "玩家可以升级载具、偷取零件并防御基地。",
+      "gameFeaturesTitle": "游戏亮点：",
+      "features": {
+        "vehicles": "可升级和可交易的载具",
+        "theft": "载具盗窃与拆解系统",
+        "maintenance": "强制性的载具维护系统",
+        "base": "逐步升级基地与建筑",
+        "auctions": "限量载具拍卖和租赁",
+        "roles": "玩家角色：战士和商人"
+      },
+      "status": "游戏正在积极开发中，将分阶段发布。",
+      "roadmap": "路线图",
+      "roadmapDesc": "我们的路线图包括挖矿启动、质押、代币销售、游戏发布和 NFT 市场。",
+      "security": "安全与透明",
+      "securityDesc": "智能合约经过审计，数据通过 Firebase 和 IPFS 安全存储。",
+      "conclusion": "结语",
+      "conclusionDesc": "FlySky Network 致力于通过有趣、公平、奖励丰富的环境革新数字互动体验。"
+    },
+    "join": "加入我们，成为去中心化互动未来的一部分！"
   },
 
-"whitepaper": {
-  "title": "白皮书",
-  "overview": "全面介绍我们项目的理念、技术架构和未来计划的文档。",
-  "introTitle": "简介",
-  "intro": "FlySky Network 致力于通过整合多个数字元素，重新定义用户与技术的关系，构建统一生态系统。",
-  "tokenTitle": "FSN 代币",
-  "tokenIntro": "FSN 是 FlySky 经济的核心，可用于挖矿、质押、购买和奖励。",
-  "phase": "我们遵循分阶段执行计划，包括预售、公开发售和全面上线阶段。",
-  "mainSale": "主售将在多个阶段进行，确保公平分配和完全透明。",
-  "uses": "代币的用途包括：挖矿、奖励、市场手续费、治理、以及游戏中的角色发展。",
-  "gameTitle": "战斗传奇游戏",
-  "gameIntro": "Battle Legend 是首款融合策略、娱乐和奖励的“生存赚钱”游戏。",
-  "gameDetails": "游戏包含载具、武器和资源系统，基于 BLT 代币构建完整经济体系。",
-  "gameFeaturesTitle": "游戏特色"
-},
-
   "features": {
-    "vehicles": "多种可升级和可交易的 NFT 载具。",
-    "theft": "允许载具被盗或拆解成零件的系统。",
-    "maintenance": "定期维护系统会影响载具性能。",
-    "base": "如维修设施等建筑的升级与主基地等级相关联。",
-    "auctions": "定期举行稀有载具拍卖。",
-    "roles": "角色系统包括战士与商人，在动态经济中协同运作。"
+    "mining": "通过我们节能的活跃证明机制开始赚取 FSN 代币。",
+    "staking": "质押您的数字代币，在支持网络的同时让您的资产增值。",
+    "gaming": "享受刺激的游戏，通过真实数字资产奖励您的技能。",
+    "nft": "交易独特的 NFT，解锁游戏中的专属物品和藏品。"
   },
-
   "status": "目前处于预售筹备阶段，每个阶段都有明确的路线图。",
   "roadmap": "发展路线图",
   "roadmapDesc": "包括开发阶段、合作伙伴关系、发布以及生态扩展。",
@@ -446,5 +537,66 @@
 "noMessages": "没有找到消息。",
 "archive": "归档",
 "delete": "删除",
-"close": "关闭"
+"close": "关闭",
+
+ "membershipPage": {
+    "title": "会员计划",
+    "currentPlan": "当前计划",
+    "notSubscribed": "未订阅",
+    "expiredOn": "已过期时间",
+    "expiresOn": "到期时间",
+    "bonus": "奖励",
+    "subscribe": "立即订阅",
+    "renew": "续订计划",
+    "activated": "已激活",
+    "manualPaymentTitle": "手动付款",
+    "instructions": {
+      "title": "请按照以下步骤完成手动付款：",
+      "step1": "选择您偏好的加密货币。",
+      "step2": "将准确金额发送到以下地址。",
+      "step3": "上传交易凭证、您的钱包地址和交易链接。",
+      "step4": "确保金额与所选计划匹配。",
+      "step5": "审核后，您的会员将在24小时内激活。"
+    },
+    "selectCurrency": "选择付款货币",
+    "sendTo": "将付款发送到以下地址：",
+    "transactionLink": "交易链接",
+    "fromAddress": "发送方钱包地址",
+    "uploadProof": "上传付款凭证",
+    "submitProof": "提交凭证",
+    "uploading": "正在上传..."
+  },
+  "feature": {
+    "advancedMining": "高级挖矿速度",
+    "prioritySupport": "优先支持",
+    "stakingAccess": "访问质押功能",
+    "fasterMining": "更快的挖矿速度",
+    "allBusinessFeatures": "包含商务计划所有功能",
+    "eventAccess": "参与活动和竞赛",
+    "highestMining": "最高挖矿奖励",
+    "premiumAccess": "高级专区访问",
+    "lifetimeAccess": "终身会员",
+    "unlockedForever": "无限制永久访问",
+    "lifetimePerks": "终身特权和奖励"
+  },
+  "success": {
+    "stakeCreated": "您的付款已成功提交！"
+  },
+  "stakingSection": {
+    "error": {
+      "stakeFailed": "创建质押失败，请重试。"
+    }
+  },
+  "fillAllFields": "请填写所有字段。",
+  "notAuthenticated": "用户未验证身份。",
+ "walletOverview": "💼 钱包概览",
+  "totalBalance": "总余额",
+  "availableBalance": "可用余额",
+  "lockedInStaking": "质押中金额",
+  "referralRewards": "推荐奖励（仅限已验证）",
+  "balanceDistribution": "💹 余额分布",
+  "noBalanceData": "暂无余额数据可显示。",
+  "transactionHistory": "📜 交易记录",
+  "noTransactions": "暂无交易记录。",
+  "loadingWallet": "正在加载钱包数据..."
 }

@@ -18,6 +18,9 @@ import 'react-toastify/dist/ReactToastify.css';
 // i18n RTL support ✅
 import { useTranslation } from 'react-i18next';
 
+// ✅ إضافة Sentry
+import * as Sentry from "@sentry/react";
+
 // Public Pages
 import Inbox_Debug from './pages/Inbox_Debug';
 import LandingPage from './pages/LandingPage';
@@ -46,7 +49,6 @@ import WatchToEarn from './pages/WatchToEarn';
 import Wallet from './pages/Wallet';
 import Settings from './pages/Settings';
 import UploadBanner from './pages/UploadBanner';
-
 
 // Auth
 import AdminDashboard from './pages/AdminDashboard';
@@ -121,6 +123,12 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        // ✅ ربط المستخدم مع Sentry
+        Sentry.setUser({
+          id: user.uid,
+          email: user.email || undefined,
+        });
+
         await requestPermissionAndToken(user.uid);
         listenToForegroundMessages();
 

@@ -1,12 +1,14 @@
 {
-  "welcome": "Welcome to FlySky Network",
-  "mining": "Mining",
-  "claim": "Claim Reward",
-  "balance": "My Balance",
-  "claimed": "Claimed",
-  "newBalance": "New Balance",
-  "readyToMine": "Ready to start mining?",
-  "startMining": "Start Mining",
+  "general": {
+    "welcome": "Welcome to FlySky Network",
+    "mining": "Mining",
+    "claim": "Claim Reward",
+    "balance": "My Balance",
+    "claimed": "Claimed",
+    "newBalance": "New Balance",
+    "readyToMine": "Ready to start mining?",
+    "startMining": "Start Mining"
+  },
   "plan": {
     "title": "Economy Class",
     "startNew": "Start a new staking session based on your plan",
@@ -19,28 +21,95 @@
     "month": "Month",
     "months": "Months"
   },
-
-"followPopup": {
-  "title": "Follow us on X",
-  "message": "Get rewarded! Follow our official account on X (@fsncrew) and claim 100 FSN instantly.",
-  "button": "Follow us & claim 100 FSN",
-  "close": "Maybe later"
-},
-
+  "followPopup": {
+    "title": "Follow us on X",
+    "message": "Get rewarded! Follow our official account on X (@fsncrew) and claim 100 FSN instantly.",
+    "button": "Follow us & claim 100 FSN",
+    "close": "Maybe later"
+  },
+  "staking": "Staking",
   "startStaking": "Start Staking",
   "stakingRecords": "Staking Records",
   "activeStaking": "Active Staking",
   "completedStaking": "Completed Staking",
-  "noActiveStaking": "No active staking found.",
-  "noCompletedStaking": "No completed staking yet.",
-  "stakingCard": {
-    "title": "Staking Program",
-    "currentlyLocked": "Currently Staked Amount",
-    "economy": "Earn 0%–40%. 12-month staking offers the best return.",
-    "business": "10%–60% depending on duration. Great for steady growth.",
-    "first6": "Up to 80% for long-term staking. Balanced option.",
-    "firstLifetime": "Up to 100% returns. Ideal for long-term holders."
+  "noActiveStaking": "You don't have any active staking entries.",
+  "noCompletedStaking": "You don't have any completed staking entries.",
+  "claimed": "Claimed ✅",
+
+  "plan": {
+    "title": "Plan",
+    "current": "Current Plan:",
+    "startNew": "Start a new staking session based on your plan"
   },
+
+  "plans": {
+    "economy": "Economy Class",
+    "business": "Business Class"
+  },
+
+  "first6": "First Class (6 Months)",
+  "firstLifetime": "First Class (Lifetime)",
+
+  "form": {
+    "amount": "Amount to Stake"
+  },
+
+  "duration": {
+    "month": "Month",
+    "months": "Months"
+  },
+"stakingSection": {
+  "endsOn": "Ends On",
+  "expectedReturn": "Expected Return",
+  "claimRewards": "Claim Rewards",
+  "claimIn": "Claim in"
+},
+"loading": {
+  "user": "User not loaded. Please log in first.",
+  "processing": "Processing..."
+},
+"error": {
+  "userNotLoaded": "User is not loaded.",
+  "invalidAmount": "Please enter a valid amount and duration.",
+  "exceedsBalance": "Staking amount exceeds your current balance.",
+  "notAuthenticated": "You must be logged in to claim.",
+  "alreadyClaimed": "This reward has already been claimed.",
+  "notEndedYet": "This staking period has not ended yet.",
+  "claimFailed": "Failed to claim the reward.",
+  "stakeFailed": "Failed to create staking entry."
+},
+"success": {
+  "stakeCreated": "Staking entry created successfully!",
+  "claimed": "Reward claimed successfully!"
+},
+"stakingCard": {
+  "title": "Your Staking Summary",
+  "currentlyLocked": "Currently Locked",
+  "economy": "Basic staking with limited returns.",
+  "business": "Business staking plan with moderate returns.",
+  "first6": "6-Month premium plan with high returns.",
+  "firstLifetime": "Lifetime plan with maximum returns."
+},
+"planNames": {
+  "economy": "Economy Class:",
+  "business": "Business Class",
+  "first": "First Class",
+  "first-lifetime": "First Class (Lifetime)"
+},
+"planFeatures": {
+  "Advanced Mining": "Advanced Mining",
+  "Priority Support": "Priority Support",
+  "Staking access": "Staking Access",
+  "All business features": "All Business Features",
+  "Faster mining": "Faster Mining",
+  "Event access": "Event Access",
+  "Highest Mining": "Highest Mining",
+  "Lifetime Access": "Lifetime Access",
+  "Access to Premium Features": "Access to Premium Features"
+},
+
+
+  
   "dashboard": {
     "miningTitle": "Daily Mining Overview",
     "miningDesc": "Earn FSN tokens daily based on your plan. Upgrade for more rewards.",
@@ -61,194 +130,126 @@
     "stakingDesc": "Stake your FSN tokens and earn passive income with flexible plans and high returns.",
     "stakingButton": "Go to Staking Page"
   },
-
-"settingsSection": {
-  "profileTitle": "Profile Information",
-  "fullName": "Full Name",
-  "email": "Email",
-  "accountTitle": "Account Status",
-  "currentPlan": "Current Plan:",
-  "subscriptionEnds": "Subscription Ends On:",
-  "upgrade": "Upgrade Plan",
-  "passwordTitle": "Change Password",
-  "currentPassword": "Current Password",
-  "newPassword": "New Password",
-  "confirmPassword": "Confirm New Password",
-  "changePassword": "Update Password",
-  "languageTitle": "Preferred Language",
-  "noImage": "No image available",
-  "selectImage": "Please select an image",
-  "avatarUpdated": "✅ Avatar updated successfully",
-  "uploadFailed": "❌ Failed to upload image",
-  "fillAllFields": "Please fill all fields",
-  "passwordMismatch": "❌ Passwords do not match",
-  "notAuthenticated": "❌ User not authenticated",
-  "passwordUpdated": "✅ Password updated successfully",
-  "updateFailed": "❌ Failed to update password",
-  "saveAvatar": "Save Avatar"
-},
-
-"kyc": {
-    "title": "KYC Verification Guide",
-
-    "uploadAllDocuments": "Please upload all required documents.",
-    "uploadSuccess": "✅ Documents uploaded successfully! Your KYC status is now Pending.",
-    "uploadFailed": "❌ Upload failed. Please try again.",
-    "uploading": "Uploading...",
-    "submit": "Submit Documents",
-
+  "auth": {
+    "loginTitle": "Login",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "or": "OR",
+    "loginWithGoogle": "Login with Google",
+    "pleaseWait": "Please wait...",
+    "noAccount": "Don’t have an account?",
+    "signUp": "Sign Up",
+    "googlePopupError": "Google login failed. Please use a regular browser like Chrome.",
+    "googleGenericError": "Google login failed. Please try again.",
+    "createAccount": "Create Account",
+    "fullName": "Full Name",
+    "referralCode": "Referral Code (optional)",
+    "agreeTo": "I agree to the",
+    "terms": "terms and conditions",
+    "signUpWithGoogle": "Sign Up with Google",
+    "haveAccount": "Already have an account?"
+  },
+  "kyc": {
+    "title": "Identity Verification (KYC)",
     "idsAccepted": {
-      "title": "Which IDs are acceptable?",
-      "option1": "Passport, national ID card, driver’s license, or any government-issued ID.",
-      "option2": "ID must be valid and unexpired.",
-      "option3": "Must show profile photo and date of birth.",
-      "option4": "All information must be clear and readable."
+      "title": "Accepted Identity Documents",
+      "option1": "National ID",
+      "option2": "Passport",
+      "option3": "Driver’s License",
+      "option4": "Resident Permit"
     },
-
     "idPhotos": {
-      "title": "How to properly take photos of your ID?",
-      "option1": "Photos must be in color.",
-      "option2": "ID must be original — no screenshots, copies, or photos of screens.",
-      "option3": "All corners of the document must be visible.",
-      "option4": "Both front and back must be uploaded (unless ID has one side only)."
+      "title": "Photo Requirements for ID",
+      "option1": "Photos must be clear and all corners visible.",
+      "option2": "No glare, shadows, or blur.",
+      "option3": "ID must not be expired.",
+      "option4": "All information must be readable."
     },
-
-    "selfie": {
-      "title": "Selfie Holding ID Instructions",
-      "option1": "Use same ID submitted above.",
-      "option2": "ID must be facing camera clearly and fully visible.",
-      "option3": "Your face must be unobstructed (no masks, glasses, hats, etc.).",
-      "option4": "Use a well-lit environment.",
-      "option5": "Ensure ID and face are clear and not blocked."
-    },
-
     "samples": {
-      "front": "Front ID Sample",
-      "back": "Back ID Sample",
+      "front": "Front Sample",
+      "back": "Back Sample",
       "selfie": "Selfie Sample"
     },
-
+    "selfie": {
+      "title": "Selfie with ID Requirements",
+      "option1": "Hold the ID next to your face.",
+      "option2": "Face and ID must be clearly visible.",
+      "option3": "No filters or image editing.",
+      "option4": "Good lighting and neutral background.",
+      "option5": "Do not cover any part of the ID."
+    },
     "uploadSection": {
       "title": "Upload Documents",
-      "front": "Front of ID",
-      "back": "Back of ID",
-      "selfie": "Selfie Holding ID"
+      "front": "Upload Front of ID",
+      "back": "Upload Back of ID",
+      "selfie": "Upload Selfie with ID"
     },
-
+    "uploadAllDocuments": "Please upload all required documents.",
+    "uploadSuccess": "Documents uploaded successfully. Verification is under review.",
+    "uploadFailed": "Failed to upload documents. Please try again.",
+    "uploading": "Uploading...",
+    "submit": "Submit for Review",
     "disclaimer": {
-      "title": "Disclaimer",
-      "content": "This guide is provided by FlySky Network for informational purposes only. The information collected is used solely for identity verification. Crypto/digital asset investments involve risk. Consult your legal/tax/investment professional if needed."
+      "title": "Important Note",
+      "content": "Your personal data is securely stored and only used for identity verification purposes. We do not share your data with any third parties."
     },
-
     "faq": {
-      "title": "FAQ",
-      "q1": "What happens after I upload my documents?",
-      "a1": "Our team will review them within 1–3 business days. You’ll be notified of approval or rejection.",
-      "q2": "Can I use my driver’s license?",
-      "a2": "Yes, as long as it’s government-issued and shows your photo and date of birth.",
-      "q3": "What if my ID has no back side?",
-      "a3": "If your ID (like a passport) has only one side, just upload the front only.",
-      "q4": "What file formats are accepted?",
-      "a4": "We accept images in JPG, PNG, or JPEG format.",
-      "q5": "What if my KYC was rejected?",
-      "a5": "You will receive a reason. You can re-upload corrected documents."
-      }
+      "title": "Frequently Asked Questions",
+      "q1": "Why do I need to complete KYC?",
+      "a1": "To ensure security and compliance with financial regulations.",
+      "q2": "How long does verification take?",
+      "a2": "Usually within 24 to 72 hours.",
+      "q3": "What happens if my KYC is rejected?",
+      "a3": "You will be notified with the reason and may re-submit your documents.",
+      "q4": "Can I update my documents later?",
+      "a4": "Yes, you may re-submit updated documents at any time.",
+      "q5": "Is my information secure?",
+      "a5": "Yes. All data is encrypted and securely stored."
+     }
     },
-
-"auth": {
-  "loginTitle": "Login",
-  "email": "Email",
-  "password": "Password",
-  "forgotPassword": "Forgot Password?",
-  "login": "Login",
-  "loggingIn": "Logging in...",
-  "or": "OR",
-  "loginWithGoogle": "Login with Google",
-  "pleaseWait": "Please wait...",
-  "noAccount": "Don’t have an account?",
-  "signUp": "Sign Up",
-  "googlePopupError": "Google login failed. Please use a regular browser like Chrome.",
-  "googleGenericError": "Google login failed. Please try again.",
-  "createAccount": "Create Account",
-  "fullName": "Full Name",
-  "referralCode": "Referral Code (optional)",
-  "agreeTo": "I agree to the",
-  "terms": "terms and conditions",
-  "signUpWithGoogle": "Sign Up with Google",
-  "haveAccount": "Already have an account?"
-},
-
-
-  "stakingSection": {
-    "current": "Current Plan:",
-    "title": "Plan",
-    "startNew": "Start a new staking session based on your plan",
-    "form": {
-      "amount": "Amount to Stake"
-    },
-    "duration": {
-      "month": "Month",
-      "months": "Months"
-    },
-    "startStaking": "Start Staking",
-    "stakingRecords": "Staking Records",
-    "activeStaking": "Active Staking",
-    "completedStaking": "Completed Staking",
-    "claimRewards": "Claim Rewards",
-    "claimIn": "Claim In",
-    "endsOn": "Ends On",
-    "expectedReturn": "Expected Return",
-    "claimed": "Claimed ✅",
-    "noActiveStaking": "No active staking found.",
-    "noCompletedStaking": "No completed staking yet.",
-    "plans": {
-      "business": "Business Class",
-      "economy": "Economy Class",
-      "first6": "First Class (6 Months)",
-      "firstLifetime": "First Class (Lifetime)"
-    },
-    "loading": {
-      "user": "Verifying user...",
-      "processing": "Processing..."
-    },
-    "success": {
-      "stakeCreated": "✅ Staking created successfully!",
-      "claimed": "🎉 Rewards claimed successfully!"
-    },
-    "error": {
-      "userNotLoaded": "User not loaded.",
-      "invalidAmount": "Invalid amount or duration.",
-      "exceedsBalance": "❌ Cannot stake more than your balance.",
-      "stakeFailed": "Staking creation failed. Check console.",
-      "notAuthenticated": "User not authenticated.",
-      "alreadyClaimed": "Rewards already claimed.",
-      "notEndedYet": "Staking period not yet ended.",
-      "claimFailed": "Failed to claim rewards."
-    }
+  "watchToEarn": {
+    "title": "Watch Ads & Earn",
+    "description": "Watch {{count}} ads to earn {{reward}} FSN daily.",
+    "watched": "Ads watched",
+    "balance": "Your current balance",
+    "watchAd": "Watch Ad",
+    "claimRewards": "Claim Reward",
+    "rewardClaimed": "🎉 You successfully claimed {{amount}} FSN!",
+    "adWatched": "✅ Ad has been counted!",
+    "waitMessage": "Please wait until the countdown ends: {{time}}",
+    "note": "🎁 Complete daily ad views to earn your reward.",
+    "adModalTitle": "Watch the ad and wait for the countdown",
+    "timer": "Time remaining:",
+    "seconds": "seconds",
+    "openAd": "Open Ad",
+    "stayOnPage": "The ad has opened in a new tab. Please stay on this page until the countdown ends.",
+    "confirmAdWatched": "Confirm Ad Watched",
+    "shareAd": "📢 Share Ad",
+    "shareBonusReceived": "✅ You've received 50 FSN for sharing the banner!",
+    "shareAlreadyClaimed": "❌ You've already claimed the bonus within the last 12 hours.",
+    "shareAdTitle": "Share & Earn",
+    "shareAdDesc": "Share this banner on X to earn 50 FSN once per day.",
+    "shareOnX": "Share on X"
   },
-  "plans": {
-    "economy": "⚫ Economy Class:",
-    "business": "🔵 Business Class:",
-    "first": "🟡 First Class:"
-  },
-  "membership": "Membership",
-  "kycStatus": "KYC Status",
-  "expiresOn": "Expires On",
-  "notVerified": "❌ Not Verified – Please verify now",
-  "kycPending": "🕓 Pending Verification",
-  "kycApproved": "✅ Verified",
-  "upgrade": "🚀 Upgrade Membership",
-  "statusMsg": {
-    "kyc": "⚠️ Please complete KYC to unlock all features.",
-    "economy": "🚀 You’re on the free plan. Upgrade for more benefits.",
-    "business": "🎯 Business plan offers more. First Class gives you everything.",
-    "first": "👑 You're enjoying all the features with First Class membership."
-  },
-  "referralProgram": "Referral Program",
-  "yourReferralLink": "Your Referral Link",
+  
+    "referralProgram": "Referral Program",
+  "inviteFriendsEarn": "Invite your friends and earn rewards when they join and verify.",
   "copied": "Copied!",
+  "verifiedReferrals": "Verified Referrals",
+  "pendingReferrals": "Pending Referrals",
+  "currentReward": "Current Reward per Referral",
+  "rewardTiers": "Reward Tiers",
+  "bonusTier1": "First 10 verified referrals: 100 FSN each",
+  "bonusTier2": "Next 10 referrals: 200 FSN each",
+  "bonusTier3": "Over 20 referrals: 300 FSN each",
+  "yourReferralLink": "Your Referral Link",
   "downloadQR": "Download QR Code",
   "scanToShare": "Scan or download to share the link",
+  "verifiedCount": "Verified Referrals",
+  "verifiedEmails": "Verified Emails",
   "yourReferrals": "Your Referrals",
   "email": "Email",
   "status": "Status",
@@ -257,112 +258,30 @@
   "verified": "Verified",
   "pending": "Pending",
   "rejected": "Rejected",
-  "bonusTiers": "Referral Bonus Tiers",
-  "bonusTier1": "First 10 verified: 100 FSN each",
-  "bonusTier2": "Next 10: 200 FSN each",
-  "bonusTier3": "Over 20: 300 FSN each",
-  "home": "Home",
-  "staking": "Staking",
-  "play": "Play to Earn",
-  "watch": "Watch to Earn",
-  "referral": "Referral",
-  "wallet": "Wallet",
-  "about": "About",
-  "inbox": "Inbox",
-  "profile": "Profile",
-  "logout": "Logout",
-  "settings": "Settings",
-
-  "contactSection": {
-    "title": "Contact Us",
-    "description": "Have questions? Reach out and we’ll get back to you soon.",
-    "name": "Your Name",
-    "email": "Your Email",
-    "message": "Your Message",
-    "send": "Send Message",
-    "thankYou": "Thank you! We’ll respond shortly.",
-    "fillAllFields": "Please fill out all fields."
- },
-
-
-"referralBonus": {
-"referralBonus.loading": "Loading...",
-"referralBonus.claimButton": "Claim Referral Bonus",
-"referralBonus.noBonus": "No bonus available at the moment.",
-"referralBonus.claimedSuccess": "🎉 Referral bonus claimed!",
-"referralBonus.claimedError": "An error occurred while claiming your bonus.",
-"referralBonus.fcmTitle": "🎁 Referral Bonus Ready",
-"referralBonus.fcmBody": "A new referral was verified. Get ready to claim your bonus!"
-},
-
-"fsnDailyMining": {
-  "fsnDailyMining": "FSN Daily Mining",
-  "dailyLimit": "Daily Limit",
-  "cycle": "Cycle",
-  "claimType": "Claim Type",
-  "manual": "Manual",
-  "dailyLimitLabel": "Daily Limit",
-  "readyToClaim": "✅ Ready to Claim!",
-  "timeRemaining": "Time Remaining",
-  "unlockRewards": "Unlock Rewards",
-  "miningInProgress": "Mining in Progress",
-  "followUs": "Follow us on",
-  "facebook": "Facebook",
-  "telegram": "Telegram",
-  "discord": "Discord",
-  "rightsReserved": "© 2025 FlySky Network. All rights reserved.",
-  "walletOverview": "💼 Wallet Overview",
-  "totalBalance": "Total Balance",
-  "availableBalance": "Available Balance",
-  "lockedInStaking": "Locked in Staking",
-  "referralRewards": "Referral Rewards (Verified Only)",
-  "balanceDistribution": "💹 Balance Distribution",
-  "noBalanceData": "No balance data to display.",
-  "transactionHistory": "📜 Transaction History",
-  "noTransactions": "No transactions recorded yet.",
-  "loadingWallet": "Loading wallet data..."
+  "claim": "Claim",
+  "claimed": "Claimed ✅",
+  "referralBonus": {
+    "loading": "Loading...",
+    "claimButton": "Claim Referral Bonus",
+    "noBonus": "No bonuses available to claim.",
+    "claimedSuccess": "🎉 Referral bonus claimed successfully!",
+    "claimedError": "Error occurred while claiming bonus.",
+    "fcmTitle": "🎁 Referral Bonus Ready",
+    "fcmBody": "A new referral has been verified. Your bonus is ready to claim!"
+   },
+  "wallet": {
+    "walletOverview": "💼 Wallet Overview",
+    "totalBalance": "Total Balance",
+    "availableBalance": "Available Balance",
+    "lockedInStaking": "Locked in Staking",
+    "referralRewards": "Referral Rewards (Verified Only)",
+    "balanceDistribution": "💹 Balance Distribution",
+    "noBalanceData": "No balance data to display.",
+    "transactionHistory": "📜 Transaction History",
+    "noTransactions": "No transactions recorded yet.",
+    "loadingWallet": "Loading wallet data..."
   },
-
-  "watchToEarn": {
-    "title": "Watch to Earn",
-    "description": "Earn rewards by watching short ads! Watch {{count}} ads to unlock {{reward}} FSN bonus.",
-    "watched": "Watched",
-    "balance": "Balance",
-    "waitMessage": "Please wait {{time}} before watching ads again.",
-    "watchAd": "Watch Ad",
-    "claimRewards": "Claim Rewards",
-    "note": "Note: You must watch 5 ads each day to claim your reward. Enjoy and earn!",
-    "adWatched": "Ad watched successfully!",
-    "rewardClaimed": "You earned {{amount}} FSN!",
- "title": "Watch Ads & Earn",
-  "description": "Watch {{count}} ads to earn {{reward}} FSN daily.",
-  "watched": "Ads watched",
-  "balance": "Your current balance",
-  "watchAd": "Watch Ad",
-  "claimRewards": "Claim Reward",
-  "rewardClaimed": "🎉 You successfully claimed {{amount}} FSN!",
-  "adWatched": "✅ Ad has been counted!",
-  "waitMessage": "Please wait until the countdown ends: {{time}}",
-  "note": "🎁 Complete daily ad views to earn your reward.",
-  "adModalTitle": "Watch the ad and wait for the countdown",
-  "timer": "Time remaining:",
-  "seconds": "seconds",
-  "openAd": "Open Ad",
-"stayOnPage": "The ad has opened in a new tab. Please stay on this page until the countdown ends.",
-  "confirmAdWatched": "Confirm Ad Watched",
-"shareAd": "📢 Share Ad",
-"shareBonusReceived": "✅ You've received 50 FSN for sharing!",
-"shareAlreadyClaimed": "❌ You can only earn the share bonus once per day.",
-"shareAdTitle": "Share & Earn",
-  "shareAdDesc": "Share this banner on X to earn 50 FSN once per day.",
-  "shareOn X": "Share on X",
-  "shareBonusReceived": "✅ You've earned 50 FSN for sharing!",
-  "shareAlreadyClaimed": "❌ Share bonus already claimed today.",
- "shareBonusReceived": "✅ You've received 50 FSN for sharing the banner!",
-  "shareAlreadyClaimed": "❌ You've already claimed the bonus within the last 12 hours."
-  },
-
-  "menu": {
+ "menu": {
     "home": "Home",
     "staking": "Staking",
     "mining": "Mining",
@@ -375,37 +294,90 @@
     "contact": "Contact",
     "profile": "Profile",
     "logout": "Logout",
-    "settings": "Settings"
+    "settings": "Settings",
+     "kyc": "KYC Verification"
   },
-
-  "contact": {
-    "title": "Contact Us",
-    "description": "Have questions? Reach out and we’ll get back to you soon.",
-    "name": "Your Name",
-    "email": "Your Email",
-    "message": "Your Message",
-    "send": "Send Message",
-    "thankYou": "Thank you! We’ll respond shortly.",
-    "fillAllFields": "Please fill out all fields."
-  },
-
   "about": {
-  "title": "About Us",
-  "intro": "FlySky Network is a next-generation digital economy platform that integrates mining, staking, gaming, and NFTs into one seamless experience. We are committed to building a vibrant ecosystem that enables users to earn, trade, and grow their assets in an entertaining environment.",
-  "visionTitle": "Our Vision",
-  "vision": "To become the most engaging and rewarding digital economy platform, empowering users around the world to thrive in the evolving digital landscape.",
-  "missionTitle": "Our Mission",
-  "mission": "We aim to bridge the gap between traditional finance and the digital world by offering accessible mining, fair staking, fun gaming, and a dynamic NFT marketplace.",
-  "featuresTitle": "What We Offer",
+    "title": "About Us",
+    "intro": "FlySky Network is a decentralized ecosystem that combines mining, staking, gaming, and NFTs into a single integrated platform.",
+    "visionTitle": "Our Vision",
+    "vision": "To create a sustainable and fair digital economy that empowers users to earn and grow through decentralized technology.",
+    "missionTitle": "Our Mission",
+    "mission": "We aim to provide a unified platform that merges entertainment, blockchain rewards, and community participation.",
+    "featuresTitle": "Key Features of Our Platform:",
+    "features": {
+      "mining": "⛏️ Proof-of-Activity Mining",
+      "staking": "📈 Flexible Staking Plans",
+      "gaming": "🎮 Battle Legend Game Integration",
+      "nft": "🖼️ Marketplace for NFT Assets"
+    },
+    "whitepaper": {
+      "title": "Whitepaper Overview",
+      "overview": "FlySky Network's whitepaper outlines the core components, mechanisms, and goals of the platform.",
+      "introTitle": "Introduction",
+      "intro": "FlySky introduces a fair distribution model that rewards active users with FSN tokens.",
+      "tokenTitle": "Token Sale",
+      "tokenIntro": "FSN tokens will be distributed in multiple phases, ensuring broad and fair access.",
+      "phase": "The initial phases focus on community mining and early staking.",
+      "mainSale": "A main token sale will follow, with clear allocation rules.",
+      "uses": "FSN will be used for staking, in-game purchases, NFTs, and governance.",
+      "gameTitle": "Battle Legend Game",
+      "gameIntro": "A survival-to-earn blockchain game integrated with FSN token economy.",
+      "gameDetails": "Players upgrade vehicles, steal parts, and defend bases.",
+      "gameFeaturesTitle": "Game Highlights:",
+      "features": {
+        "vehicles": "Upgradeable and tradable vehicles",
+        "theft": "Vehicle theft and part dismantling",
+        "maintenance": "Mandatory vehicle maintenance system",
+        "base": "Progressive base and building upgrades",
+        "auctions": "Limited vehicle auctions and rentals",
+        "roles": "Player roles: Warriors and Traders"
+      },
+      "status": "The game is under active development and will be launched in phases.",
+      "roadmap": "Roadmap",
+      "roadmapDesc": "Our roadmap includes mining launch, staking, token sale, game release, and NFT marketplace.",
+      "security": "Security and Transparency",
+      "securityDesc": "Smart contracts are audited and data is stored securely using Firebase and IPFS.",
+      "conclusion": "Conclusion",
+      "conclusionDesc": "FlySky Network aims to revolutionize digital interaction through a fun, fair, and rewarding environment."
+    },
+    "join": "Join us and be part of the future of decentralized engagement!"
+  },
+
   "features": {
     "mining": "Start earning FSN tokens through our energy-efficient proof-of-activity model.",
     "staking": "Stake your digital tokens and watch your assets grow while supporting the network.",
     "gaming": "Enjoy exciting games that reward your skills with real digital assets.",
     "nft": "Trade unique NFTs and unlock exclusive items and collectibles within games."
   },
-  "whitepaperTitle": "Whitepaper",
+"settingsSection": {
+    "profileTitle": "Profile Information",
+    "fullName": "Full Name",
+    "email": "Email",
+    "accountTitle": "Account Status",
+    "currentPlan": "Current Plan:",
+    "subscriptionEnds": "Subscription Ends On:",
+    "upgrade": "Upgrade Plan",
+    "passwordTitle": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "changePassword": "Update Password",
+    "languageTitle": "Preferred Language",
+    "noImage": "No image available",
+    "selectImage": "Please select an image",
+    "avatarUpdated": "✅ Avatar updated successfully",
+    "uploadFailed": "❌ Failed to upload image",
+    "fillAllFields": "Please fill all fields",
+    "passwordMismatch": "❌ Passwords do not match",
+    "notAuthenticated": "❌ User not authenticated",
+    "passwordUpdated": "✅ Password updated successfully",
+    "updateFailed": "❌ Failed to update password",
+    "saveAvatar": "Save Avatar"
+  },
+
   "whitepaper": {
-    "title": "Whitepaper",
+    "whitepaperTitle": "Whitepaper",
     "overview": "A comprehensive document outlining our project's philosophy, technical architecture, and future plans.",
     "introTitle": "Introduction",
     "intro": "FlySky Network is designed to redefine the user-tech relationship by integrating multiple digital elements into one ecosystem.",
@@ -418,14 +390,6 @@
     "gameIntro": "Battle Legend is the first Survive-to-Earn game combining strategy, entertainment, and rewards.",
     "gameDetails": "The game offers vehicles, weapons, and a resource system within a fully integrated economy based on the BLT token.",
     "gameFeaturesTitle": "Game Features",
-    "features": {
-      "vehicles": "Various upgradeable and tradable vehicles as NFTs.",
-      "theft": "A theft system allowing vehicles to be stolen or converted into spare parts.",
-      "maintenance": "A periodic maintenance system affecting vehicle performance.",
-      "base": "Building upgrades like the maintenance facility are tied to the main base level.",
-      "auctions": "Regular auctions for rare vehicles.",
-      "roles": "A role system including warriors and traders within a dynamic economy."
-    },
     "status": "Currently in the pre-sale preparation phase, with a clear roadmap for each stage.",
     "roadmap": "Roadmap",
     "roadmapDesc": "Includes development stages, partnerships, launch, and ecosystem expansion.",
@@ -433,20 +397,99 @@
     "securityDesc": "We use smart contracts and blockchain technology to ensure integrity and protect users.",
     "conclusion": "Conclusion",
     "conclusionDesc": "FlySky Network represents the unified future of technology, economy, and entertainment. Join us now.",
-    "join": "Be part of the digital revolution — Join FlySky Network now."
+    "join": "Be part of the digital revolution — Join FlySky Network now.",
+    "battleLegendTitle": "Battle Legend Game",
+    "battleLegend": "Part of our ecosystem is Battle Legend — the first 'Survive to Earn' game that combines fun combat, customizable vehicles, and an integrated economy powered by the BLT token.",
+    "roadmapTitle": "Roadmap",
+    "securityTitle": "Security & Transparency"
   },
-  "battleLegendTitle": "Battle Legend Game",
-  "battleLegend": "Part of our ecosystem is Battle Legend — the first 'Survive to Earn' game that combines fun combat, customizable vehicles, and an integrated economy powered by the BLT token.",
-  "roadmapTitle": "Roadmap",
-  "roadmap": "We operate on a strategic roadmap divided into stages including launch, expansion, partnerships, and gaming. Each stage unlocks new possibilities for our community.",
-  "securityTitle": "Security & Transparency",
-  "security": "We prioritize protecting user data and ensuring transparency in all transactions through smart contracts and modern blockchain technologies.",
-  "join": "Join us now and be part of the future of the digital economy."
+"miningPage": {
+    "balance": "Balance",
+    "fsnDailyMining": "FSN Daily Mining",
+    "readyToMine": "Ready to start mining?",
+    "startMining": "Start Mining",
+    "dailyLimit": "Daily Limit",
+    "cycle": "Cycle",
+    "hours": "hours",
+    "claimType": "Claim Type",
+    "manual": "Manual",
+    "dailyLimitLabel": "Daily Limit",
+    "timeRemaining": "Time Remaining",
+    "readyToClaim": "⏳ Ready to claim your mining reward!",
+    "unlockRewards": "Unlock Rewards",
+    "claim": "Claim Reward",
+    "miningInProgress": "Mining in Progress",
+    "planNames": {
+      "economy": "Economy Class",
+      "business": "Business Class",
+      "first": "First Class",
+      "first-6": "First Class (6 Months)",
+      "first-lifetime": "First Class (Lifetime)"
+    },
+    "miningHistory": "Mining History"
   },
-  "archived": "Archived",
-  "trash": "Trash",
-  "noMessages": "No messages found.",
-  "archive": "Archive",
-  "delete": "Delete",
-  "close": "Close"
+ "membershipPage": {
+    "title": "Membership Plans",
+    "currentPlan": "Current Plan",
+    "notSubscribed": "Not Subscribed",
+    "expiredOn": "Expired On",
+    "expiresOn": "Expires On",
+    "bonus": "Bonus",
+    "subscribe": "Subscribe Now",
+    "renew": "Renew Plan",
+    "activated": "Activated",
+    "manualPaymentTitle": "Manual Payment",
+    "instructions": {
+      "title": "To complete manual payment, please follow these steps:",
+      "step1": "Select your preferred cryptocurrency.",
+      "step2": "Send the exact amount to the address shown below.",
+      "step3": "Upload the transaction proof, your wallet address, and link.",
+      "step4": "Make sure the amount matches the selected plan.",
+      "step5": "Once reviewed, your plan will be activated within 24 hours."
+    },
+    "selectCurrency": "Select Payment Currency",
+    "sendTo": "Send payment to the following address:",
+    "transactionLink": "Transaction Link",
+    "fromAddress": "Sender Wallet Address",
+    "uploadProof": "Upload Payment Proof",
+    "submitProof": "Submit Proof",
+    "uploading": "Uploading..."
+  },
+  "feature": {
+    "advancedMining": "Advanced Mining Rate",
+    "prioritySupport": "Priority Support",
+    "stakingAccess": "Access to Staking",
+    "fasterMining": "Faster Mining Speed",
+    "allBusinessFeatures": "Includes All Business Features",
+    "eventAccess": "Access to Events & Campaigns",
+    "highestMining": "Highest Mining Rewards",
+    "premiumAccess": "Premium Area Access",
+    "lifetimeAccess": "Lifetime Membership",
+    "unlockedForever": "Unlimited Access Forever",
+    "lifetimePerks": "Lifetime Perks and Bonuses"
+  },
+  "success": {
+    "stakeCreated": "Your payment was submitted successfully!"
+  },
+ "contact": {
+  "title": "Contact Us",
+  "description": "Have questions or feedback? We'd love to hear from you.",
+  "name": "Your Name",
+  "email": "Your Email",
+  "message": "Your Message",
+  "send": "Send Message"
+},
+ 
+  "fillAllFields": "Please fill all fields.",
+  "notAuthenticated": "User not authenticated.",
+ "walletOverview": "💼 Wallet Overview",
+  "totalBalance": "Total Balance",
+  "availableBalance": "Available Balance",
+  "lockedInStaking": "Locked in Staking",
+  "referralRewards": "Referral Rewards (Verified Only)",
+  "balanceDistribution": "💹 Balance Distribution",
+  "noBalanceData": "No balance data available.",
+  "transactionHistory": "📜 Transaction History",
+  "noTransactions": "No transactions to display.",
+  "loadingWallet": "Loading wallet data..."
 }

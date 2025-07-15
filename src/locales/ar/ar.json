@@ -87,13 +87,15 @@
     "firstLifetime": "عوائد تصل إلى 100٪. مثالي لحاملي العملة على المدى الطويل."
   },
   "dashboard": {
-    "miningTitle": "نظرة عامة على التعدين اليومي",
+  "bannerTitle": "مرحبًا بك في شبكة فلاي سكاي",
+  "bannerSubtitle": "استكشف. اربح. انطلق.",
+    "miningTitle": "التعدين اليومي",
     "miningDesc": "اكسب رموز FSN يوميًا حسب مستوى اشتراكك. قم بالترقية لمزيد من المكافآت.",
     "startMining": "ابدأ التعدين الآن",
     "membershipTitle": "خطط الاشتراك",
     "bonus": "المكافأة:",
     "viewMembership": "عرض تفاصيل الاشتراك",
-    "referralTitle": "ادعُ واربح",
+    "referralTitle": "شارك واربح",
     "referralDesc": "شارك رابط الإحالة الخاص بك واربح عندما ينضم أصدقاؤك إلى شبكة FlySky.",
     "viewReferral": "عرض برنامج الإحالة",
     "playTitle": "العب واربح",
@@ -371,7 +373,8 @@
     "contact": "اتصل بنا",
     "profile": "الملف الشخصي",
     "logout": "تسجيل الخروج",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "kyc": "التحقق KYC"
   },
   "archived": "الأرشيف",
   "trash": "المحذوفات",
@@ -472,6 +475,30 @@
     "fasterMining": "تعدين أسرع",
     "stakingAccess": "الوصول إلى التخزين",
     "advancedMining": "تعدين متقدم"
+  },
+"miningPage": {
+    "balance": "الرصيد",
+    "readyToMine": "هل أنت مستعد لبدء التعدين؟",
+    "startMining": "ابدأ التعدين",
+    "planNames": {
+      "economy": "الدرجة الاقتصادية",
+      "business": "درجة الأعمال",
+      "first": "الدرجة الأولى",
+      "first-6": "الدرجة الأولى (6 أشهر)",
+      "first-lifetime": "الدرجة الأولى (مدى الحياة)"
+    },
+    "dailyLimit": "الحد اليومي",
+    "dailyLimitLabel": "الحد اليومي",
+    "cycle": "الدورة",
+    "hours": "ساعات",
+    "claimType": "طريقة التحصيل",
+    "manual": "يدوي",
+    "fsnDailyMining": "تعدين FSN اليومي",
+    "timeRemaining": "الوقت المتبقي",
+    "readyToClaim": "⏳ المكافأة جاهزة للتحصيل!",
+    "unlockRewards": "افتح المكافآت",
+    "claim": "تحصيل المكافأة",
+    "miningInProgress": "التعدين قيد التقدم"
   },
 "plan": {
   "title": "الدرجة",

@@ -48,7 +48,8 @@ const MiningPage = () => {
   return (
     <div className="min-h-screen bg-[#0B1622] pt-4 pb-24">
       <div className="text-center text-white mb-4">
-        <h1 className="text-xl font-bold">{t('balance')}: {balance} FSN</h1> {/* ✅ استخدام الترجمة */}
+        <h1 className="text-xl font-bold">{t('miningPage.balance')}: {balance} FSN</h1>
+ {/* ✅ استخدام الترجمة */}
       </div>
       <MiningCard plan={userPlan} onClaim={handleClaim} />
     </div>
