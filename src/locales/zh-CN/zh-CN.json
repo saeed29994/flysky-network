@@ -418,7 +418,7 @@
 },
 
 "watchToEarn": {
-  "title": "观看广告赚取奖励",
+  "title": "观看赚取奖励",
   "description": "通过观看 {{count}} 个广告每日可赚取 {{reward}} FSN。",
   "watched": "已观看广告数",
   "balance": "当前余额",
@@ -450,18 +450,40 @@
   "contact": "联系我们",
   "profile": "个人资料",
   "logout": "退出登录",
-  "settings": "设置"
+  "settings": "设置",
+  "back": "返回"
 },
 
 "contact": {
   "title": "联系我们",
   "description": "有任何问题？请联系我们，我们会尽快回复您。",
   "name": "您的姓名",
+  "namePlaceholder": "请输入您的全名",
   "email": "您的邮箱",
+  "emailPlaceholder": "请输入您的邮箱地址",
   "message": "您的留言",
+  "messagePlaceholder": "告诉我们如何帮助您...",
   "send": "发送信息",
+  "sendMessage": "给我们发送消息",
+  "sending": "发送中...",
   "thankYou": "谢谢！我们将尽快回复您。",
-  "fillAllFields": "请填写所有字段。"
+  "fillAllFields": "请填写所有字段。",
+  "getInTouch": "联系我们",
+  "phone": "电话",
+  "address": "地址",
+  "faq": "常见问题",
+  "faq1": {
+    "question": "如何开始挖矿？",
+    "answer": "只需导航到挖矿页面并点击\"开始挖矿\"即可开始赚取每日奖励。"
+  },
+  "faq2": {
+    "question": "推荐奖励如何运作？",
+    "answer": "使用您的推荐链接邀请朋友，当他们加入并订阅计划时您将获得奖励。"
+  },
+  "faq3": {
+    "question": "有哪些不同的会员计划？",
+    "answer": "我们提供经济舱、商务舱和头等舱计划，具有递增的福利和奖励。"
+  }
 },
 
  "about": {
@@ -598,5 +620,18 @@
   "noBalanceData": "暂无余额数据可显示。",
   "transactionHistory": "📜 交易记录",
   "noTransactions": "暂无交易记录。",
-  "loadingWallet": "正在加载钱包数据..."
+  "loadingWallet": "正在加载钱包数据...",
+  "statusMsg": {
+    "kyc": "⚠️ 完成您的KYC验证以访问所有功能。",
+    "economy": "🚀 您正在使用免费计划。升级以解锁更多福利。",
+    "business": "🎯 商务舱为您提供增强访问权限。头等舱解锁全部潜力。",
+    "first": "👑 您正在享受头等舱会员的完全访问权限。"
+  },
+  "kycApproved": "已批准",
+  "kycPending": "待处理",
+  "notVerified": "未验证",
+  "membership": "会员资格",
+  "kycStatus": "KYC状态",
+  "expiresOn": "到期时间",
+  "upgrade": "升级"
 }

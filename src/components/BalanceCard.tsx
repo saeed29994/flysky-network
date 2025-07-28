@@ -1,222 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import { auth, db } from '../firebase';
-import {
-  doc,
-  collection,
-  addDoc,
-  updateDoc,
-  onSnapshot,
-  query,
-  Timestamp,
-} from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
-import toast, { Toaster } from 'react-hot-toast';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaWallet, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { useUserPlan } from '../contexts/UserPlanContext';
 
-const StakingPage = () => {
-  const [user, setUser] = useState<any>(null);
-  const [balance, setBalance] = useState(0);
-  const [plan, setPlan] = useState('economy');
-  const [amount, setAmount] = useState('');
-  const [duration, setDuration] = useState('1');
-  const [stakingList, setStakingList] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+interface BalanceCardProps {
+  balance?: number;
+  change24h?: number;
+  currency?: string;
+  isLoading?: boolean;
+  useContextBalance?: boolean;
+}
 
-  const returnRate =
-    plan === 'first' ? [0.25, 0.4, 0.55] :
-    plan === 'business' ? [0.15, 0.3, 0.45] :
-    [0.05, 0.15, 0.25];
+const BalanceCard: React.FC<BalanceCardProps> = ({
+  balance: propBalance,
+  change24h = 0,
+  currency = 'FSN',
+  isLoading = false,
+  useContextBalance = false
+}) => {
+  const { t } = useTranslation();
+  const { balance: contextBalance } = useUserPlan();
+  
+  // Use balance from context if specified, otherwise use the prop
+  const balance = useContextBalance ? contextBalance : (propBalance || 0);
 
-  // ✅ حفظ المستخدم من onAuthStateChanged
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        console.log('✅ User authenticated:', firebaseUser.uid);
-        setUser(firebaseUser);
-      } else {
-        console.log('❌ User not logged in');
-      }
-    });
+  if (isLoading) {
+    return (
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-white/10 animate-pulse">
+        <div className="flex items-center">
+          <div className="p-2 md:p-3 bg-gray-600 rounded-lg w-10 h-10"></div>
+          <div className="ml-3 md:ml-4 flex-1">
+            <div className="h-4 bg-gray-600 rounded w-20 mb-2"></div>
+            <div className="h-6 bg-gray-600 rounded w-24"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    return () => unsubscribe();
-  }, []);
-
-  // ✅ الاشتراك في بيانات الرصيد والخطة والستايكنج
-  useEffect(() => {
-    if (!user) return;
-
-    console.log('🔄 Subscribing to user data and staking...');
-
-    const userRef = doc(db, 'users', user.uid);
-    const unsubscribeUser = onSnapshot(userRef, (docSnap) => {
-      const data = docSnap.data();
-      if (data) {
-        console.log('📥 Balance updated:', data.balance);
-        setBalance(data.balance || 0);
-        setPlan(data.plan || 'economy');
-      }
-    });
-
-    const stakingRef = query(collection(db, 'users', user.uid, 'staking'));
-    const unsubscribeStaking = onSnapshot(stakingRef, (snapshot) => {
-      const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      console.log('📥 Staking list updated:', list);
-      setStakingList(list);
-    });
-
-    return () => {
-      unsubscribeUser();
-      unsubscribeStaking();
-    };
-  }, [user]);
-
-  const handleStake = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) return;
-
-    const amountNum = parseFloat(amount);
-    const durationNum = parseInt(duration);
-
-    if (amountNum > balance) {
-      toast.error('❌ You cannot stake more than your balance.');
-      return;
-    }
-
-    const durationIndex = durationNum === 1 ? 0 : durationNum === 3 ? 1 : 2;
-    const expectedReturn = amountNum * (1 + returnRate[durationIndex]);
-    const startDate = Timestamp.now();
-    const endDate = Timestamp.fromDate(new Date(Date.now() + durationNum * 30 * 24 * 60 * 60 * 1000));
-
-    setLoading(true);
-
-    try {
-      console.log('📤 Adding new stake...');
-      await addDoc(collection(db, 'users', user.uid, 'staking'), {
-        amount: amountNum,
-        duration: durationNum,
-        planType: plan,
-        startDate,
-        endDate,
-        expectedReturn,
-        status: 'active',
-        claimed: false
-      });
-
-      console.log('📝 Updating user balance...');
-      await updateDoc(doc(db, 'users', user.uid), {
-        balance: balance - amountNum
-      });
-
-      toast.success('✅ Staking created successfully!');
-      setAmount('');
-    } catch (error) {
-      console.error('❌ Error during staking:', error);
-      toast.error('Something went wrong.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleClaim = async (stake: any) => {
-    if (!user) return;
-
-    try {
-      console.log('💰 Claiming stake reward...');
-      await updateDoc(doc(db, 'users', user.uid, 'staking', stake.id), {
-        status: 'completed',
-        claimed: true
-      });
-
-      await updateDoc(doc(db, 'users', user.uid), {
-        balance: balance + stake.expectedReturn
-      });
-
-      toast.success(`🎁 Claimed ${stake.expectedReturn.toFixed(2)} FSN successfully!`);
-    } catch (error) {
-      console.error('❌ Error during claim:', error);
-      toast.error('Something went wrong.');
-    }
-  };
+  const isPositive = change24h >= 0;
+  const changePercentage = Math.abs(change24h);
 
   return (
-    <div className="min-h-screen px-4 py-12 bg-gray-950 text-white">
-      <Toaster position="top-center" reverseOrder={false} />
-
-      <h1 className="text-3xl font-bold text-center text-yellow-400 mb-10">🔥 FSN Staking</h1>
-
-      <div className="mb-8 bg-gray-900 rounded-xl p-6 text-center shadow-md max-w-md mx-auto">
-        <p className="text-gray-400 text-sm">Your Current Balance</p>
-        <p className="text-4xl font-bold text-yellow-400">{balance} FSN</p>
-        <p className="text-sm text-gray-500 mt-2">
-          Membership: <span className="text-white font-semibold uppercase">{plan}</span>
-        </p>
-      </div>
-
-      <section className="bg-gray-900 p-6 rounded-xl max-w-2xl mx-auto mb-8 shadow-lg">
-        <h2 className="text-xl text-yellow-300 font-bold text-center mb-1">{plan.toUpperCase()} PLAN</h2>
-        <p className="text-center text-sm text-gray-400 mb-4">Start a new stake based on your plan</p>
-
-        <form onSubmit={handleStake} className="space-y-4">
-          <input
-            type="number"
-            placeholder="Amount to Stake"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="w-full p-3 rounded bg-gray-800 border border-gray-700"
-            required
-          />
-          <select
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            className="w-full p-3 rounded bg-gray-800 border border-gray-700"
-          >
-            <option value="1">1 Month – {returnRate[0] * 100}%</option>
-            <option value="3">3 Months – {returnRate[1] * 100}%</option>
-            <option value="6">6 Months – {returnRate[2] * 100}%</option>
-          </select>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-yellow-500 hover:bg-yellow-600 text-black py-3 rounded font-semibold"
-          >
-            {loading ? 'Processing...' : '🚀 Start Staking'}
-          </button>
-        </form>
-      </section>
-
-      <section className="max-w-4xl mx-auto">
-        <h3 className="text-xl font-semibold text-yellow-300 mb-4">📊 Your Staking Entries</h3>
-        {stakingList.length === 0 ? (
-          <p className="text-gray-500 text-center">You haven’t staked yet.</p>
-        ) : (
-          <div className="grid gap-4">
-            {stakingList.map((stake) => {
-              const now = new Date();
-              const canClaim = stake.status === 'active' && stake.endDate.toDate() <= now;
-
-              return (
-                <div key={stake.id} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                  <p>💰 Amount: <strong>{stake.amount} FSN</strong></p>
-                  <p>⏳ Duration: {stake.duration} month(s)</p>
-                  <p>📆 Ends: {stake.endDate.toDate().toLocaleDateString()}</p>
-                  <p>💸 Expected Return: <span className="text-green-400">{stake.expectedReturn.toFixed(2)} FSN</span></p>
-                  <p>Status: <span className={`font-semibold ${stake.status === 'completed' ? 'text-green-400' : 'text-yellow-400'}`}>{stake.status}</span></p>
-
-                  {canClaim && !stake.claimed && (
-                    <button
-                      onClick={() => handleClaim(stake)}
-                      className="mt-4 bg-green-500 hover:bg-green-600 text-black px-4 py-2 rounded shadow"
-                    >
-                      🎁 Claim Rewards
-                    </button>
-                  )}
-                </div>
-              );
-            })}
+    <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-white/10 hover:border-white/20 transition-all duration-300 group">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center flex-1 min-w-0">
+          <div className="p-2 md:p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg">
+            <FaWallet className="text-white text-lg md:text-xl" />
+          </div>
+          <div className="ml-3 md:ml-4 flex-1 min-w-0">
+            <p className="text-xs md:text-sm text-gray-400 truncate">
+              {t('wallet.availableBalance', 'Available Balance')}
+            </p>
+            <p className="text-lg md:text-2xl font-bold text-white truncate">
+              {balance.toLocaleString()} {currency}
+            </p>
+          </div>
+        </div>
+        
+        {change24h !== 0 && (
+          <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium ${
+            isPositive 
+              ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+              : 'bg-red-500/20 text-red-400 border border-red-500/30'
+          }`}>
+            {isPositive ? (
+              <FaArrowUp className="text-xs" />
+            ) : (
+              <FaArrowDown className="text-xs" />
+            )}
+            <span className="hidden sm:inline">{changePercentage.toFixed(2)}%</span>
+            <span className="sm:hidden">{changePercentage.toFixed(1)}%</span>
           </div>
         )}
-      </section>
+      </div>
+      
+      {/* Mobile-optimized hover effect */}
+      <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-white/5">
+        <div className="flex justify-between items-center text-xs text-gray-400">
+          <span>{t('wallet.lastUpdated', 'Last updated')}</span>
+          <span>{new Date().toLocaleTimeString()}</span>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default StakingPage;
+export default BalanceCard;

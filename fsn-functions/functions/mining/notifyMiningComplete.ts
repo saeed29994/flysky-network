@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import { translateText } from "../../utils/translateText";
+import { translateText } from "../src/utils/translateText";
 import { getFirestore } from "firebase-admin/firestore";
 
 const db = getFirestore();
@@ -62,6 +62,16 @@ export const notifyMiningComplete = functions.https.onCall(async (data, context)
     claimed: false,
     timestamp: admin.firestore.FieldValue.serverTimestamp(),
     type: "mining",
+  });
+
+  // Add to the user's notifications collection
+  await db.collection("users").doc(uid).collection("notifications").add({
+    type: "claim_reward",
+    title: translatedTitle,
+    body: translatedBody,
+    read: false,
+    timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    link: "/mining", // Link to mining page
   });
 
   return { success: true };

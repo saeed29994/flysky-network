@@ -214,11 +214,32 @@ Voici votre fichier JSON complet, traduit en français :
     "title": "Contactez-nous",
     "description": "Une question ? Contactez-nous, nous vous répondrons bientôt.",
     "name": "Votre nom",
+    "namePlaceholder": "Entrez votre nom complet",
     "email": "Votre e‑mail",
+    "emailPlaceholder": "Entrez votre adresse e-mail",
     "message": "Votre message",
+    "messagePlaceholder": "Dites-nous comment nous pouvons vous aider...",
     "send": "Envoyer le message",
+    "sendMessage": "Envoyez-nous un message",
+    "sending": "Envoi en cours...",
     "thankYou": "Merci ! Nous vous répondrons bientôt.",
-    "fillAllFields": "Veuillez remplir tous les champs."
+    "fillAllFields": "Veuillez remplir tous les champs.",
+    "getInTouch": "Contactez-nous",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "faq": "Questions fréquemment posées",
+    "faq1": {
+      "question": "Comment commencer le mining ?",
+      "answer": "Naviguez simplement vers la page Mining et cliquez sur 'Commencer le mining' pour commencer à gagner des récompenses quotidiennes."
+    },
+    "faq2": {
+      "question": "Comment fonctionnent les récompenses de parrainage ?",
+      "answer": "Invitez des amis en utilisant votre lien de parrainage et gagnez des bonus quand ils rejoignent et s'abonnent aux plans."
+    },
+    "faq3": {
+      "question": "Quels sont les différents plans d'adhésion ?",
+      "answer": "Nous proposons des plans Économie, Business et Première Classe avec des avantages et récompenses croissants."
+    }
   },
   "menu": {
     "home": "Accueil",
@@ -233,7 +254,8 @@ Voici votre fichier JSON complet, traduit en français :
     "contact": "Contact",
     "profile": "Profil",
     "logout": "Déconnexion",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "back": "Retour"
   },
   "archived": "Archivé",
   "trash": "Corbeille",

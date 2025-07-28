@@ -33,21 +33,32 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendPushNotification = exports.translateFunction = void 0;
+exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.sendPushNotification = exports.translateFunction = void 0;
 const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
 const translate_1 = require("@google-cloud/translate");
 const translateText_1 = require("./utils/translateText");
-process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + "/../flysky-site-3daa1e4343c4.json";
+// Import notification functions
+const notifyMiningComplete_1 = require("./notifications/notifyMiningComplete");
+Object.defineProperty(exports, "notifyMiningComplete", { enumerable: true, get: function () { return notifyMiningComplete_1.notifyMiningComplete; } });
+const notifyNewMessage_1 = require("./notifications/notifyNewMessage");
+Object.defineProperty(exports, "notifyNewMessage", { enumerable: true, get: function () { return notifyNewMessage_1.notifyNewMessage; } });
+const notifyReferralBonus_1 = require("./notifications/notifyReferralBonus");
+Object.defineProperty(exports, "notifyReferralBonus", { enumerable: true, get: function () { return notifyReferralBonus_1.notifyReferralBonus; } });
+const sendPeriodicReminders_1 = require("./notifications/sendPeriodicReminders");
+Object.defineProperty(exports, "sendDailyReminders", { enumerable: true, get: function () { return sendPeriodicReminders_1.sendDailyReminders; } });
+// process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + "/../flysky-site-3daa1e4343c4.json";
 if (!admin.apps.length) {
     admin.initializeApp();
 }
 const translate = new translate_1.v2.Translate();
 const allowedOrigins = [
-    "http://localhost:5173",
+    "http://localhost:5173", // Local development server
+    "http://localhost:3000", // Another common local port
     "https://fsncrew.io",
     "https://www.fsncrew.io"
 ];
+// Export existing functions
 exports.translateFunction = functions.https.onRequest(async (req, res) => {
     const origin = req.headers.origin;
     if (origin && allowedOrigins.includes(origin)) {
@@ -75,6 +86,17 @@ exports.translateFunction = functions.https.onRequest(async (req, res) => {
     }
 });
 exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
+    const origin = req.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+        res.set("Access-Control-Allow-Origin", origin);
+        res.set("Access-Control-Allow-Credentials", "true");
+    }
+    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    if (req.method === "OPTIONS") {
+        res.status(204).send("");
+        return;
+    }
     const { userId, title, body } = req.body;
     if (!userId || !title || !body) {
         res.status(400).json({ success: false, message: "Missing required fields." });
@@ -118,3 +140,9 @@ exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
         res.status(500).json({ success: false, message: "Internal server error", error: error.message });
     }
 });
+// Configure functions for proper CORS and region
+const runtimeOpts = {
+    timeoutSeconds: 60,
+    memory: '256MB',
+    cors: true
+};

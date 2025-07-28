@@ -1,38 +1,32 @@
 import { useState, useEffect } from 'react';
-import { auth, db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { auth } from '../firebase';
 import { Copy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useUserPlan } from '../contexts/UserPlanContext';
 
 const ReferralCard = () => {
   const { t } = useTranslation();
+  const { userData, referrals, referralReward } = useUserPlan();
   const [verifiedCount, setVerifiedCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
   const [referralLink, setReferralLink] = useState('');
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const fetchReferralData = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+    const user = auth.currentUser;
+    if (!user || !userData) return;
 
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
-      const userData = userSnap.data();
+    // Process referral data from context
+    const referralList = userData.referralList || [];
+    const verified = referralList.filter((r: any) => r.status === 'Verified').length;
+    const pending = referralList.filter((r: any) => r.status === 'Pending').length;
 
-      const referralList = userData?.referralList || [];
-      const verified = referralList.filter((r: any) => r.status === 'Verified').length;
-      const pending = referralList.filter((r: any) => r.status === 'Pending').length;
+    setVerifiedCount(verified);
+    setPendingCount(pending);
 
-      setVerifiedCount(verified);
-      setPendingCount(pending);
-
-      const code = userData?.referralCode || user.uid;
-      setReferralLink(`${window.location.origin}/signup?ref=${code}`);
-    };
-
-    fetchReferralData();
-  }, []);
+    const code = userData.referralCode || user.uid;
+    setReferralLink(`${window.location.origin}/signup?ref=${code}`);
+  }, [userData]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
@@ -91,7 +85,7 @@ const ReferralCard = () => {
       </div>
 
       <div className="mt-4 text-sm text-yellow-300">
-        {t('currentReward')}: {getRewardPerReferral()} FSN
+        {t('currentReward')}: {referralReward} FSN
       </div>
 
       <div className="mt-4 text-xs text-gray-400">

@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ethers } from 'ethers';
-import WalletConnector from './WalletConnector';
-import contractAbi from '../contracts/FlySkySafeSubscription.json';
 import { auth, db } from '../firebase';
 import { doc, updateDoc, increment, collection, addDoc, getDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
-
-const CONTRACT_ADDRESS = '0xbb23b4ed3d8521795ecfa4b75142448f4069bbe3';
-const BUSD_ADDRESS = '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56';
+import { getPlanBonus, getPlanFeatures, getPlanPrice, PLAN_CONFIG, PlanType } from '../utils/planConstants';
+import { 
+  CreditCard, 
+  Shield, 
+  CheckCircle, 
+  X, 
+  ShoppingCart,
+  DollarSign,
+  Gift,
+  Zap,
+  Crown,
+  Star,
+  Lock
+} from 'lucide-react';
 
 interface Props {
   planId: string;
@@ -18,11 +26,15 @@ interface Props {
 
 const SubscribeModal: React.FC<Props> = ({ planId, price, onClose }) => {
   const { t } = useTranslation();
-  const [walletAddress, setWalletAddress] = useState('');
-  const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [plan, setPlan] = useState<any>(null);
+
+  // Get plan details from constants
+  const planDetails = PLAN_CONFIG[planId as PlanType];
+  const bonus = getPlanBonus(planId);
+  const features = getPlanFeatures(planId);
+  const planPrice = getPlanPrice(planId);
 
   useEffect(() => {
     const fetchPlan = async () => {
@@ -34,136 +46,212 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, onClose }) => {
     fetchPlan();
   }, [planId]);
 
-  const handleApprove = async () => {
-    try {
-      if (!window.ethereum) return alert(t('walletNotDetected'));
+  // const handlePurchase = async () => {
+  //   setLoading(true);
+    
+  //   try {
+  //     // TODO: Integrate with Google Play Billing / Apple In-App Purchases
+  //     // This is where the actual billing integration will happen
+      
+  //     // For now, simulate a successful purchase
+  //     await new Promise(resolve => setTimeout(resolve, 2000));
+      
+  //     // Update user data after successful purchase
+  //     const user = auth.currentUser;
+  //     if (user) {
+  //       const userRef = doc(db, 'users', user.uid);
+  //       const subscriptionDuration = plan?.duration || (30 * 24 * 60 * 60); // 30 days default
 
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const token = new ethers.Contract(BUSD_ADDRESS, [
-        'function approve(address spender, uint256 amount) public returns (bool)',
-      ], signer);
+  //       await updateDoc(userRef, {
+  //         'membership.planName': planId,
+  //         'membership.subscriptionEnd': Math.floor(Date.now() / 1000) + subscriptionDuration,
+  //         'membership.purchaseDate': Date.now(),
+  //         'membership.paymentMethod': 'in_app_purchase',
+  //         balance: increment(bonus),
+  //       });
 
-      const amount = ethers.parseUnits(price, 18);
-      setLoading(true);
-      const tx = await token.approve(CONTRACT_ADDRESS, amount);
-      setStatus(t('approving'));
-      await tx.wait();
-      setStatus(t('approvedSuccessfully'));
-    } catch (err) {
-      console.error(err);
-      setStatus(t('approvalFailed'));
-    } finally {
-      setLoading(false);
+  //       // Add to inbox
+  //       const inboxRef = collection(db, 'users', user.uid, 'inbox');
+  //       await addDoc(inboxRef, {
+  //         title: t('subscriptionBonusTitle'),
+  //         body: t('subscriptionBonusBody', {
+  //           amount: bonus,
+  //           plan: planDetails?.name || planId,
+  //         }),
+  //         amount: bonus,
+  //         claimed: false,
+  //         read: false,
+  //         timestamp: Date.now(),
+  //         type: 'subscription_bonus',
+  //       });
+
+  //       toast.success(t('subscriptionBonusToast', { amount: bonus }));
+  //     }
+
+  //     setShowConfirmation(true);
+      
+  //     setTimeout(() => {
+  //       setShowConfirmation(false);
+  //       onClose();
+  //     }, 3000);
+      
+  //   } catch (error) {
+  //     console.error('Purchase error:', error);
+  //     toast.error(t('purchaseFailed'));
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const handlePurchase = () => {
+    toast.success('Payment Integration Coming Soon');
+  };
+
+  const getPlanIcon = () => {
+    switch (planId) {
+      case 'business': return <Crown className="w-5 h-5" />;
+      case 'first-6': return <Star className="w-5 h-5" />;
+      case 'first-lifetime': return <Zap className="w-5 h-5" />;
+      default: return <Gift className="w-5 h-5" />;
     }
   };
 
-  const handleSubscribe = async () => {
-    try {
-      if (!window.ethereum) return alert(t('walletNotDetected'));
-
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi, signer);
-
-      setLoading(true);
-      const tx = await contract.subscribe(plan.index);
-      setStatus(t('subscribing'));
-      await tx.wait();
-      setStatus(t('subscriptionSuccess'));
-
-      setShowConfirmation(true);
-
-      setTimeout(async () => {
-        const user = auth.currentUser;
-        if (user && walletAddress) {
-          const userRef = doc(db, 'users', user.uid);
-          const subscriptionDuration = plan.duration;
-          const bonusAmount = plan.bonus;
-
-          await updateDoc(userRef, {
-            'membership.walletAddress': walletAddress,
-            'membership.planName': plan.name,
-            'membership.subscriptionEnd': Math.floor(Date.now() / 1000) + subscriptionDuration,
-            balance: increment(bonusAmount),
-          });
-
-          const inboxRef = collection(db, 'users', user.uid, 'inbox');
-          await addDoc(inboxRef, {
-            title: t('subscriptionBonusTitle'),
-            body: t('subscriptionBonusBody', {
-              amount: bonusAmount,
-              plan: t(`plan.${planId}`),
-            }),
-            amount: bonusAmount,
-            claimed: false,
-            read: false,
-            timestamp: Date.now(),
-            type: 'subscription_bonus',
-          });
-
-          toast.success(t('subscriptionBonusToast', { amount: bonusAmount }));
-        }
-
-        setShowConfirmation(false);
-        onClose();
-      }, 3000);
-    } catch (err) {
-      console.error(err);
-      setStatus(t('subscriptionFailed'));
-    } finally {
-      setLoading(false);
+  const getPlanColor = () => {
+    switch (planId) {
+      case 'business': return 'from-purple-500 to-pink-500';
+      case 'first-6': return 'from-blue-500 to-cyan-500';
+      case 'first-lifetime': return 'from-yellow-500 to-orange-500';
+      default: return 'from-green-500 to-emerald-500';
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
       {showConfirmation ? (
-        <div className="bg-white text-black p-6 rounded-xl w-full max-w-md text-center">
-          <h2 className="text-2xl font-bold text-green-600 mb-2">✅ {t('paymentCompleted')}</h2>
-          <p className="text-gray-700">{t('subscriptionProcessed')}</p>
+        <div className="bg-white text-black p-6 rounded-2xl w-full max-w-sm text-center shadow-2xl">
+          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+            <CheckCircle className="w-6 h-6 text-white" />
+          </div>
+          <h2 className="text-xl font-bold text-green-600 mb-2">✅ {t('paymentCompleted')}</h2>
+          <p className="text-gray-700 text-sm mb-3">{t('subscriptionProcessed')}</p>
+          <div className="bg-green-50 rounded-lg p-3">
+            <p className="text-sm text-green-700">
+              🎁 {t('bonusReceived', { amount: bonus })} FSN added!
+            </p>
+          </div>
         </div>
       ) : (
-        <div className="bg-white text-black p-6 rounded-xl w-full max-w-md relative">
-          <button onClick={onClose} className="absolute top-3 right-3 text-gray-500 hover:text-black">✕</button>
+        <div className="bg-white text-black p-6 rounded-2xl w-full max-w-sm shadow-2xl relative max-h-[90vh] overflow-y-auto">
+          <button 
+            onClick={onClose} 
+            className="absolute top-3 right-3 text-gray-500 hover:text-black transition-colors z-10"
+          >
+            <X className="w-5 h-5" />
+          </button>
 
-          <h2 className="text-xl font-bold mb-4">{t('subscribeToPlan')}</h2>
+          {/* Header */}
+          <div className="text-center mb-4">
+            <div className={`w-12 h-12 bg-gradient-to-r ${getPlanColor()} rounded-xl flex items-center justify-center mx-auto mb-3`}>
+              {getPlanIcon()}
+            </div>
+            <h2 className="text-lg font-bold mb-1">{t('subscribeToPlan')}</h2>
+            <p className="text-gray-600 text-sm">Secure in-app purchase</p>
+          </div>
 
-          <WalletConnector onAccountChange={(addr) => setWalletAddress(addr)} />
+          {/* Plan Summary */}
+          <div className="bg-gray-50 rounded-xl p-4 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <h3 className="font-semibold text-sm text-gray-800">{planDetails?.name || planId}</h3>
+                <p className="text-xs text-gray-500">{planDetails?.priceLabel || 'Premium Plan'}</p>
+              </div>
+              <div className="text-right">
+                <div className="text-xl font-bold text-blue-600">${planPrice}</div>
+                <div className="text-xs text-gray-500">{planId === 'first-lifetime' ? 'Lifetime' : t('oneTimePayment')}</div>
+              </div>
+            </div>
+            
+            <div className="bg-blue-50 rounded-lg p-3 mb-3">
+              <div className="flex items-center gap-2 mb-1">
+                <Gift className="w-4 h-4 text-blue-600" />
+                <span className="font-semibold text-blue-800 text-sm">{t('bonus')}</span>
+              </div>
+              <div className="text-lg font-bold text-blue-600">{bonus.toLocaleString()} FSN</div>
+            </div>
 
-          {walletAddress && plan && (
-            <>
-              <p className="text-sm text-gray-600 mt-4 mb-2">
-                {t('selectedPlan')}: <strong>{t(`plan.${planId}`)}</strong><br />
-                {t('price')}: <strong>{price} BUSD</strong><br />
-                🎁 {t('bonus')}: <strong>{plan.bonus} FSN</strong>
-              </p>
+            {/* Key Features - Dynamic */}
+            <div className="space-y-1">
+              <h4 className="font-semibold text-gray-800 text-sm mb-2">{t('planFeatures')}:</h4>
+              {features.slice(0, 3).map((feature, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" />
+                  <span className="text-xs text-gray-700">{t(`feature.${feature}`)}</span>
+                </div>
+              ))}
+              {features.length > 3 && (
+                <div className="text-xs text-gray-500 mt-1">
+                  +{features.length - 3} more features
+                </div>
+              )}
+            </div>
+          </div>
 
-              <ul className="mb-4 text-sm space-y-1 text-left">
-                {plan.features.map((key: string, idx: number) => (
-                  <li key={idx}>✔️ {t(`feature.${key}`)}</li>
-                ))}
-              </ul>
+          {/* Payment Method */}
+          <div className="bg-gray-50 rounded-xl p-3 mb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <CreditCard className="w-4 h-4 text-gray-600" />
+              <span className="font-semibold text-gray-800 text-sm">{t('paymentMethod')}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 bg-white rounded-lg px-2 py-1 border text-xs">
+                <DollarSign className="w-3 h-3 text-green-600" />
+                <span className="font-medium">{t('inAppPurchase')}</span>
+              </div>
+              <div className="flex items-center gap-1 bg-white rounded-lg px-2 py-1 border text-xs">
+                <Lock className="w-3 h-3 text-blue-600" />
+                <span className="font-medium">{t('securePayment')}</span>
+              </div>
+            </div>
+          </div>
 
-              <button
-                onClick={handleApprove}
-                disabled={loading}
-                className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-2 rounded mt-2"
-              >
-                {loading ? t('processing') : t('approveBUSD')}
-              </button>
+          {/* Important Notice - Compact */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+            <div className="flex items-start gap-2">
+              <div className="w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center mt-0.5">
+                <span className="text-white text-xs font-bold">!</span>
+              </div>
+              <div>
+                <h4 className="font-semibold text-yellow-800 text-sm mb-1">{t('importantNotice')}</h4>
+                <p className="text-xs text-yellow-700">
+                  {t('fsnVirtualCurrency')} {t('fsnUsageDescription')}
+                </p>
+              </div>
+            </div>
+          </div>
 
-              <button
-                onClick={handleSubscribe}
-                disabled={loading}
-                className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded mt-3"
-              >
-                {loading ? t('subscribing') : t('subscribe')}
-              </button>
-            </>
-          )}
+          {/* Purchase Button */}
+          <button
+            onClick={handlePurchase}
+            disabled={loading}
+            className={`w-full bg-gradient-to-r ${getPlanColor()} hover:opacity-90 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                {t('processing')}
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="w-4 h-4" />
+                {t('purchaseNow')} - ${planPrice}
+              </>
+            )}
+          </button>
 
-          {status && <p className="mt-4 text-center text-sm">{status}</p>}
+          {/* Terms */}
+          <p className="text-xs text-gray-500 text-center mt-3">
+            {t('purchaseTerms')}
+          </p>
         </div>
       )}
     </div>

@@ -3,21 +3,41 @@ import { useEffect, useRef, useState } from 'react';
 import { useUserPlan } from '../contexts/UserPlanContext';
 import { Link } from 'react-router-dom';
 import { requestPermissionAndToken } from '../utils/pushNotification';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import {
   FaGem, FaRocket, FaShareAlt, FaGamepad, FaInfoCircle, FaCoins,
-  FaVideo, FaWallet, FaEnvelope, FaCogs, FaIdCard, FaPhoneAlt
+  FaVideo, FaWallet, FaEnvelope, FaCogs, FaIdCard, FaPhoneAlt,
+  FaChartLine, FaUsers, FaTrophy, FaShieldAlt, FaArrowRight
 } from 'react-icons/fa';
 import logo from '../assets/fsn-logo.png';
-
-// (تمت إزالة interface Plan)
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
-  useUserPlan();
+  const { 
+    loading: contextLoading,
+    balance, 
+    referrals, 
+    referralReward,
+    stakingEarnings,
+    totalEarnings,
+    currentPlan,
+    lockedInStaking
+  } = useUserPlan();
   const [showContactForm, setShowContactForm] = useState(false);
+  
+  // User data states that are not in context yet
+  const [userStats, setUserStats] = useState({
+    miningLevel: 'Bronze',
+    security: '100%',
+    miningEarnings: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Calculate total available balance (same formula as Wallet page)
+  const totalBalance = balance + lockedInStaking + referralReward;
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -25,6 +45,41 @@ const Dashboard = () => {
       requestPermissionAndToken(user.uid).catch(console.error);
     }
   }, []);
+
+  // Fetch only the data not available in context
+  useEffect(() => {
+    const fetchRemainingData = async () => {
+      const user = auth.currentUser;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Determine mining level based on plan
+        const plan = currentPlan || 'economy';
+        const miningLevel = 
+          plan === 'first-lifetime' ? 'Diamond' :
+          plan === 'first-6' ? 'Platinum' :
+          plan === 'business' ? 'Gold' :
+          'Bronze';
+
+        setUserStats({
+          miningLevel,
+          security: '100%',
+          miningEarnings: totalEarnings - stakingEarnings - referralReward
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!contextLoading) {
+      fetchRemainingData();
+    }
+  }, [contextLoading, currentPlan, totalEarnings, stakingEarnings, referralReward]);
 
   const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,99 +98,313 @@ const Dashboard = () => {
     }
   };
 
+  // Professional dashboard sections
+  const quickActions = [
+    {
+      to: '/mining',
+      icon: <FaGem className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Daily Mining',
+      description: 'Start earning daily rewards',
+      color: 'bg-gradient-to-br from-amber-500 to-orange-500'
+    },
+    {
+      to: '/staking',
+      icon: <FaCoins className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Staking',
+      description: 'Earn passive income',
+      color: 'bg-gradient-to-br from-green-500 to-emerald-500'
+    },
+    {
+      to: '/wallet',
+      icon: <FaWallet className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Wallet',
+      description: 'Manage your funds',
+      color: 'bg-gradient-to-br from-blue-500 to-purple-500'
+    },
+    {
+      to: '/referral-program',
+      icon: <FaShareAlt className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Referrals',
+      description: 'Invite friends & earn',
+      color: 'bg-gradient-to-br from-purple-500 to-pink-500'
+    }
+  ];
+
+  const features = [
+    {
+      to: '/membership',
+      icon: <FaRocket className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Membership Plans',
+      description: 'Upgrade your plan for better rewards',
+      highlight: true
+    },
+    {
+      to: '/playtoearn',
+      icon: <FaGamepad className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Play to Earn',
+      description: 'Play games and earn tokens',
+      highlight: false
+    },
+    {
+      to: '/watch-to-earn',
+      icon: <FaVideo className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Watch to Earn',
+      description: 'Watch ads and earn rewards',
+      highlight: false
+    },
+    {
+      to: '/inbox',
+      icon: <FaEnvelope className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Inbox',
+      description: 'Messages and notifications',
+      highlight: false
+    },
+    {
+      to: '/kyc',
+      icon: <FaIdCard className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'KYC Verification',
+      description: 'Verify your identity',
+      highlight: false
+    },
+    {
+      to: '/settings',
+      icon: <FaCogs className="w-4 h-4 sm:w-5 sm:h-5" />,
+      title: 'Settings',
+      description: 'Account preferences',
+      highlight: false
+    }
+  ];
+
+  if (loading || contextLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-white">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {/* Hero Banner */}
-      <section className="w-full bg-gradient-to-br from-[#1B263B] via-[#0D1B2A] to-black text-white py-12 px-4 text-center relative overflow-hidden">
-        <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">{t('dashboard.bannerTitle', 'Welcome to FlySky Network')}</h1>
-          <p className="text-sm md:text-base font-medium mb-4">{t('dashboard.bannerSubtitle', 'Explore. Earn. Grow.')}</p>
-          <img
-            src={logo}
-            alt="FlySky Logo"
-            className="w-20 h-20 animate-spin-slow"
-          />
-        </div>
-      </section>
-
-      {/* Dashboard Icon Grid */}
-      <section className="w-full bg-[#0D1B2A] text-white py-16 px-6">
-        <div className="max-w-4xl mx-auto grid grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-6 text-center">
-          {[{
-            to: '/mining', icon: <FaGem />, label: t('dashboard.miningTitle')
-          }, {
-            to: '/membership', icon: <FaRocket />, label: t('dashboard.membershipTitle')
-          }, {
-            to: '/referral', icon: <FaShareAlt />, label: t('dashboard.referralTitle')
-          }, {
-            to: '/playtoearn', icon: <FaGamepad />, label: t('dashboard.playTitle')
-          }, {
-            to: '/watch-to-earn', icon: <FaVideo />, label: t('menu.watch')
-          }, {
-            to: '/wallet', icon: <FaWallet />, label: t('menu.wallet')
-          }, {
-            to: '/inbox', icon: <FaEnvelope />, label: t('menu.inbox')
-          }, {
-            to: '/about', icon: <FaInfoCircle />, label: t('dashboard.aboutTitle')
-          }, {
-            to: '/staking', icon: <FaCoins />, label: t('dashboard.stakingTitle')
-          }, {
-            to: '/settings', icon: <FaCogs />, label: t('menu.settings')
-          }, {
-            to: '/kyc', icon: <FaIdCard />, label: t('menu.kyc')
-          }].map(({ to, icon, label }, i) => (
-            <Link key={i} to={to} className="bg-[#1B263B] p-4 rounded-xl shadow hover:animate-ping-once">
-              <div className="text-yellow-400 text-xl mb-2">{icon}</div>
-              <span className="text-sm">{label}</span>
-            </Link>
-          ))}
-          <button onClick={() => setShowContactForm(!showContactForm)} className="bg-[#1B263B] p-4 rounded-xl shadow hover:animate-ping-once">
-            <FaPhoneAlt className="mx-auto mb-2 text-yellow-400" size={28} />
-            <span className="text-sm">{t('menu.contact')}</span>
-          </button>
-        </div>
-      </section>
-
-      {showContactForm && (
-        <section id="contact" className="w-full bg-[#0D1B2A] text-white py-16 px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-yellow-400 mb-6 text-center">
-              {t('contact.title')}
-            </h2>
-            <p className="text-center text-gray-300 mb-8">{t('contact.description')}</p>
-            <form ref={formRef} onSubmit={sendEmail} className="space-y-4">
-              <input
-                type="text"
-                name="user_name"
-                placeholder={t('contact.name')}
-                className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400"
-                required
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        
+        {/* Header Section */}
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="flex items-center justify-center mb-4 sm:mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-purple-600 rounded-full blur-xl opacity-30"></div>
+              <img
+                src={logo}
+                alt="FlySky Network"
+                className="relative w-12 h-12 sm:w-16 sm:h-16 animate-spin-slow"
               />
-              <input
-                type="email"
-                name="user_email"
-                placeholder={t('contact.email')}
-                className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400"
-                required
-              />
-              <textarea
-                name="message"
-                placeholder={t('contact.message')}
-                rows={5}
-                className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-3 px-6 rounded-lg transition-all"
-              >
-                {t('contact.send')}
-              </button>
-            </form>
+            </div>
           </div>
-        </section>
-      )}
-    </>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-4">
+            Welcome to FlySky Network
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+            Explore. Earn. Grow.
+          </p>
+        </div>
+
+        {/* Stats Overview - Mobile Optimized Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-8 sm:mb-12">
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
+            <div className="flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Total Earnings</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{totalEarnings.toLocaleString()} FSN</p>
+              </div>
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
+                <FaChartLine className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
+            <div className="flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Total Balance</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{totalBalance.toLocaleString()} FSN</p>
+              </div>
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
+                <FaWallet className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
+            <div className="flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Referrals</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{referrals}</p>
+              </div>
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
+                <FaUsers className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
+            <div className="flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Mining Level</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{userStats.miningLevel}</p>
+              </div>
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
+                <FaTrophy className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions - Mobile Optimized Grid */}
+        <div className="mb-8 sm:mb-12">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Quick Actions</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {quickActions.map((action, index) => (
+              <Link key={index} to={action.to} className="group">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105 h-full">
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 ${action.color} rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
+                    {action.icon}
+                  </div>
+                  <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white mb-1 sm:mb-2">{action.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-400">{action.description}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Features Grid - Mobile Optimized */}
+        <div className="mb-8 sm:mb-12">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Platform Features</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+            {features.map((feature, index) => (
+              <Link key={index} to={feature.to} className="group">
+                <div className={`bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105 h-full ${feature.highlight ? 'ring-2 ring-purple-500/50' : ''}`}>
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                      {feature.icon}
+                    </div>
+                    <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white mb-1 sm:mb-2">{feature.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-400">{feature.description}</p>
+                  {feature.highlight && (
+                    <div className="mt-2 sm:mt-4">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                        Popular
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Additional Actions - Mobile Optimized */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+          <button 
+            onClick={() => setShowContactForm(true)}
+            className="group bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105 text-left"
+          >
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg sm:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <FaPhoneAlt className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
+              </div>
+              <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-white transition-colors" />
+            </div>
+            <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white mb-1 sm:mb-2">Contact Support</h3>
+            <p className="text-xs sm:text-sm text-gray-400">Get help and support from our team</p>
+          </button>
+
+          <Link to="/about" className="group">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105 h-full">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg sm:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <FaInfoCircle className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
+                </div>
+                <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-white transition-colors" />
+              </div>
+              <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white mb-1 sm:mb-2">About Us</h3>
+              <p className="text-xs sm:text-sm text-gray-400">Learn more about FlySky Network</p>
+            </div>
+          </Link>
+        </div>
+
+        {/* Contact Form Modal */}
+        {showContactForm && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-white/10 shadow-2xl max-w-md w-full">
+              <div className="bg-gradient-to-r from-slate-700 to-purple-700 px-4 sm:px-6 py-4 border-b border-white/10 rounded-t-xl sm:rounded-t-2xl">
+                <h2 className="text-lg sm:text-xl font-bold text-white">Contact Support</h2>
+                <p className="text-gray-400 text-xs sm:text-sm mt-1">We're here to help you</p>
+              </div>
+              <div className="p-4 sm:p-6">
+                <form ref={formRef} onSubmit={sendEmail} className="space-y-3 sm:space-y-4">
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="user_name"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-slate-700 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors text-sm"
+                      placeholder="Your name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="user_email"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-slate-700 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors text-sm"
+                      placeholder="your@email.com"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">
+                      Message
+                    </label>
+                    <textarea
+                      name="message"
+                      rows={3}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-slate-700 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors resize-none text-sm"
+                      placeholder="How can we help you?"
+                      required
+                    />
+                  </div>
+                  <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4">
+                    <button
+                      type="submit"
+                      className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-all duration-300 text-sm"
+                    >
+                      Send Message
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowContactForm(false)}
+                      className="px-4 sm:px-6 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-colors text-sm"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

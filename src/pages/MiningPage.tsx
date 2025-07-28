@@ -1,29 +1,37 @@
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import MiningCard from '../components/MiningCard';
-import { useTranslation } from 'react-i18next'; // ✅ استيراد الترجمة
+import { useTranslation } from 'react-i18next';
+import { useUserPlan } from '../contexts/UserPlanContext';
 
 const MiningPage = () => {
-  const { t } = useTranslation(); // ✅ تفعيل الترجمة
+  const { t } = useTranslation();
+  const { currentPlan, loading: planLoading } = useUserPlan();
 
-  const [userPlan, setUserPlan] = useState<'economy' | 'business' | 'first-6' | 'first-lifetime'>('economy');
   const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
       const user = auth.currentUser;
-      if (!user) return;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
 
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const data = userSnap.data();
-        const plan = data?.membership?.planName || data?.plan || 'economy';
-        setUserPlan(plan);
-
-        const currentBalance = data?.balance || 0;
-        setBalance(currentBalance);
+      try {
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          const currentBalance = data?.balance || 0;
+          setBalance(currentBalance);
+        }
+      } catch (error) {
+        console.error('Error fetching user balance:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -34,24 +42,44 @@ const MiningPage = () => {
     const user = auth.currentUser;
     if (!user) return;
 
-    const userRef = doc(db, 'users', user.uid);
-    const newBalance = balance + amount;
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const newBalance = balance + amount;
 
-    await updateDoc(userRef, {
-      balance: newBalance,
-    });
+      await updateDoc(userRef, {
+        balance: newBalance,
+        lastMiningTime: serverTimestamp() // Update lastMiningTime to current time
+      });
 
-    setBalance(newBalance);
-    console.log(`Claimed: ${amount} FSN. New Balance: ${newBalance} FSN`);
+      setBalance(newBalance);
+      console.log(`Claimed: ${amount} FSN. New Balance: ${newBalance} FSN`);
+    } catch (error) {
+      console.error('Error claiming mining rewards:', error);
+    }
   };
 
-  return (
-    <div className="min-h-screen bg-[#0B1622] pt-4 pb-24">
-      <div className="text-center text-white mb-4">
-        <h1 className="text-xl font-bold">{t('miningPage.balance')}: {balance} FSN</h1>
- {/* ✅ استخدام الترجمة */}
+  // Show loading while plan is being fetched
+  if (planLoading || loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p>{t('loading.miningData')}</p>
+        </div>
       </div>
-      <MiningCard plan={userPlan} onClaim={handleClaim} />
+    );
+  }
+
+  // Ensure we have a valid plan, fallback to economy if needed
+  const userPlan = currentPlan || 'economy';
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <MiningCard 
+        plan={userPlan as 'economy' | 'business' | 'first' | 'first-6' | 'first-lifetime'} 
+        onClaim={handleClaim} 
+        balance={balance} 
+      />
     </div>
   );
 };

@@ -33,31 +33,22 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendPushNotification = void 0;
+exports.sendPushNotification = exports.sendFCM = void 0;
 const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
 const translate_1 = require("@google-cloud/translate");
-// ✅ تهيئة Firebase Admin
 if (!admin.apps.length) {
     admin.initializeApp();
 }
-// ✅ تهيئة مترجم Google
 const translate = new translate_1.v2.Translate();
-// ✅ دالة إرسال الإشعارات بدون runWith()
-exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
-    const { userId, title, body } = req.body;
-    if (!userId || !title || !body) {
-        res.status(400).json({ success: false, message: "Missing required fields." });
-        return;
-    }
+// ✅ دالة مساعدة لإرسال الإشعار (تُستخدم داخل باقي الـ Cloud Functions)
+const sendFCM = async (userId, title, body) => {
     try {
         const userDoc = await admin.firestore().collection("users").doc(userId).get();
         const lang = userDoc.exists && userDoc.data()?.language ? userDoc.data().language : "ar";
         const tokenDoc = await admin.firestore().collection("userTokens").doc(userId).get();
-        if (!tokenDoc.exists || !tokenDoc.data()?.token) {
-            res.status(404).json({ success: false, message: "FCM token not found for user." });
+        if (!tokenDoc.exists || !tokenDoc.data()?.token)
             return;
-        }
         const token = tokenDoc.data().token;
         let translatedTitle = title;
         let translatedBody = body;
@@ -73,18 +64,29 @@ exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
                 title: translatedTitle,
                 body: translatedBody,
             },
-            token: token,
+            token,
         };
-        const response = await admin.messaging().send(message);
-        console.log("✅ Notification sent:", response);
+        await admin.messaging().send(message);
+        console.log("✅ FCM sent to", userId);
+    }
+    catch (error) {
+        console.error("❌ Error sending FCM:", error);
+    }
+};
+exports.sendFCM = sendFCM;
+// ✅ دالة HTTP لاستدعائها عبر رابط مباشر (POST)
+exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
+    const { userId, title, body } = req.body;
+    if (!userId || !title || !body) {
+        res.status(400).json({ success: false, message: "Missing required fields." });
+        return;
+    }
+    try {
+        await (0, exports.sendFCM)(userId, title, body);
         res.status(200).json({ success: true, message: "Notification sent successfully" });
     }
     catch (error) {
         console.error("❌ Error sending notification:", error);
-        if (error.errorInfo?.code === 'messaging/registration-token-not-registered') {
-            await admin.firestore().collection("userTokens").doc(userId).delete();
-            console.log("🚫 تم حذف التوكن غير الصالح.");
-        }
         res.status(500).json({ success: false, message: "Internal server error", error: error.message });
     }
 });

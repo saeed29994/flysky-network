@@ -2,12 +2,10 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
-    "lib": ["es2020"],
     "outDir": "lib",
-    "rootDir": "functions/src",
+    "rootDir": "functions/src", // This is key - it makes "src" the root
     "strict": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
   "include": ["functions/src/**/*"]

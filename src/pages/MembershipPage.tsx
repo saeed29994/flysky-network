@@ -2,246 +2,200 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserPlan } from '../contexts/UserPlanContext';
 import SubscribeModal from '../components/SubscribeModal';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '../firebase';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-interface Plan {
-  id: string;
-  name: string;
-  price: number;
-  features: string[];
-}
+import { getSubscriptionPlans, getPlanBonus, getPlanPrice, getPlanFeatures } from '../utils/planConstants';
+import { motion } from 'framer-motion';
+import { 
+  Crown, 
+  Star, 
+  CheckCircle, 
+  CreditCard, 
+  Shield, 
+  Zap, 
+  Users,
+  ArrowRight,
+  Calendar,
+  Award,
+  ShoppingCart,
+  Gift,
+  DollarSign,
+  Sparkles
+} from 'lucide-react';
 
 const MembershipPage = () => {
   const { t } = useTranslation();
   const { currentPlan, subscriptionEnd } = useUserPlan();
-  const [modalPlan, setModalPlan] = useState<null | { index: number; price: string }>(null);
-  const [selectedCurrency, setSelectedCurrency] = useState('usdt-bep20');
-  const [proofFile, setProofFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [txLink, setTxLink] = useState('');
-  const [fromAddress, setFromAddress] = useState('');
+  const [modalPlan, setModalPlan] = useState<null | { id: string; price: string }>(null);
   const now = Math.floor(Date.now() / 1000);
   const isExpired = subscriptionEnd ? subscriptionEnd < now : true;
 
-  const plans: Plan[] = [
-    {
-      id: 'business',
-      name: 'plan.business',
-      price: 10,
-      features: ['advancedMining', 'prioritySupport', 'stakingAccess', 'fasterMining'],
-    },
-    {
-      id: 'first',
-      name: 'plan.first',
-      price: 49,
-      features: ['allBusinessFeatures', 'fasterMining', 'eventAccess', 'prioritySupport', 'highestMining', 'premiumAccess'],
-    },
-    {
-      id: 'first-lifetime',
-      name: 'plan.first-lifetime',
-      price: 99,
-      features: ['highestMining', 'lifetimeAccess', 'premiumAccess', 'prioritySupport', 'unlockedForever', 'lifetimePerks', 'eventAccess'],
-    },
-  ];
-
-  const handleProofUpload = async () => {
-    if (!proofFile || !txLink || !fromAddress) {
-      toast.error('❌ ' + t('fillAllFields'));
-      return;
-    }
-
-    const auth = getAuth();
-    const user = auth.currentUser;
-    if (!user) {
-      toast.error('❌ ' + t('notAuthenticated'));
-      return;
-    }
-
-    try {
-      setUploading(true);
-      const storageRef = ref(storage, `manualPayments/${user.uid}/${Date.now()}-${proofFile.name}`);
-      await uploadBytes(storageRef, proofFile);
-      const downloadURL = await getDownloadURL(storageRef);
-
-      await addDoc(collection(db, 'manualPayments'), {
-        uid: user.uid,
-        currency: selectedCurrency,
-        proofUrl: downloadURL,
-        fileName: proofFile.name,
-        txLink,
-        fromAddress,
-        timestamp: serverTimestamp(),
-        status: 'pending',
-      });
-
-      toast.success('✅ ' + t('success.stakeCreated'));
-      setProofFile(null);
-      setTxLink('');
-      setFromAddress('');
-    } catch (err) {
-      console.error('❌ Upload failed:', err);
-      toast.error('❌ ' + t('stakingSection.error.stakeFailed'));
-    } finally {
-      setUploading(false);
-    }
-  };
+  // Get subscription plans from centralized configuration
+  const plans = getSubscriptionPlans();
 
   return (
-    <div className="max-w-5xl mx-auto text-white px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8 text-center">{t('membershipPage.title')}</h1>
-
-      <p className="text-center mb-2">
-        {t('membershipPage.currentPlan')}: <span className="font-semibold capitalize">{currentPlan || t('membershipPage.notSubscribed')}</span>
-      </p>
-
-      {subscriptionEnd && (
-        <p className="text-center mb-8 text-sm text-gray-300">
-          {isExpired ? t('membershipPage.expiredOn') : t('membershipPage.expiresOn')}: {new Date(subscriptionEnd * 1000).toLocaleDateString()}
-        </p>
-      )}
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {plans.map((plan, index) => {
-          const isActive = plan.id === currentPlan && !isExpired;
-          let bonus = 0;
-          let bgColor = 'bg-[#1B263B]';
-
-          if (plan.id === 'business') {
-            bonus = 100000;
-            bgColor = 'bg-green-900';
-          } else if (plan.id === 'first') {
-            bonus = 500000;
-            bgColor = 'bg-blue-900';
-          } else if (plan.id === 'first-lifetime') {
-            bonus = 1000000;
-            bgColor = 'bg-purple-900';
-          }
-
-          return (
-            <div
-              key={plan.id}
-              className={`border rounded-xl p-6 shadow-md transition-all 
-              ${isActive ? 'border-yellow-400 bg-yellow-100 text-black' : `${bgColor} text-white`}`}
-            >
-              <h2 className="text-xl font-bold mb-2">{t(plan.name)}</h2>
-              <p className="mb-1 text-lg">{plan.price} BUSD</p>
-              <p className="mb-1 text-sm font-semibold">
-                {t('membershipPage.bonus')}: <span className="text-yellow-400 font-bold">{bonus.toLocaleString()} FSN</span>
-              </p>
-              <ul className="mb-6 text-sm space-y-1 text-left">
-                {plan.features.map((feature, i) => (
-                  <li key={i}>✔️ {t(`feature.${feature}`)}</li>
-                ))}
-              </ul>
-              {isActive ? (
-                <button className="w-full bg-green-500 text-white font-bold py-2 rounded" disabled>{t('membershipPage.activated')}</button>
-              ) : (
-                <button
-                  className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-2 rounded"
-                  onClick={() => setModalPlan({ index, price: String(plan.price) })}
-                >
-                  {plan.id === currentPlan && isExpired ? t('membershipPage.renew') : t('membershipPage.subscribe')}
-                </button>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {modalPlan && (
-        <SubscribeModal planId={String(modalPlan.index)} price={modalPlan.price} onClose={() => setModalPlan(null)} />
-      )}
-
-      {/* 👇 قسم الدفع اليدوي */}
-      <div className="mt-20 border-t border-gray-700 pt-10 px-4 sm:px-6 lg:px-8 w-full max-w-full">
-        <h2 className="text-2xl font-bold text-yellow-400 text-center mb-6">{t('membershipPage.manualPaymentTitle')}</h2>
-
-        <div className="bg-yellow-100 text-black text-sm p-4 rounded mb-6 max-w-2xl w-full mx-auto">
-          <p className="mb-2 font-semibold">{t('membershipPage.instructions.title')}</p>
-          <ul className="list-disc list-inside space-y-1">
-            <li>{t('membershipPage.instructions.step1')}</li>
-            <li>{t('membershipPage.instructions.step2')}</li>
-            <li>{t('membershipPage.instructions.step3')}</li>
-            <li className="text-red-600">{t('membershipPage.instructions.step4')}</li>
-            <li className="text-green-600">{t('membershipPage.instructions.step5')}</li>
-          </ul>
-        </div>
-
-        <div className="w-full max-w-md mx-auto mb-6 px-2">
-          <label className="block text-sm font-medium text-white mb-2">{t('membershipPage.selectCurrency')}</label>
-          <select
-            className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
-            onChange={(e) => setSelectedCurrency(e.target.value)}
-            value={selectedCurrency}
+    <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 pb-12 pt-8">
+        {/* Header Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="w-20 h-20 lg:w-24 lg:h-24 mx-auto mb-6 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl"
           >
-            <option value="usdt-bep20">USDT (BEP-20)</option>
-            <option value="busd">BUSD (BEP-20)</option>
-            <option value="usdc">USDC (BEP-20)</option>
-            <option value="bnb">BNB (BEP-20)</option>
-            <option value="usdt-trc20">USDT (TRC-20)</option>
-          </select>
-        </div>
+            <Crown className="w-10 h-10 lg:w-12 lg:h-12 text-white" />
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-3xl lg:text-5xl font-bold text-white mb-4 tracking-tight"
+          >
+            👑 {t('membershipPage.title')}
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-gray-300 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed"
+          >
+            Unlock premium features and earn FSN rewards with our membership plans. 
+            FSN tokens are virtual in-app currency for enhanced features and rewards.
+          </motion.p>
+        </motion.div>
 
-        <div className="text-center mb-6 px-2">
-          <p className="text-sm text-gray-400 mb-1">{t('membershipPage.sendTo')}</p>
-          <div className="bg-gray-800 text-yellow-300 px-4 py-2 rounded inline-block font-mono break-all">
-            {selectedCurrency === 'usdt-trc20'
-              ? 'TDwudwKdrHTQKsLoLABavJ9VQrX5nYVYM7'
-              : '0x9E8550d26e6e2Ce3e5c4f8244B3E4504E24F2915'}
+        {/* Current Plan Status */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-12"
+        >
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Crown className="w-6 h-6 text-yellow-400" />
+                <span className="text-gray-300">{t('membershipPage.currentPlan')}:</span>
+              </div>
+              <span className="text-xl font-bold text-white capitalize">
+                {currentPlan || t('membershipPage.notSubscribed')}
+              </span>
+            </div>
+            
+            {subscriptionEnd && (
+              <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                <div className="flex items-center gap-3">
+                  <Calendar className="w-5 h-5 text-gray-400" />
+                  <span className="text-gray-300">Status:</span>
+                </div>
+                <span className={`font-semibold ${isExpired ? 'text-red-400' : 'text-green-400'}`}>
+                  {isExpired ? 'Expired' : 'Active'} - {new Date(subscriptionEnd * 1000).toLocaleDateString()}
+                </span>
+              </div>
+            )}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="w-full max-w-md mx-auto space-y-4 px-2">
-          <div>
-            <label className="block text-sm text-white font-medium mb-1">{t('membershipPage.transactionLink')}</label>
-            <input
-              type="text"
-              value={txLink}
-              onChange={(e) => setTxLink(e.target.value)}
-              placeholder="https://bscscan.com/tx/..."
-              className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
-              required
-            />
+        {/* Membership Plans */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mb-12"
+        >
+          <div className="text-center mb-8">
+            <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">Choose Your Plan</h2>
+            <p className="text-gray-400 text-lg">Unlock premium features with our membership plans</p>
           </div>
 
-          <div>
-            <label className="block text-sm text-white font-medium mb-1">{t('membershipPage.fromAddress')}</label>
-            <input
-              type="text"
-              value={fromAddress}
-              onChange={(e) => setFromAddress(e.target.value)}
-              placeholder="0x..."
-              className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
-              required
-            />
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {plans.map((plan, index) => {
+              const isActive = plan.id === currentPlan && !isExpired;
+              const bonus = getPlanBonus(plan.id);
+              const price = getPlanPrice(plan.id);
+              const features = getPlanFeatures(plan.id);
+              
+              const getPlanGradient = () => {
+                if (plan.id === 'business') return 'from-green-500 to-emerald-500';
+                if (plan.id === 'first-6') return 'from-blue-500 to-cyan-500';
+                if (plan.id === 'first-lifetime') return 'from-purple-500 to-pink-500';
+                return 'from-gray-500 to-gray-600';
+              };
 
-          <div>
-            <label className="block mb-2 text-sm text-white font-medium">{t('membershipPage.uploadProof')}</label>
-            <input
-              type="file"
-              accept="image/*"
-              className="bg-gray-800 text-white rounded p-2 w-full"
-              onChange={(e) => setProofFile(e.target.files?.[0] || null)}
-              required
-            />
-          </div>
+              return (
+                <motion.div
+                  key={plan.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                  className={`relative overflow-hidden rounded-3xl border transition-all duration-300 hover:scale-105 ${
+                    isActive 
+                      ? 'border-yellow-400 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 shadow-2xl' 
+                      : 'border-white/20 bg-white/10 backdrop-blur-sm shadow-xl hover:shadow-2xl'
+                  }`}
+                >
+                  {isActive && (
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-yellow-400 text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                        ACTIVE
+                      </div>
+                    </div>
+                  )}
 
-          <div className="text-center">
-            <button
-              className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded mt-4 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-              onClick={handleProofUpload}
-              disabled={uploading || !txLink || !fromAddress || !proofFile}
-            >
-              {uploading ? t('membershipPage.uploading') : t('membershipPage.submitProof')}
-            </button>
+                  <div className="p-8">
+                    <div className="text-center mb-8">
+                      <div className={`w-20 h-20 bg-gradient-to-r ${getPlanGradient()} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl`}>
+                        <Crown className="w-10 h-10 text-white" />
+                      </div>
+                      <h3 className="text-3xl font-bold text-white mb-3">{t(`planNames.${plan.id}`)}</h3>
+                      <div className="text-4xl font-bold text-yellow-400 mb-2">${price}</div>
+                      <div className="text-sm text-gray-400 mb-6">
+                        <div className="flex items-center justify-center gap-2">
+                          <Gift className="w-4 h-4 text-yellow-400" />
+                          <span className="text-yellow-400 font-bold">{bonus.toLocaleString()} FSN</span>
+                          <span className="text-gray-400">Bonus</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 mb-8">
+                      {features.map((feature, i) => (
+                        <div key={i} className="flex items-center gap-4">
+                          <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                          <span className="text-gray-300">{t(`feature.${feature}`)}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {isActive ? (
+                      <button className="w-full bg-green-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 text-lg shadow-lg" disabled>
+                        <CheckCircle className="w-6 h-6" />
+                        {t('membershipPage.activated')}
+                      </button>
+                    ) : (
+                      <button
+                        className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold py-4 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
+                        onClick={() => setModalPlan({ id: plan.id, price: String(price) })}
+                      >
+                        <ShoppingCart className="w-6 h-6" />
+                        {plan.id === currentPlan && isExpired ? t('membershipPage.renew') : 'Subscribe Now'}
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
-        </div>
+        </motion.div>
+
+
+        {modalPlan && (
+          <SubscribeModal planId={String(modalPlan.id)} price={modalPlan.price} onClose={() => setModalPlan(null)} />
+        )}
       </div>
     </div>
   );

@@ -1,65 +1,44 @@
 // 📁 src/utils/notifications.ts
 
-import { auth, db, functions } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
+import { auth, functions } from '../firebase';
+import { addNotification,  } from './notificationSystem';
 
-// ✅ إرسال إشعار FCM عام (من خلال sendPushNotification)
-export const sendUserNotification = async ({
-  title,
-  body,
-  imageUrl,
-  clickAction,
-  uid,
-}: {
-  title: string;
-  body: string;
-  imageUrl?: string;
-  clickAction?: string;
-  uid?: string;
-}) => {
-  try {
-    const userId = uid || auth.currentUser?.uid;
-    if (!userId) {
-      console.warn('⛔ No authenticated user found.');
-      return;
-    }
-
-    const tokenRef = doc(db, 'userTokens', userId);
-    const tokenSnap = await getDoc(tokenRef);
-    if (!tokenSnap.exists()) {
-      console.warn('⚠️ No push token found for user.');
-      return;
-    }
-
-    const { token } = tokenSnap.data() as { token: string };
-    if (!token) {
-      console.warn('⚠️ User token is empty.');
-      return;
-    }
-
-    const sendNotification = httpsCallable(functions, 'sendPushNotification');
-    await sendNotification({
-      userId,
-      title,
-      body,
-      imageUrl,
-      clickAction,
-    });
-
-    console.log('✅ Notification sent to user:', userId);
-  } catch (error: any) {
-    console.error('❌ Error sending notification:', error.message);
-  }
-};
-
-// ✅ إشعار عند اكتمال التعدين (notifyMiningComplete)
 export const notifyMiningComplete = async () => {
+  // Create a local notification immediately for better user experience
+  // This ensures users see notifications even if the cloud function fails
+  const user = auth.currentUser;
+  let localNotificationSuccess = false;
+  
+  if (user) {
+    try {
+      await addNotification(user.uid, {
+        type: 'claim_reward',
+        title: '⛏️ Mining Complete!',
+        body: 'You can now claim your FSN reward. Open the app to claim it.',
+        link: '/mining'
+      });
+      localNotificationSuccess = true;
+      console.log('✅ Local mining notification created successfully');
+    } catch (error) {
+      console.error('❌ Error creating local notification:', error);
+    }
+  }
+  
+  // Try calling the cloud function for push notifications
   try {
     const callFn = httpsCallable(functions, 'notifyMiningComplete');
     const result = await callFn();
-    console.log('✅ Mining completion notification sent:', result);
+    console.log('✅ Mining completion notification sent to cloud function:', result);
+    return true;
   } catch (error: any) {
-    console.error('❌ Error calling notifyMiningComplete:', error.message);
+    console.error('❌ Error calling notifyMiningComplete cloud function:', error.message);
+    // If we're in development and the cloud function failed, but local notification worked,
+    // we can consider this a partial success
+    if (import.meta.env.DEV && localNotificationSuccess) {
+      console.log('⚠️ Cloud function failed but local notification created - development mode');
+      return true;
+    }
+    return localNotificationSuccess; // Return true if at least the local notification worked
   }
 };

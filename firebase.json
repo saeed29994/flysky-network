@@ -10,7 +10,15 @@
     ],
     "predeploy": [
       "npm --prefix \"$RESOURCE_DIR\" run lint"
-    ]
+    ],
+    "httpOptions": {
+      "cors": {
+        "origin": ["http://localhost:5173", "http://localhost:3000", "https://fsncrew.io", "https://www.fsncrew.io"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allowHeaders": ["Content-Type", "Authorization", "Accept"],
+        "maxAge": 3600
+      }
+    }
   },
   "hosting": {
     "public": "dist",

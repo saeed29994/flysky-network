@@ -1,7 +1,7 @@
 import { messagingPromise } from '../firebase';
 import { getToken, onMessage } from 'firebase/messaging';
 
-const VAPID_KEY = 'BCN7Vc7QTqoXbueYfOq-icGXm7ZyKioTu9FTwvJM2rtYj8r8rnI3YEPeJs9OAAV-fpzZYT6siymHDj6rWhyDNl0';
+const VAPID_KEY = import.meta.env.VITE_FIREBASE_VAPID_KEY;
 
 export const requestNotificationPermission = async (): Promise<string | null> => {
   try {

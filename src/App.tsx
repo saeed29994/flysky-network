@@ -1,76 +1,69 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
+import * as Sentry from "@sentry/react";
 import { onAuthStateChanged } from 'firebase/auth';
-import {
-  requestPermissionAndToken,
-  listenToForegroundMessages,
-} from './utils/pushNotification';
-import { auth, messagingPromise } from './firebase';
-import { onMessage } from 'firebase/messaging';
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-  Outlet,
-} from 'react-router-dom';
+import { auth } from './firebase';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-// i18n RTL support ✅
 import { useTranslation } from 'react-i18next';
 
-// ✅ إضافة Sentry
-import * as Sentry from "@sentry/react";
-
-// Public Pages
-import Inbox_Debug from './pages/Inbox_Debug';
+// Pages
 import LandingPage from './pages/LandingPage';
-import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import EmailVerification from './pages/EmailVerification';
-import Inbox from './pages/Inbox';
-import AboutUs from './pages/AboutUs';
-import TestNotification from './pages/TestNotification';
-import TermsPage from './pages/TermsPage';
-
-// Protected Layout
-import DashboardLayout from './pages/DashboardLayout';
-
-// Protected Pages
+import SignupPage from './pages/SignupPage';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import MembershipPage from './pages/MembershipPage';
 import ReferralProgram from './pages/ReferralProgram';
+import MembershipPage from './pages/MembershipPage';
+import AdminDashboard from './pages/AdminDashboard';
+import EmailVerification from './pages/EmailVerification';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import Inbox from './pages/Inbox';
+import Inbox_Debug from './pages/Inbox_Debug';
 import StakingPage from './pages/Staking';
 import KycPage from './pages/KycPage';
+import Wallet from './pages/Wallet';
 import MiningPage from './pages/MiningPage';
 import PlayToEarn from './pages/PlayToEarn';
 import WatchToEarn from './pages/WatchToEarn';
-import Wallet from './pages/Wallet';
 import Settings from './pages/Settings';
+import Contact from './pages/Contact';
+import AboutUs from './pages/AboutUs';
+// Remove TestNotification import
+import DashboardLayout from './pages/DashboardLayout';
+import TermsPage from './pages/TermsPage';
+import PrintToken from './pages/PrintToken';
 import UploadBanner from './pages/UploadBanner';
+import NotificationsPage from './pages/NotificationsPage';
 
-// Auth
-import AdminDashboard from './pages/AdminDashboard';
-import AdminRoute from './components/AdminRoute';
+// Components
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
+import { NotificationProvider } from './components/NotificationProvider';
 
 // Context
 import { UserPlanProvider } from './contexts/UserPlanContext';
 
+// Utils
+import { requestPermissionAndToken, listenToForegroundMessages } from './utils/pushNotification';
+
+// styles
+import 'react-toastify/dist/ReactToastify.css';
+
+// Create router outside of component to avoid recreation on each render
 const publicRoutes = [
   { path: '/', element: <LandingPage /> },
-  { path: '/signup', element: <SignupPage /> },
   { path: '/login', element: <LoginPage /> },
-  { path: '/forgot-password', element: <ForgotPasswordPage /> },
+  { path: '/signup', element: <SignupPage /> },
   { path: '/verify-email', element: <EmailVerification /> },
+  { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/inbox', element: <Inbox /> },
   { path: '/membership-page', element: <MembershipPage /> },
   { path: '/inbox-debug', element: <Inbox_Debug /> },
   { path: '/about', element: <AboutUs /> },
-  { path: '/test-notification', element: <TestNotification /> },
+  // Remove test-notification route
   { path: '/terms', element: <TermsPage /> },
   { path: '/upload-banner', element: <UploadBanner /> },
+  { path: '/print-token', element: <PrintToken /> },
 ];
 
 const dashboardRoutes = [
@@ -87,8 +80,11 @@ const dashboardRoutes = [
   { path: '/playtoearn', element: <PlayToEarn /> },
   { path: '/watch-to-earn', element: <WatchToEarn /> },
   { path: '/settings', element: <Settings /> },
+  { path: '/contact', element: <Contact /> },
+  { path: '/notifications', element: <NotificationsPage /> },
 ];
 
+// Create the router with notification provider for authenticated routes
 const router = createBrowserRouter([
   ...publicRoutes,
   {
@@ -96,7 +92,9 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <AdminRoute>
-          <AdminDashboard />
+          <NotificationProvider>
+            <AdminDashboard />
+          </NotificationProvider>
         </AdminRoute>
       </ProtectedRoute>
     ),
@@ -104,48 +102,60 @@ const router = createBrowserRouter([
   {
     element: (
       <ProtectedRoute>
-        <DashboardLayout>
-          <Outlet />
-        </DashboardLayout>
+        <NotificationProvider>
+          <DashboardLayout>
+            <Outlet />
+          </DashboardLayout>
+        </NotificationProvider>
       </ProtectedRoute>
     ),
     children: dashboardRoutes,
   },
 ]);
 
-function App() {
+function AppContent() {
   const { i18n } = useTranslation();
 
+  // Set language direction
   useEffect(() => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
   }, [i18n.language]);
+  
+  // Register service worker early - independent of auth state
+  useEffect(() => {
+    // Register service worker for push notifications
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/firebase-messaging-sw.js')
+        .then(() => console.log('✅ Service Worker registered successfully'))
+        .catch((err) => console.error('❌ Service Worker registration failed', err));
+    }
+  }, []);
 
+  // Handle auth state and FCM token
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // ✅ ربط المستخدم مع Sentry
+        // Set Sentry user
         Sentry.setUser({
           id: user.uid,
           email: user.email || undefined,
         });
 
+        // Now handle FCM permission and token
         await requestPermissionAndToken(user.uid);
         listenToForegroundMessages();
-
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker
-            .register('/firebase-messaging-sw.js')
-            .then(() => console.log('✅ Service Worker registered'))
-            .catch((err) => console.error('❌ SW registration failed', err));
-        }
-
-        const messaging = await messagingPromise;
-        if (messaging) {
-          onMessage(messaging, (payload) => {
-            console.log('🔔 Foreground notification (fallback):', payload);
-            alert(`${payload.notification?.title}\n${payload.notification?.body}`);
+        
+        // Inform service worker about authenticated user
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({
+            type: 'AUTH_USER',
+            userId: user.uid
           });
         }
+      } else {
+        // Clear Sentry user when logged out
+        Sentry.setUser(null);
       }
     });
 
@@ -153,9 +163,15 @@ function App() {
   }, []);
 
   return (
+    <ToastContainer position="top-center" autoClose={4000} />
+  );
+}
+
+function App() {
+  return (
     <UserPlanProvider>
       <RouterProvider router={router} />
-      <ToastContainer position="top-center" autoClose={4000} />
+      <AppContent />
     </UserPlanProvider>
   );
 }

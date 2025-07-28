@@ -36,12 +36,6 @@
   "noCompletedStaking": "You don't have any completed staking entries.",
   "claimed": "Claimed ✅",
 
-  "plan": {
-    "title": "Plan",
-    "current": "Current Plan:",
-    "startNew": "Start a new staking session based on your plan"
-  },
-
   "plans": {
     "economy": "Economy Class",
     "business": "Business Class"
@@ -50,66 +44,56 @@
   "first6": "First Class (6 Months)",
   "firstLifetime": "First Class (Lifetime)",
 
-  "form": {
-    "amount": "Amount to Stake"
+  "stakingSection": {
+    "endsOn": "Ends On",
+    "expectedReturn": "Expected Return",
+    "claimRewards": "Claim Rewards",
+    "claimIn": "Claim in"
+  },
+  "loading": {
+    "user": "User not loaded. Please log in first.",
+    "processing": "Processing..."
+  },
+  "error": {
+    "userNotLoaded": "User is not loaded.",
+    "invalidAmount": "Please enter a valid amount and duration.",
+    "exceedsBalance": "Staking amount exceeds your current balance.",
+    "notAuthenticated": "You must be logged in to claim.",
+    "alreadyClaimed": "This reward has already been claimed.",
+    "notEndedYet": "This staking period has not ended yet.",
+    "claimFailed": "Failed to claim the reward.",
+    "stakeFailed": "Failed to create staking entry."
+  },
+  "success": {
+    "stakeCreated": "Staking entry created successfully!",
+    "claimed": "Reward claimed successfully!"
+  },
+  "stakingCard": {
+    "title": "Your Staking Summary",
+    "currentlyLocked": "Currently Locked",
+    "economy": "Basic staking with limited returns.",
+    "business": "Business staking plan with moderate returns.",
+    "first6": "6-Month premium plan with high returns.",
+    "firstLifetime": "Lifetime plan with maximum returns."
+  },
+  "planNames": {
+    "economy": "Economy Class:",
+    "business": "Business Class",
+    "first": "First Class",
+    "first-lifetime": "First Class (Lifetime)"
+  },
+  "planFeatures": {
+    "Advanced Mining": "Advanced Mining",
+    "Priority Support": "Priority Support",
+    "Staking access": "Staking Access",
+    "All business features": "All Business Features",
+    "Faster mining": "Faster Mining",
+    "Event access": "Event Access",
+    "Highest Mining": "Highest Mining",
+    "Lifetime Access": "Lifetime Access",
+    "Access to Premium Features": "Access to Premium Features"
   },
 
-  "duration": {
-    "month": "Month",
-    "months": "Months"
-  },
-"stakingSection": {
-  "endsOn": "Ends On",
-  "expectedReturn": "Expected Return",
-  "claimRewards": "Claim Rewards",
-  "claimIn": "Claim in"
-},
-"loading": {
-  "user": "User not loaded. Please log in first.",
-  "processing": "Processing..."
-},
-"error": {
-  "userNotLoaded": "User is not loaded.",
-  "invalidAmount": "Please enter a valid amount and duration.",
-  "exceedsBalance": "Staking amount exceeds your current balance.",
-  "notAuthenticated": "You must be logged in to claim.",
-  "alreadyClaimed": "This reward has already been claimed.",
-  "notEndedYet": "This staking period has not ended yet.",
-  "claimFailed": "Failed to claim the reward.",
-  "stakeFailed": "Failed to create staking entry."
-},
-"success": {
-  "stakeCreated": "Staking entry created successfully!",
-  "claimed": "Reward claimed successfully!"
-},
-"stakingCard": {
-  "title": "Your Staking Summary",
-  "currentlyLocked": "Currently Locked",
-  "economy": "Basic staking with limited returns.",
-  "business": "Business staking plan with moderate returns.",
-  "first6": "6-Month premium plan with high returns.",
-  "firstLifetime": "Lifetime plan with maximum returns."
-},
-"planNames": {
-  "economy": "Economy Class:",
-  "business": "Business Class",
-  "first": "First Class",
-  "first-lifetime": "First Class (Lifetime)"
-},
-"planFeatures": {
-  "Advanced Mining": "Advanced Mining",
-  "Priority Support": "Priority Support",
-  "Staking access": "Staking Access",
-  "All business features": "All Business Features",
-  "Faster mining": "Faster Mining",
-  "Event access": "Event Access",
-  "Highest Mining": "Highest Mining",
-  "Lifetime Access": "Lifetime Access",
-  "Access to Premium Features": "Access to Premium Features"
-},
-
-
-  
   "dashboard": {
     "miningTitle": "Daily Mining Overview",
     "miningDesc": "Earn FSN tokens daily based on your plan. Upgrade for more rewards.",
@@ -140,7 +124,7 @@
     "or": "OR",
     "loginWithGoogle": "Login with Google",
     "pleaseWait": "Please wait...",
-    "noAccount": "Don’t have an account?",
+    "noAccount": "Don't have an account?",
     "signUp": "Sign Up",
     "googlePopupError": "Google login failed. Please use a regular browser like Chrome.",
     "googleGenericError": "Google login failed. Please try again.",
@@ -158,7 +142,7 @@
       "title": "Accepted Identity Documents",
       "option1": "National ID",
       "option2": "Passport",
-      "option3": "Driver’s License",
+      "option3": "Driver's License",
       "option4": "Resident Permit"
     },
     "idPhotos": {
@@ -208,10 +192,10 @@
       "a4": "Yes, you may re-submit updated documents at any time.",
       "q5": "Is my information secure?",
       "a5": "Yes. All data is encrypted and securely stored."
-     }
-    },
+    }
+  },
   "watchToEarn": {
-    "title": "Watch Ads & Earn",
+    "title": "Watch & Earn",
     "description": "Watch {{count}} ads to earn {{reward}} FSN daily.",
     "watched": "Ads watched",
     "balance": "Your current balance",
@@ -234,8 +218,7 @@
     "shareAdDesc": "Share this banner on X to earn 50 FSN once per day.",
     "shareOnX": "Share on X"
   },
-  
-    "referralProgram": "Referral Program",
+  "referralProgram": "Referral Program",
   "inviteFriendsEarn": "Invite your friends and earn rewards when they join and verify.",
   "copied": "Copied!",
   "verifiedReferrals": "Verified Referrals",
@@ -268,7 +251,7 @@
     "claimedError": "Error occurred while claiming bonus.",
     "fcmTitle": "🎁 Referral Bonus Ready",
     "fcmBody": "A new referral has been verified. Your bonus is ready to claim!"
-   },
+  },
   "wallet": {
     "walletOverview": "💼 Wallet Overview",
     "totalBalance": "Total Balance",
@@ -281,7 +264,7 @@
     "noTransactions": "No transactions recorded yet.",
     "loadingWallet": "Loading wallet data..."
   },
- "menu": {
+  "menu": {
     "home": "Home",
     "staking": "Staking",
     "mining": "Mining",
@@ -295,62 +278,39 @@
     "profile": "Profile",
     "logout": "Logout",
     "settings": "Settings",
-     "kyc": "KYC Verification"
+    "kyc": "KYC Verification",
+    "back": "Back"
   },
   "about": {
     "title": "About Us",
-    "intro": "FlySky Network is a decentralized ecosystem that combines mining, staking, gaming, and NFTs into a single integrated platform.",
+    "intro": "FlySky Network is a digital entertainment platform that combines virtual mining, interactive games, and in-app rewards into one smooth and engaging experience.",
     "visionTitle": "Our Vision",
-    "vision": "To create a sustainable and fair digital economy that empowers users to earn and grow through decentralized technology.",
+    "vision": "To deliver an innovative entertainment platform that offers users a fun and rewarding experience, with a focus on simplicity and accessibility.",
     "missionTitle": "Our Mission",
-    "mission": "We aim to provide a unified platform that merges entertainment, blockchain rewards, and community participation.",
-    "featuresTitle": "Key Features of Our Platform:",
+    "mission": "We provide users with exciting games and challenges where they can collect virtual points and use them to unlock additional in-app benefits.",
+    "featuresTitle": "What We Offer",
     "features": {
-      "mining": "⛏️ Proof-of-Activity Mining",
-      "staking": "📈 Flexible Staking Plans",
-      "gaming": "🎮 Battle Legend Game Integration",
-      "nft": "🖼️ Marketplace for NFT Assets"
+      "earn": "Earn FSN points by participating in daily activities.",
+      "unlock": "Use your points to unlock features and enhance your experience within the app.",
+      "enjoy": "Enjoy interactive games and various in-app rewards."
     },
-    "whitepaper": {
-      "title": "Whitepaper Overview",
-      "overview": "FlySky Network's whitepaper outlines the core components, mechanisms, and goals of the platform.",
-      "introTitle": "Introduction",
-      "intro": "FlySky introduces a fair distribution model that rewards active users with FSN tokens.",
-      "tokenTitle": "Token Sale",
-      "tokenIntro": "FSN tokens will be distributed in multiple phases, ensuring broad and fair access.",
-      "phase": "The initial phases focus on community mining and early staking.",
-      "mainSale": "A main token sale will follow, with clear allocation rules.",
-      "uses": "FSN will be used for staking, in-game purchases, NFTs, and governance.",
-      "gameTitle": "Battle Legend Game",
-      "gameIntro": "A survival-to-earn blockchain game integrated with FSN token economy.",
-      "gameDetails": "Players upgrade vehicles, steal parts, and defend bases.",
-      "gameFeaturesTitle": "Game Highlights:",
-      "features": {
-        "vehicles": "Upgradeable and tradable vehicles",
-        "theft": "Vehicle theft and part dismantling",
-        "maintenance": "Mandatory vehicle maintenance system",
-        "base": "Progressive base and building upgrades",
-        "auctions": "Limited vehicle auctions and rentals",
-        "roles": "Player roles: Warriors and Traders"
-      },
-      "status": "The game is under active development and will be launched in phases.",
-      "roadmap": "Roadmap",
-      "roadmapDesc": "Our roadmap includes mining launch, staking, token sale, game release, and NFT marketplace.",
-      "security": "Security and Transparency",
-      "securityDesc": "Smart contracts are audited and data is stored securely using Firebase and IPFS.",
-      "conclusion": "Conclusion",
-      "conclusionDesc": "FlySky Network aims to revolutionize digital interaction through a fun, fair, and rewarding environment."
+    "fsnPoints": {
+      "title": "FSN Points",
+      "description": "FSN points are purely virtual in-app currency, used exclusively to unlock features, join games, and access activities. They cannot be withdrawn, sold, or traded outside the app."
     },
-    "join": "Join us and be part of the future of decentralized engagement!"
+    "battleLegend": {
+      "title": "Battle Legend Game",
+      "description": "Get ready for thrilling adventures in Battle Legend, where you can compete and win rewards — all within the app."
+    },
+    "join": "Join us and be part of the future of digital entertainment!"
   },
-
   "features": {
     "mining": "Start earning FSN tokens through our energy-efficient proof-of-activity model.",
     "staking": "Stake your digital tokens and watch your assets grow while supporting the network.",
     "gaming": "Enjoy exciting games that reward your skills with real digital assets.",
     "nft": "Trade unique NFTs and unlock exclusive items and collectibles within games."
   },
-"settingsSection": {
+  "settingsSection": {
     "profileTitle": "Profile Information",
     "fullName": "Full Name",
     "email": "Email",
@@ -373,9 +333,69 @@
     "notAuthenticated": "❌ User not authenticated",
     "passwordUpdated": "✅ Password updated successfully",
     "updateFailed": "❌ Failed to update password",
-    "saveAvatar": "Save Avatar"
+    "saveAvatar": "Save Avatar",
+    "title": "Settings",
+    "subtitle": "Manage your account settings and preferences",
+    "securityTitle": "Security & Privacy",
+    "notificationsTitle": "Notifications",
+    "preferencesTitle": "Preferences",
+    "appearanceTitle": "Appearance",
+    "integrationTitle": "Integrations",
+    "activityTitle": "Account Activity",
+    "selectLanguage": "Select Language",
+    "notifications": {
+      "title": "Notification Preferences",
+      "emailNotifications": "Email Notifications",
+      "pushNotifications": "Push Notifications",
+      "marketing": "Marketing Communications",
+      "newsletter": "Newsletter Subscription",
+      "updates": "Product Updates",
+      "security": "Security Alerts",
+      "rewards": "Rewards & Bonuses",
+      "staking": "Staking Updates",
+      "mining": "Mining Alerts"
+    },
+    "security": {
+      "title": "Security Settings",
+      "twoFactor": "Two-Factor Authentication",
+      "loginHistory": "Login History",
+      "devices": "Connected Devices",
+      "sessions": "Active Sessions",
+      "passwordChange": "Password Change",
+      "emailVerification": "Email Verification",
+      "setup": "Set Up",
+      "manage": "Manage",
+      "view": "View"
+    },
+    "preferences": {
+      "title": "User Preferences",
+      "theme": "Theme",
+      "language": "Language",
+      "timezone": "Timezone",
+      "currency": "Display Currency",
+      "dateFormat": "Date Format",
+      "autoplay": "Autoplay Videos",
+      "sound": "Sound Effects"
+    },
+    "appearance": {
+      "title": "Appearance Settings",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System Default",
+      "compact": "Compact View",
+      "fontSize": "Font Size",
+      "animations": "Enable Animations"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "loginAttempts": "Login Attempts",
+      "passwordChanges": "Password Changes",
+      "emailUpdates": "Email Updates",
+      "deviceLogins": "Device Logins",
+      "viewAll": "View All Activity"
+    }
   },
-
   "whitepaper": {
     "whitepaperTitle": "Whitepaper",
     "overview": "A comprehensive document outlining our project's philosophy, technical architecture, and future plans.",
@@ -403,7 +423,7 @@
     "roadmapTitle": "Roadmap",
     "securityTitle": "Security & Transparency"
   },
-"miningPage": {
+  "miningPage": {
     "balance": "Balance",
     "fsnDailyMining": "FSN Daily Mining",
     "readyToMine": "Ready to start mining?",
@@ -428,7 +448,7 @@
     },
     "miningHistory": "Mining History"
   },
- "membershipPage": {
+  "membershipPage": {
     "title": "Membership Plans",
     "currentPlan": "Current Plan",
     "notSubscribed": "Not Subscribed",
@@ -456,33 +476,78 @@
     "uploading": "Uploading..."
   },
   "feature": {
-    "advancedMining": "Advanced Mining Rate",
-    "prioritySupport": "Priority Support",
-    "stakingAccess": "Access to Staking",
-    "fasterMining": "Faster Mining Speed",
-    "allBusinessFeatures": "Includes All Business Features",
-    "eventAccess": "Access to Events & Campaigns",
-    "highestMining": "Highest Mining Rewards",
-    "premiumAccess": "Premium Area Access",
-    "lifetimeAccess": "Lifetime Membership",
-    "unlockedForever": "Unlimited Access Forever",
-    "lifetimePerks": "Lifetime Perks and Bonuses"
+    "Basic mining": "Basic mining",
+    "Standard support": "Standard support", 
+    "Community access": "Community access",
+    "Advanced mining": "Advanced mining",
+    "Priority support": "Priority support",
+    "Staking access": "Staking access",
+    "Faster mining": "Faster mining",
+    "All business features": "All business features",
+    "Event access": "Event access",
+    "Highest mining": "Highest mining",
+    "Premium access": "Premium access",
+    "Lifetime access": "Lifetime access",
+    "Unlocked forever": "Unlocked forever",
+    "Lifetime perks": "Lifetime perks"
   },
-  "success": {
-    "stakeCreated": "Your payment was submitted successfully!"
+  "subscribeToPlan": "Subscribe to Plan",
+  "selectedPlan": "Selected Plan",
+  "price": "Price",
+  "bonus": "Bonus",
+  "planFeatures": "Plan Features",
+  "paymentMethod": "Payment Method",
+  "inAppPurchase": "In-App Purchase",
+  "securePayment": "Secure Payment",
+  "importantNotice": "Important Notice",
+  "fsnVirtualCurrency": "FSN tokens are virtual in-app currency",
+  "fsnUsageDescription": "that can only be used within the app for features like Mining, Staking, and Upgrades. They cannot be withdrawn, sold, or traded externally.",
+  "purchaseNow": "Purchase Now",
+  "purchaseTerms": "By purchasing, you agree to our terms of service and privacy policy.",
+  "purchaseFailed": "Purchase failed. Please try again.",
+  "bonusReceived": "Bonus Received",
+  "oneTimePayment": "One-time payment",
+  "bonusDescription": "Virtual in-app currency for enhanced features",
+  "processing": "Processing...",
+  "paymentCompleted": "Payment Completed",
+  "subscriptionProcessed": "Your subscription has been processed successfully.",
+  "subscriptionBonusTitle": "🎁 Subscription Bonus Received",
+  "subscriptionBonusBody": "You received {{amount}} FSN as a bonus for subscribing to {{plan}}!",
+  "subscriptionBonusToast": "🎉 {{amount}} FSN bonus added to your balance!",
+  "contact": {
+    "title": "Contact Us",
+    "description": "Have questions or feedback? We'd love to hear from you.",
+    "name": "Your Name",
+    "namePlaceholder": "Enter your full name",
+    "email": "Your Email",
+    "emailPlaceholder": "Enter your email address",
+    "message": "Your Message",
+    "messagePlaceholder": "Tell us how we can help you...",
+    "send": "Send Message",
+    "sendMessage": "Send us a Message",
+    "sending": "Sending...",
+    "thankYou": "Thank you! We'll get back to you soon.",
+    "fillAllFields": "Please fill all fields.",
+    "getInTouch": "Get in Touch",
+    "phone": "Phone",
+    "address": "Address",
+    "faq": "Frequently Asked Questions",
+    "faq1": {
+      "question": "How do I start mining?",
+      "answer": "Simply navigate to the Mining page and click 'Start Mining' to begin earning daily rewards."
+    },
+    "faq2": {
+      "question": "How do referral rewards work?",
+      "answer": "Invite friends using your referral link and earn bonuses when they join and subscribe to plans."
+    },
+    "faq3": {
+      "question": "What are the different membership plans?",
+      "answer": "We offer Economy, Business, and First Class plans with increasing benefits and rewards."
+    }
   },
- "contact": {
-  "title": "Contact Us",
-  "description": "Have questions or feedback? We'd love to hear from you.",
-  "name": "Your Name",
-  "email": "Your Email",
-  "message": "Your Message",
-  "send": "Send Message"
-},
- 
   "fillAllFields": "Please fill all fields.",
   "notAuthenticated": "User not authenticated.",
- "walletOverview": "💼 Wallet Overview",
+  "walletOverview": "💼 Wallet Overview",
   "totalBalance": "Total Balance",
   "availableBalance": "Available Balance",
   "lockedInStaking": "Locked in Staking",
@@ -491,5 +556,55 @@
   "noBalanceData": "No balance data available.",
   "transactionHistory": "📜 Transaction History",
   "noTransactions": "No transactions to display.",
-  "loadingWallet": "Loading wallet data..."
+  "loadingWallet": "Loading wallet data...",
+  "statusMsg": {
+    "kyc": "⚠️ Complete your KYC to access full features.",
+    "economy": "🚀 You are on the free plan. Upgrade to unlock more benefits.",
+    "business": "🎯 Business Class gives you enhanced access. First Class unlocks full potential.",
+    "first": "👑 You are enjoying full access with First Class membership."
+  },
+  "kycApproved": "Approved",
+  "kycPending": "Pending",
+  "notVerified": "Not Verified",
+  "membership": "Membership",
+  "kycStatus": "KYC Status",
+  "expiresOn": "Expires On",
+  "upgrade": "Upgrade",
+  "notifications": {
+    "title": "Notifications",
+    "unread": "Unread",
+    "markAllAsRead": "Mark all as read",
+    "noNotifications": "No notifications",
+    "viewAll": "View all notifications",
+    "empty": "You have no notifications",
+    "loading": "Loading notifications...",
+    "unreadNotifications": "unread notifications",
+    "youHaveNoNotifications": "You don't have any notifications yet",
+    "noFilteredNotifications": "No notifications match this filter",
+    "markAllRead": "Mark all as read",
+    "filter": "Filter",
+    "all": "All",
+    "rewards": "Rewards",
+    "messages": "Messages",
+    "referrals": "Referrals",
+    "mining": "Mining",
+    "staking": "Staking",
+    "types": {
+      "claim_reward": "Reward Ready",
+      "inbox_message": "New Message",
+      "referral_bonus": "Referral Bonus",
+      "mining_reminder": "Mining Reminder",
+      "staking_reminder": "Staking Reminder"
+    }
+  },
+  "pushNotifications": "Push Notifications",
+  "enableNotifications": "Enable Notifications",
+  "enablePushNotifications": "Enable push notifications to get updates even when you're not using the app",
+  "notificationsDenied": "Notifications are blocked. Please enable them in your browser settings.",
+  "notificationsDeniedHelp": "You have blocked notifications. To enable them, please update your browser settings.",
+  "notificationsEnabled": "You will receive push notifications when important updates happen.",
+  "notificationsDescription": "Enable push notifications to receive updates about rewards, messages, and other important events.",
+  "enable": "Enable",
+  "enabled": "Enabled",
+  "requesting": "Requesting..."
 }

@@ -5,6 +5,7 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
 import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
 import { Link } from 'react-router-dom';
+import { Spinner } from '../components/ui/spinner';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -51,9 +52,16 @@ const ForgotPasswordPage = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-yellow-500 hover:bg-yellow-400 text-black w-full py-2 rounded font-semibold transition"
+          className="bg-yellow-500 hover:bg-yellow-400 text-black w-full py-2 rounded font-semibold transition flex items-center justify-center"
         >
-          {loading ? 'Sending...' : 'Send Reset Email'}
+          {loading ? (
+            <>
+              <Spinner size="sm" color="yellow" className="mr-2" />
+              Sending...
+            </>
+          ) : (
+            'Send Reset Email'
+          )}
         </button>
 
         <p className="mt-4 text-sm text-gray-400 text-center">

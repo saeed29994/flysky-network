@@ -11,6 +11,7 @@ interface NotificationPayload {
   body: string;
   link?: string;
   imageUrl?: string;
+  data?: Record<string, any>; // Add data field to support additional information
 }
 
 export const sendNotification = async ({
@@ -18,6 +19,7 @@ export const sendNotification = async ({
   body,
   link,
   imageUrl,
+  data,
 }: NotificationPayload) => {
   try {
     const user = auth.currentUser;
@@ -45,6 +47,7 @@ export const sendNotification = async ({
       body,
       link,
       imageUrl,
+      data,
       tokens: [token], // ✅ التوكن كـ array
     });
 

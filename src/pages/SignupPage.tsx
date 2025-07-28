@@ -23,6 +23,9 @@ import { requestPermissionAndToken } from '../utils/pushNotification';
 import { sendNotification as sendFCMNotification } from '../utils/sendNotification';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
+import { Spinner } from '../components/ui/spinner';
+import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
+import fsnLogo from '../assets/fsn-logo.png';
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -35,6 +38,8 @@ const SignupPage = () => {
   const [error, setError] = useState('');
   const [logoSpin, setLogoSpin] = useState(true);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLogoSpin(false), 3000);
@@ -57,7 +62,7 @@ const SignupPage = () => {
     if (!inboxSnap.exists()) {
       await setDoc(inboxRef, {
         title: '🎉 Welcome to FlySky Network!',
-        body: 'You’ve earned a 500 FSN welcome bonus. Click below to claim your reward',
+        body: 'You\'ve earned a 500 FSN welcome bonus. Click below to claim your reward',
         timestamp: Date.now(),
         read: false,
         claimed: false,
@@ -113,6 +118,7 @@ const SignupPage = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setEmailLoading(true);
 
     try {
       const finalReferral = referralCode.trim();
@@ -125,7 +131,7 @@ const SignupPage = () => {
       await setDoc(doc(db, 'users', user.uid), {
         fullName,
         email,
-        balance: 500,
+        balance: 0,
         watchedAdsToday: 0,
         adsLastWatched: Timestamp.fromMillis(0),
         plan: 'economy',
@@ -135,19 +141,13 @@ const SignupPage = () => {
         language: 'en',
         theme: 'dark',
         kycStatus: 'Not Actived',
-        miningStartTime: serverTimestamp(),
         dailyMined: 0,
         lockedFromStaking: 0,
         stakingEarnings: 0,
         referralReward: 0,
         referrals: 0,
         agreedToTerms: true,
-        transactionHistory: [
-          {
-            description: 'Initial balance record (500 FSN)',
-            timestamp: Date.now(),
-          },
-        ],
+        transactionHistory: [],
       });
 
       if (finalReferral) await registerReferral(finalReferral, email);
@@ -158,12 +158,15 @@ const SignupPage = () => {
       navigate('/verify-email');
     } catch (err: any) {
       console.error(err);
-      setError(err.message || 'Signup failed');
+      setError(getFirebaseErrorMessage(err.code));
+    } finally {
+      setEmailLoading(false);
     }
   };
 
   const handleGoogleSignup = async () => {
     try {
+      setGoogleLoading(true);
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
@@ -177,7 +180,7 @@ const SignupPage = () => {
         await setDoc(userRef, {
           fullName: user.displayName || '',
           email: user.email || '',
-          balance: 500,
+          balance: 0,
           watchedAdsToday: 0,
           adsLastWatched: Timestamp.fromMillis(0),
           plan: 'economy',
@@ -187,19 +190,13 @@ const SignupPage = () => {
           language: 'en',
           theme: 'dark',
           kycStatus: 'Not Actived',
-          miningStartTime: serverTimestamp(),
           dailyMined: 0,
           lockedFromStaking: 0,
           stakingEarnings: 0,
           referralReward: 0,
           referrals: 0,
           agreedToTerms: true,
-          transactionHistory: [
-            {
-              description: 'Initial balance record (500 FSN)',
-              timestamp: Date.now(),
-            },
-          ],
+          transactionHistory: [],
         });
 
         if (referralCode.trim()) await registerReferral(referralCode.trim(), user.email || '');
@@ -207,87 +204,180 @@ const SignupPage = () => {
         await requestPermissionAndToken(user.uid);
       }
 
-      navigate('/verify-email');
+      navigate('/dashboard');
     } catch (err: any) {
       console.error(err);
-      setError(err.message || 'Google signup failed');
+      setError(getFirebaseErrorMessage(err.code));
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
   return (
-   <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-900 to-slate-800 text-white p-6">
-      <img
-        src="/fsn-logo.png"
-        alt="Logo"
-        className={`w-20 h-20 mb-2 ${logoSpin ? 'animate-spin-slow' : ''}`}
-      />
-      <h1 className="text-4xl font-bold mb-6">
-        <span className="text-yellow-400">Fly</span>
-        <span className="text-cyan-400">Sky</span>
-        <span className="text-yellow-400"> Network</span>
-      </h1>
-      <h2 className="text-2xl font-semibold mb-6">{t('auth.createAccount')}</h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="relative inline-block">
+            <img
+              src={fsnLogo}
+              alt="FSN Logo"
+              className={`w-16 h-16 ${logoSpin ? 'animate-spin-slow' : ''}`}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-purple-600 rounded-full opacity-30 blur-md"></div>
+          </div>
+          <h1 className="text-3xl font-bold mt-4">
+            <span className="text-amber-400">Fly</span>
+            <span className="text-purple-400">Sky</span>{' '}
+            <span className="text-white">Network</span>
+          </h1>
+          <h2 className="text-xl font-medium mt-2 text-gray-200">{t('auth.createAccount')}</h2>
+        </div>
 
-      <form onSubmit={handleSignup} className="w-full max-w-md space-y-4">
-        <input type="text" placeholder={t('auth.fullName')} value={fullName} onChange={(e) => setFullName(e.target.value)} required className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none" />
-        <input type="email" placeholder={t('auth.email')} value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none" />
-        <input type="password" placeholder={t('auth.password')} value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none" />
-        <input type="text" placeholder={t('auth.referralCode')} value={referralCode} onChange={(e) => setReferralCode(e.target.value)} className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none" />
+        <div className="bg-gray-900/80 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+          <div className="px-6 py-8">
+            {error && (
+              <div className="mb-6 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+                <p className="text-red-300 text-sm">{error}</p>
+              </div>
+            )}
 
-        <label className="flex items-center text-sm text-gray-300">
-          <input type="checkbox" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} required className="mr-2" />
-          {t('auth.agreeTo')}{' '}
-          <Link to="/terms" className="text-yellow-400 underline">
-            {t('auth.terms')}
-          </Link>
-        </label>
+            <form onSubmit={handleSignup} className="space-y-4">
+              <div>
+                <input 
+                  type="text" 
+                  placeholder={t('auth.fullName')} 
+                  value={fullName} 
+                  onChange={(e) => setFullName(e.target.value)} 
+                  required 
+                  className="w-full p-3 bg-gray-800/70 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500"
+                />
+              </div>
+              
+              <div>
+                <input 
+                  type="email" 
+                  placeholder={t('auth.email')} 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  required 
+                  className="w-full p-3 bg-gray-800/70 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500"
+                />
+              </div>
+              
+              <div>
+                <input 
+                  type="password" 
+                  placeholder={t('auth.password')} 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                  required 
+                  className="w-full p-3 bg-gray-800/70 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500"
+                />
+              </div>
+              
+              <div>
+                <input 
+                  type="text" 
+                  placeholder={t('auth.referralCode')} 
+                  value={referralCode} 
+                  onChange={(e) => setReferralCode(e.target.value)} 
+                  className="w-full p-3 bg-gray-800/70 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500"
+                />
+              </div>
 
-        {error && <p className="text-red-400 text-sm">{error}</p>}
+              <label className="flex items-center space-x-2 cursor-pointer text-gray-300">
+                <input 
+                  type="checkbox" 
+                  checked={acceptedTerms} 
+                  onChange={(e) => setAcceptedTerms(e.target.checked)} 
+                  required 
+                  className="rounded bg-gray-800 border-gray-600 text-purple-500 focus:ring-purple-500/30"
+                />
+                <span className="text-sm">
+                  {t('auth.agreeTo')}{' '}
+                  <Link to="/terms" className="text-purple-400 hover:text-purple-300 transition">
+                    {t('auth.terms')}
+                  </Link>
+                </span>
+              </label>
 
-        <button
-          type="submit"
-          disabled={!acceptedTerms}
-          className={`w-full py-2 rounded-md font-semibold transition ${
-            acceptedTerms
-              ? 'bg-yellow-500 text-black hover:bg-yellow-400'
-              : 'bg-gray-500 text-gray-300 cursor-not-allowed'
-          }`}
-        >
-          {t('auth.signUp')}
-        </button>
+              <button
+                type="submit"
+                disabled={!acceptedTerms || emailLoading}
+                className={`w-full py-3 rounded-lg font-semibold transition flex justify-center items-center mt-2 ${
+                  acceptedTerms && !emailLoading
+                    ? 'bg-gradient-to-r from-amber-500 to-purple-600 hover:from-amber-400 hover:to-purple-500 text-white'
+                    : 'bg-gray-700/50 text-gray-400 cursor-not-allowed'
+                }`}
+              >
+                {emailLoading ? (
+                  <>
+                    <Spinner size="sm" color="white" className="mr-2" />
+                    {t('processing')}
+                  </>
+                ) : (
+                  t('auth.signUp')
+                )}
+              </button>
 
-        <button
-          type="button"
-          onClick={handleGoogleSignup}
-          disabled={!acceptedTerms}
-          className={`w-full py-2 rounded-md font-semibold transition ${
-            acceptedTerms
-              ? 'bg-white text-black hover:bg-gray-200'
-              : 'bg-gray-500 text-gray-300 cursor-not-allowed'
-          }`}
-        >
-          {t('auth.signUpWithGoogle')}
-        </button>
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-600"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-3 bg-gray-900/80 text-gray-400">{t('auth.or')}</span>
+                </div>
+              </div>
 
-        <p className="text-center text-sm text-gray-400">
-          {t('auth.haveAccount')}{' '}
-          <Link to="/login" className="text-yellow-400">
-            {t('auth.login')}
-          </Link>
-        </p>
+              <button
+                type="button"
+                onClick={handleGoogleSignup}
+                disabled={!acceptedTerms || googleLoading}
+                className={`w-full py-3 rounded-lg font-semibold transition flex justify-center items-center ${
+                  acceptedTerms && !googleLoading
+                    ? 'bg-white text-gray-800 hover:bg-gray-100'
+                    : 'bg-gray-700/50 text-gray-400 cursor-not-allowed'
+                }`}
+              >
+                {googleLoading ? (
+                  <>
+                    <Spinner size="sm" color="primary" className="mr-2" />
+                    {t('auth.pleaseWait')}
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src="https://developers.google.com/identity/images/g-logo.png"
+                      alt="Google Logo"
+                      className="w-5 h-5 mr-2"
+                    />
+                    {t('auth.signUpWithGoogle')}
+                  </>
+                )}
+              </button>
 
-        <div className="text-center pt-4">
+              <p className="text-center text-sm text-gray-400 mt-4">
+                {t('auth.haveAccount')}{' '}
+                <Link to="/login" className="text-purple-400 hover:text-purple-300 transition">
+                  {t('auth.login')}
+                </Link>
+              </p>
+            </form>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center">
           <select
             onChange={(e) => i18n.changeLanguage(e.target.value)}
             defaultValue={i18n.language}
-            className="bg-gray-800 text-white px-3 py-1 rounded border border-gray-600"
+            className="bg-gray-800/50 text-white px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
           >
             <option value="en">English</option>
             <option value="ar">العربية</option>
             <option value="zh">🇨🇳 中文</option>
           </select>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

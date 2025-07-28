@@ -6,7 +6,12 @@ import { auth, db, storage } from "../firebase";
 import {
   doc,
   getDoc,
-  updateDoc
+  updateDoc,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit
 } from "firebase/firestore";
 import {
   EmailAuthProvider,
@@ -16,6 +21,38 @@ import {
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { motion } from 'framer-motion';
+import { 
+  Settings as SettingsIcon, 
+  User, 
+  Lock, 
+  Globe, 
+  Camera, 
+  Crown, 
+  Calendar, 
+  ArrowRight,
+  Upload,
+  Eye,
+  EyeOff,
+  CheckCircle,
+  AlertCircle,
+  Bell,
+  Palette,
+  Shield,
+  Moon,
+  Sun,
+  Monitor,
+  Volume2,
+  VolumeX,
+  LogOut,
+  Mail,
+  Zap,
+  ChevronRight,
+  Edit3,
+  Save,
+  X
+} from 'lucide-react';
+import PushNotificationManager from '../components/PushNotificationManager';
 
 const Settings = () => {
   const { t, i18n } = useTranslation();
@@ -36,6 +73,29 @@ const Settings = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false
+  });
+
+  // Notification preferences
+  const [notifications, setNotifications] = useState({
+    email: true,
+    push: true,
+    inApp: true,      // Added in-app notifications toggle
+    marketing: false,
+    security: true,
+    rewards: true
+  });
+
+  // Appearance settings
+  const [theme, setTheme] = useState('dark');
+  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  // UI States
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [activeTab, setActiveTab] = useState('profile');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -55,6 +115,15 @@ const Settings = () => {
           setSubscriptionEnd(new Date(data.membership.subscriptionEnd).toLocaleDateString());
         }
         setLanguage(data.language || i18n.language);
+        setTheme(data.theme || 'dark');
+        setSoundEnabled(data.soundEnabled !== false);
+
+        if (data.notifications) {
+          setNotifications(prev => ({
+            ...prev,
+            ...data.notifications
+          }));
+        }
       }
     };
     fetchUserData();
@@ -67,7 +136,6 @@ const Settings = () => {
     }
     const objectUrl = URL.createObjectURL(selectedFile);
     setPreviewUrl(objectUrl);
-
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
@@ -109,7 +177,7 @@ const Settings = () => {
 
   const handleSaveAvatar = async () => {
     if (!selectedFile) {
-      toast.error(t("settingsSection.selectImage"));
+      toast.error("Please select an image first");
       return;
     }
 
@@ -124,28 +192,41 @@ const Settings = () => {
       setAvatarUrl(imageUrl);
       setSelectedFile(null);
       setPreviewUrl(null);
-      toast.success(t("settingsSection.avatarUpdated"));
+      toast.success("Avatar updated successfully");
       setUploadProgress(0);
     } catch (error) {
-      toast.error(t("settingsSection.uploadFailed"));
+      toast.error("Failed to upload image");
       setUploadProgress(0);
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    if (!auth.currentUser) return;
+
+    try {
+      const userRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(userRef, { fullName });
+      setEditingProfile(false);
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      toast.error("Failed to update profile");
     }
   };
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      toast.error(t("settingsSection.fillAllFields"));
+      toast.error("Please fill all fields");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error(t("settingsSection.passwordMismatch"));
+      toast.error("Passwords don't match");
       return;
     }
 
     const user = auth.currentUser;
     if (!user || !user.email) {
-      toast.error(t("settingsSection.notAuthenticated"));
+      toast.error("User not authenticated");
       return;
     }
 
@@ -156,9 +237,9 @@ const Settings = () => {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      toast.success(t("settingsSection.passwordUpdated"));
+      toast.success("Password updated successfully");
     } catch {
-      toast.error(t("settingsSection.updateFailed"));
+      toast.error("Failed to update password");
     }
   };
 
@@ -174,143 +255,553 @@ const Settings = () => {
     }
   };
 
-  return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 bg-[#0B1622] text-white rounded-lg overflow-hidden">
-      {/* Profile Section */}
-      <section className="mb-10">
-        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">{t("settingsSection.profileTitle")}</h2>
-        <div className="flex flex-col sm:flex-row items-center gap-6 mb-4">
-          {(previewUrl || avatarUrl) ? (
-            <img
-              src={previewUrl || avatarUrl}
-              alt="Avatar"
-              className="w-24 h-24 rounded-full object-cover border-2 border-yellow-400 shrink-0"
-            />
-          ) : (
-            <div className="w-24 h-24 rounded-full border-2 border-yellow-400 flex items-center justify-center text-sm text-gray-400 bg-gray-800">
-              {t("settingsSection.noImage")}
-            </div>
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            disabled={isUploading}
-          />
+  const handleNotificationChange = async (key: keyof typeof notifications) => {
+    const newValue = !notifications[key];
+    setNotifications(prev => ({ ...prev, [key]: newValue }));
+
+    const user = auth.currentUser;
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      await updateDoc(docRef, { 
+        [`notifications.${key}`]: newValue 
+      });
+    }
+  };
+
+  const handleThemeChange = async (newTheme: string) => {
+    setTheme(newTheme);
+    document.documentElement.className = newTheme;
+
+    const user = auth.currentUser;
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      await updateDoc(docRef, { theme: newTheme });
+    }
+  };
+
+  const handleToggleSound = async () => {
+    const newValue = !soundEnabled;
+    setSoundEnabled(newValue);
+
+    const user = auth.currentUser;
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      await updateDoc(docRef, { soundEnabled: newValue });
+    }
+  };
+
+  const getPlanBadge = () => {
+    if (plan === 'first' || plan === 'first-lifetime' || plan === 'first-6') {
+      return (
+        <div className="flex items-center gap-2">
+          <Crown className="w-4 h-4 text-yellow-400" />
+          <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs px-3 py-1 rounded-full font-semibold">
+            First Class
+          </span>
         </div>
-        {selectedFile && (
-          <div className="mb-4 w-full">
-            <button
-              onClick={handleSaveAvatar}
-              disabled={isUploading}
-              className={`px-4 py-2 rounded bg-yellow-400 text-black font-semibold w-full sm:w-auto ${isUploading ? "opacity-50 cursor-not-allowed" : "hover:bg-yellow-500"}`}
-            >
-              {t("settingsSection.saveAvatar")}
-            </button>
-            {isUploading && (
-              <div className="mt-2 bg-gray-700 h-2 rounded overflow-hidden">
-                <div
-                  className="bg-yellow-400 h-2 rounded"
-                  style={{ width: `${uploadProgress}%`, transition: "width 0.3s ease" }}
-                />
+      );
+    }
+    if (plan === 'business') {
+      return (
+        <div className="flex items-center gap-2">
+          <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
+            Business Class
+          </span>
+        </div>
+      );
+    }
+    return (
+      <div className="flex items-center gap-2">
+        <span className="bg-gray-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
+          Economy Class
+        </span>
+      </div>
+    );
+  };
+
+  const togglePasswordVisibility = (field: 'current' | 'new' | 'confirm') => {
+    setShowPasswords(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+  };
+
+  const tabs = [
+    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'security', label: 'Security', icon: Shield },
+    { id: 'notifications', label: 'Notifications', icon: Bell },
+    { id: 'appearance', label: 'Appearance', icon: Palette },
+    { id: 'account', label: 'Account', icon: Crown }
+  ];
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'profile':
+        return (
+          <div className="space-y-6">
+            {/* Avatar Section */}
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center gap-6">
+                  <div className="relative">
+                    {(previewUrl || avatarUrl) ? (
+                      <img
+                        src={previewUrl || avatarUrl}
+                        alt="Avatar"
+                        className="w-20 h-20 rounded-full object-cover border-2 border-white/20"
+                      />
+                    ) : (
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 text-white flex items-center justify-center text-2xl font-bold border-2 border-white/20">
+                        {fullName.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+
+                    <button
+                      onClick={() => document.getElementById('avatar-input')?.click()}
+                    className="absolute -bottom-1 -right-1 bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-full shadow-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-200"
+                    >
+                      <Camera className="w-4 h-4 text-white" />
+                    </button>
+
+                    {isUploading && (
+                      <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1">
+                    <input
+                      id="avatar-input"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      disabled={isUploading}
+                      className="hidden"
+                    />
+
+                    {selectedFile && (
+                      <div className="space-y-3">
+                        <button
+                          onClick={handleSaveAvatar}
+                          disabled={isUploading}
+                        className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200 flex items-center gap-2 disabled:opacity-50"
+                        >
+                          <Upload className="w-4 h-4" />
+                        Save Avatar
+                        </button>
+                        
+                        {isUploading && (
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between text-sm text-gray-300">
+                              <span>Uploading...</span>
+                              <span>{uploadProgress}%</span>
+                            </div>
+                            <div className="bg-white/10 h-2 rounded-full overflow-hidden">
+                              <div
+                                className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${uploadProgress}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                </div>
+                  </div>
+                </div>
+
+            {/* Profile Info */}
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-white">Profile Information</h3>
+                {editingProfile ? (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleSaveProfile}
+                      className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition-colors"
+                    >
+                      <Save className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setEditingProfile(false)}
+                      className="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setEditingProfile(true)}
+                    className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    <Edit3 className="w-4 h-4" />
+                  </button>
+                )}
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Full Name
+                    </label>
+                    <input
+                      type="text"
+                      value={fullName}
+                      onChange={e => setFullName(e.target.value)}
+                    disabled={!editingProfile}
+                    className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      disabled
+                      className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-gray-400 cursor-not-allowed"
+                      placeholder="Your email address"
+                    />
+                  </div>
+                </div>
+              </div>
+                </div>
+        );
+
+      case 'security':
+        return (
+          <div className="space-y-6">
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+              <h3 className="text-lg font-semibold text-white mb-4">Change Password</h3>
+                <div className="space-y-4">
+                          <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Current Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.current ? "text" : "password"}
+                      value={currentPassword}
+                      onChange={e => setCurrentPassword(e.target.value)}
+                      className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10"
+                      placeholder="Enter current password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('current')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                    >
+                      {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.new ? "text" : "password"}
+                      value={newPassword}
+                      onChange={e => setNewPassword(e.target.value)}
+                      className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10"
+                      placeholder="Enter new password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('new')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                    >
+                      {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Confirm New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.confirm ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={e => setConfirmPassword(e.target.value)}
+                      className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10"
+                      placeholder="Confirm new password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('confirm')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                    >
+                      {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleChangePassword}
+                  className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-lg font-medium hover:from-red-600 hover:to-pink-600 transition-all duration-200 flex items-center gap-2"
+                >
+                  <Lock className="w-4 h-4" />
+                  Change Password
+                </button>
+              </div>
+                </div>
+              </div>
+        );
+
+      case 'notifications':
+        return (
+          <div className="space-y-6">
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+              <h3 className="text-lg font-semibold text-white mb-4">Notification Preferences</h3>
+              <div className="space-y-4">
+                {/* Push Notification Permission UI */}
+                <div className="mb-6">
+                  <h4 className="text-white font-medium mb-3">Push Notification Permission</h4>
+                  <PushNotificationManager />
+                </div>
+                
+                {/* Notification toggles */}
+                {Object.entries(notifications).map(([key, value]) => (
+                  <div key={key} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                    <div>
+                      <h4 className="text-white font-medium capitalize">
+                        {key === 'inApp' ? 'In-App Notifications' :
+                         key === 'email' ? 'Email Notifications' : 
+                         key === 'push' ? 'Push Notifications' :
+                         key === 'marketing' ? 'Marketing Emails' :
+                         key === 'security' ? 'Security Alerts' :
+                         key === 'rewards' ? 'Reward Notifications' : key}
+                      </h4>
+                      <p className="text-sm text-gray-400">
+                        {key === 'inApp' ? 'Show notifications inside the app (toast and bell icon)' :
+                         key === 'email' ? 'Receive notifications via email' :
+                         key === 'push' ? 'Receive push notifications on your device' :
+                         key === 'marketing' ? 'Receive promotional emails and offers' :
+                         key === 'security' ? 'Get notified about security events' :
+                         key === 'rewards' ? 'Get notified about new rewards and bonuses' : ''}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleNotificationChange(key as keyof typeof notifications)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                        value ? 'bg-green-500' : 'bg-gray-700'
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          value ? 'translate-x-6' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'appearance':
+        return (
+          <div className="space-y-6">
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+              <h3 className="text-lg font-semibold text-white mb-4">Theme Settings</h3>
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                    <button
+                      onClick={() => handleThemeChange('light')}
+                  className={`flex items-center justify-center gap-2 p-4 rounded-lg border transition-all duration-200 ${
+                        theme === 'light'
+                      ? 'bg-white/20 border-white/40 shadow-lg'
+                          : 'bg-white/5 border-white/10 hover:bg-white/10'
+                      }`}
+                    >
+                  <Sun className="w-5 h-5" />
+                  <span className="text-sm font-medium">Light</span>
+                    </button>
+                    <button
+                      onClick={() => handleThemeChange('dark')}
+                  className={`flex items-center justify-center gap-2 p-4 rounded-lg border transition-all duration-200 ${
+                        theme === 'dark'
+                      ? 'bg-white/20 border-white/40 shadow-lg'
+                          : 'bg-white/5 border-white/10 hover:bg-white/10'
+                      }`}
+                    >
+                  <Moon className="w-5 h-5" />
+                  <span className="text-sm font-medium">Dark</span>
+                    </button>
+                    <button
+                      onClick={() => handleThemeChange('system')}
+                  className={`flex items-center justify-center gap-2 p-4 rounded-lg border transition-all duration-200 ${
+                        theme === 'system'
+                      ? 'bg-white/20 border-white/40 shadow-lg'
+                          : 'bg-white/5 border-white/10 hover:bg-white/10'
+                      }`}
+                    >
+                  <Monitor className="w-5 h-5" />
+                  <span className="text-sm font-medium">System</span>
+                    </button>
+                </div>
+
+              <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                    <div>
+                  <h4 className="text-white font-medium">Sound Effects</h4>
+                  <p className="text-sm text-gray-400">Enable sound effects for interactions</p>
+                    </div>
+                    <button
+                      onClick={handleToggleSound}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                        soundEnabled ? 'bg-green-500' : 'bg-gray-700'
+                      }`}
+                    >
+                      {soundEnabled ? (
+                        <Volume2 className="absolute left-1 w-4 h-4 text-white" />
+                      ) : (
+                        <VolumeX className="absolute left-1 w-4 h-4 text-white" />
+                      )}
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          soundEnabled ? 'translate-x-6' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
+            </div>
+          </div>
+        );
+
+      case 'account':
+        return (
+          <div className="space-y-6">
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+              <h3 className="text-lg font-semibold text-white mb-4">Account Information</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between py-3 border-b border-white/10">
+                  <span className="text-gray-300">Current Plan</span>
+                  {getPlanBadge()}
+                </div>
+
+                {subscriptionEnd && (
+                  <div className="flex items-center justify-between py-3 border-b border-white/10">
+                    <span className="text-gray-300">Subscription Ends</span>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-gray-400" />
+                      <span className="text-white font-medium">{subscriptionEnd}</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between py-3">
+                  <span className="text-gray-300">Language</span>
+                  <select
+                    value={language}
+                    onChange={handleLanguageChange}
+                    className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="en">🇺🇸 English</option>
+                    <option value="ar">🇸🇦 العربية</option>
+                    <option value="zh">🇨🇳 中文</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {!(plan === "first" || plan === "first-lifetime" || plan === "first_lifetime") && (
+              <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-6 border border-yellow-500/30">
+                <div className="flex items-center gap-3 mb-3">
+                  <Crown className="w-6 h-6 text-yellow-400" />
+                  <h3 className="text-lg font-semibold text-white">Upgrade Your Plan</h3>
+                </div>
+                <p className="text-gray-300 mb-4">
+                  Unlock premium features and exclusive benefits with our First Class membership.
+                </p>
+                <button
+                  onClick={() => navigate("/membership")}
+                  className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-6 py-3 rounded-lg font-medium hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 flex items-center gap-2"
+                >
+                  <Crown className="w-4 h-4" />
+                  Upgrade Now
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                    </div>
             )}
           </div>
-        )}
+        );
 
-        <div className="mb-4">
-          <label className="block mb-1">{t("settingsSection.fullName")}</label>
-          <input
-            type="text"
-            value={fullName}
-            onChange={e => setFullName(e.target.value)}
-            className="w-full bg-gray-800 text-white border border-gray-600 rounded px-3 py-2"
-          />
-        </div>
+      default:
+        return null;
+    }
+  };
 
-        <div>
-          <label className="block mb-1">{t("settingsSection.email")}</label>
-          <input
-            type="email"
-            value={email}
-            disabled
-            className="w-full bg-gray-800 text-gray-400 border border-gray-600 rounded px-3 py-2 cursor-not-allowed"
-          />
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Header */}
+      <div className="bg-white/10 backdrop-blur-sm border-b border-white/20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="py-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center shadow-lg">
+                <SettingsIcon className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-white">Settings</h1>
+                <p className="text-gray-300">Manage your account preferences</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* Account Status */}
-      <section className="mb-10">
-        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">{t("settingsSection.accountTitle")}</h2>
-        <p className="mb-2">
-          {t("settingsSection.currentPlan")} <span className="font-semibold text-yellow-400">{plan}</span>
-        </p>
-        {subscriptionEnd && (
-          <p className="mb-4">
-            {t("settingsSection.subscriptionEnds")} <span>{subscriptionEnd}</span>
-          </p>
-        )}
-        {!(plan === "first" || plan === "first-lifetime" || plan === "first_lifetime") && (
-          <button
-            onClick={() => navigate("/membership")}
-            className="bg-yellow-400 text-black px-4 py-2 rounded"
-          >
-            {t("settingsSection.upgrade")}
-          </button>
-        )}
-      </section>
+      {/* Content */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-4">
+              <nav className="space-y-2">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                        activeTab === tab.id
+                          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                          : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                      <span className="font-medium">{tab.label}</span>
+                      <ChevronRight className={`w-4 h-4 ml-auto transition-transform ${
+                        activeTab === tab.id ? 'rotate-90' : ''
+                      }`} />
+                    </button>
+                  );
+                })}
+              </nav>
+                  </div>
+                </div>
 
-      {/* Password Change */}
-      <section className="mb-10">
-        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">{t("settingsSection.passwordTitle")}</h2>
-        <div className="mb-4">
-          <label className="block mb-1">{t("settingsSection.currentPassword")}</label>
-          <input
-            type="password"
-            value={currentPassword}
-            onChange={e => setCurrentPassword(e.target.value)}
-            className="w-full bg-gray-800 text-white border border-gray-600 rounded px-3 py-2"
-          />
+          {/* Main Content */}
+          <div className="lg:col-span-3">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {renderTabContent()}
+            </motion.div>
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block mb-1">{t("settingsSection.newPassword")}</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={e => setNewPassword(e.target.value)}
-            className="w-full bg-gray-800 text-white border border-gray-600 rounded px-3 py-2"
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block mb-1">{t("settingsSection.confirmPassword")}</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
-            className="w-full bg-gray-800 text-white border border-gray-600 rounded px-3 py-2"
-          />
-        </div>
-        <button
-          onClick={handleChangePassword}
-          className="bg-yellow-400 text-black px-4 py-2 rounded"
-        >
-          {t("settingsSection.changePassword")}
-        </button>
-      </section>
-
-      {/* Language Selection */}
-      <section>
-        <h2 className="text-yellow-400 text-2xl mb-4 font-bold">{t("settingsSection.languageTitle")}</h2>
-        <select
-          value={language}
-          onChange={handleLanguageChange}
-          className="bg-gray-800 text-white px-4 py-2 rounded"
-        >
-          <option value="en">English</option>
-          <option value="ar">العربية</option>
-          <option value="zh">🇨🇳 中文</option>
-        </select>
-      </section>
+      </div>
     </div>
   );
 };
