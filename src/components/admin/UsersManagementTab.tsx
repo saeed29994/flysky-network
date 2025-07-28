@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import {
-  FaUsers, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes, FaEye, FaDownload,
-  FaCrown, FaStar, FaGem, FaCoins, FaUserCheck, FaUserTimes, FaFilter,
-  FaSort, FaBan, FaUnlock, FaKey, FaChartLine, FaWallet, FaHistory
+  FaUsers, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes,
+  FaCrown, FaStar, FaGem, FaCoins, FaUserCheck,
+  FaBan, FaUnlock, FaWallet
 } from 'react-icons/fa';
 
 interface User {
@@ -25,7 +25,7 @@ interface User {
 }
 
 const UsersManagementTab = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');

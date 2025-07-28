@@ -7,11 +7,6 @@ import {
   doc,
   getDoc,
   updateDoc,
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  limit
 } from "firebase/firestore";
 import {
   EmailAuthProvider,
@@ -26,7 +21,6 @@ import {
   Settings as SettingsIcon, 
   User, 
   Lock, 
-  Globe, 
   Camera, 
   Crown, 
   Calendar, 
@@ -34,8 +28,6 @@ import {
   Upload,
   Eye,
   EyeOff,
-  CheckCircle,
-  AlertCircle,
   Bell,
   Palette,
   Shield,
@@ -44,9 +36,6 @@ import {
   Monitor,
   Volume2,
   VolumeX,
-  LogOut,
-  Mail,
-  Zap,
   ChevronRight,
   Edit3,
   Save,
@@ -55,7 +44,7 @@ import {
 import PushNotificationManager from '../components/PushNotificationManager';
 
 const Settings = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [fullName, setFullName] = useState("");

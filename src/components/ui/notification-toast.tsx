@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { X, Bell, Info, Gift, Clock, AlertCircle } from 'lucide-react';
+import { X, Bell, Info, Gift, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Notification, NotificationType } from '../../utils/notificationSystem';
 import { useTranslation } from 'react-i18next';

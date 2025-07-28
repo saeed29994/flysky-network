@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Home, Wallet, User, Mail, LogOut, Menu, X, Phone, Settings,
-  Gem, Rocket, Share2, Gamepad2, Video, Coins, Info, Shield
+  Gem, Share2, Gamepad2, Video, Coins, Info,
 } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
@@ -37,6 +37,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
+  console.log(userEmail,kycStatus, subscriptionEnd)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {

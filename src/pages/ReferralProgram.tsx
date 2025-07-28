@@ -5,7 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { Copy, Download, Gift, Users, Share2, Trophy, TrendingUp, CheckCircle, Clock, XCircle } from 'lucide-react';
 import QRCode from 'react-qr-code';
 import { toPng } from 'html-to-image';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import ReferralBonusButton from '../components/ReferralBonusButton';
 
@@ -16,7 +16,7 @@ interface Referral {
 }
 
 const ReferralProgram = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [referralLink, setReferralLink] = useState('');
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [copied, setCopied] = useState(false);

@@ -3,13 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useUserPlan } from '../contexts/UserPlanContext';
 import { Link } from 'react-router-dom';
 import { requestPermissionAndToken } from '../utils/pushNotification';
-import { auth, db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { auth } from '../firebase';
 import { useTranslation } from 'react-i18next';
 import {
   FaGem, FaRocket, FaShareAlt, FaGamepad, FaInfoCircle, FaCoins,
   FaVideo, FaWallet, FaEnvelope, FaCogs, FaIdCard, FaPhoneAlt,
-  FaChartLine, FaUsers, FaTrophy, FaShieldAlt, FaArrowRight
+  FaChartLine, FaUsers, FaTrophy, FaArrowRight
 } from 'react-icons/fa';
 import logo from '../assets/fsn-logo.png';
 

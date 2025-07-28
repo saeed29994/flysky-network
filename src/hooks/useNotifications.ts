@@ -7,7 +7,6 @@ import {
   limit, 
   onSnapshot,
   Timestamp,
-  where,
   doc,
   getDoc
 } from 'firebase/firestore';

@@ -7,22 +7,17 @@ import {
   Info, 
   Target, 
   Eye, 
-  Star, 
   Shield, 
   Users, 
   Zap, 
   Gamepad2, 
   Coins, 
-  TrendingUp,
-  FileText,
   CheckCircle,
   ArrowRight,
-  Globe,
   Award,
   Heart,
   Play,
   Gift,
-  Crown
 } from 'lucide-react';
 
 const AboutUs: React.FC = () => {

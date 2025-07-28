@@ -2,13 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { collection, getDocs, doc, updateDoc, addDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, addDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import {
-  FaCrown, FaStar, FaGem, FaCoins, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes,
-  FaUsers, FaChartLine, FaDollarSign, FaCalendarAlt, FaShieldAlt, FaRocket,
-  FaGift, FaPercent, FaInfinity, FaClock, FaLock, FaUnlock, FaSpinner, FaEye
+  FaCrown, FaStar, FaGem, FaCoins, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes, FaLock, FaUnlock, FaSpinner, FaEye
 } from 'react-icons/fa';
 
 interface MembershipPlan {
@@ -34,7 +31,6 @@ interface MembershipPlan {
 }
 
 const MembershipsTab = () => {
-  const { t } = useTranslation();
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -194,9 +190,6 @@ const MembershipsTab = () => {
   // Fallback to mock data if plans array is empty
   const displayPlans = plans.length > 0 ? plans : getDefaultPlans();
 
-  const totalRevenue = displayPlans.reduce((sum, plan) => sum + plan.revenue, 0);
-  const totalUsers = displayPlans.reduce((sum, plan) => sum + plan.userCount, 0);
-  const activePlans = displayPlans.filter(plan => plan.isActive).length;
 
   const handleCreatePlan = async () => {
     if (!newPlan.name || !newPlan.displayName || newPlan.price === undefined) {
@@ -282,21 +275,6 @@ const MembershipsTab = () => {
     }
   };
 
-  const addFeature = (planId: string, feature: string) => {
-    setPlans(prev => prev.map(plan => 
-      plan.id === planId 
-        ? { ...plan, features: [...plan.features, feature] }
-        : plan
-    ));
-  };
-
-  const removeFeature = (planId: string, featureIndex: number) => {
-    setPlans(prev => prev.map(plan => 
-      plan.id === planId 
-        ? { ...plan, features: plan.features.filter((_, index) => index !== featureIndex) }
-        : plan
-    ));
-  };
 
   if (loading) {
     return (

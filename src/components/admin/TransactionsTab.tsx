@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import {
-  FaCreditCard, FaSearch, FaEye, FaCheck, FaTimes, FaSpinner,
+  FaCreditCard, FaSearch, FaEye, FaCheck, FaTimes,
   FaCalendarAlt, FaUser, FaCoins, FaArrowUp, FaArrowDown, FaGift, FaLock
 } from 'react-icons/fa';
 
@@ -21,7 +21,7 @@ interface Transaction {
 }
 
 const TransactionsTab = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);

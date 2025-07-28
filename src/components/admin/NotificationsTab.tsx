@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import {
-  FaBell, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes, FaEye, FaDownload,
-  FaFilter, FaSort, FaClock, FaCalendar, FaUser, FaGlobe, FaMobile,
-  FaDesktop, FaEnvelope, FaPaperPlane, FaHistory, FaChartLine,
+  FaBell, FaSearch, FaEdit, FaTrash, FaTimes, FaEye,
+  FaClock, FaUser, FaGlobe, FaMobile,
+  FaDesktop, FaEnvelope, FaPaperPlane, FaChartLine,
   FaExclamationTriangle, FaInfoCircle, FaCheckCircle, FaTimesCircle, FaCrown, FaUsers
 } from 'react-icons/fa';
 
@@ -30,7 +30,7 @@ interface Notification {
 }
 
 const NotificationsTab = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,8 +40,6 @@ const NotificationsTab = () => {
   const [sortBy, setSortBy] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState('desc');
   const [selectedNotifications, setSelectedNotifications] = useState<string[]>([]);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [editingNotification, setEditingNotification] = useState<Notification | null>(null);
   const [showSendModal, setShowSendModal] = useState(false);
   const [sendTitle, setSendTitle] = useState('');
   const [sendBody, setSendBody] = useState('');
@@ -160,16 +158,6 @@ const NotificationsTab = () => {
       case 'error': return 'bg-red-500/20 border-red-500/30';
       case 'info': return 'bg-blue-500/20 border-blue-500/30';
       default: return 'bg-gray-500/20 border-gray-500/30';
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'sent': return 'text-green-400';
-      case 'scheduled': return 'text-blue-400';
-      case 'draft': return 'text-yellow-400';
-      case 'failed': return 'text-red-400';
-      default: return 'text-gray-400';
     }
   };
 

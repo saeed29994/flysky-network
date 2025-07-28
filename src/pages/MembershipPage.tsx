@@ -6,19 +6,10 @@ import { getSubscriptionPlans, getPlanBonus, getPlanPrice, getPlanFeatures } fro
 import { motion } from 'framer-motion';
 import { 
   Crown, 
-  Star, 
   CheckCircle, 
-  CreditCard, 
-  Shield, 
-  Zap, 
-  Users,
-  ArrowRight,
   Calendar,
-  Award,
   ShoppingCart,
   Gift,
-  DollarSign,
-  Sparkles
 } from 'lucide-react';
 
 const MembershipPage = () => {

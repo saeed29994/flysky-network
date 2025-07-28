@@ -1,4 +1,4 @@
-import { db, auth } from '../firebase';
+import { db } from '../firebase';
 import { 
   collection, 
   addDoc, 
@@ -6,11 +6,8 @@ import {
   deleteDoc, 
   query, 
   where, 
-  orderBy, 
-  limit, 
   doc, 
   getDocs,
-  onSnapshot,
   writeBatch,
   serverTimestamp,
   Timestamp,

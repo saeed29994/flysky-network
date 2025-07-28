@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import {
-  FaGift, FaSearch, FaEye, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes, FaSpinner,
-  FaCalendarAlt, FaUser, FaCoins, FaStar, FaTrophy, FaMedal, FaCrown, FaGem
+  FaGift, FaSearch, FaEye, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes, FaUser, FaCoins, FaStar, FaTrophy, FaMedal, FaCrown, FaGem
 } from 'react-icons/fa';
 
 interface Reward {
@@ -26,14 +25,13 @@ interface Reward {
 }
 
 const RewardsTab = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [editingReward, setEditingReward] = useState<Reward | null>(null);
 
   // Placeholder data
   const rewards: Reward[] = [
@@ -356,7 +354,10 @@ const RewardsTab = () => {
                 View
               </button>
               <button
-                onClick={() => setEditingReward(reward)}
+                onClick={() => {
+                  setSelectedReward(reward);
+                  setShowDetailsModal(true);
+                }}
                 className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
               >
                 <FaEdit className="w-3 h-3" />

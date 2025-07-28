@@ -6,7 +6,7 @@ import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import toast, { Toaster } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Eye, Clock, Coins, Play, CheckCircle, X, AlertCircle, Video, Monitor, Smartphone } from 'lucide-react';
+import { Eye, Clock, Coins, Play, CheckCircle, X, AlertCircle, Video} from 'lucide-react';
 
 const REQUIRED_ADS = 5;
 const REWARD_FOR_ALL = 200;
@@ -22,6 +22,7 @@ const WatchToEarn = () => {
   const [adStarted, setAdStarted] = useState(false);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
 
+  console.log(currentAdIndex,"")
   useEffect(() => {
     const fetchUserData = async () => {
       const user = auth.currentUser;

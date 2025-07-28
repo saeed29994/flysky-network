@@ -4,14 +4,6 @@ import headerLogo from '../../assets/landing/header-logo.png';
 import { SOCIAL_LINKS, FOOTER_LINKS } from '../../constants/landing';
 import { handleExternalLink, scrollToTop, scrollToContact } from '../../utils/landingUtils';
 
-// Types
-interface SocialLink {
-  name: string;
-  href: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  ariaLabel: string;
-}
-
 interface FooterLink {
   name: string;
   href: string;

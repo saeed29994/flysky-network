@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import {
-  FaImage, FaSearch, FaEye, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes, FaSpinner,
+  FaImage, FaSearch, FaEye, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes,
   FaBullhorn, FaNewspaper, FaVideo, FaLink, FaCalendarAlt, FaEye as FaVisibility
 } from 'react-icons/fa';
 
@@ -23,7 +22,6 @@ interface Content {
 }
 
 const ContentTab = () => {
-  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');

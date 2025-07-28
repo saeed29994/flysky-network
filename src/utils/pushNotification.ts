@@ -74,12 +74,7 @@ export const deleteCurrentToken = async (uid: string) => {
       await deleteToken(messaging);
       
       // Remove from Firestore if user is logged in
-      if (uid) {
-        // Update the array in user document
-        const userRef = doc(db, 'users', uid);
-        // We'll need to get the current tokens and filter
-        // This would require a more complex update not shown here
-        
+      if (uid) {        
         // Remove from userTokens collection
         await setDoc(doc(db, 'userTokens', uid), { 
           token: null,

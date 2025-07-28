@@ -5,13 +5,13 @@ import { auth, db } from '../firebase';
 import { doc, getDoc, collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import {
-  User, Crown, Shield, Calendar, Camera, CheckCircle, Clock, AlertCircle,
-  Star, Zap, Gift, ArrowRight, Settings, Coins, TrendingUp, Users, 
-  Wallet, Gem, Share2, Award, Activity, ChartBar, History, Layers,
-  Hexagon, Target, Sparkles, Flame, Rocket, Trophy, Lock, Edit3,
-  Mail, Globe, MapPin, Phone, Briefcase, Heart, Shield as ShieldIcon,
-  Award as AwardIcon, Calendar as CalendarIcon, Clock as ClockIcon,
-  Camera as CameraIcon, Edit, MoreHorizontal, Plus, Minus, Eye
+  User, Crown, Camera, CheckCircle, Clock, AlertCircle,
+  Star, Zap, Settings, Coins, Users, 
+  Wallet, Gem, Share2, Activity, ChartBar, Layers,
+  Hexagon, Trophy, Lock,
+  Mail, Shield as ShieldIcon,
+  Calendar as CalendarIcon, 
+  Edit
 } from 'lucide-react';
 
 interface UserStats {

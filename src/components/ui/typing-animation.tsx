@@ -13,10 +13,9 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
 }) => {
     const [displayedText, setDisplayedText] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isTyping, setIsTyping] = useState(true);
 
     useEffect(() => {
-        if (currentIndex < text.length && isTyping) {
+        if (currentIndex < text.length) {
             const timeout = setTimeout(() => {
                 setDisplayedText(prev => prev + text[currentIndex]);
                 setCurrentIndex(prev => prev + 1);
@@ -32,7 +31,7 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
 
             return () => clearTimeout(timeout);
         }
-    }, [currentIndex, text, speed, isTyping]);
+    }, [currentIndex, text, speed]);
 
     return (
         <span className={className}>

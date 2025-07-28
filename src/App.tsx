@@ -1,10 +1,20 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import * as Sentry from "@sentry/react";
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
 import { ToastContainer } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { Capacitor } from '@capacitor/core';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { SplashScreen } from '@capacitor/splash-screen';
+
+// Services
+import { 
+  initFirebase, 
+  auth, 
+  registerForPushNotifications, 
+  requestPushPermissionAndToken 
+} from './services/capacitorFirebase';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -28,7 +38,6 @@ import WatchToEarn from './pages/WatchToEarn';
 import Settings from './pages/Settings';
 import Contact from './pages/Contact';
 import AboutUs from './pages/AboutUs';
-// Remove TestNotification import
 import DashboardLayout from './pages/DashboardLayout';
 import TermsPage from './pages/TermsPage';
 import PrintToken from './pages/PrintToken';
@@ -43,8 +52,8 @@ import { NotificationProvider } from './components/NotificationProvider';
 // Context
 import { UserPlanProvider } from './contexts/UserPlanContext';
 
-// Utils
-import { requestPermissionAndToken, listenToForegroundMessages } from './utils/pushNotification';
+// Utils - Use selectively for web only
+import { listenToForegroundMessages } from './utils/pushNotification';
 
 // styles
 import 'react-toastify/dist/ReactToastify.css';
@@ -60,7 +69,6 @@ const publicRoutes = [
   { path: '/membership-page', element: <MembershipPage /> },
   { path: '/inbox-debug', element: <Inbox_Debug /> },
   { path: '/about', element: <AboutUs /> },
-  // Remove test-notification route
   { path: '/terms', element: <TermsPage /> },
   { path: '/upload-banner', element: <UploadBanner /> },
   { path: '/print-token', element: <PrintToken /> },
@@ -121,15 +129,42 @@ function AppContent() {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
   }, [i18n.language]);
   
-  // Register service worker early - independent of auth state
+  // Initialize Capacitor plugins
   useEffect(() => {
-    // Register service worker for push notifications
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/firebase-messaging-sw.js')
-        .then(() => console.log('✅ Service Worker registered successfully'))
-        .catch((err) => console.error('❌ Service Worker registration failed', err));
-    }
+    const initApp = async () => {
+      try {
+        // Initialize Firebase for web or native platforms
+        await initFirebase();
+        
+        if (Capacitor.isNativePlatform()) {
+          // Hide the splash screen with a fade effect
+          await SplashScreen.hide({ fadeOutDuration: 500 });
+          
+          // Set status bar style
+          if (Capacitor.getPlatform() === 'android') {
+            StatusBar.setBackgroundColor({ color: '#FFFFFF' });
+          }
+          StatusBar.setStyle({ style: Capacitor.getPlatform() === 'ios' ? Style.Dark : Style.Light });
+          
+          // Register for push notifications on native platforms
+          await registerForPushNotifications();
+          
+          console.log(`✅ App initialized on ${Capacitor.getPlatform()}`);
+        } else {
+          // Register service worker for web push notifications
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker
+              .register('/firebase-messaging-sw.js')
+              .then(() => console.log('✅ Service Worker registered successfully'))
+              .catch((err) => console.error('❌ Service Worker registration failed', err));
+          }
+        }
+      } catch (error) {
+        console.error('❌ Error initializing app:', error);
+      }
+    };
+    
+    initApp();
   }, []);
 
   // Handle auth state and FCM token
@@ -142,16 +177,22 @@ function AppContent() {
           email: user.email || undefined,
         });
 
-        // Now handle FCM permission and token
-        await requestPermissionAndToken(user.uid);
-        listenToForegroundMessages();
-        
-        // Inform service worker about authenticated user
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-          navigator.serviceWorker.controller.postMessage({
-            type: 'AUTH_USER',
-            userId: user.uid
-          });
+        // Get FCM token based on platform
+        if (Capacitor.isNativePlatform()) {
+          await requestPushPermissionAndToken(user.uid);
+        } else {
+          // Use web implementation for push notifications
+          const { requestPermissionAndToken } = await import('./utils/pushNotification');
+          await requestPermissionAndToken(user.uid);
+          listenToForegroundMessages();
+          
+          // Inform service worker about authenticated user (web only)
+          if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              type: 'AUTH_USER',
+              userId: user.uid
+            });
+          }
         }
       } else {
         // Clear Sentry user when logged out

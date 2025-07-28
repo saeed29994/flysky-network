@@ -6,7 +6,7 @@ import { useUserPlan } from '../contexts/UserPlanContext';
 
 const ReferralCard = () => {
   const { t } = useTranslation();
-  const { userData, referrals, referralReward } = useUserPlan();
+  const { userData, referralReward } = useUserPlan();
   const [verifiedCount, setVerifiedCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
   const [referralLink, setReferralLink] = useState('');
@@ -32,13 +32,6 @@ const ReferralCard = () => {
     navigator.clipboard.writeText(referralLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const getRewardPerReferral = () => {
-    if (verifiedCount < 10) return 100;
-    if (verifiedCount < 20) return 200;
-    if (verifiedCount < 30) return 300;
-    return 0;
   };
 
   return (

@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { Gamepad2, Clock, Star } from 'lucide-react';
 import playImage from '../assets/play_to_earn.jpg';
 import playImageMobile from '../assets/play_mobile.jpg';
 
 const PlayToEarn = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   return (
     <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">

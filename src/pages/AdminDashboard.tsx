@@ -11,11 +11,11 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import {
   FaUsers, FaIdCard, FaCreditCard, FaChartLine, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes,
-  FaCrown, FaStar, FaGem, FaCoins, FaShieldAlt, FaUserCheck, FaUserTimes, FaEye, FaDownload,
-  FaBars, FaTimes as FaClose, FaGift, FaImage, FaChartBar
+  FaCrown, FaStar, FaGem, FaCoins, FaUserCheck, FaEye, FaDownload,
+  FaGift, FaImage, FaChartBar
 } from 'react-icons/fa';
 
 // Import admin components
@@ -52,7 +52,7 @@ interface ManualPayment {
 }
 
 const AdminDashboard = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [tabs] = useState([
     { name: 'Dashboard', icon: FaChartLine },
     { name: 'Users Management', icon: FaUsers },

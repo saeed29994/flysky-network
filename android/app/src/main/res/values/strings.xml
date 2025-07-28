@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Flysky Network</string>
+    <string name="title_activity_main">Flysky Network</string>
+    <string name="package_name">io.fsncrew.app</string>
+    <string name="custom_url_scheme">io.fsncrew.app</string>
+</resources>

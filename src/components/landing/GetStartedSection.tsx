@@ -1,11 +1,10 @@
-import { useButtonActions, buttonConfigs } from '@/utils/buttonActions';
-import { Button } from '../ui/button';
+import { useButtonActions } from '@/utils/buttonActions';
 import getStartedImage from '@/assets/landing/get-started-2.svg';
 import { Apple, Play } from 'lucide-react';
 import Ellipse from '../ui/ellipse';
 
 const GetStartedSection = () => {
-  const { navigateToSignup, navigateToLogin } = useButtonActions();
+  const { navigateToSignup } = useButtonActions();
 
   return (
     <section className="py-16 px-4 relative">

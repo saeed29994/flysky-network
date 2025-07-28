@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Wallet as WalletIcon, Coins, Lock, Gift, TrendingUp, Clock, ArrowUpRight, ArrowDownRight } from 'lucide-react';
@@ -259,7 +259,7 @@ const Wallet = () => {
                           label={({ value }) => value > 0 ? `${value.toLocaleString()}` : ''}
                           labelLine={false}
             >
-                          {chartData.map((entry, index) => (
+                          {chartData.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
               ))}
             </Pie>

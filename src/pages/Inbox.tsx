@@ -22,10 +22,6 @@ import {
   Clock, 
   CheckCircle, 
   XCircle, 
-  Eye,
-  EyeOff,
-  Star,
-  StarOff,
   ArrowLeft,
   ArrowRight
 } from 'lucide-react';
