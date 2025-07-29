@@ -3,19 +3,34 @@ import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import MiningCard from '../components/MiningCard';
 import { useTranslation } from 'react-i18next';
-import { useUserPlan } from '../contexts/UserPlanContext';
+import { PlanType } from '../types/plans';
+
+interface UserMiningData {
+  balance: number;
+  miningEarnings: number;
+  membership?: {
+    planName: string;
+    subscriptionEnd: number;
+  };
+  lastMiningTime?: Date;
+  dailyMined?: number;
+}
+
 
 const MiningPage = () => {
   const { t } = useTranslation();
-  const { currentPlan, loading: planLoading } = useUserPlan();
-
-  const [balance, setBalance] = useState(0);
+  const [userData, setUserData] = useState<UserMiningData>({
+    balance: 0,
+    miningEarnings: 0
+  });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       const user = auth.currentUser;
       if (!user) {
+        setError('User not authenticated');
         setLoading(false);
         return;
       }
@@ -23,13 +38,23 @@ const MiningPage = () => {
       try {
         const userRef = doc(db, 'users', user.uid);
         const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const data = userSnap.data();
-          const currentBalance = data?.balance || 0;
-          setBalance(currentBalance);
+        if (!userSnap.exists()) {
+          setError('User data not found');
+          setLoading(false);
+          return;
         }
+
+        const data = userSnap.data() as UserMiningData;
+        setUserData({
+          balance: data.balance ?? 0,
+          miningEarnings: data.miningEarnings ?? 0,
+          membership: data.membership,
+          lastMiningTime: data.lastMiningTime,
+          dailyMined: data.dailyMined
+        });
       } catch (error) {
-        console.error('Error fetching user balance:', error);
+        console.error('Error fetching user data:', error);
+        setError('Failed to fetch mining data');
       } finally {
         setLoading(false);
       }
@@ -40,26 +65,50 @@ const MiningPage = () => {
 
   const handleClaim = async (amount: number) => {
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user) {
+      setError('User not authenticated');
+      return;
+    }
 
     try {
       const userRef = doc(db, 'users', user.uid);
-      const newBalance = balance + amount;
+      const newBalance = userData.balance + amount;
+      const newMiningEarnings = userData.miningEarnings + amount;
 
-      await updateDoc(userRef, {
+      const updateData = {
         balance: newBalance,
-        lastMiningTime: serverTimestamp() // Update lastMiningTime to current time
-      });
+        lastMiningTime: serverTimestamp(),
+        dailyMined: 0,
+        miningEarnings: newMiningEarnings
+      };
 
-      setBalance(newBalance);
-      console.log(`Claimed: ${amount} FSN. New Balance: ${newBalance} FSN`);
+      await updateDoc(userRef, updateData);
+
+      setUserData(prev => ({
+        ...prev,
+        balance: newBalance,
+        miningEarnings: newMiningEarnings,
+        dailyMined: 0,
+        lastMiningTime: new Date()
+      }));
+
     } catch (error) {
       console.error('Error claiming mining rewards:', error);
+      setError('Failed to claim mining rewards');
     }
   };
 
-  // Show loading while plan is being fetched
-  if (planLoading || loading) {
+  const getActivePlan = (): PlanType => {
+    if (
+      userData.membership?.planName
+    ) {
+      return userData.membership.planName as PlanType;
+    }
+    
+    return ('economy') as PlanType;
+  };
+
+  if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-white text-center">
@@ -70,15 +119,24 @@ const MiningPage = () => {
     );
   }
 
-  // Ensure we have a valid plan, fallback to economy if needed
-  const userPlan = currentPlan || 'economy';
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-center p-4 bg-red-500/20 rounded-lg">
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const activePlan = getActivePlan();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <MiningCard 
-        plan={userPlan as 'economy' | 'business' | 'first' | 'first-6' | 'first-lifetime'} 
+        plan={activePlan as PlanType}
         onClaim={handleClaim} 
-        balance={balance} 
+        balance={userData.balance} 
       />
     </div>
   );

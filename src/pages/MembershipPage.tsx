@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserPlan } from '../contexts/UserPlanContext';
 import SubscribeModal from '../components/SubscribeModal';
-import { getSubscriptionPlans, getPlanBonus, getPlanPrice, getPlanFeatures } from '../utils/planConstants';
+import { getPlanBonus, getPlanPrice, getPlanFeatures } from '../utils/planConstants';
 import { motion } from 'framer-motion';
 import { 
   Crown, 
@@ -11,16 +11,126 @@ import {
   ShoppingCart,
   Gift,
 } from 'lucide-react';
+import { auth, db } from '../firebase';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+
+interface Plan {
+  id: string;
+  price?: number;
+  bonus?: number;
+  features?: string[];
+}
 
 const MembershipPage = () => {
   const { t } = useTranslation();
   const { currentPlan, subscriptionEnd } = useUserPlan();
   const [modalPlan, setModalPlan] = useState<null | { id: string; price: string }>(null);
+  const [loading, setLoading] = useState(true);
+  const [membershipData, setMembershipData] = useState<any>(null);
+  const [plans, setPlans] = useState<Plan[]>([]);
   const now = Math.floor(Date.now() / 1000);
-  const isExpired = subscriptionEnd ? subscriptionEnd < now : true;
+  
+  // Fetch membership data directly from Firestore
+  useEffect(() => {
+    const fetchMembershipData = async () => {
+      setLoading(true);
+      const user = auth.currentUser;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
 
-  // Get subscription plans from centralized configuration
-  const plans = getSubscriptionPlans();
+      try {
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          if (userData.membership) {
+            setMembershipData(userData.membership);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching membership data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMembershipData();
+  }, []);
+
+  // Fetch plans from Firestore
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const plansCollection = collection(db, 'plans');
+        const plansSnapshot = await getDocs(plansCollection);
+        const plansData = plansSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Plan[];
+        
+        if (plansData.length > 0) {
+          setPlans(plansData);
+        }
+      } catch (error) {
+        console.error('Error fetching plans:', error);
+      }
+    };
+
+    fetchPlans();
+  }, []);
+
+
+  // Get user-friendly plan name
+  const getPlanDisplayName = (planId: string | null) => {
+    if (!planId || planId === 'economy') return t('membershipPage.notSubscribed');
+    
+    // Handle plan name formatting
+    if (planId === 'first-lifetime') return t('planNames.first-lifetime');
+    if (planId === 'first-6') return t('planNames.first-6');
+    if (planId === 'first') return t('planNames.first-lifetime'); // Legacy handling
+    if (planId === 'business') return t('planNames.business');
+    
+    return planId;
+  };
+
+  // Get actual plan from Firestore data first, then fall back to context
+  const getActualPlan = () => {
+    // First check Firestore data
+    if (membershipData && membershipData.planName && membershipData.subscriptionEnd && membershipData.subscriptionEnd > now) {
+      return membershipData.planName;
+    }
+    
+    // Fall back to context data
+    return currentPlan;
+  };
+
+  const actualPlan = getActualPlan();
+  const displayPlanName = getPlanDisplayName(actualPlan);
+  
+  // Get actual subscription end date
+  const getActualSubscriptionEnd = () => {
+    if (membershipData && membershipData.subscriptionEnd) {
+      return membershipData.subscriptionEnd;
+    }
+    return subscriptionEnd;
+  };
+  
+  const actualSubscriptionEnd = getActualSubscriptionEnd();
+  const actualIsExpired = actualSubscriptionEnd ? actualSubscriptionEnd < now : true;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p>{t('loading.membershipData')}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
@@ -73,18 +183,18 @@ const MembershipPage = () => {
                 <span className="text-gray-300">{t('membershipPage.currentPlan')}:</span>
               </div>
               <span className="text-xl font-bold text-white capitalize">
-                {currentPlan || t('membershipPage.notSubscribed')}
+                {displayPlanName}
               </span>
             </div>
             
-            {subscriptionEnd && (
+            {actualSubscriptionEnd && (
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                 <div className="flex items-center gap-3">
                   <Calendar className="w-5 h-5 text-gray-400" />
                   <span className="text-gray-300">Status:</span>
                 </div>
-                <span className={`font-semibold ${isExpired ? 'text-red-400' : 'text-green-400'}`}>
-                  {isExpired ? 'Expired' : 'Active'} - {new Date(subscriptionEnd * 1000).toLocaleDateString()}
+                <span className={`font-semibold ${actualIsExpired ? 'text-red-400' : 'text-green-400'}`}>
+                  {actualIsExpired ? 'Expired' : 'Active'} - {new Date(actualSubscriptionEnd * 1000).toLocaleDateString()}
                 </span>
               </div>
             )}
@@ -105,10 +215,12 @@ const MembershipPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {plans.map((plan, index) => {
-              const isActive = plan.id === currentPlan && !isExpired;
-              const bonus = getPlanBonus(plan.id);
-              const price = getPlanPrice(plan.id);
-              const features = getPlanFeatures(plan.id);
+              // Handle legacy 'first' plan mapping to 'first-lifetime'
+              const normalizedCurrentPlan = actualPlan === 'first' ? 'first-lifetime' : actualPlan;
+              const isActive = plan.id === normalizedCurrentPlan && !actualIsExpired;
+              const bonus = plan.bonus || getPlanBonus(plan.id);
+              const price = plan.price || getPlanPrice(plan.id);
+              const features = plan.features || getPlanFeatures(plan.id);
               
               const getPlanGradient = () => {
                 if (plan.id === 'business') return 'from-green-500 to-emerald-500';
@@ -154,7 +266,7 @@ const MembershipPage = () => {
                     </div>
 
                     <div className="space-y-4 mb-8">
-                      {features.map((feature, i) => (
+                      {features.map((feature: string, i: number) => (
                         <div key={i} className="flex items-center gap-4">
                           <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
                           <span className="text-gray-300">{t(`feature.${feature}`)}</span>
@@ -173,7 +285,7 @@ const MembershipPage = () => {
                         onClick={() => setModalPlan({ id: plan.id, price: String(price) })}
                       >
                         <ShoppingCart className="w-6 h-6" />
-                        {plan.id === currentPlan && isExpired ? t('membershipPage.renew') : 'Subscribe Now'}
+                        {plan.id === normalizedCurrentPlan && actualIsExpired ? t('membershipPage.renew') : 'Subscribe Now'}
                       </button>
                     )}
                   </div>

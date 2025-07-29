@@ -23,6 +23,7 @@ const ReferralProgram = () => {
   const [loading, setLoading] = useState(true);
   const [uid, setUid] = useState('');
   const [verifiedCount, setVerifiedCount] = useState(0);
+  const [unclaimedVerifiedCount, setUnclaimedVerifiedCount] = useState(0);
   const [verifiedEmails, setVerifiedEmails] = useState<string[]>([]);
   const [pendingCount, setPendingCount] = useState(0);
   const [rejectedCount, setRejectedCount] = useState(0);
@@ -55,10 +56,12 @@ const ReferralProgram = () => {
 
         // Calculate counts
         const verifiedList = referralList.filter((r: any) => r.status === 'Verified');
+        const unclaimedVerifiedList = verifiedList.filter((r: any) => !r.claimed);
         const pendingList = referralList.filter((r: any) => r.status === 'Pending');
         const rejectedList = referralList.filter((r: any) => r.status === 'Rejected');
         
         setVerifiedCount(verifiedList.length);
+        setUnclaimedVerifiedCount(unclaimedVerifiedList.length);
         setPendingCount(pendingList.length);
         setRejectedCount(rejectedList.length);
         setVerifiedEmails(verifiedList.map((r: any) => r.email));
@@ -211,7 +214,7 @@ const ReferralProgram = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-3xl lg:text-5xl font-bold text-white mb-4 tracking-tight"
+                className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 tracking-tight"
               >
                 👥 Referral Program
               </motion.h1>
@@ -219,7 +222,7 @@ const ReferralProgram = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-gray-300 text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
+                className="text-gray-300 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
               >
                 Invite friends and earn rewards together. Share your referral link and start earning FSN tokens!
               </motion.p>
@@ -249,23 +252,23 @@ const ReferralProgram = () => {
                     <Users className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white">Referral Overview</h3>
-                    <p className="text-xs text-gray-400">Your referral performance</p>
+                    <h3 className="text-xs sm:text-sm font-bold text-white">Referral Overview</h3>
+                    <p className="text-[10px] sm:text-xs text-gray-400">Your referral performance</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-3 gap-3">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-white">{referrals.length}</div>
-                    <div className="text-xs text-blue-400 font-medium">Total</div>
+                    <div className="text-base sm:text-lg font-bold text-white">{referrals.length}</div>
+                    <div className="text-[10px] sm:text-xs text-blue-400 font-medium">Total</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-green-400">{verifiedCount}</div>
-                    <div className="text-xs text-green-400 font-medium">Verified</div>
+                    <div className="text-base sm:text-lg font-bold text-green-400">{verifiedCount}</div>
+                    <div className="text-[10px] sm:text-xs text-green-400 font-medium">Verified</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-yellow-400">{pendingCount}</div>
-                    <div className="text-xs text-yellow-400 font-medium">Pending</div>
+                    <div className="text-base sm:text-lg font-bold text-yellow-400">{pendingCount}</div>
+                    <div className="text-[10px] sm:text-xs text-yellow-400 font-medium">Pending</div>
                   </div>
                 </div>
               </div>
@@ -278,16 +281,16 @@ const ReferralProgram = () => {
                     <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                       <Users className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <h3 className="text-sm font-bold text-white">Total Referrals</h3>
-                      <p className="text-xs text-gray-400">All time</p>
+                                          <div>
+                        <h3 className="text-xs sm:text-sm font-bold text-white">Total Referrals</h3>
+                        <p className="text-[10px] sm:text-xs text-gray-400">All time</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-white">
-                      {referrals.length}
-                    </div>
-                    <div className="text-xs text-blue-400 font-semibold">Referrals</div>
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-white">
+                        {referrals.length}
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-blue-400 font-semibold">Referrals</div>
                   </div>
                 </div>
 
@@ -297,15 +300,17 @@ const ReferralProgram = () => {
                     <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
                       <CheckCircle className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <h3 className="text-sm font-bold text-white">Verified</h3>
-                      <p className="text-xs text-gray-400">Confirmed</p>
+                                          <div>
+                        <h3 className="text-xs sm:text-sm font-bold text-white">Verified</h3>
+                        <p className="text-[10px] sm:text-xs text-gray-400">Confirmed</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-white">{verifiedCount}</div>
-                    <div className="text-xs text-green-400 font-semibold">Ready to Claim</div>
-                  </div>
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-white">{verifiedCount}</div>
+                      <div className="text-[10px] sm:text-xs text-green-400 font-semibold">
+                        {unclaimedVerifiedCount > 0 ? 'Ready to Claim' : 'Verified'}
+                      </div>
+                    </div>
                 </div>
 
                 {/* Pending Referrals Card */}
@@ -314,14 +319,14 @@ const ReferralProgram = () => {
                     <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
                       <Clock className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <h3 className="text-sm font-bold text-white">Pending</h3>
-                      <p className="text-xs text-gray-400">Awaiting</p>
+                                          <div>
+                        <h3 className="text-xs sm:text-sm font-bold text-white">Pending</h3>
+                        <p className="text-[10px] sm:text-xs text-gray-400">Awaiting</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-white">{pendingCount}</div>
-                    <div className="text-xs text-yellow-400 font-semibold">In Review</div>
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-white">{pendingCount}</div>
+                      <div className="text-[10px] sm:text-xs text-yellow-400 font-semibold">In Review</div>
                   </div>
                 </div>
               </div>
@@ -339,25 +344,27 @@ const ReferralProgram = () => {
                   <Share2 className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white">Your Referral Link</h2>
-                  <p className="text-gray-400">Share this link with friends to earn rewards</p>
+                  <h2 className="text-lg sm:text-xl font-bold text-white">Your Referral Link</h2>
+                  <p className="text-xs sm:text-sm text-gray-400">Share this link with friends to earn rewards</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {/* Link Input */}
-                <div className="flex items-center gap-3">
-                  <input
-                    type="text"
-                    readOnly
-                    value={referralLink}
-                    className="flex-1 bg-white/5 px-4 py-3 rounded-xl border border-white/10 text-white focus:outline-none focus:border-green-500 transition-all duration-300"
-                  />
+                <div className="flex items-center gap-1 sm:gap-3 w-full overflow-hidden">
+                  <div className="flex-1 min-w-0 overflow-hidden">
+                    <input
+                      type="text"
+                      readOnly
+                      value={referralLink}
+                      className="w-full bg-white/5 px-2 sm:px-4 py-2 sm:py-3 rounded-xl border border-white/10 text-white text-sm sm:text-base focus:outline-none focus:border-green-500 transition-all duration-300 overflow-ellipsis overflow-hidden"
+                    />
+                  </div>
                   <button
                     onClick={handleCopy}
-                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-4 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="flex-shrink-0 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-2 sm:px-4 py-2 sm:py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
-                    <Copy className="w-5 h-5" />
+                    <Copy className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
                 
@@ -402,8 +409,8 @@ const ReferralProgram = () => {
                   <Gift className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">Referral Bonus</h3>
-                  <p className="text-gray-400">Claim your available bonuses</p>
+                  <h3 className="text-base sm:text-lg font-bold text-white">Referral Bonus</h3>
+                  <p className="text-xs sm:text-sm text-gray-400">Claim your available bonuses</p>
                 </div>
               </div>
               <ReferralBonusButton />
@@ -422,8 +429,8 @@ const ReferralProgram = () => {
                     <TrendingUp className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Your Referrals</h3>
-                    <p className="text-gray-400">Track your referral progress</p>
+                    <h3 className="text-base sm:text-lg font-bold text-white">Your Referrals</h3>
+                    <p className="text-xs sm:text-sm text-gray-400">Track your referral progress</p>
                   </div>
                 </div>
               </div>
@@ -432,41 +439,41 @@ const ReferralProgram = () => {
                 <table className="w-full">
                   <thead className="bg-white/5">
                     <tr>
-                      <th className="p-4 text-left text-sm font-semibold text-gray-300">Email</th>
-                      <th className="p-4 text-left text-sm font-semibold text-gray-300">Status</th>
-                      <th className="p-4 text-left text-sm font-semibold text-gray-300">Action</th>
+                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">Email</th>
+                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">Status</th>
+                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {referrals.length === 0 ? (
                       <tr>
-                        <td className="p-6 text-center text-gray-500" colSpan={3}>
+                        <td className="p-4 sm:p-6 text-center text-gray-500" colSpan={3}>
                           <div className="flex flex-col items-center gap-2">
-                            <Users className="w-8 h-8 text-gray-600" />
-                            <p>No referrals yet</p>
-                            <p className="text-sm">Share your referral link to get started!</p>
+                            <Users className="w-6 h-6 sm:w-8 sm:h-8 text-gray-600" />
+                            <p className="text-sm sm:text-base">No referrals yet</p>
+                            <p className="text-xs sm:text-sm">Share your referral link to get started!</p>
                           </div>
                         </td>
                       </tr>
                     ) : (
                       referrals.map((ref, idx) => (
                         <tr key={idx} className="border-t border-white/5 hover:bg-white/5 transition-colors">
-                          <td className="p-4 text-white font-medium">{ref.email}</td>
-                          <td className="p-4">
-                            <div className="flex items-center gap-2">
+                          <td className="p-2 sm:p-4 text-white font-medium text-xs sm:text-sm">{ref.email}</td>
+                          <td className="p-2 sm:p-4">
+                            <div className="flex items-center gap-1 sm:gap-2">
                               {getStatusIcon(ref.status)}
-                              <span className={`${getStatusColor(ref.status)} font-medium`}>
+                              <span className={`${getStatusColor(ref.status)} font-medium text-xs sm:text-sm`}>
                                 {ref.status}
                               </span>
                             </div>
                           </td>
-                          <td className="p-4">
+                          <td className="p-2 sm:p-4">
                             {ref.status === 'Verified' && !ref.claimed ? (
                               <button
                                 onClick={() => handleClaim(ref.email)}
-                                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black px-4 py-2 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2"
+                                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black px-2 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-1 sm:gap-2"
                               >
-                                <Gift className="w-4 h-4" />
+                                <Gift className="w-3 h-3 sm:w-4 sm:h-4" />
                                 Claim
                               </button>
                             ) : ref.claimed ? (
@@ -502,8 +509,8 @@ const ReferralProgram = () => {
                     <Trophy className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Bonus Tiers</h3>
-                    <p className="text-sm text-gray-400">Reward structure</p>
+                    <h3 className="text-base sm:text-lg font-bold text-white">Bonus Tiers</h3>
+                    <p className="text-xs sm:text-sm text-gray-400">Reward structure</p>
                   </div>
                 </div>
 
@@ -541,8 +548,8 @@ const ReferralProgram = () => {
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Referral Summary</h3>
-                    <p className="text-sm text-gray-400">Performance overview</p>
+                    <h3 className="text-base sm:text-lg font-bold text-white">Referral Summary</h3>
+                    <p className="text-xs sm:text-sm text-gray-400">Performance overview</p>
                   </div>
                 </div>
 

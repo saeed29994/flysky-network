@@ -51,6 +51,7 @@ import { NotificationProvider } from './components/NotificationProvider';
 
 // Context
 import { UserPlanProvider } from './contexts/UserPlanContext';
+import { PlansProvider } from './contexts/PlansContext';
 
 // Utils - Use selectively for web only
 import { listenToForegroundMessages } from './utils/pushNotification';
@@ -210,10 +211,12 @@ function AppContent() {
 
 function App() {
   return (
-    <UserPlanProvider>
-      <RouterProvider router={router} />
-      <AppContent />
-    </UserPlanProvider>
+    <PlansProvider>
+      <UserPlanProvider>
+        <RouterProvider router={router} />
+        <AppContent />
+      </UserPlanProvider>
+    </PlansProvider>
   );
 }
 

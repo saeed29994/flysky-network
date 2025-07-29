@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useUserPlan } from '../contexts/UserPlanContext';
 import { Link } from 'react-router-dom';
 import { requestPermissionAndToken } from '../utils/pushNotification';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { useTranslation } from 'react-i18next';
 import {
   FaGem, FaRocket, FaShareAlt, FaGamepad, FaInfoCircle, FaCoins,
@@ -11,32 +11,33 @@ import {
   FaChartLine, FaUsers, FaTrophy, FaArrowRight
 } from 'react-icons/fa';
 import logo from '../assets/fsn-logo.png';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
-  const { 
-    loading: contextLoading,
-    balance, 
-    referrals, 
-    referralReward,
-    stakingEarnings,
-    totalEarnings,
-    currentPlan,
-    lockedInStaking
-  } = useUserPlan();
-  const [showContactForm, setShowContactForm] = useState(false);
+  const { currentPlan } = useUserPlan();
   
-  // User data states that are not in context yet
-  const [userStats, setUserStats] = useState({
-    miningLevel: 'Bronze',
-    security: '100%',
-    miningEarnings: 0
-  });
+  const [showContactForm, setShowContactForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [balance, setBalance] = useState(0);
+  const [lockedInStaking, setLockedInStaking] = useState(0);
+  const [referralRewards, setReferralRewards] = useState(0);
+  const [referralsCount, setReferralsCount] = useState(0);
+  
+  // Calculate total balance (same formula as Wallet page)
+  const totalBalance = balance + lockedInStaking + referralRewards;
+  
+  // Get mining level based on plan
+  const getMiningLevel = () => {
+    const plan = currentPlan || 'economy';
+    if (plan === 'first-lifetime' || plan === 'first') return 'Diamond';
+    if (plan === 'first-6') return 'Platinum';
+    if (plan === 'business') return 'Gold';
+    return 'Bronze';
+  };
 
-  // Calculate total available balance (same formula as Wallet page)
-  const totalBalance = balance + lockedInStaking + referralReward;
+  const miningLevel = getMiningLevel();
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -45,9 +46,10 @@ const Dashboard = () => {
     }
   }, []);
 
-  // Fetch only the data not available in context
+  // Fetch wallet data directly from Firestore (similar to Wallet.tsx)
   useEffect(() => {
-    const fetchRemainingData = async () => {
+    const fetchDashboardData = async () => {
+      setLoading(true);
       const user = auth.currentUser;
       if (!user) {
         setLoading(false);
@@ -55,30 +57,36 @@ const Dashboard = () => {
       }
 
       try {
-        // Determine mining level based on plan
-        const plan = currentPlan || 'economy';
-        const miningLevel = 
-          plan === 'first-lifetime' ? 'Diamond' :
-          plan === 'first-6' ? 'Platinum' :
-          plan === 'business' ? 'Gold' :
-          'Bronze';
+        // Fetch user data
+        const userRef = doc(db, 'users', user.uid);
+        const snap = await getDoc(userRef);
 
-        setUserStats({
-          miningLevel,
-          security: '100%',
-          miningEarnings: totalEarnings - stakingEarnings - referralReward
-        });
+        if (snap.exists()) {
+          const data = snap.data();
+          setBalance(data.balance || 0);
+          setReferralRewards(data.referralReward || 0);
+          
+          // Get referrals count
+          const referralList = data.referralList || [];
+          setReferralsCount(referralList.length);
+        }
+
+        // Fetch staking data (same as in Wallet.tsx)
+        const stakingSnap = await getDocs(collection(db, 'users', user.uid, 'staking'));
+        const stakingList = stakingSnap.docs.map(doc => doc.data());
+        const lockedSum = stakingList
+          .filter((s: any) => s.status === 'active')
+          .reduce((sum, s: any) => sum + (s.amount || 0), 0);
+        setLockedInStaking(lockedSum);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Error fetching dashboard data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (!contextLoading) {
-      fetchRemainingData();
-    }
-  }, [contextLoading, currentPlan, totalEarnings, stakingEarnings, referralReward]);
+    fetchDashboardData();
+  }, []);
 
   const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -174,7 +182,7 @@ const Dashboard = () => {
     }
   ];
 
-  if (loading || contextLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center">
@@ -211,11 +219,12 @@ const Dashboard = () => {
 
         {/* Stats Overview - Mobile Optimized Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-8 sm:mb-12">
+          {/* Total Balance Card (replacing Total Earnings) */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
-                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Total Earnings</p>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{totalEarnings.toLocaleString()} FSN</p>
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Total Balance</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{totalBalance.toLocaleString()} FSN</p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
                 <FaChartLine className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
@@ -223,11 +232,12 @@ const Dashboard = () => {
             </div>
           </div>
 
+          {/* Available Balance Card */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
-                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Total Balance</p>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{totalBalance.toLocaleString()} FSN</p>
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Available Balance</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{balance.toLocaleString()} FSN</p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
                 <FaWallet className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
@@ -239,7 +249,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
                 <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Referrals</p>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{referrals}</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{referralsCount}</p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
                 <FaUsers className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
@@ -251,7 +261,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
                 <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Mining Level</p>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{userStats.miningLevel}</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{miningLevel}</p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
                 <FaTrophy className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />

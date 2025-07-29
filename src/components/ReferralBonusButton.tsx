@@ -9,6 +9,7 @@ const ReferralBonusButton = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [bonusReady, setBonusReady] = useState(false);
+  const [verifiedReferrals, setVerifiedReferrals] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchBonusStatus = async () => {
@@ -22,7 +23,20 @@ const ReferralBonusButton = () => {
 
         if (userSnap.exists()) {
           const data = userSnap.data();
-          setBonusReady(data.referralBonusReady === true);
+          
+          // Check both the referralBonusReady flag and the referral list
+          const directBonusFlag = data.referralBonusReady === true;
+          
+          // Check for unclaimed verified referrals
+          const referralList = data.referralList || [];
+          const verified = referralList.filter((ref: any) => 
+            ref.status === 'Verified' && !ref.claimed
+          );
+          
+          setVerifiedReferrals(verified);
+          
+          // Set bonus ready if either direct flag is true or there are unclaimed verified referrals
+          setBonusReady(directBonusFlag || verified.length > 0);
         }
       } catch (error) {
         console.error("Error fetching referral bonus status:", error);
@@ -40,14 +54,47 @@ const ReferralBonusButton = () => {
       if (!user) return;
 
       const userRef = doc(db, "users", user.uid);
-
+      const userSnap = await getDoc(userRef);
+      
+      if (!userSnap.exists()) return;
+      
+      const userData = userSnap.data();
+      const referralList = userData.referralList || [];
+      const currentBalance = userData.balance || 0;
+      
+      // Find unclaimed verified referrals
+      const unclaimedIndex = referralList.findIndex((ref: any) => 
+        ref.status === 'Verified' && !ref.claimed
+      );
+      
+      if (unclaimedIndex === -1) {
+        toast.error(t("referralBonus.noBonusAvailable"));
+        return;
+      }
+      
+      // Calculate bonus amount based on tier
+      const verifiedCount = referralList.filter((r: any) => r.status === 'Verified' && r.claimed).length;
+      let bonusAmount = 0;
+      if (verifiedCount < 10) bonusAmount = 100;
+      else if (verifiedCount < 20) bonusAmount = 200;
+      else bonusAmount = 300;
+      
+      // Update the specific referral as claimed
+      referralList[unclaimedIndex].claimed = true;
+      
       await updateDoc(userRef, {
-        balance: 1000, // adjust or add logic
-        referralBonusReady: false,
+        referralList,
+        balance: currentBalance + bonusAmount,
+        referralBonusReady: verifiedReferrals.length > 1 // Keep flag true if there are more to claim
       });
 
       toast.success(t("referralBonus.claimedSuccess"));
-      setBonusReady(false);
+      
+      // Update local state
+      if (verifiedReferrals.length <= 1) {
+        setBonusReady(false);
+      }
+      setVerifiedReferrals(prev => prev.filter((_, i) => i !== 0));
     } catch (error) {
       console.error("Error claiming referral bonus:", error);
       toast.error(t("referralBonus.claimedError"));
@@ -61,7 +108,7 @@ const ReferralBonusButton = () => {
       onClick={handleClaimBonus}
       className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
     >
-      🎁 {t("referralBonus.claimButton")}
+      🎁 {t("referralBonus.claimButton")} ({verifiedReferrals.length})
     </button>
   ) : (
     <p>{t("referralBonus.noBonus")}</p>
