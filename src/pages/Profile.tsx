@@ -80,7 +80,7 @@ const Profile = () => {
     fullName: '',
     email: '',
     plan: 'economy',
-    kycStatus: 'Not Actived' as 'Not Actived' | 'Pending' | 'Approved',
+    kycStatus: 'Not activated' as 'Not activated' | 'Not Actived' | 'Pending' | 'Approved' | 'Verified',
     subscriptionEnd: '',
     avatarUrl: '',
     createdAt: '',
@@ -207,7 +207,9 @@ const Profile = () => {
             fullName: data.fullName || '',
             email: data.email || '',
             plan: plan,
-            kycStatus: data.kycStatus || 'Not Actived',
+            kycStatus: data.kycStatus === 'Verified' ? 'Verified' : 
+                      data.kycStatus === 'Pending' ? 'Pending' : 
+                      data.kycStatus === 'Approved' ? 'Approved' : 'Not activated',
             subscriptionEnd: data.membership?.subscriptionEnd ? new Date(data.membership.subscriptionEnd).toLocaleDateString() : '',
             avatarUrl: data.avatarUrl || '',
             createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : '',
@@ -275,7 +277,7 @@ const Profile = () => {
   };
 
   const getKYCStatus = () => {
-    if (userData.kycStatus === 'Approved') {
+    if (userData.kycStatus === 'Verified' || userData.kycStatus === 'Approved') {
       return (
         <div className="flex items-center gap-2">
           <CheckCircle className="w-4 h-4 text-green-400" />
@@ -295,6 +297,7 @@ const Profile = () => {
         </div>
       );
     }
+    // Default is 'Not activated' or any other status
     return (
       <button
         onClick={() => navigate('/kyc')}
@@ -356,7 +359,7 @@ const Profile = () => {
                   <ShieldIcon className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
                     <p className="text-white font-medium text-sm sm:text-base">Verification Status</p>
-                    <p className="text-gray-400 text-xs sm:text-sm">{userData.kycStatus}</p>
+                    {getKYCStatus()}
                   </div>
                 </div>
 

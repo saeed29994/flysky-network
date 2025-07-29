@@ -29,7 +29,7 @@ const KycVerificationTab = () => {
         const pendingList: any[] = [];
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
-          if (data.kycStatus === 'pending') {
+          if (data.kycStatus === 'pending' || data.kycStatus === 'Pending') {
             pendingList.push({ id: docSnap.id, ...data });
           }
         });
@@ -47,7 +47,7 @@ const KycVerificationTab = () => {
   const handleKycAction = async (userId: string, action: 'approve' | 'reject') => {
     try {
       const userRef = doc(db, 'users', userId);
-      await updateDoc(userRef, { kycStatus: action === 'approve' ? 'approved' : 'rejected' });
+      await updateDoc(userRef, { kycStatus: action === 'approve' ? 'Verified' : 'Not activated' });
       setKycRequests((prev) => prev.filter((user) => user.id !== userId));
       setShowModal(false);
       setSelectedUser(null);
