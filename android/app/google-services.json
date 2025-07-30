@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "3676998780",
+    "project_id": "flysky-site",
+    "storage_bucket": "flysky-site.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3676998780:android:6d18cd417d4512bb550df9",
+        "android_client_info": {
+          "package_name": "io.fsncrew.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3676998780-bqji2eb54j6vu3mgp1898akih6gv44p7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAZVhYRgRjt_dtKS_QmuDKoyn--efnna8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3676998780-bqji2eb54j6vu3mgp1898akih6gv44p7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

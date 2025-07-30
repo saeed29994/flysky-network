@@ -13,10 +13,22 @@ const config: CapacitorConfig = {
     },
     StatusBar: {
       style: "dark",
-      backgroundColor: "#FFFFFF"
+      backgroundColor: "#FFFFFF",
+      overlaysWebView: false,
+      show: true
     },
     FirebaseMessaging: {
       presentationOptions: ["badge", "sound", "alert"],
+      // Add Android-specific FCM configuration
+      android: {
+        defaultChannelId: "default",
+        defaultChannelName: "Default Channel",
+        defaultChannelDescription: "Default notification channel",
+        defaultChannelImportance: 4,
+        defaultChannelSound: "default",
+        defaultChannelVibrationPattern: [0, 250, 250, 250],
+        defaultChannelLightColor: "#FF231F7C",
+      }
     },
   },
   android: {

@@ -8,6 +8,9 @@ import { Capacitor } from '@capacitor/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
 
+// Import notification polyfill for Android compatibility
+import './utils/notificationPolyfill';
+
 // Services
 import { 
   initFirebase, 
@@ -141,11 +144,14 @@ function AppContent() {
           // Hide the splash screen with a fade effect
           await SplashScreen.hide({ fadeOutDuration: 500 });
           
-          // Set status bar style
+          // Set status bar style for better Android compatibility
           if (Capacitor.getPlatform() === 'android') {
-            StatusBar.setBackgroundColor({ color: '#FFFFFF' });
+            StatusBar.setBackgroundColor({ color: '#00000000' }); // Transparent
+            StatusBar.setStyle({ style: Style.Light });
+            StatusBar.setOverlaysWebView({ overlay: false });
+          } else if (Capacitor.getPlatform() === 'ios') {
+            StatusBar.setStyle({ style: Style.Dark });
           }
-          StatusBar.setStyle({ style: Capacitor.getPlatform() === 'ios' ? Style.Dark : Style.Light });
           
           // Register for push notifications on native platforms
           await registerForPushNotifications();
