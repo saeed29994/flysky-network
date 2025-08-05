@@ -25,7 +25,28 @@ export const notifyMiningComplete = functions.https.onCall(async (data, context)
     throw new functions.https.HttpsError("not-found", "User not found.");
   }
 
-  const fcmTokens: string[] = user.fcmTokens || [];
+  // Get FCM tokens from multiple sources for better compatibility
+  let fcmTokens: string[] = [];
+  
+  // First, try to get tokens from user document
+  if (user.fcmTokens && Array.isArray(user.fcmTokens)) {
+    fcmTokens = [...user.fcmTokens];
+    console.log(`Found ${fcmTokens.length} tokens in user document for user ${uid}`);
+  }
+  
+  // If no tokens found in user document, try userTokens collection
+  if (fcmTokens.length === 0) {
+    try {
+      const tokenDoc = await db.collection("userTokens").doc(uid).get();
+      if (tokenDoc.exists && tokenDoc.data()?.token) {
+        fcmTokens = [tokenDoc.data()!.token];
+        console.log(`Found token in userTokens collection for user ${uid}`);
+      }
+    } catch (error) {
+      console.warn(`Error checking userTokens collection for user ${uid}:`, error);
+    }
+  }
+
   const lang: string = user.language || "en";
 
   const defaultTitle = "⛏️ Mining Complete!";
@@ -38,11 +59,13 @@ export const notifyMiningComplete = functions.https.onCall(async (data, context)
     lang === "en" ? defaultBody : await translateText(defaultBody, lang);
 
   const messaging = admin.messaging();
+  let successCount = 0;
+  let errorCount = 0;
 
   // ✅ إرسال إشعار FCM لكل توكن
   for (const token of fcmTokens) {
-    await messaging
-      .send({
+    try {
+      await messaging.send({
         token,
         notification: {
           title: translatedTitle,
@@ -53,11 +76,38 @@ export const notifyMiningComplete = functions.https.onCall(async (data, context)
             link: "https://fsncrew.io/dashboard",
           },
         },
-      })
-      .catch((err) => {
-        console.error("🔥 FCM send error", token, err.message);
       });
+      successCount++;
+      console.log(`✅ FCM notification sent successfully to token for user ${uid}`);
+    } catch (err: any) {
+      errorCount++;
+      console.error(`❌ Failed to send FCM notification to token for user ${uid}:`, err);
+      
+      // Remove invalid tokens
+      if (err.code === 'messaging/registration-token-not-registered') {
+        try {
+          // Remove from user document if it exists there
+          if (user.fcmTokens && Array.isArray(user.fcmTokens)) {
+            await db.collection("users").doc(uid).update({
+              fcmTokens: admin.firestore.FieldValue.arrayRemove(token)
+            });
+            console.log(`🗑️ Removed invalid token from user document for user ${uid}`);
+          }
+          
+          // Remove from userTokens collection if it exists there
+          const tokenDoc = await db.collection("userTokens").doc(uid).get();
+          if (tokenDoc.exists && tokenDoc.data()?.token === token) {
+            await db.collection("userTokens").doc(uid).delete();
+            console.log(`🗑️ Removed invalid token from userTokens collection for user ${uid}`);
+          }
+        } catch (cleanupError) {
+          console.error(`❌ Error cleaning up invalid token for user ${uid}:`, cleanupError);
+        }
+      }
+    }
   }
+
+  console.log(`✅ Mining notification processing complete for user ${uid}: ${successCount} successful, ${errorCount} failed`);
 
   // ✅ إضافة رسالة إلى صندوق البريد الداخلي
   await db.collection("inbox").add({

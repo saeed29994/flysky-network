@@ -63,7 +63,30 @@ exports.notifyReferralBonus = functions.firestore
             return;
         }
         const userData = userSnap.data();
-        const fcmTokens = userData.fcmTokens || [];
+        // Get FCM tokens from multiple sources for better compatibility
+        let fcmTokens = [];
+        // First, try to get tokens from user document
+        if (userData.fcmTokens && Array.isArray(userData.fcmTokens)) {
+            fcmTokens = [...userData.fcmTokens];
+            console.log(`Found ${fcmTokens.length} tokens in user document for user ${userId}`);
+        }
+        // If no tokens found in user document, try userTokens collection
+        if (fcmTokens.length === 0) {
+            try {
+                const tokenDoc = await db.collection("userTokens").doc(userId).get();
+                if (tokenDoc.exists && tokenDoc.data()?.token) {
+                    fcmTokens = [tokenDoc.data().token];
+                    console.log(`Found token in userTokens collection for user ${userId}`);
+                }
+            }
+            catch (error) {
+                console.warn(`Error checking userTokens collection for user ${userId}:`, error);
+            }
+        }
+        if (fcmTokens.length === 0) {
+            console.log(`No FCM tokens found for user ${userId}`);
+            // Still add to notifications and inbox even if no FCM tokens
+        }
         const lang = userData.language || "en";
         // Prepare notification content
         const defaultTitle = "🎉 Referral Bonus Ready!";
@@ -95,40 +118,64 @@ exports.notifyReferralBonus = functions.firestore
             type: "referral_bonus",
             amount: afterData.rewardAmount || 0
         });
-        // Send FCM notification
-        const messaging = admin.messaging();
-        // Send notification to each token
-        for (const token of fcmTokens) {
-            await messaging
-                .send({
-                token,
-                notification: {
-                    title: translatedTitle,
-                    body: translatedBody,
-                },
-                data: {
-                    type: "referral_bonus",
-                    referralId: context.params.referralId,
-                },
-                webpush: {
-                    fcmOptions: {
-                        link: "https://fsncrew.io/referral-program",
-                    },
-                },
-            })
-                .catch((err) => {
-                console.error("Failed to send FCM notification:", err);
-                // Remove invalid tokens
-                if (err.code === 'messaging/registration-token-not-registered') {
-                    userRef.update({
-                        fcmTokens: admin.firestore.FieldValue.arrayRemove(token)
+        // Send FCM notification if tokens are available
+        if (fcmTokens.length > 0) {
+            const messaging = admin.messaging();
+            let successCount = 0;
+            let errorCount = 0;
+            // Send notification to each token
+            for (const token of fcmTokens) {
+                try {
+                    await messaging.send({
+                        token,
+                        notification: {
+                            title: translatedTitle,
+                            body: translatedBody,
+                        },
+                        data: {
+                            type: "referral_bonus",
+                            referralId: context.params.referralId,
+                        },
+                        webpush: {
+                            fcmOptions: {
+                                link: "https://fsncrew.io/referral-program",
+                            },
+                        },
                     });
+                    successCount++;
+                    console.log(`✅ FCM notification sent successfully to token for user ${userId}`);
                 }
-            });
+                catch (err) {
+                    errorCount++;
+                    console.error(`❌ Failed to send FCM notification to token for user ${userId}:`, err);
+                    // Remove invalid tokens
+                    if (err.code === 'messaging/registration-token-not-registered') {
+                        try {
+                            // Remove from user document if it exists there
+                            if (userData.fcmTokens && Array.isArray(userData.fcmTokens)) {
+                                await db.collection("users").doc(userId).update({
+                                    fcmTokens: admin.firestore.FieldValue.arrayRemove(token)
+                                });
+                                console.log(`🗑️ Removed invalid token from user document for user ${userId}`);
+                            }
+                            // Remove from userTokens collection if it exists there
+                            const tokenDoc = await db.collection("userTokens").doc(userId).get();
+                            if (tokenDoc.exists && tokenDoc.data()?.token === token) {
+                                await db.collection("userTokens").doc(userId).delete();
+                                console.log(`🗑️ Removed invalid token from userTokens collection for user ${userId}`);
+                            }
+                        }
+                        catch (cleanupError) {
+                            console.error(`❌ Error cleaning up invalid token for user ${userId}:`, cleanupError);
+                        }
+                    }
+                }
+            }
+            console.log(`✅ Referral bonus notification processing complete for user ${userId}: ${successCount} successful, ${errorCount} failed`);
         }
         console.log(`✅ Referral bonus notification sent to user ${userId}`);
     }
     catch (error) {
-        console.error("Error sending referral bonus notification:", error);
+        console.error("❌ Error sending referral bonus notification:", error);
     }
 });

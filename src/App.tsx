@@ -51,6 +51,7 @@ import NotificationsPage from './pages/NotificationsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import { NotificationProvider } from './components/NotificationProvider';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
 
 // Context
 import { UserPlanProvider } from './contexts/UserPlanContext';
@@ -211,7 +212,10 @@ function AppContent() {
   }, []);
 
   return (
-    <ToastContainer position="top-center" autoClose={4000} />
+    <>
+      <ToastContainer position="top-center" autoClose={4000} />
+      <PWAInstallPrompt />
+    </>
   );
 }
 

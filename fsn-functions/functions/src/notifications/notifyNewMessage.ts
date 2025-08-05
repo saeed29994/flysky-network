@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { translateText } from "../utils/translateText";
+import { getFcmTokens, sendFcmNotifications, addUserNotification } from "../utils/fcmUtils";
 
 // Ensure Firebase is initialized
 if (!admin.apps.length) {
@@ -28,7 +29,14 @@ export const notifyNewMessage = functions.firestore
         return;
       }
       
-      const fcmTokens: string[] = userData.fcmTokens || [];
+      // Get FCM tokens using utility function
+      const fcmTokens = await getFcmTokens(userId, userData);
+      
+      if (fcmTokens.length === 0) {
+        console.log(`No FCM tokens found for user ${userId}`);
+        // Still add to notifications even if no FCM tokens
+      }
+      
       const lang: string = userData.language || "en";
       
       // Prepare notification content
@@ -41,29 +49,22 @@ export const notifyNewMessage = functions.firestore
       const translatedBody = 
         lang === "en" ? messageBody : await translateText(messageBody, lang);
 
-      // Add to user's notifications collection
-      await db.collection("users").doc(userId).collection("notifications").add({
+      // Add to user's notifications collection using utility function
+      await addUserNotification(userId, {
         type: "inbox_message",
         title: translatedTitle,
         body: translatedBody,
-        read: false,
-        timestamp: admin.firestore.FieldValue.serverTimestamp(),
-        link: "/inbox", // Link to inbox page
+        link: "/inbox",
         data: { messageId: snapshot.id }
       });
       
-      // Send FCM notification
-      const messaging = admin.messaging();
-      
-      // Send notification to each token
-      for (const token of fcmTokens) {
-        await messaging
-          .send({
-            token,
-            notification: {
-              title: translatedTitle,
-              body: translatedBody,
-            },
+      // Send FCM notification if tokens are available
+      if (fcmTokens.length > 0) {
+        const result = await sendFcmNotifications(
+          fcmTokens,
+          {
+            title: translatedTitle,
+            body: translatedBody,
             data: {
               type: "inbox_message",
               messageId: snapshot.id,
@@ -73,22 +74,16 @@ export const notifyNewMessage = functions.firestore
                 link: "https://fsncrew.io/inbox",
               },
             },
-          })
-          .catch((err) => {
-            console.error("Failed to send FCM notification:", err);
-            
-            // Remove invalid tokens
-            if (err.code === 'messaging/registration-token-not-registered') {
-              const userRef = db.collection("users").doc(userId);
-              userRef.update({
-                fcmTokens: admin.firestore.FieldValue.arrayRemove(token)
-              });
-            }
-          });
+          },
+          userId,
+          userData
+        );
+        
+        console.log(`✅ Notification processing complete for user ${userId}: ${result.successCount} successful, ${result.errorCount} failed`);
       }
       
-      console.log(`✅ Notification sent for new message to user ${userId}`);
+      console.log(`✅ New message notification processed for user ${userId}`);
     } catch (error) {
-      console.error("Error sending new message notification:", error);
+      console.error("❌ Error sending new message notification:", error);
     }
   }); 

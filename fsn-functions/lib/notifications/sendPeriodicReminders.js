@@ -43,6 +43,27 @@ if (!admin.apps.length) {
 }
 // Use admin.firestore() directly instead of getFirestore()
 const db = admin.firestore();
+// Helper function to get FCM tokens from multiple sources
+async function getFcmTokens(userId, userData) {
+    let fcmTokens = [];
+    // First, try to get tokens from user document
+    if (userData.fcmTokens && Array.isArray(userData.fcmTokens)) {
+        fcmTokens = [...userData.fcmTokens];
+    }
+    // If no tokens found in user document, try userTokens collection
+    if (fcmTokens.length === 0) {
+        try {
+            const tokenDoc = await db.collection("userTokens").doc(userId).get();
+            if (tokenDoc.exists && tokenDoc.data()?.token) {
+                fcmTokens = [tokenDoc.data().token];
+            }
+        }
+        catch (error) {
+            console.warn(`Error checking userTokens collection for user ${userId}:`, error);
+        }
+    }
+    return fcmTokens;
+}
 // Scheduled function to run once a day
 exports.sendDailyReminders = functions.pubsub
     .schedule('0 12 * * *') // Run at 12:00 PM every day
@@ -60,8 +81,9 @@ exports.sendDailyReminders = functions.pubsub
         for (const userDoc of usersSnap.docs) {
             const userData = userDoc.data();
             const userId = userDoc.id;
+            // Get FCM tokens from multiple sources
+            const fcmTokens = await getFcmTokens(userId, userData);
             // Skip users without FCM tokens
-            const fcmTokens = userData.fcmTokens || [];
             if (fcmTokens.length === 0) {
                 continue;
             }
@@ -71,7 +93,7 @@ exports.sendDailyReminders = functions.pubsub
             if (!userData.lastMiningTime ||
                 userData.lastMiningTime.toMillis() < oneDayAgo.getTime()) {
                 // User hasn't mined in over 24 hours, send reminder
-                await sendMiningReminder(userId, fcmTokens, lang);
+                await sendMiningReminder(userId, fcmTokens, lang, userData);
                 miningRemindersCount++;
             }
             // Check staking activity - optional based on plan
@@ -87,7 +109,7 @@ exports.sendDailyReminders = functions.pubsub
                     .get();
                 if (stakingQuery.empty) {
                     // No active staking found, send reminder
-                    await sendStakingReminder(userId, fcmTokens, lang);
+                    await sendStakingReminder(userId, fcmTokens, lang, userData);
                     stakingRemindersCount++;
                 }
             }
@@ -96,12 +118,12 @@ exports.sendDailyReminders = functions.pubsub
         return null;
     }
     catch (error) {
-        console.error('Error sending periodic reminders:', error);
+        console.error('❌ Error sending periodic reminders:', error);
         return null;
     }
 });
 // Helper function to send mining reminder
-async function sendMiningReminder(userId, fcmTokens, lang) {
+async function sendMiningReminder(userId, fcmTokens, lang, userData) {
     try {
         const defaultTitle = "⛏️ Daily Mining Reminder";
         const defaultBody = "Don't forget to mine today to earn your daily FSN rewards!";
@@ -117,41 +139,59 @@ async function sendMiningReminder(userId, fcmTokens, lang) {
         });
         // Send FCM notifications
         const messaging = admin.messaging();
+        let successCount = 0;
+        let errorCount = 0;
         for (const token of fcmTokens) {
-            await messaging
-                .send({
-                token,
-                notification: {
-                    title: translatedTitle,
-                    body: translatedBody,
-                },
-                data: {
-                    type: "mining_reminder"
-                },
-                webpush: {
-                    fcmOptions: {
-                        link: "https://fsncrew.io/mining",
+            try {
+                await messaging.send({
+                    token,
+                    notification: {
+                        title: translatedTitle,
+                        body: translatedBody,
                     },
-                },
-            })
-                .catch((err) => {
-                console.error("Failed to send mining reminder:", err);
+                    data: {
+                        type: "mining_reminder"
+                    },
+                    webpush: {
+                        fcmOptions: {
+                            link: "https://fsncrew.io/mining",
+                        },
+                    },
+                });
+                successCount++;
+            }
+            catch (err) {
+                errorCount++;
+                console.error(`❌ Failed to send mining reminder to token for user ${userId}:`, err);
                 // Remove invalid tokens
                 if (err.code === 'messaging/registration-token-not-registered') {
-                    const userRef = db.collection("users").doc(userId);
-                    userRef.update({
-                        fcmTokens: admin.firestore.FieldValue.arrayRemove(token)
-                    });
+                    try {
+                        // Remove from user document if it exists there
+                        if (userData.fcmTokens && Array.isArray(userData.fcmTokens)) {
+                            await db.collection("users").doc(userId).update({
+                                fcmTokens: admin.firestore.FieldValue.arrayRemove(token)
+                            });
+                        }
+                        // Remove from userTokens collection if it exists there
+                        const tokenDoc = await db.collection("userTokens").doc(userId).get();
+                        if (tokenDoc.exists && tokenDoc.data()?.token === token) {
+                            await db.collection("userTokens").doc(userId).delete();
+                        }
+                    }
+                    catch (cleanupError) {
+                        console.error(`❌ Error cleaning up invalid token for user ${userId}:`, cleanupError);
+                    }
                 }
-            });
+            }
         }
+        console.log(`✅ Mining reminder sent to user ${userId}: ${successCount} successful, ${errorCount} failed`);
     }
     catch (error) {
-        console.error("Error in sendMiningReminder:", error);
+        console.error("❌ Error in sendMiningReminder:", error);
     }
 }
 // Helper function to send staking reminder
-async function sendStakingReminder(userId, fcmTokens, lang) {
+async function sendStakingReminder(userId, fcmTokens, lang, userData) {
     try {
         const defaultTitle = "💰 Staking Opportunity";
         const defaultBody = "Boost your FSN rewards by staking your tokens today!";
@@ -167,36 +207,54 @@ async function sendStakingReminder(userId, fcmTokens, lang) {
         });
         // Send FCM notifications
         const messaging = admin.messaging();
+        let successCount = 0;
+        let errorCount = 0;
         for (const token of fcmTokens) {
-            await messaging
-                .send({
-                token,
-                notification: {
-                    title: translatedTitle,
-                    body: translatedBody,
-                },
-                data: {
-                    type: "staking_reminder"
-                },
-                webpush: {
-                    fcmOptions: {
-                        link: "https://fsncrew.io/staking",
+            try {
+                await messaging.send({
+                    token,
+                    notification: {
+                        title: translatedTitle,
+                        body: translatedBody,
                     },
-                },
-            })
-                .catch((err) => {
-                console.error("Failed to send staking reminder:", err);
+                    data: {
+                        type: "staking_reminder"
+                    },
+                    webpush: {
+                        fcmOptions: {
+                            link: "https://fsncrew.io/staking",
+                        },
+                    },
+                });
+                successCount++;
+            }
+            catch (err) {
+                errorCount++;
+                console.error(`❌ Failed to send staking reminder to token for user ${userId}:`, err);
                 // Remove invalid tokens
                 if (err.code === 'messaging/registration-token-not-registered') {
-                    const userRef = db.collection("users").doc(userId);
-                    userRef.update({
-                        fcmTokens: admin.firestore.FieldValue.arrayRemove(token)
-                    });
+                    try {
+                        // Remove from user document if it exists there
+                        if (userData.fcmTokens && Array.isArray(userData.fcmTokens)) {
+                            await db.collection("users").doc(userId).update({
+                                fcmTokens: admin.firestore.FieldValue.arrayRemove(token)
+                            });
+                        }
+                        // Remove from userTokens collection if it exists there
+                        const tokenDoc = await db.collection("userTokens").doc(userId).get();
+                        if (tokenDoc.exists && tokenDoc.data()?.token === token) {
+                            await db.collection("userTokens").doc(userId).delete();
+                        }
+                    }
+                    catch (cleanupError) {
+                        console.error(`❌ Error cleaning up invalid token for user ${userId}:`, cleanupError);
+                    }
                 }
-            });
+            }
         }
+        console.log(`✅ Staking reminder sent to user ${userId}: ${successCount} successful, ${errorCount} failed`);
     }
     catch (error) {
-        console.error("Error in sendStakingReminder:", error);
+        console.error("❌ Error in sendStakingReminder:", error);
     }
 }
