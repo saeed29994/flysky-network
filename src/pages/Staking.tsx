@@ -234,7 +234,7 @@ const StakingPage = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-gray-300 text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
               >
-                Secure your future with our advanced staking platform. Earn passive income with flexible terms and competitive returns.
+                {t('stakingPage.description')}
               </motion.p>
             </div>
           </div>
@@ -276,17 +276,17 @@ const StakingPage = () => {
                       <FaChartBar className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white">Current Plan</h3>
+                      <h3 className="text-lg font-bold text-white">{t('stakingPage.currentPlan')}</h3>
                       <p className="text-sm text-gray-400">{getPlanLabel(plan, t)}</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-sm">Available Balance</span>
+                      <span className="text-gray-400 text-sm">{t('stakingPage.availableBalance')}</span>
                       <span className="text-white font-semibold">{balance.toLocaleString()} FSN</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-sm">Locked Amount</span>
+                      <span className="text-gray-400 text-sm">{t('stakingPage.lockedAmount')}</span>
                       <span className="text-amber-400 font-semibold">{lockedAmount.toLocaleString()} FSN</span>
                     </div>
                   </div>
@@ -299,17 +299,17 @@ const StakingPage = () => {
                       <FaChartLine className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white">Staking Stats</h3>
-                      <p className="text-sm text-gray-400">Performance Overview</p>
+                      <h3 className="text-lg font-bold text-white">{t('stakingPage.stakingStats')}</h3>
+                      <p className="text-sm text-gray-400">{t('stakingPage.performanceOverview')}</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-sm">Active Positions</span>
+                      <span className="text-gray-400 text-sm">{t('stakingPage.activePositions')}</span>
                       <span className="text-green-400 font-semibold">{activeStakes.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-sm">Completed</span>
+                      <span className="text-gray-400 text-sm">{t('stakingPage.completed')}</span>
                       <span className="text-blue-400 font-semibold">{completedStakes.length}</span>
                     </div>
                   </div>
@@ -329,8 +329,8 @@ const StakingPage = () => {
                       <FaRocket className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-white">Start New Staking</h2>
-                      <p className="text-gray-300 text-sm">Choose your amount and duration to begin earning</p>
+                      <h2 className="text-xl font-bold text-white">{t('stakingPage.startNewStaking')}</h2>
+                      <p className="text-gray-300 text-sm">{t('stakingPage.chooseAmountDuration')}</p>
                     </div>
                   </div>
                 </div>
@@ -339,7 +339,7 @@ const StakingPage = () => {
                   <form onSubmit={handleStake} className="space-y-6">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-semibold text-gray-300 mb-3">Amount to Stake</label>
+                        <label className="block text-sm font-semibold text-gray-300 mb-3">{t('stakingPage.amountToStake')}</label>
                         <div className="relative">
                           <input
                             type="number"
@@ -356,7 +356,7 @@ const StakingPage = () => {
                       </div>
                       
                       <div>
-                        <label className="block text-sm font-semibold text-gray-300 mb-3">Staking Duration</label>
+                        <label className="block text-sm font-semibold text-gray-300 mb-3">{t('stakingPage.stakingDuration')}</label>
                         <Select value={duration} onValueChange={setDuration}>
                           <SelectTrigger className="w-full p-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-amber-500 focus:outline-none transition-all duration-300 h-auto data-[state=open]:border-amber-500 text-lg">
                             <SelectValue placeholder="Select duration" />
@@ -387,17 +387,17 @@ const StakingPage = () => {
                       >
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="text-center">
-                            <p className="text-gray-400 text-sm mb-1">Staked Amount</p>
+                            <p className="text-gray-400 text-sm mb-1">{t('stakingPage.stakedAmount')}</p>
                             <p className="text-white font-bold text-lg">{parseFloat(amount).toLocaleString()} FSN</p>
                           </div>
                           <div className="text-center">
-                            <p className="text-gray-400 text-sm mb-1">Expected Return</p>
+                            <p className="text-gray-400 text-sm mb-1">{t('stakingPage.expectedReturn')}</p>
                             <p className="text-amber-400 font-bold text-lg">
                               {(parseFloat(amount) * (1 + returnRate[durationIndex])).toFixed(2)} FSN
                             </p>
                           </div>
                           <div className="text-center">
-                            <p className="text-gray-400 text-sm mb-1">Total Profit</p>
+                            <p className="text-gray-400 text-sm mb-1">{t('stakingPage.totalProfit')}</p>
                             <p className="text-green-400 font-bold text-lg">
                               +{(parseFloat(amount) * returnRate[durationIndex]).toFixed(2)} FSN
                             </p>
@@ -452,7 +452,7 @@ const StakingPage = () => {
           >
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2">{t('stakingRecords')}</h2>
-              <p className="text-gray-400">Track your staking performance and history</p>
+              <p className="text-gray-400">{t('stakingPage.trackPerformance')}</p>
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
@@ -468,7 +468,7 @@ const StakingPage = () => {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white">{t('activeStaking')}</h3>
-                      <p className="text-gray-400">{activeStakes.length} active positions</p>
+                      <p className="text-gray-400">{activeStakes.length} {t('stakingPage.activePositions')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -514,7 +514,7 @@ const StakingPage = () => {
                                   </div>
                                 </div>
                                 <div className="text-right">
-                                  <p className="text-sm text-gray-400">Expected Return</p>
+                                  <p className="text-sm text-gray-400">{t('stakingPage.expectedReturn')}</p>
                                   <p className="text-xl font-bold text-green-400">{stake.expectedReturn.toFixed(2)} FSN</p>
                                 </div>
                               </div>
@@ -523,12 +523,12 @@ const StakingPage = () => {
                                 <div className="flex items-center justify-between text-sm">
                                   <span className="text-gray-400 flex items-center gap-2">
                                     <FaCalendarCheck className="w-4 h-4" />
-                                    End Date:
+                                    {t('stakingPage.endDate')}:
                                   </span>
                                   <span className="text-white font-medium">{end.toLocaleDateString()}</span>
                                 </div>
                                 <div className="flex items-center justify-between text-sm">
-                                  <span className="text-gray-400">Progress:</span>
+                                  <span className="text-gray-400">{t('stakingPage.progress')}:</span>
                                   <span className="text-amber-400 font-bold">{percent}%</span>
                                 </div>
                               </div>
@@ -572,7 +572,7 @@ const StakingPage = () => {
                       <div className="p-12 text-center border-t border-white/10">
                         <FaCoins className="w-20 h-20 text-gray-500 mx-auto mb-6" />
                         <p className="text-gray-400 text-xl font-medium mb-2">{t('noActiveStaking')}</p>
-                        <p className="text-gray-500">Start staking to see your active positions</p>
+                        <p className="text-gray-500">{t('stakingPage.startStakingToSee')}</p>
                       </div>
                     )}
                   </motion.div>
@@ -591,7 +591,7 @@ const StakingPage = () => {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white">{t('completedStaking')}</h3>
-                      <p className="text-gray-400">{completedStakes.length} completed positions</p>
+                      <p className="text-gray-400">{completedStakes.length} {t('stakingPage.completedPositions')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -629,14 +629,14 @@ const StakingPage = () => {
                                   </div>
                                 </div>
                                 <div className="text-right">
-                                  <p className="text-sm text-gray-400">Returned</p>
+                                  <p className="text-sm text-gray-400">{t('stakingPage.returned')}</p>
                                   <p className="text-xl font-bold text-green-400">{stake.expectedReturn.toFixed(2)} FSN</p>
                                 </div>
                               </div>
                               <div className="flex items-center justify-between text-sm mb-4">
                                 <span className="text-gray-400 flex items-center gap-2">
                                   <FaCalendarCheck className="w-4 h-4" />
-                                  Completed:
+                                  {t('stakingPage.completed')}:
                                 </span>
                                 <span className="text-white font-medium">{end.toLocaleDateString()}</span>
                               </div>
@@ -651,7 +651,7 @@ const StakingPage = () => {
                       <div className="p-12 text-center border-t border-white/10">
                         <FaTrophy className="w-20 h-20 text-gray-500 mx-auto mb-6" />
                         <p className="text-gray-400 text-xl font-medium mb-2">{t('noCompletedStaking')}</p>
-                        <p className="text-gray-500">Complete your first staking to see history</p>
+                        <p className="text-gray-500">{t('stakingPage.completeFirstStaking')}</p>
                       </div>
                     )}
                   </motion.div>

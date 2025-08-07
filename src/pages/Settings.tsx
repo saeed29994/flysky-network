@@ -44,7 +44,7 @@ import {
 import PushNotificationManager from '../components/PushNotificationManager';
 
 const Settings = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [fullName, setFullName] = useState("");
@@ -166,7 +166,7 @@ const Settings = () => {
 
   const handleSaveAvatar = async () => {
     if (!selectedFile) {
-      toast.error("Please select an image first");
+      toast.error(t('settingsSection.pleaseSelectImageFirst'));
       return;
     }
 
@@ -181,10 +181,10 @@ const Settings = () => {
       setAvatarUrl(imageUrl);
       setSelectedFile(null);
       setPreviewUrl(null);
-      toast.success("Avatar updated successfully");
+      toast.success(t('settingsSection.avatarUpdated'));
       setUploadProgress(0);
     } catch (error) {
-      toast.error("Failed to upload image");
+      toast.error(t('settingsSection.uploadFailed'));
       setUploadProgress(0);
     }
   };
@@ -196,26 +196,26 @@ const Settings = () => {
       const userRef = doc(db, "users", auth.currentUser.uid);
       await updateDoc(userRef, { fullName });
       setEditingProfile(false);
-      toast.success("Profile updated successfully");
+      toast.success(t('settingsSection.profileUpdatedSuccessfully'));
     } catch (error) {
-      toast.error("Failed to update profile");
+      toast.error(t('settingsSection.failedToUpdateProfile'));
     }
   };
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      toast.error("Please fill all fields");
+      toast.error(t('settingsSection.fillAllFields'));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords don't match");
+      toast.error(t('settingsSection.passwordsDontMatch'));
       return;
     }
 
     const user = auth.currentUser;
     if (!user || !user.email) {
-      toast.error("User not authenticated");
+      toast.error(t('settingsSection.notAuthenticated'));
       return;
     }
 
@@ -226,9 +226,9 @@ const Settings = () => {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      toast.success("Password updated successfully");
+      toast.success(t('settingsSection.passwordUpdated'));
     } catch {
-      toast.error("Failed to update password");
+      toast.error(t('settingsSection.failedToUpdatePassword'));
     }
   };
 
@@ -285,7 +285,7 @@ const Settings = () => {
         <div className="flex items-center gap-2">
           <Crown className="w-4 h-4 text-yellow-400" />
           <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs px-3 py-1 rounded-full font-semibold">
-            First Class
+            {t('settingsSection.firstClass')}
           </span>
         </div>
       );
@@ -294,7 +294,7 @@ const Settings = () => {
       return (
         <div className="flex items-center gap-2">
           <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
-            Business Class
+            {t('settingsSection.businessClass')}
           </span>
         </div>
       );
@@ -302,7 +302,7 @@ const Settings = () => {
     return (
       <div className="flex items-center gap-2">
         <span className="bg-gray-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
-          Economy Class
+          {t('settingsSection.economyClass')}
         </span>
       </div>
     );
@@ -316,11 +316,11 @@ const Settings = () => {
   };
 
   const tabs = [
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'security', label: 'Security', icon: Shield },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'appearance', label: 'Appearance', icon: Palette },
-    { id: 'account', label: 'Account', icon: Crown }
+    { id: 'profile', label: t('settingsSection.profile'), icon: User },
+    { id: 'security', label: t('settingsSection.securityTitle'), icon: Shield },
+    { id: 'notifications', label: t('settingsSection.notificationsTitle'), icon: Bell },
+    { id: 'appearance', label: t('settingsSection.appearanceTitle'), icon: Palette },
+    { id: 'account', label: t('settingsSection.account'), icon: Crown }
   ];
 
   const renderTabContent = () => {
@@ -376,13 +376,13 @@ const Settings = () => {
                         className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200 flex items-center gap-2 disabled:opacity-50"
                         >
                           <Upload className="w-4 h-4" />
-                        Save Avatar
+                        {t('settingsSection.saveAvatar')}
                         </button>
                         
                         {isUploading && (
                           <div className="space-y-2">
                             <div className="flex items-center justify-between text-sm text-gray-300">
-                              <span>Uploading...</span>
+                              <span>{t('settingsSection.uploading')}</span>
                               <span>{uploadProgress}%</span>
                             </div>
                             <div className="bg-white/10 h-2 rounded-full overflow-hidden">
@@ -402,7 +402,7 @@ const Settings = () => {
             {/* Profile Info */}
             <div className="bg-white/5 rounded-xl p-6 border border-white/10">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-white">Profile Information</h3>
+                <h3 className="text-lg font-semibold text-white">{t('settingsSection.profileInformation')}</h3>
                 {editingProfile ? (
                   <div className="flex gap-2">
                     <button
@@ -431,7 +431,7 @@ const Settings = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Full Name
+                    {t('settingsSection.fullName')}
                     </label>
                     <input
                       type="text"
@@ -439,20 +439,20 @@ const Settings = () => {
                       onChange={e => setFullName(e.target.value)}
                     disabled={!editingProfile}
                     className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                      placeholder="Enter your full name"
+                      placeholder={t('settingsSection.enterFullName')}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Email Address
+                    {t('settingsSection.emailAddress')}
                     </label>
                     <input
                       type="email"
                       value={email}
                       disabled
                       className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-gray-400 cursor-not-allowed"
-                      placeholder="Your email address"
+                      placeholder={t('settingsSection.yourEmailAddress')}
                     />
                   </div>
                 </div>
@@ -464,11 +464,11 @@ const Settings = () => {
         return (
           <div className="space-y-6">
             <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-              <h3 className="text-lg font-semibold text-white mb-4">Change Password</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">{t('settingsSection.changePassword')}</h3>
                 <div className="space-y-4">
                           <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Current Password
+                                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    {t('settingsSection.currentPassword')}
                   </label>
                   <div className="relative">
                     <input
@@ -476,7 +476,7 @@ const Settings = () => {
                       value={currentPassword}
                       onChange={e => setCurrentPassword(e.target.value)}
                       className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10"
-                      placeholder="Enter current password"
+                      placeholder={t('settingsSection.enterCurrentPassword')}
                     />
                     <button
                       type="button"
@@ -490,7 +490,7 @@ const Settings = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    New Password
+                    {t('settingsSection.newPassword')}
                   </label>
                   <div className="relative">
                     <input
@@ -498,7 +498,7 @@ const Settings = () => {
                       value={newPassword}
                       onChange={e => setNewPassword(e.target.value)}
                       className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10"
-                      placeholder="Enter new password"
+                      placeholder={t('settingsSection.enterNewPassword')}
                     />
                     <button
                       type="button"
@@ -512,7 +512,7 @@ const Settings = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Confirm New Password
+                    {t('settingsSection.confirmPassword')}
                   </label>
                   <div className="relative">
                     <input
@@ -520,7 +520,7 @@ const Settings = () => {
                       value={confirmPassword}
                       onChange={e => setConfirmPassword(e.target.value)}
                       className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10"
-                      placeholder="Confirm new password"
+                      placeholder={t('settingsSection.confirmNewPassword')}
                     />
                     <button
                       type="button"
@@ -537,7 +537,7 @@ const Settings = () => {
                   className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-lg font-medium hover:from-red-600 hover:to-pink-600 transition-all duration-200 flex items-center gap-2"
                 >
                   <Lock className="w-4 h-4" />
-                  Change Password
+                  {t('settingsSection.changePassword')}
                 </button>
               </div>
                 </div>
@@ -548,11 +548,11 @@ const Settings = () => {
         return (
           <div className="space-y-6">
             <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-              <h3 className="text-lg font-semibold text-white mb-4">Notification Preferences</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">{t('settingsSection.notificationPreferences')}</h3>
               <div className="space-y-4">
                 {/* Push Notification Permission UI */}
                 <div className="mb-6">
-                  <h4 className="text-white font-medium mb-3">Push Notification Permission</h4>
+                  <h4 className="text-white font-medium mb-3">{t('settingsSection.pushNotificationPermission')}</h4>
                   <PushNotificationManager />
                 </div>
                 
@@ -561,20 +561,20 @@ const Settings = () => {
                   <div key={key} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                     <div>
                       <h4 className="text-white font-medium capitalize">
-                        {key === 'inApp' ? 'In-App Notifications' :
-                         key === 'email' ? 'Email Notifications' : 
-                         key === 'push' ? 'Push Notifications' :
-                         key === 'marketing' ? 'Marketing Emails' :
-                         key === 'security' ? 'Security Alerts' :
-                         key === 'rewards' ? 'Reward Notifications' : key}
+                        {key === 'inApp' ? t('settingsSection.inAppNotifications') :
+                         key === 'email' ? t('settingsSection.emailNotifications') : 
+                         key === 'push' ? t('settingsSection.pushNotifications') :
+                         key === 'marketing' ? t('settingsSection.marketingEmails') :
+                         key === 'security' ? t('settingsSection.securityAlerts') :
+                         key === 'rewards' ? t('settingsSection.rewardNotifications') : key}
                       </h4>
                       <p className="text-sm text-gray-400">
-                        {key === 'inApp' ? 'Show notifications inside the app (toast and bell icon)' :
-                         key === 'email' ? 'Receive notifications via email' :
-                         key === 'push' ? 'Receive push notifications on your device' :
-                         key === 'marketing' ? 'Receive promotional emails and offers' :
-                         key === 'security' ? 'Get notified about security events' :
-                         key === 'rewards' ? 'Get notified about new rewards and bonuses' : ''}
+                        {key === 'inApp' ? t('settingsSection.showNotificationsInsideApp') :
+                         key === 'email' ? t('settingsSection.receiveNotificationsViaEmail') :
+                         key === 'push' ? t('settingsSection.receivePushNotificationsOnDevice') :
+                         key === 'marketing' ? t('settingsSection.receivePromotionalEmails') :
+                         key === 'security' ? t('settingsSection.getNotifiedAboutSecurityEvents') :
+                         key === 'rewards' ? t('settingsSection.getNotifiedAboutNewRewards') : ''}
                       </p>
                     </div>
                     <button
@@ -600,7 +600,7 @@ const Settings = () => {
         return (
           <div className="space-y-6">
             <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-              <h3 className="text-lg font-semibold text-white mb-4">Theme Settings</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">{t('settingsSection.themeSettings')}</h3>
               <div className="grid grid-cols-3 gap-3 mb-6">
                     <button
                       onClick={() => handleThemeChange('light')}
@@ -611,7 +611,7 @@ const Settings = () => {
                       }`}
                     >
                   <Sun className="w-5 h-5" />
-                  <span className="text-sm font-medium">Light</span>
+                  <span className="text-sm font-medium">{t('settingsSection.light')}</span>
                     </button>
                     <button
                       onClick={() => handleThemeChange('dark')}
@@ -622,7 +622,7 @@ const Settings = () => {
                       }`}
                     >
                   <Moon className="w-5 h-5" />
-                  <span className="text-sm font-medium">Dark</span>
+                  <span className="text-sm font-medium">{t('settingsSection.dark')}</span>
                     </button>
                     <button
                       onClick={() => handleThemeChange('system')}
@@ -633,14 +633,14 @@ const Settings = () => {
                       }`}
                     >
                   <Monitor className="w-5 h-5" />
-                  <span className="text-sm font-medium">System</span>
+                  <span className="text-sm font-medium">{t('settingsSection.system')}</span>
                     </button>
                 </div>
 
               <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                     <div>
-                  <h4 className="text-white font-medium">Sound Effects</h4>
-                  <p className="text-sm text-gray-400">Enable sound effects for interactions</p>
+                  <h4 className="text-white font-medium">{t('settingsSection.soundEffects')}</h4>
+                  <p className="text-sm text-gray-400">{t('settingsSection.enableSoundEffectsForInteractions')}</p>
                     </div>
                     <button
                       onClick={handleToggleSound}
@@ -668,16 +668,16 @@ const Settings = () => {
         return (
           <div className="space-y-6">
             <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-              <h3 className="text-lg font-semibold text-white mb-4">Account Information</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">{t('settingsSection.accountInformation')}</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between py-3 border-b border-white/10">
-                  <span className="text-gray-300">Current Plan</span>
+                  <span className="text-gray-300">{t('settingsSection.currentPlan')}</span>
                   {getPlanBadge()}
                 </div>
 
                 {subscriptionEnd && (
                   <div className="flex items-center justify-between py-3 border-b border-white/10">
-                    <span className="text-gray-300">Subscription Ends</span>
+                    <span className="text-gray-300">{t('settingsSection.subscriptionEnds')}</span>
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-400" />
                       <span className="text-white font-medium">{subscriptionEnd}</span>
@@ -686,7 +686,7 @@ const Settings = () => {
                 )}
 
                 <div className="flex items-center justify-between py-3">
-                  <span className="text-gray-300">Language</span>
+                  <span className="text-gray-300">{t('settingsSection.language')}</span>
                   <select
                     value={language}
                     onChange={handleLanguageChange}
@@ -704,17 +704,17 @@ const Settings = () => {
               <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-6 border border-yellow-500/30">
                 <div className="flex items-center gap-3 mb-3">
                   <Crown className="w-6 h-6 text-yellow-400" />
-                  <h3 className="text-lg font-semibold text-white">Upgrade Your Plan</h3>
+                  <h3 className="text-lg font-semibold text-white">{t('settingsSection.upgradeYourPlan')}</h3>
                 </div>
                 <p className="text-gray-300 mb-4">
-                  Unlock premium features and exclusive benefits with our First Class membership.
+                  {t('settingsSection.unlockPremiumFeatures')}
                 </p>
                 <button
                   onClick={() => navigate("/membership")}
                   className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-6 py-3 rounded-lg font-medium hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 flex items-center gap-2"
                 >
                   <Crown className="w-4 h-4" />
-                  Upgrade Now
+                  {t('settingsSection.upgradeNow')}
                   <ArrowRight className="w-4 h-4" />
                 </button>
                     </div>
@@ -738,8 +738,8 @@ const Settings = () => {
                 <SettingsIcon className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">Settings</h1>
-                <p className="text-gray-300">Manage your account preferences</p>
+                <h1 className="text-2xl font-bold text-white">{t('settingsSection.title')}</h1>
+                <p className="text-gray-300">{t('settingsSection.subtitle')}</p>
               </div>
             </div>
           </div>

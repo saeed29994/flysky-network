@@ -238,7 +238,7 @@ const Inbox = () => {
                   transition={{ duration: 0.6, delay: 0.4 }}
                   className="text-gray-300 text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
                 >
-                  Manage your messages, rewards, and notifications
+                  {t('inboxPage.description')}
                 </motion.p>
               </div>
             </div>
@@ -349,7 +349,7 @@ const Inbox = () => {
                   <Mail className="w-6 h-6 text-white/70 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                 </div>
                 <p className="text-white text-lg">{t('loadingMessages')}</p>
-                <p className="text-gray-400 text-sm mt-1">Fetching {activeTab} messages...</p>
+                <p className="text-gray-400 text-sm mt-1">{t('inboxPage.fetchingMessages', { tab: activeTab })}</p>
               </div>
             ) : currentMessages.length === 0 ? (
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl p-12 text-center">
@@ -358,9 +358,9 @@ const Inbox = () => {
                 </div>
                 <p className="text-gray-400 text-lg">{t('noMessages')}</p>
                 <p className="text-gray-500 text-sm mt-2">
-                  {activeTab === 'inbox' && 'No messages in your inbox'}
-                  {activeTab === 'archived' && 'No archived messages'}
-                  {activeTab === 'trash' && 'No deleted messages'}
+                  {activeTab === 'inbox' && t('inboxPage.noMessagesInInbox')}
+                  {activeTab === 'archived' && t('inboxPage.noArchivedMessages')}
+                  {activeTab === 'trash' && t('inboxPage.noDeletedMessages')}
                 </p>
               </div>
             ) : (
@@ -428,7 +428,7 @@ const Inbox = () => {
                       <ArrowLeft className="w-5 h-5" />
                     </button>
                     <span className="text-white px-4">
-                      {currentPage} of {totalPages}
+                      {t('inboxPage.pageInfo', { current: currentPage, total: totalPages })}
                     </span>
                     <button
                       onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
@@ -481,7 +481,7 @@ const Inbox = () => {
                     <button
                       onClick={() => setSelectedMessage(null)}
                       className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                      aria-label="Close"
+                      aria-label={t('close')}
                     >
                       <XCircle className="w-5 h-5 text-gray-200" />
                     </button>
@@ -505,17 +505,17 @@ const Inbox = () => {
                         <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl p-4 mb-6">
                           <div className="flex items-center gap-3 mb-3">
                             <Gift className="w-6 h-6 text-green-400" />
-                            <h3 className="text-green-400 font-semibold">Reward Available</h3>
+                            <h3 className="text-green-400 font-semibold">{t('inboxPage.rewardAvailable')}</h3>
                           </div>
                           <p className="text-gray-300 text-sm mb-4">
-                            Claim your reward to add it to your balance
+                            {t('inboxPage.claimRewardToAdd')}
                           </p>
                           <button
                             onClick={handleClaim}
                             className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-200 shadow-lg flex items-center gap-2"
                           >
                             <Gift className="w-5 h-5" />
-                            {t('claim')} Reward
+                            {t('inboxPage.claimReward')}
                           </button>
                         </div>
                       )}
@@ -524,7 +524,7 @@ const Inbox = () => {
                     <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl p-4 mb-6">
                       <div className="flex items-center gap-3">
                         <CheckCircle className="w-6 h-6 text-green-400" />
-                        <span className="text-green-400 font-semibold">Reward Claimed</span>
+                        <span className="text-green-400 font-semibold">{t('inboxPage.rewardClaimed')}</span>
                       </div>
                     </div>
                   )}

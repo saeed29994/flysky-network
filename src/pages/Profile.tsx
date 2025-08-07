@@ -251,7 +251,7 @@ const Profile = () => {
         <div className="flex items-center gap-2">
           <Crown className="w-4 h-4 text-yellow-400" />
           <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs px-3 py-1 rounded-full font-semibold">
-            First Class
+            {t('profile.firstClass')}
           </span>
         </div>
       );
@@ -261,7 +261,7 @@ const Profile = () => {
         <div className="flex items-center gap-2">
           <Star className="w-4 h-4 text-blue-400" />
           <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
-            Business Class
+            {t('profile.businessClass')}
           </span>
         </div>
       );
@@ -270,7 +270,7 @@ const Profile = () => {
       <div className="flex items-center gap-2">
         <Zap className="w-4 h-4 text-gray-400" />
         <span className="bg-gradient-to-r from-gray-500 to-gray-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
-          Economy Class
+          {t('profile.economyClass')}
         </span>
       </div>
     );
@@ -310,10 +310,10 @@ const Profile = () => {
   };
 
   const tabs = [
-    { id: 'about', label: 'About', icon: User },
-    { id: 'achievements', label: 'Achievements', icon: Trophy },
-    { id: 'activity', label: 'Activity', icon: Activity },
-    { id: 'stats', label: 'Stats', icon: ChartBar }
+    { id: 'about', label: t('profile.about'), icon: User },
+    { id: 'achievements', label: t('profile.achievements'), icon: Trophy },
+    { id: 'activity', label: t('profile.activity'), icon: Activity },
+    { id: 'stats', label: t('profile.stats'), icon: ChartBar }
   ];
 
   const renderTabContent = () => {
@@ -324,7 +324,7 @@ const Profile = () => {
             {/* About Section */}
             <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-4 sm:p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg sm:text-xl font-semibold text-white">About</h3>
+                <h3 className="text-lg sm:text-xl font-semibold text-white">{t('profile.about')}</h3>
                 <button className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors">
                   <Edit className="w-4 h-4" />
                 </button>
@@ -334,7 +334,7 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-3 sm:p-4 bg-white/5 rounded-lg">
                   <Mail className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <p className="text-white font-medium text-sm sm:text-base">Email</p>
+                    <p className="text-white font-medium text-sm sm:text-base">{t('settingsSection.email')}</p>
                     <p className="text-gray-400 text-xs sm:text-sm truncate">{userData.email}</p>
                   </div>
                 </div>
@@ -342,7 +342,7 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-3 sm:p-4 bg-white/5 rounded-lg">
                   <CalendarIcon className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <p className="text-white font-medium text-sm sm:text-base">Member Since</p>
+                    <p className="text-white font-medium text-sm sm:text-base">{t('profile.memberSince')}</p>
                     <p className="text-gray-400 text-xs sm:text-sm">{userData.createdAt}</p>
                   </div>
                 </div>
@@ -350,15 +350,15 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-3 sm:p-4 bg-white/5 rounded-lg">
                   <Crown className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <p className="text-white font-medium text-sm sm:text-base">Membership Plan</p>
-                    <p className="text-gray-400 text-xs sm:text-sm">{userData.plan === 'first' || userData.plan === 'first-lifetime' || userData.plan === 'first-6' ? 'First Class' : userData.plan === 'business' ? 'Business Class' : 'Economy Class'}</p>
+                    <p className="text-white font-medium text-sm sm:text-base">{t('profile.membershipPlan')}</p>
+                    <p className="text-gray-400 text-xs sm:text-sm">{userData.plan === 'first' || userData.plan === 'first-lifetime' || userData.plan === 'first-6' ? t('profile.firstClass') : userData.plan === 'business' ? t('profile.businessClass') : t('profile.economyClass')}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 p-3 sm:p-4 bg-white/5 rounded-lg">
                   <ShieldIcon className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <p className="text-white font-medium text-sm sm:text-base">Verification Status</p>
+                    <p className="text-white font-medium text-sm sm:text-base">{t('profile.verificationStatus')}</p>
                     {getKYCStatus()}
                   </div>
                 </div>
@@ -366,7 +366,7 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-3 sm:p-4 bg-white/5 rounded-lg">
                   <Users className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <p className="text-white font-medium text-sm sm:text-base">Referral Code</p>
+                    <p className="text-white font-medium text-sm sm:text-base">{t('profile.referralCode')}</p>
                     <p className="text-gray-400 text-xs sm:text-sm truncate">{userData.referralCode}</p>
                   </div>
                 </div>
@@ -375,14 +375,14 @@ const Profile = () => {
 
             {/* Quick Actions */}
             <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-4">Quick Actions</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-4">{t('profile.quickActions')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <button
                   onClick={() => navigate('/settings')}
                   className="flex items-center gap-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 sm:px-4 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-200 text-sm sm:text-base"
                 >
                   <Settings className="w-4 h-4" />
-                  Edit Profile
+                  {t('profile.editProfile')}
                 </button>
                 
                 <button
@@ -390,7 +390,7 @@ const Profile = () => {
                   className="flex items-center gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-3 sm:px-4 py-3 rounded-lg font-semibold hover:from-amber-600 hover:to-orange-600 transition-all duration-200 text-sm sm:text-base"
                 >
                   <Gem className="w-4 h-4" />
-                  Start Mining
+                  {t('profile.startMining')}
                 </button>
                 
                 <button
@@ -398,7 +398,7 @@ const Profile = () => {
                   className="flex items-center gap-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 sm:px-4 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-200 text-sm sm:text-base"
                 >
                   <Coins className="w-4 h-4" />
-                  View Staking
+                  {t('profile.viewStaking')}
                 </button>
                 
                 <button
@@ -406,7 +406,7 @@ const Profile = () => {
                   className="flex items-center gap-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 sm:px-4 py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-200 text-sm sm:text-base"
                 >
                   <Share2 className="w-4 h-4" />
-                  Referral Program
+                  {t('profile.referralProgram')}
                 </button>
               </div>
             </div>
@@ -417,7 +417,7 @@ const Profile = () => {
         return (
           <div className="space-y-6">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-6">Your Achievements</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-6">{t('profile.yourAchievements')}</h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {userStats.achievements.map(achievement => (
                   <div
@@ -454,7 +454,7 @@ const Profile = () => {
                     {!achievement.completed && (
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="text-gray-400">Progress</span>
+                          <span className="text-gray-400">{t('profile.progress')}</span>
                           <span className="text-white">
                             {achievement.progress} / {achievement.total}
                           </span>
@@ -473,7 +473,7 @@ const Profile = () => {
                     {achievement.completed && achievement.completedAt && (
                       <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
                         <CheckCircle className="w-4 h-4" />
-                        Completed on {new Date(achievement.completedAt).toLocaleDateString()}
+                        {t('profile.completedOn')} {new Date(achievement.completedAt).toLocaleDateString()}
                       </div>
                     )}
                   </div>
@@ -487,7 +487,7 @@ const Profile = () => {
         return (
           <div className="space-y-6">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-6">Recent Activity</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-6">{t('profile.recentActivity')}</h3>
               <div className="space-y-4">
                 {userStats.activityHistory.map(activity => (
                   <div
@@ -527,51 +527,51 @@ const Profile = () => {
               <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-4 sm:p-6 border border-green-500/30">
                 <div className="flex items-center gap-3 mb-3">
                   <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
-                  <h3 className="text-white font-semibold text-sm sm:text-base">Balance</h3>
+                  <h3 className="text-white font-semibold text-sm sm:text-base">{t('profile.balance')}</h3>
                 </div>
                 <p className="text-2xl sm:text-3xl font-bold text-green-400">
                   {userStats.balance.toLocaleString()} FSN
                 </p>
-                <p className="text-xs sm:text-sm text-gray-400 mt-2">
-                  Available for use
-                </p>
+                                  <p className="text-xs sm:text-sm text-gray-400 mt-2">
+                    {t('profile.availableForUse')}
+                  </p>
               </div>
 
               <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-4 sm:p-6 border border-blue-500/30">
                 <div className="flex items-center gap-3 mb-3">
                   <ChartBar className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
-                  <h3 className="text-white font-semibold text-sm sm:text-base">Total Earnings</h3>
+                  <h3 className="text-white font-semibold text-sm sm:text-base">{t('profile.totalEarnings')}</h3>
                 </div>
                 <p className="text-2xl sm:text-3xl font-bold text-blue-400">
                   {userStats.totalEarnings.toLocaleString()} FSN
                 </p>
-                <p className="text-xs sm:text-sm text-gray-400 mt-2">
-                  Lifetime earnings
-                </p>
+                                  <p className="text-xs sm:text-sm text-gray-400 mt-2">
+                    {t('profile.lifetimeEarnings')}
+                  </p>
               </div>
 
               <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl p-4 sm:p-6 border border-yellow-500/30 sm:col-span-2 lg:col-span-1">
                 <div className="flex items-center gap-3 mb-3">
                   <Users className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
-                  <h3 className="text-white font-semibold text-sm sm:text-base">Referrals</h3>
+                  <h3 className="text-white font-semibold text-sm sm:text-base">{t('profile.referrals')}</h3>
                 </div>
                 <p className="text-2xl sm:text-3xl font-bold text-yellow-400">
                   {userStats.referrals}
                 </p>
-                <p className="text-xs sm:text-sm text-gray-400 mt-2">
-                  Total referrals
-                </p>
+                                  <p className="text-xs sm:text-sm text-gray-400 mt-2">
+                    {t('profile.totalReferrals')}
+                  </p>
               </div>
             </div>
 
             {/* Mining Stats */}
             <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-6">Mining Statistics</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-6">{t('profile.miningStatistics')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div className="bg-white/5 rounded-lg p-3 sm:p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Hexagon className="w-4 h-4 text-purple-400" />
-                    <span className="text-gray-400 text-xs sm:text-sm">Mining Level</span>
+                    <span className="text-gray-400 text-xs sm:text-sm">{t('profile.miningLevel')}</span>
                   </div>
                   <p className="text-white font-semibold text-base sm:text-lg">{userStats.miningLevel}</p>
                 </div>
@@ -579,7 +579,7 @@ const Profile = () => {
                 <div className="bg-white/5 rounded-lg p-3 sm:p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Gem className="w-4 h-4 text-yellow-400" />
-                    <span className="text-gray-400 text-xs sm:text-sm">Mining Earnings</span>
+                    <span className="text-gray-400 text-xs sm:text-sm">{t('profile.miningEarnings')}</span>
                   </div>
                   <p className="text-white font-semibold text-base sm:text-lg">
                     {userStats.miningEarnings.toLocaleString()} FSN
@@ -589,7 +589,7 @@ const Profile = () => {
                 <div className="bg-white/5 rounded-lg p-3 sm:p-4 sm:col-span-2 lg:col-span-1">
                   <div className="flex items-center gap-2 mb-2">
                     <Layers className="w-4 h-4 text-blue-400" />
-                    <span className="text-gray-400 text-xs sm:text-sm">Staked Amount</span>
+                    <span className="text-gray-400 text-xs sm:text-sm">{t('profile.stakedAmount')}</span>
                   </div>
                   <p className="text-white font-semibold text-base sm:text-lg">
                     {userStats.lockedInStaking.toLocaleString()} FSN
@@ -610,7 +610,7 @@ const Profile = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-white">Loading profile...</p>
+          <p className="text-white">{t('profile.loadingProfile')}</p>
         </div>
       </div>
     );
@@ -650,7 +650,7 @@ const Profile = () => {
                 </div>
                 <div className="flex items-center gap-1">
                   <CalendarIcon className="w-4 h-4" />
-                  <span>Member since {userData.createdAt}</span>
+                  <span>{t('profile.memberSince')} {userData.createdAt}</span>
                 </div>
               </div>
               <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-3">

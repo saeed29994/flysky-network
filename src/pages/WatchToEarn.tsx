@@ -228,8 +228,8 @@ const WatchToEarn = () => {
                     <Coins className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">FSN Rewards</h2>
-                    <p className="text-gray-400">Earn tokens by watching video ads</p>
+                    <h2 className="text-xl font-bold text-white">{t('watchToEarn.fsnRewards')}</h2>
+                    <p className="text-gray-400">{t('watchToEarn.earnTokensByWatching')}</p>
                   </div>
                 </div>
               </div>
@@ -255,8 +255,8 @@ const WatchToEarn = () => {
                     <Eye className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">Watch Progress</h2>
-                    <p className="text-gray-400">Track your daily video ad watching progress</p>
+                    <h2 className="text-xl font-bold text-white">{t('watchToEarn.watchProgress')}</h2>
+                    <p className="text-gray-400">{t('watchToEarn.trackDailyProgress')}</p>
                   </div>
                 </div>
               </div>
@@ -265,7 +265,7 @@ const WatchToEarn = () => {
                 {/* Progress Bar */}
                 <div className="mb-6">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="text-white font-medium">Progress</span>
+                    <span className="text-white font-medium">{t('watchToEarn.progress')}</span>
                     <span className="text-blue-400 font-bold">{adsWatched}/{REQUIRED_ADS}</span>
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
@@ -278,7 +278,7 @@ const WatchToEarn = () => {
                   </div>
                   <div className="text-center mt-2">
                     <span className="text-sm text-gray-400">
-                      {Math.round(progressPercent)}% Complete
+                      {Math.round(progressPercent)}% {t('watchToEarn.complete')}
                     </span>
                   </div>
                 </div>
@@ -287,11 +287,11 @@ const WatchToEarn = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div className="bg-white/5 rounded-xl p-4 text-center">
                     <div className="text-2xl font-bold text-blue-400 mb-1">{adsWatched}</div>
-                    <div className="text-sm text-gray-400">Video Ads Watched Today</div>
+                    <div className="text-sm text-gray-400">{t('watchToEarn.videoAdsWatchedToday')}</div>
                   </div>
                   <div className="bg-white/5 rounded-xl p-4 text-center">
                     <div className="text-2xl font-bold text-green-400 mb-1">{balance}</div>
-                    <div className="text-sm text-gray-400">Current Balance (FSN)</div>
+                    <div className="text-sm text-gray-400">{t('watchToEarn.currentBalanceFSN')}</div>
                   </div>
                 </div>
 
@@ -300,7 +300,7 @@ const WatchToEarn = () => {
                   <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-xl p-4 border border-red-500/30">
                     <div className="flex items-center gap-3 mb-2">
                       <Clock className="w-5 h-5 text-red-400" />
-                      <span className="text-white font-semibold">Wait Time</span>
+                      <span className="text-white font-semibold">{t('watchToEarn.waitTime')}</span>
                     </div>
                     <p className="text-red-400 font-bold text-center">
                       {t("watchToEarn.waitMessage", { time: formatTime(countdown) })}
@@ -342,8 +342,8 @@ const WatchToEarn = () => {
                     <Video className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">How It Works</h3>
-                    <p className="text-sm text-gray-400">Simple 3-step process</p>
+                    <h3 className="text-lg font-bold text-white">{t('watchToEarn.howItWorks')}</h3>
+                    <p className="text-sm text-gray-400">{t('watchToEarn.simple3StepProcess')}</p>
                   </div>
                 </div>
 
@@ -353,8 +353,8 @@ const WatchToEarn = () => {
                       1
                     </div>
                     <div>
-                      <h4 className="text-white font-medium text-sm">Watch Video Ads</h4>
-                      <p className="text-gray-400 text-xs">Watch {REQUIRED_ADS} video ads daily</p>
+                      <h4 className="text-white font-medium text-sm">{t('watchToEarn.watchVideoAds')}</h4>
+                      <p className="text-gray-400 text-xs">{t('watchToEarn.watchAdsDaily', { count: REQUIRED_ADS })}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -362,8 +362,8 @@ const WatchToEarn = () => {
                       2
                     </div>
                     <div>
-                      <h4 className="text-white font-medium text-sm">Complete Viewing</h4>
-                      <p className="text-gray-400 text-xs">Watch each ad completely (20 seconds)</p>
+                      <h4 className="text-white font-medium text-sm">{t('watchToEarn.completeViewing')}</h4>
+                      <p className="text-gray-400 text-xs">{t('watchToEarn.watchEachAdCompletely')}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -371,8 +371,8 @@ const WatchToEarn = () => {
                       3
                     </div>
                     <div>
-                      <h4 className="text-white font-medium text-sm">Claim Rewards</h4>
-                      <p className="text-gray-400 text-xs">Earn {REWARD_FOR_ALL} FSN tokens</p>
+                      <h4 className="text-white font-medium text-sm">{t('watchToEarn.claimRewards')}</h4>
+                      <p className="text-gray-400 text-xs">{t('watchToEarn.earnFSNTokens', { amount: REWARD_FOR_ALL })}</p>
                     </div>
                   </div>
                 </div>
@@ -385,34 +385,34 @@ const WatchToEarn = () => {
                     <Coins className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Rewards Info</h3>
-                    <p className="text-sm text-gray-400">Daily earning structure</p>
+                    <h3 className="text-lg font-bold text-white">{t('watchToEarn.rewardsInfo')}</h3>
+                    <p className="text-sm text-gray-400">{t('watchToEarn.dailyEarningStructure')}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 border border-blue-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold text-sm">Daily Limit</span>
-                      <span className="text-blue-400 font-bold text-sm">{REQUIRED_ADS} Video Ads</span>
+                      <span className="text-white font-semibold text-sm">{t('watchToEarn.dailyLimit')}</span>
+                      <span className="text-blue-400 font-bold text-sm">{REQUIRED_ADS} {t('watchToEarn.videoAds')}</span>
                     </div>
-                    <p className="text-xs text-gray-300">Watch {REQUIRED_ADS} video ads per day</p>
+                    <p className="text-xs text-gray-300">{t('watchToEarn.watchAdsPerDay', { count: REQUIRED_ADS })}</p>
                   </div>
 
                   <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-4 border border-green-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold text-sm">Daily Reward</span>
+                      <span className="text-white font-semibold text-sm">{t('watchToEarn.dailyReward')}</span>
                       <span className="text-green-400 font-bold text-sm">{REWARD_FOR_ALL} FSN</span>
                     </div>
-                    <p className="text-xs text-gray-300">Complete all ads to claim</p>
+                    <p className="text-xs text-gray-300">{t('watchToEarn.completeAllAdsToClaim')}</p>
                   </div>
 
                   <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-4 border border-purple-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold text-sm">Ad Duration</span>
-                      <span className="text-purple-400 font-bold text-sm">20 Seconds</span>
+                      <span className="text-white font-semibold text-sm">{t('watchToEarn.adDuration')}</span>
+                      <span className="text-purple-400 font-bold text-sm">{t('watchToEarn.twentySeconds')}</span>
                     </div>
-                    <p className="text-xs text-gray-300">Each video ad is 20 seconds long</p>
+                    <p className="text-xs text-gray-300">{t('watchToEarn.eachAdTwentySeconds')}</p>
                   </div>
                 </div>
               </div>
@@ -444,8 +444,8 @@ const WatchToEarn = () => {
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <Video className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-lg font-bold mb-1">Video Ad</h2>
-                <p className="text-gray-400 text-sm">Please watch the complete ad</p>
+                <h2 className="text-lg font-bold mb-1">{t('watchToEarn.videoAd')}</h2>
+                <p className="text-gray-400 text-sm">{t('watchToEarn.pleaseWatchCompleteAd')}</p>
               </div>
 
               {/* Timer Display */}
@@ -454,7 +454,7 @@ const WatchToEarn = () => {
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Clock className="w-4 h-4 text-blue-400" />
                     <span className="text-blue-400 font-bold">{adTimer}</span>
-                    <span className="text-blue-400 text-sm">seconds</span>
+                    <span className="text-blue-400 text-sm">{t('watchToEarn.seconds')}</span>
                   </div>
                 </div>
               </div>
@@ -464,22 +464,22 @@ const WatchToEarn = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-gray-500 to-gray-600 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <Play className="w-8 h-8 text-gray-300" />
                 </div>
-                <h3 className="text-sm font-semibold text-white mb-1">Video Ad Placeholder</h3>
-                <p className="text-gray-400 text-xs">This is where the actual video ad will be displayed</p>
+                <h3 className="text-sm font-semibold text-white mb-1">{t('watchToEarn.videoAdPlaceholder')}</h3>
+                <p className="text-gray-400 text-xs">{t('watchToEarn.videoAdPlaceholderDescription')}</p>
               </div>
 
               {/* Progress Info */}
               <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-3 mb-4 border border-blue-500/30">
                 <div className="flex items-center justify-center gap-2 text-blue-400">
                   <AlertCircle className="w-4 h-4" />
-                  <span className="text-sm font-medium">Please wait for the ad to complete</span>
+                  <span className="text-sm font-medium">{t('watchToEarn.pleaseWaitForAdComplete')}</span>
                 </div>
               </div>
 
               {/* Loading Spinner */}
               <div className="text-center">
                 <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                <p className="text-xs text-gray-400">Processing ad completion...</p>
+                <p className="text-xs text-gray-400">{t('watchToEarn.processingAdCompletion')}</p>
               </div>
             </motion.div>
           ) : (
@@ -502,7 +502,7 @@ const WatchToEarn = () => {
                   <Video className="w-6 h-6 text-white" />
                 </div>
                 <h2 className="text-lg font-bold mb-1">{t("watchToEarn.adModalTitle")}</h2>
-                <p className="text-gray-400 text-sm">Watch video ad and earn rewards</p>
+                <p className="text-gray-400 text-sm">{t('watchToEarn.watchVideoAdAndEarn')}</p>
               </div>
 
               {/* Timer Display */}

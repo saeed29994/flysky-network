@@ -16,6 +16,7 @@ import { deleteCurrentToken } from '../utils/pushNotification';
 import fsnLogo from '../assets/fsn-logo.png';
 import { NotificationBell } from '../components/NotificationBell';
 import PushNotificationManager from '../components/PushNotificationManager';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -110,13 +111,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   // Menu structure with categories
   const menuSections = [
     {
-      title: "Main",
+      title: t('menu.sections.main'),
       items: [
         { to: "/dashboard", icon: <Home size={20} />, label: t('menu.home') }
       ]
     },
     {
-      title: "Earning",
+      title: t('menu.sections.earning'),
       items: [
         { to: "/mining", icon: <Gem size={20} />, label: t('menu.mining') },
         { to: "/staking", icon: <Coins size={20} />, label: t('menu.staking') },
@@ -126,7 +127,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       ]
     },
     {
-      title: "Account",
+      title: t('menu.sections.account'),
       items: [
         { to: "/wallet", icon: <Wallet size={20} />, label: t('menu.wallet') },
         { to: "/inbox", icon: <Mail size={20} />, label: t('menu.inbox'), badge: hasUnreadMessages },
@@ -145,7 +146,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-white font-inter">Loading your dashboard...</p>
+          <p className="text-white font-inter">{t('dashboard.loading')}</p>
         </div>
       </div>
     );
@@ -169,7 +170,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             <span className="text-xs text-gray-400">{userName}</span>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <LanguageSwitcher />
           <NotificationBell />
           <PushNotificationManager showInHeader={true} />
           <button 
@@ -208,7 +210,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                   <span className="text-white"> Network</span>
                 </h1>
                 <p className="text-gray-400 text-sm">{userName}</p>
-                <p className="text-xs text-gray-500 capitalize">{userPlan} Plan</p>
+                <p className="text-xs text-gray-500 capitalize">{t(`planNames.${userPlan}`)}</p>
               </div>
             </div>
             <button 
@@ -370,9 +372,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       </aside>
 
       {/* Desktop Notification Bell - Floating */}
-      <div className="hidden md:block fixed top-6 right-6 z-40">
-        <div className="bg-gradient-to-r from-purple-600/30 to-blue-600/30 p-1.5 rounded-full shadow-lg backdrop-blur-sm">
-          <NotificationBell />
+      <div className={`hidden md:block fixed top-6 z-40 ${i18n.language === 'ar' ? 'left-6' : 'right-6'}`}>
+        <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <LanguageSwitcher />
+          <div className="bg-gradient-to-r from-purple-600/30 to-blue-600/30 p-1.5 rounded-full shadow-lg backdrop-blur-sm">
+            <NotificationBell />
+          </div>
         </div>
       </div>
 

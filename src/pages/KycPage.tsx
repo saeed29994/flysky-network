@@ -104,7 +104,7 @@ const KycPage = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-gray-300 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed"
               >
-                Complete your identity verification to unlock premium features and ensure account security
+                {t('kyc.subtitle')}
               </motion.p>
             </div>
           </div>
@@ -132,7 +132,7 @@ const KycPage = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-white">{t('kyc.idsAccepted.title')}</h2>
-                    <p className="text-gray-400">Accepted identification documents</p>
+                    <p className="text-gray-400">{t('kyc.acceptedDocuments')}</p>
                   </div>
                 </div>
               </div>
@@ -167,7 +167,7 @@ const KycPage = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-white">{t('kyc.idPhotos.title')}</h2>
-                    <p className="text-gray-400">Photo requirements for ID documents</p>
+                    <p className="text-gray-400">{t('kyc.photoRequirements')}</p>
                   </div>
                 </div>
               </div>
@@ -216,7 +216,7 @@ const KycPage = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-white">{t('kyc.selfie.title')}</h2>
-                    <p className="text-gray-400">Selfie photo requirements</p>
+                    <p className="text-gray-400">{t('kyc.selfieRequirements')}</p>
                   </div>
                 </div>
               </div>
@@ -260,7 +260,7 @@ const KycPage = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-white">{t('kyc.uploadSection.title')}</h2>
-                    <p className="text-gray-400">Upload your verification documents</p>
+                    <p className="text-gray-400">{t('kyc.uploadDocuments')}</p>
                   </div>
                 </div>
               </div>
@@ -341,7 +341,7 @@ const KycPage = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-white">{t('kyc.faq.title')}</h3>
-                    <p className="text-sm text-gray-400">Common questions</p>
+                    <p className="text-sm text-gray-400">{t('kyc.commonQuestions')}</p>
                   </div>
                 </div>
 
@@ -381,16 +381,16 @@ const KycPage = () => {
                     <Clock className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Processing Time</h3>
+                    <h3 className="text-lg font-bold text-white">{t('kyc.processingTime')}</h3>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-3">
-                    <p className="text-green-400 font-semibold text-sm">24-48 Hours</p>
-                    <p className="text-gray-400 text-xs">Typical processing time</p>
+                    <p className="text-green-400 font-semibold text-sm">{t('kyc.processingTimeValue')}</p>
+                    <p className="text-gray-400 text-xs">{t('kyc.typicalProcessingTime')}</p>
                   </div>
                   <p className="text-gray-400 text-xs leading-relaxed">
-                    Your documents will be reviewed by our verification team. You'll receive a notification once the process is complete.
+                    {t('kyc.processingDescription')}
                   </p>
                 </div>
               </div>

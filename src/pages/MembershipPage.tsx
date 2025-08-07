@@ -29,7 +29,7 @@ const MembershipPage = () => {
   const [membershipData, setMembershipData] = useState<any>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
   const now = Math.floor(Date.now() / 1000);
-  
+
   // Fetch membership data directly from Firestore
   useEffect(() => {
     const fetchMembershipData = async () => {
@@ -164,8 +164,7 @@ const MembershipPage = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-gray-300 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed"
           >
-            Unlock premium features and earn FSN rewards with our membership plans. 
-            FSN tokens are virtual in-app currency for enhanced features and rewards.
+            {t('membershipPage.description')}
           </motion.p>
         </motion.div>
 
@@ -191,10 +190,10 @@ const MembershipPage = () => {
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                 <div className="flex items-center gap-3">
                   <Calendar className="w-5 h-5 text-gray-400" />
-                  <span className="text-gray-300">Status:</span>
+                  <span className="text-gray-300">{t('membershipPage.status')}:</span>
                 </div>
                 <span className={`font-semibold ${actualIsExpired ? 'text-red-400' : 'text-green-400'}`}>
-                  {actualIsExpired ? 'Expired' : 'Active'} - {new Date(actualSubscriptionEnd * 1000).toLocaleDateString()}
+                  {actualIsExpired ? t('membershipPage.expired') : t('membershipPage.active')} - {new Date(actualSubscriptionEnd * 1000).toLocaleDateString()}
                 </span>
               </div>
             )}
@@ -209,8 +208,8 @@ const MembershipPage = () => {
           className="mb-12"
         >
           <div className="text-center mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">Choose Your Plan</h2>
-            <p className="text-gray-400 text-lg">Unlock premium features with our membership plans</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">{t('membershipPage.chooseYourPlan')}</h2>
+            <p className="text-gray-400 text-lg">{t('membershipPage.unlockPremiumFeatures')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -244,7 +243,7 @@ const MembershipPage = () => {
                   {isActive && (
                     <div className="absolute top-4 right-4">
                       <div className="bg-yellow-400 text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                        ACTIVE
+                        {t('membershipPage.active')}
                       </div>
                     </div>
                   )}
@@ -260,7 +259,7 @@ const MembershipPage = () => {
                         <div className="flex items-center justify-center gap-2">
                           <Gift className="w-4 h-4 text-yellow-400" />
                           <span className="text-yellow-400 font-bold">{bonus.toLocaleString()} FSN</span>
-                          <span className="text-gray-400">Bonus</span>
+                          <span className="text-gray-400">{t('membershipPage.bonus')}</span>
                         </div>
                       </div>
                     </div>
@@ -269,7 +268,7 @@ const MembershipPage = () => {
                       {features.map((feature: string, i: number) => (
                         <div key={i} className="flex items-center gap-4">
                           <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
-                          <span className="text-gray-300">{t(`feature.${feature}`)}</span>
+                          <span className="text-gray-300">{t(`feature.${feature}`) || feature}</span>
                         </div>
                       ))}
                     </div>
@@ -285,7 +284,7 @@ const MembershipPage = () => {
                         onClick={() => setModalPlan({ id: plan.id, price: String(price) })}
                       >
                         <ShoppingCart className="w-6 h-6" />
-                        {plan.id === normalizedCurrentPlan && actualIsExpired ? t('membershipPage.renew') : 'Subscribe Now'}
+                        {plan.id === normalizedCurrentPlan && actualIsExpired ? t('membershipPage.renew') : t('membershipPage.subscribeNow')}
                       </button>
                     )}
                   </div>

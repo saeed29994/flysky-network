@@ -6,6 +6,7 @@ import { useButtonActions, buttonConfigs } from '../../utils/buttonActions';
 import { MENU_ITEMS } from '../../constants/landing';
 import { scrollToSection, getHeaderClasses, getHeaderInnerClasses } from '../../utils/landingUtils';
 import { useScrollEffect } from '../../hooks/useScrollEffect';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 const LandingHeader: React.FC = () => {
   const { navigateToSignup } = useButtonActions();
@@ -45,6 +46,11 @@ const LandingHeader: React.FC = () => {
                 </button>
               ))}
             </nav>
+
+            {/* Language Switcher - Desktop */}
+            <div className="hidden lg:block mr-4">
+              <LanguageSwitcher />
+            </div>
 
             {/* Get Started Button - Show on tablets and desktop */}
             <Button
@@ -104,6 +110,11 @@ const LandingHeader: React.FC = () => {
             </button>
           ))}
         </nav>
+
+        {/* Language Switcher - Mobile */}
+        <div className="mt-6 px-4">
+          <LanguageSwitcher variant="mobile" />
+        </div>
 
         <div className="mt-auto pt-8">
           <Button

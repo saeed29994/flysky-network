@@ -5,7 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { Copy, Download, Gift, Users, Share2, Trophy, TrendingUp, CheckCircle, Clock, XCircle } from 'lucide-react';
 import QRCode from 'react-qr-code';
 import { toPng } from 'html-to-image';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import ReferralBonusButton from '../components/ReferralBonusButton';
 
@@ -16,7 +16,7 @@ interface Referral {
 }
 
 const ReferralProgram = () => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const [referralLink, setReferralLink] = useState('');
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [copied, setCopied] = useState(false);
@@ -178,7 +178,7 @@ const ReferralProgram = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-white text-center">
           <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-          <p>Loading referral data...</p>
+          <p>{t('referralPage.loading')}</p>
         </div>
       </div>
     );
@@ -216,7 +216,7 @@ const ReferralProgram = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 tracking-tight"
               >
-                👥 Referral Program
+                👥 {t('referralPage.title')}
               </motion.h1>
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
@@ -224,7 +224,7 @@ const ReferralProgram = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-gray-300 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
               >
-                Invite friends and earn rewards together. Share your referral link and start earning FSN tokens!
+                {t('referralPage.description')}
               </motion.p>
             </div>
           </div>
@@ -252,8 +252,8 @@ const ReferralProgram = () => {
                     <Users className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xs sm:text-sm font-bold text-white">Referral Overview</h3>
-                    <p className="text-[10px] sm:text-xs text-gray-400">Your referral performance</p>
+                    <h3 className="text-xs sm:text-sm font-bold text-white">{t('referralPage.overview')}</h3>
+                    <p className="text-[10px] sm:text-xs text-gray-400">{t('referralPage.performance')}</p>
                   </div>
                 </div>
                 
@@ -282,15 +282,15 @@ const ReferralProgram = () => {
                       <Users className="w-5 h-5 text-white" />
                     </div>
                                           <div>
-                        <h3 className="text-xs sm:text-sm font-bold text-white">Total Referrals</h3>
-                        <p className="text-[10px] sm:text-xs text-gray-400">All time</p>
+                        <h3 className="text-xs sm:text-sm font-bold text-white">{t('referralPage.totalReferrals')}</h3>
+                        <p className="text-[10px] sm:text-xs text-gray-400">{t('referralPage.allTime')}</p>
                       </div>
                     </div>
                     <div className="text-center">
                       <div className="text-lg sm:text-xl font-bold text-white">
                         {referrals.length}
                       </div>
-                      <div className="text-[10px] sm:text-xs text-blue-400 font-semibold">Referrals</div>
+                      <div className="text-[10px] sm:text-xs text-blue-400 font-semibold">{t('referralPage.referrals')}</div>
                   </div>
                 </div>
 
@@ -301,14 +301,14 @@ const ReferralProgram = () => {
                       <CheckCircle className="w-5 h-5 text-white" />
                     </div>
                                           <div>
-                        <h3 className="text-xs sm:text-sm font-bold text-white">Verified</h3>
-                        <p className="text-[10px] sm:text-xs text-gray-400">Confirmed</p>
+                        <h3 className="text-xs sm:text-sm font-bold text-white">{t('referralPage.verified')}</h3>
+                        <p className="text-[10px] sm:text-xs text-gray-400">{t('referralPage.confirmed')}</p>
                       </div>
                     </div>
                     <div className="text-center">
                       <div className="text-lg sm:text-xl font-bold text-white">{verifiedCount}</div>
                       <div className="text-[10px] sm:text-xs text-green-400 font-semibold">
-                        {unclaimedVerifiedCount > 0 ? 'Ready to Claim' : 'Verified'}
+                        {unclaimedVerifiedCount > 0 ? t('referralPage.readyToClaim') : t('referralPage.verified')}
                       </div>
                     </div>
                 </div>
@@ -320,13 +320,13 @@ const ReferralProgram = () => {
                       <Clock className="w-5 h-5 text-white" />
                     </div>
                                           <div>
-                        <h3 className="text-xs sm:text-sm font-bold text-white">Pending</h3>
-                        <p className="text-[10px] sm:text-xs text-gray-400">Awaiting</p>
+                        <h3 className="text-xs sm:text-sm font-bold text-white">{t('referralPage.pending')}</h3>
+                        <p className="text-[10px] sm:text-xs text-gray-400">{t('referralPage.awaiting')}</p>
                       </div>
                     </div>
                     <div className="text-center">
                       <div className="text-lg sm:text-xl font-bold text-white">{pendingCount}</div>
-                      <div className="text-[10px] sm:text-xs text-yellow-400 font-semibold">In Review</div>
+                      <div className="text-[10px] sm:text-xs text-yellow-400 font-semibold">{t('referralPage.inReview')}</div>
                   </div>
                 </div>
               </div>
@@ -344,8 +344,8 @@ const ReferralProgram = () => {
                   <Share2 className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-lg sm:text-xl font-bold text-white">Your Referral Link</h2>
-                  <p className="text-xs sm:text-sm text-gray-400">Share this link with friends to earn rewards</p>
+                  <h2 className="text-lg sm:text-xl font-bold text-white">{t('referralPage.yourReferralLink')}</h2>
+                  <p className="text-xs sm:text-sm text-gray-400">{t('referralPage.shareLinkToEarn')}</p>
                 </div>
               </div>
 
@@ -374,7 +374,7 @@ const ReferralProgram = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-green-400 text-sm font-medium"
                   >
-                    ✅ Copied!
+                    ✅ {t('copied')}
                   </motion.p>
                 )}
 
@@ -388,10 +388,10 @@ const ReferralProgram = () => {
                     className="mt-4 flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-4 py-2 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     <Download className="w-4 h-4" />
-                    Download QR
+                    {t('referralPage.downloadQR')}
                   </button>
                   <p className="text-sm text-gray-400 text-center mt-2">
-                    Scan to share
+                    {t('referralPage.scanToShare')}
                   </p>
                 </div>
               </div>
@@ -409,8 +409,8 @@ const ReferralProgram = () => {
                   <Gift className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold text-white">Referral Bonus</h3>
-                  <p className="text-xs sm:text-sm text-gray-400">Claim your available bonuses</p>
+                  <h3 className="text-base sm:text-lg font-bold text-white">{t('referralPage.bonus')}</h3>
+                  <p className="text-xs sm:text-sm text-gray-400">{t('referralPage.claimBonuses')}</p>
                 </div>
               </div>
               <ReferralBonusButton />
@@ -429,8 +429,8 @@ const ReferralProgram = () => {
                     <TrendingUp className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">Your Referrals</h3>
-                    <p className="text-xs sm:text-sm text-gray-400">Track your referral progress</p>
+                                      <h3 className="text-base sm:text-lg font-bold text-white">{t('referralPage.yourReferrals')}</h3>
+                  <p className="text-xs sm:text-sm text-gray-400">{t('referralPage.trackProgress')}</p>
                   </div>
                 </div>
               </div>
@@ -439,9 +439,9 @@ const ReferralProgram = () => {
                 <table className="w-full">
                   <thead className="bg-white/5">
                     <tr>
-                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">Email</th>
-                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">Status</th>
-                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">Action</th>
+                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">{t('referralPage.email')}</th>
+                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">{t('referralPage.status')}</th>
+                      <th className="p-2 sm:p-4 text-left text-xs sm:text-sm font-semibold text-gray-300">{t('referralPage.action')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -450,8 +450,8 @@ const ReferralProgram = () => {
                         <td className="p-4 sm:p-6 text-center text-gray-500" colSpan={3}>
                           <div className="flex flex-col items-center gap-2">
                             <Users className="w-6 h-6 sm:w-8 sm:h-8 text-gray-600" />
-                            <p className="text-sm sm:text-base">No referrals yet</p>
-                            <p className="text-xs sm:text-sm">Share your referral link to get started!</p>
+                            <p className="text-sm sm:text-base">{t('referralPage.noReferralsYet')}</p>
+                            <p className="text-xs sm:text-sm">{t('referralPage.shareLinkToStart')}</p>
                           </div>
                         </td>
                       </tr>
@@ -474,12 +474,12 @@ const ReferralProgram = () => {
                                 className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black px-2 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-1 sm:gap-2"
                               >
                                 <Gift className="w-3 h-3 sm:w-4 sm:h-4" />
-                                Claim
+                                {t('referralPage.claim')}
                               </button>
                             ) : ref.claimed ? (
                               <span className="text-green-400 font-medium flex items-center gap-2">
                                 <CheckCircle className="w-4 h-4" />
-                                Claimed
+                                {t('referralPage.claimed')}
                               </span>
                             ) : (
                               <span className="text-gray-400">—</span>
@@ -509,34 +509,34 @@ const ReferralProgram = () => {
                     <Trophy className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">Bonus Tiers</h3>
-                    <p className="text-xs sm:text-sm text-gray-400">Reward structure</p>
+                                      <h3 className="text-base sm:text-lg font-bold text-white">{t('referralPage.bonusTiers')}</h3>
+                  <p className="text-xs sm:text-sm text-gray-400">{t('referralPage.rewardStructure')}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-4 border border-green-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold">Tier 1</span>
+                      <span className="text-white font-semibold">{t('referralPage.tier1')}</span>
                       <span className="text-green-400 font-bold">100 FSN</span>
                     </div>
-                    <p className="text-sm text-gray-300">1-10 Verified Referrals</p>
+                    <p className="text-sm text-gray-300">{t('referralPage.tier1Description')}</p>
                   </div>
 
                   <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 border border-blue-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold">Tier 2</span>
+                      <span className="text-white font-semibold">{t('referralPage.tier2')}</span>
                       <span className="text-blue-400 font-bold">200 FSN</span>
                     </div>
-                    <p className="text-sm text-gray-300">11-20 Verified Referrals</p>
+                    <p className="text-sm text-gray-300">{t('referralPage.tier2Description')}</p>
                   </div>
 
                   <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-4 border border-purple-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold">Tier 3</span>
+                      <span className="text-white font-semibold">{t('referralPage.tier3')}</span>
                       <span className="text-purple-400 font-bold">300 FSN</span>
                     </div>
-                    <p className="text-sm text-gray-300">21+ Verified Referrals</p>
+                    <p className="text-sm text-gray-300">{t('referralPage.tier3Description')}</p>
                   </div>
                 </div>
               </div>
@@ -548,33 +548,33 @@ const ReferralProgram = () => {
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">Referral Summary</h3>
-                    <p className="text-xs sm:text-sm text-gray-400">Performance overview</p>
+                                      <h3 className="text-base sm:text-lg font-bold text-white">{t('referralPage.referralSummary')}</h3>
+                  <p className="text-xs sm:text-sm text-gray-400">{t('referralPage.performanceOverview')}</p>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Total Referrals</span>
+                    <span className="text-gray-400 text-sm">{t('referralPage.totalReferrals')}</span>
                     <span className="text-white font-semibold">{referrals.length}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Verified</span>
+                    <span className="text-gray-400 text-sm">{t('referralPage.verified')}</span>
                     <span className="text-green-400 font-semibold">{verifiedCount}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Pending</span>
+                    <span className="text-gray-400 text-sm">{t('referralPage.pending')}</span>
                     <span className="text-yellow-400 font-semibold">{pendingCount}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Rejected</span>
+                    <span className="text-gray-400 text-sm">{t('referralPage.rejected')}</span>
                     <span className="text-red-400 font-semibold">{rejectedCount}</span>
                   </div>
                 </div>
 
                 {verifiedCount > 0 && (
                   <div className="mt-4 pt-4 border-t border-white/10">
-                    <p className="text-sm text-gray-400 mb-2">Verified Emails:</p>
+                    <p className="text-sm text-gray-400 mb-2">{t('referralPage.verifiedEmails')}:</p>
                     <div className="text-xs text-gray-300 space-y-1">
                       {verifiedEmails.map((email, index) => (
                         <div key={index} className="flex items-center gap-2">

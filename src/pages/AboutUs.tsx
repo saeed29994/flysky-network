@@ -88,7 +88,7 @@ const AboutUs: React.FC = () => {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-white">{t("about.visionTitle")}</h2>
-                    <p className="text-gray-400">Our future vision</p>
+                    <p className="text-gray-400">{t("about.ourFutureVision")}</p>
                   </div>
                 </div>
                 <p className="text-gray-300 text-lg leading-relaxed">
@@ -104,7 +104,7 @@ const AboutUs: React.FC = () => {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-white">{t("about.missionTitle")}</h2>
-                    <p className="text-gray-400">Our purpose</p>
+                    <p className="text-gray-400">{t("about.ourPurpose")}</p>
                   </div>
                 </div>
                 <p className="text-gray-300 text-lg leading-relaxed">
@@ -123,7 +123,7 @@ const AboutUs: React.FC = () => {
           >
             <div className="text-center mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">{t("about.featuresTitle")}</h2>
-              <p className="text-gray-400 text-lg">Discover what makes our platform unique</p>
+              <p className="text-gray-400 text-lg">{t("about.discoverWhatMakesUnique")}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -131,7 +131,7 @@ const AboutUs: React.FC = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                   <Coins className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Earn FSN Points</h3>
+                <h3 className="text-xl font-bold text-white mb-4">{t("about.earnFSNPoints")}</h3>
                 <p className="text-gray-400 text-lg leading-relaxed">
                   {t("about.features.earn")}
                 </p>
@@ -141,7 +141,7 @@ const AboutUs: React.FC = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                   <Gift className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Unlock Features</h3>
+                <h3 className="text-xl font-bold text-white mb-4">{t("about.unlockFeatures")}</h3>
                 <p className="text-gray-400 text-lg leading-relaxed">
                   {t("about.features.unlock")}
                 </p>
@@ -151,7 +151,7 @@ const AboutUs: React.FC = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                   <Gamepad2 className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Interactive Games</h3>
+                <h3 className="text-xl font-bold text-white mb-4">{t("about.interactiveGames")}</h3>
                 <p className="text-gray-400 text-lg leading-relaxed">
                   {t("about.features.enjoy")}
                 </p>
@@ -174,7 +174,7 @@ const AboutUs: React.FC = () => {
                   </div>
                   <div>
                     <h2 className="text-3xl font-bold text-white">{t("about.fsnPoints.title")}</h2>
-                    <p className="text-gray-400 text-lg">Virtual in-app currency</p>
+                    <p className="text-gray-400 text-lg">{t("about.virtualInAppCurrency")}</p>
                   </div>
                 </div>
               </div>
@@ -204,7 +204,7 @@ const AboutUs: React.FC = () => {
                   </div>
                   <div>
                     <h2 className="text-3xl font-bold text-white">{t("about.battleLegend.title")}</h2>
-                    <p className="text-gray-400 text-lg">Thrilling adventures await</p>
+                    <p className="text-gray-400 text-lg">{t("about.thrillingAdventuresAwait")}</p>
                   </div>
                 </div>
               </div>
@@ -219,15 +219,15 @@ const AboutUs: React.FC = () => {
                       <div className="space-y-3">
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span className="text-white">Compete with other players</span>
+                          <span className="text-white">{t("about.competeWithOtherPlayers")}</span>
                         </div>
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span className="text-white">Win exciting rewards</span>
+                          <span className="text-white">{t("about.winExcitingRewards")}</span>
                         </div>
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span className="text-white">All within the app</span>
+                          <span className="text-white">{t("about.allWithinTheApp")}</span>
                         </div>
                       </div>
                     </div>
@@ -236,7 +236,7 @@ const AboutUs: React.FC = () => {
                     <div className="w-48 h-48 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl flex items-center justify-center mx-auto border border-purple-500/30">
                       <Play className="w-16 h-16 text-purple-400" />
                     </div>
-                    <p className="text-gray-400 mt-4">Coming Soon</p>
+                    <p className="text-gray-400 mt-4">{t("about.comingSoon")}</p>
                   </div>
                 </div>
               </div>
@@ -255,32 +255,32 @@ const AboutUs: React.FC = () => {
                 <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">Safe & Secure</h3>
-                <p className="text-gray-400 text-sm">Your data and rewards are protected</p>
+                <h3 className="text-lg font-bold text-white mb-2">{t("about.safeAndSecure")}</h3>
+                <p className="text-gray-400 text-sm">{t("about.yourDataAndRewardsProtected")}</p>
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Zap className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">Fast & Smooth</h3>
-                <p className="text-gray-400 text-sm">Optimized for the best experience</p>
+                <h3 className="text-lg font-bold text-white mb-2">{t("about.fastAndSmooth")}</h3>
+                <p className="text-gray-400 text-sm">{t("about.optimizedForBestExperience")}</p>
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Users className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">Community</h3>
-                <p className="text-gray-400 text-sm">Join our growing community</p>
+                <h3 className="text-lg font-bold text-white mb-2">{t("about.community")}</h3>
+                <p className="text-gray-400 text-sm">{t("about.joinOurGrowingCommunity")}</p>
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Award className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">Rewards</h3>
-                <p className="text-gray-400 text-sm">Earn while having fun</p>
+                <h3 className="text-lg font-bold text-white mb-2">{t("about.rewards")}</h3>
+                <p className="text-gray-400 text-sm">{t("about.earnWhileHavingFun")}</p>
               </div>
             </div>
           </motion.div>
@@ -296,13 +296,13 @@ const AboutUs: React.FC = () => {
               <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <Heart className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
+              <h2 className="text-3xl font-bold text-white mb-4">{t("about.readyToGetStarted")}</h2>
               <p className="text-gray-300 text-lg leading-relaxed mb-8 max-w-3xl mx-auto">
                 {t("about.join")}
               </p>
               <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-purple-600 transition-colors flex items-center gap-3 mx-auto">
                 <ArrowRight className="w-5 h-5" />
-                Get Started Today
+                {t("about.getStartedToday")}
               </button>
             </div>
           </motion.div>

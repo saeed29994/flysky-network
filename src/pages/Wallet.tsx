@@ -110,7 +110,7 @@ const Wallet = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-gray-300 text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
               >
-                Manage your FSN tokens, track your balance, and view transaction history
+                {t('wallet.description')}
               </motion.p>
             </div>
           </div>
@@ -138,7 +138,7 @@ const Wallet = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-white">{t('totalBalance')}</h2>
-                    <p className="text-gray-400">Your complete FSN portfolio</p>
+                    <p className="text-gray-400">{t('wallet.completePortfolio')}</p>
                   </div>
                 </div>
               </div>
@@ -148,7 +148,7 @@ const Wallet = () => {
                   <div className="text-4xl lg:text-5xl font-bold text-yellow-400 mb-2">
                     {totalBalance.toLocaleString()}
                   </div>
-                  <div className="text-lg text-gray-400 font-medium">FSN Tokens</div>
+                  <div className="text-lg text-gray-400 font-medium">{t('wallet.fsnTokens')}</div>
                 </div>
               </div>
             </motion.div>
@@ -168,7 +168,7 @@ const Wallet = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-white">{t('availableBalance')}</h3>
-                    <p className="text-xs text-gray-400">Ready to use</p>
+                    <p className="text-xs text-gray-400">{t('wallet.readyToUse')}</p>
                   </div>
                 </div>
                 <div className="text-center">
@@ -187,7 +187,7 @@ const Wallet = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-white">{t('lockedInStaking')}</h3>
-                    <p className="text-xs text-gray-400">In staking pools</p>
+                    <p className="text-xs text-gray-400">{t('wallet.inStakingPools')}</p>
                   </div>
                 </div>
                 <div className="text-center">
@@ -206,7 +206,7 @@ const Wallet = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-white">{t('referralRewards')}</h3>
-                    <p className="text-xs text-gray-400">From referrals</p>
+                    <p className="text-xs text-gray-400">{t('wallet.fromReferrals')}</p>
                   </div>
                 </div>
                 <div className="text-center">
@@ -232,7 +232,7 @@ const Wallet = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-white">{t('balanceDistribution')}</h2>
-                    <p className="text-gray-400">Visual breakdown of your portfolio</p>
+                    <p className="text-gray-400">{t('wallet.visualBreakdown')}</p>
                   </div>
         </div>
       </div>
@@ -243,7 +243,7 @@ const Wallet = () => {
                     <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Coins className="w-8 h-8 text-gray-400" />
                     </div>
-          <p className="text-gray-400 italic">{t('noBalanceData')}</p>
+                                <p className="text-gray-400 italic">{t('wallet.noBalanceData')}</p>
                   </div>
         ) : (
                                     <div className="flex flex-col lg:flex-row items-center gap-8">
@@ -288,7 +288,7 @@ const Wallet = () => {
                           ></div>
                           <div className="flex-1">
                             <div className="text-white font-medium text-sm">{item.name}</div>
-                            <div className="text-gray-400 text-xs">{item.value.toLocaleString()} FSN</div>
+                            <div className="text-gray-400 text-xs">{item.value.toLocaleString()} {t('wallet.fsn')}</div>
                           </div>
                           <div className="text-right">
                             <div className="text-white font-bold text-sm">
@@ -321,7 +321,7 @@ const Wallet = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-white">{t('transactionHistory')}</h3>
-                      <p className="text-sm text-gray-400">Recent activity</p>
+                      <p className="text-sm text-gray-400">{t('wallet.recentActivity')}</p>
                     </div>
                   </div>
       </div>
@@ -332,7 +332,7 @@ const Wallet = () => {
                       <div className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Clock className="w-6 h-6 text-gray-400" />
                       </div>
-          <p className="text-gray-400 italic">{t('noTransactions')}</p>
+          <p className="text-gray-400 italic">{t('wallet.noTransactions')}</p>
                     </div>
         ) : (
                     <div className="space-y-4 max-h-96 overflow-y-auto">
@@ -371,28 +371,28 @@ const Wallet = () => {
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Portfolio Stats</h3>
-                    <p className="text-sm text-gray-400">Quick overview</p>
+                    <h3 className="text-lg font-bold text-white">{t('wallet.portfolioStats')}</h3>
+                    <p className="text-sm text-gray-400">{t('wallet.quickOverview')}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Available</span>
-                    <span className="text-green-400 font-semibold">{balance.toLocaleString()} FSN</span>
+                    <span className="text-gray-400 text-sm">{t('wallet.available')}</span>
+                    <span className="text-green-400 font-semibold">{balance.toLocaleString()} {t('wallet.fsn')}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Staked</span>
-                    <span className="text-orange-400 font-semibold">{lockedInStaking.toLocaleString()} FSN</span>
+                    <span className="text-gray-400 text-sm">{t('wallet.staked')}</span>
+                    <span className="text-orange-400 font-semibold">{lockedInStaking.toLocaleString()} {t('wallet.fsn')}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Referrals</span>
-                    <span className="text-purple-400 font-semibold">{referralRewards.toLocaleString()} FSN</span>
+                    <span className="text-gray-400 text-sm">{t('wallet.referrals')}</span>
+                    <span className="text-purple-400 font-semibold">{referralRewards.toLocaleString()} {t('wallet.fsn')}</span>
                   </div>
                   <div className="pt-3 border-t border-white/10">
                     <div className="flex justify-between items-center">
-                      <span className="text-white font-semibold">Total</span>
-                      <span className="text-yellow-400 font-bold text-lg">{totalBalance.toLocaleString()} FSN</span>
+                      <span className="text-white font-semibold">{t('wallet.total')}</span>
+                      <span className="text-yellow-400 font-bold text-lg">{totalBalance.toLocaleString()} {t('wallet.fsn')}</span>
                     </div>
                   </div>
                 </div>

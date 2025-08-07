@@ -110,29 +110,29 @@ const Dashboard = () => {
     {
       to: '/mining',
       icon: <FaGem className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Daily Mining',
-      description: 'Start earning daily rewards',
+      title: t('dashboard.quickActions.mining.title'),
+      description: t('dashboard.quickActions.mining.description'),
       color: 'bg-gradient-to-br from-amber-500 to-orange-500'
     },
     {
       to: '/staking',
       icon: <FaCoins className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Staking',
-      description: 'Earn passive income',
+      title: t('dashboard.quickActions.staking.title'),
+      description: t('dashboard.quickActions.staking.description'),
       color: 'bg-gradient-to-br from-green-500 to-emerald-500'
     },
     {
       to: '/wallet',
       icon: <FaWallet className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Wallet',
-      description: 'Manage your funds',
+      title: t('dashboard.quickActions.wallet.title'),
+      description: t('dashboard.quickActions.wallet.description'),
       color: 'bg-gradient-to-br from-blue-500 to-purple-500'
     },
     {
       to: '/referral-program',
       icon: <FaShareAlt className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Referrals',
-      description: 'Invite friends & earn',
+      title: t('dashboard.quickActions.referrals.title'),
+      description: t('dashboard.quickActions.referrals.description'),
       color: 'bg-gradient-to-br from-purple-500 to-pink-500'
     }
   ];
@@ -141,43 +141,43 @@ const Dashboard = () => {
     {
       to: '/membership',
       icon: <FaRocket className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Membership Plans',
-      description: 'Upgrade your plan for better rewards',
+      title: t('dashboard.features.membership.title'),
+      description: t('dashboard.features.membership.description'),
       highlight: true
     },
     {
       to: '/playtoearn',
       icon: <FaGamepad className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Play to Earn',
-      description: 'Play games and earn tokens',
+      title: t('dashboard.features.playToEarn.title'),
+      description: t('dashboard.features.playToEarn.description'),
       highlight: false
     },
     {
       to: '/watch-to-earn',
       icon: <FaVideo className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Watch to Earn',
-      description: 'Watch ads and earn rewards',
+      title: t('dashboard.features.watchToEarn.title'),
+      description: t('dashboard.features.watchToEarn.description'),
       highlight: false
     },
     {
       to: '/inbox',
       icon: <FaEnvelope className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Inbox',
-      description: 'Messages and notifications',
+      title: t('dashboard.features.inbox.title'),
+      description: t('dashboard.features.inbox.description'),
       highlight: false
     },
     {
       to: '/kyc',
       icon: <FaIdCard className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'KYC Verification',
-      description: 'Verify your identity',
+      title: t('dashboard.features.kyc.title'),
+      description: t('dashboard.features.kyc.description'),
       highlight: false
     },
     {
       to: '/settings',
       icon: <FaCogs className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: 'Settings',
-      description: 'Account preferences',
+      title: t('dashboard.features.settings.title'),
+      description: t('dashboard.features.settings.description'),
       highlight: false
     }
   ];
@@ -187,7 +187,7 @@ const Dashboard = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-white">Loading dashboard...</p>
+          <p className="text-white">{t('dashboard.loading')}</p>
         </div>
       </div>
     );
@@ -210,10 +210,10 @@ const Dashboard = () => {
             </div>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-4">
-            Welcome to FlySky Network
+            {t('dashboard.welcome')}
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            Explore. Earn. Grow.
+            {t('dashboard.tagline')}
           </p>
         </div>
 
@@ -223,7 +223,7 @@ const Dashboard = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
-                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Total Balance</p>
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">{t('dashboard.stats.totalBalance')}</p>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{totalBalance.toLocaleString()} FSN</p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
@@ -236,7 +236,7 @@ const Dashboard = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
-                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Available Balance</p>
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">{t('dashboard.stats.availableBalance')}</p>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{balance.toLocaleString()} FSN</p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
@@ -248,7 +248,7 @@ const Dashboard = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
-                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Referrals</p>
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">{t('dashboard.stats.referrals')}</p>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{referralsCount}</p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
@@ -260,7 +260,7 @@ const Dashboard = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20">
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
-                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">Mining Level</p>
+                <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">{t('dashboard.stats.miningLevel')}</p>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{miningLevel}</p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
@@ -272,7 +272,7 @@ const Dashboard = () => {
 
         {/* Quick Actions - Mobile Optimized Grid */}
         <div className="mb-8 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Quick Actions</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">{t('dashboard.quickActions.title')}</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {quickActions.map((action, index) => (
               <Link key={index} to={action.to} className="group">
@@ -290,7 +290,7 @@ const Dashboard = () => {
 
         {/* Features Grid - Mobile Optimized */}
         <div className="mb-8 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Platform Features</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">{t('dashboard.features.title')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
             {features.map((feature, index) => (
               <Link key={index} to={feature.to} className="group">
@@ -306,7 +306,7 @@ const Dashboard = () => {
                   {feature.highlight && (
                     <div className="mt-2 sm:mt-4">
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                        Popular
+                        {t('dashboard.features.popular')}
                       </span>
                     </div>
                   )}
@@ -328,8 +328,8 @@ const Dashboard = () => {
               </div>
               <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-white transition-colors" />
             </div>
-            <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white mb-1 sm:mb-2">Contact Support</h3>
-            <p className="text-xs sm:text-sm text-gray-400">Get help and support from our team</p>
+            <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white mb-1 sm:mb-2">{t('dashboard.contactSupport.title')}</h3>
+            <p className="text-xs sm:text-sm text-gray-400">{t('dashboard.contactSupport.description')}</p>
           </button>
 
           <Link to="/about" className="group">
@@ -340,8 +340,8 @@ const Dashboard = () => {
                 </div>
                 <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-white transition-colors" />
               </div>
-              <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white mb-1 sm:mb-2">About Us</h3>
-              <p className="text-xs sm:text-sm text-gray-400">Learn more about FlySky Network</p>
+              <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white mb-1 sm:mb-2">{t('dashboard.aboutUs.title')}</h3>
+              <p className="text-xs sm:text-sm text-gray-400">{t('dashboard.aboutUs.description')}</p>
             </div>
           </Link>
         </div>
@@ -351,44 +351,44 @@ const Dashboard = () => {
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-white/10 shadow-2xl max-w-md w-full">
               <div className="bg-gradient-to-r from-slate-700 to-purple-700 px-4 sm:px-6 py-4 border-b border-white/10 rounded-t-xl sm:rounded-t-2xl">
-                <h2 className="text-lg sm:text-xl font-bold text-white">Contact Support</h2>
-                <p className="text-gray-400 text-xs sm:text-sm mt-1">We're here to help you</p>
+                <h2 className="text-lg sm:text-xl font-bold text-white">{t('dashboard.contactModal.title')}</h2>
+                <p className="text-gray-400 text-xs sm:text-sm mt-1">{t('dashboard.contactModal.subtitle')}</p>
               </div>
               <div className="p-4 sm:p-6">
                 <form ref={formRef} onSubmit={sendEmail} className="space-y-3 sm:space-y-4">
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">
-                      Name
+                      {t('dashboard.contactModal.name')}
                     </label>
                     <input
                       type="text"
                       name="user_name"
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-slate-700 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors text-sm"
-                      placeholder="Your name"
+                      placeholder={t('dashboard.contactModal.namePlaceholder')}
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">
-                      Email
+                      {t('dashboard.contactModal.email')}
                     </label>
                     <input
                       type="email"
                       name="user_email"
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-slate-700 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors text-sm"
-                      placeholder="your@email.com"
+                      placeholder={t('dashboard.contactModal.emailPlaceholder')}
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">
-                      Message
+                      {t('dashboard.contactModal.message')}
                     </label>
                     <textarea
                       name="message"
                       rows={3}
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-slate-700 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors resize-none text-sm"
-                      placeholder="How can we help you?"
+                      placeholder={t('dashboard.contactModal.messagePlaceholder')}
                       required
                     />
                   </div>
@@ -397,14 +397,14 @@ const Dashboard = () => {
                       type="submit"
                       className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-all duration-300 text-sm"
                     >
-                      Send Message
+                      {t('dashboard.contactModal.send')}
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowContactForm(false)}
                       className="px-4 sm:px-6 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-colors text-sm"
                     >
-                      Cancel
+                      {t('dashboard.contactModal.cancel')}
                     </button>
                   </div>
                 </form>

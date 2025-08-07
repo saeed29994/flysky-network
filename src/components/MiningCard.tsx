@@ -184,7 +184,7 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
   };
 
   const chartData = {
-    labels: history.map((_, i) => `Day ${i + 1}`),
+    labels: history.map((_, i) => `${t('miningPage.day')} ${i + 1}`),
     datasets: [
       {
         label: t('miningPage.miningHistory'),
@@ -319,14 +319,14 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-white">{t('miningPage.balance')}</h3>
-                    <p className="text-xs text-gray-400">Available</p>
+                    <p className="text-xs text-gray-400">{t('miningPage.available')}</p>
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-xl font-bold text-white">
                     {balance.toLocaleString()}
                   </div>
-                  <div className="text-xs text-green-400 font-semibold">FSN</div>
+                  <div className="text-xs text-green-400 font-semibold">{t('miningPage.fsn')}</div>
                 </div>
               </div>
 
@@ -338,12 +338,12 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-white">{currentPlan.name}</h3>
-                    <p className="text-xs text-gray-400">Current Plan</p>
+                    <p className="text-xs text-gray-400">{t('miningPage.currentPlan')}</p>
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold text-white">{PLAN_LIMITS[normalizedPlan]}</div>
-                  <div className="text-xs text-amber-400 font-semibold">Daily Limit</div>
+                  <div className="text-xs text-amber-400 font-semibold">{t('miningPage.dailyLimit')}</div>
                 </div>
               </div>
 
@@ -354,14 +354,14 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                     <FaChartLine className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white">Progress</h3>
-                    <p className="text-xs text-gray-400">Current Cycle</p>
+                    <h3 className="text-sm font-bold text-white">{t('miningPage.progress')}</h3>
+                    <p className="text-xs text-gray-400">{t('miningPage.currentCycle')}</p>
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold text-white">{Math.floor(mined)}</div>
                   <div className="text-xs text-yellow-400 font-semibold">
-                    {Math.round((mined / PLAN_LIMITS[normalizedPlan]) * 100)}% Complete
+                    {Math.round((mined / PLAN_LIMITS[normalizedPlan]) * 100)}% {t('miningPage.complete')}
                   </div>
                 </div>
               </div>
@@ -378,7 +378,7 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                 <div className="text-5xl font-extrabold text-white mb-2">
                   {isNaN(mined) ? 0 : Math.floor(mined)}
         </div>
-                <div className="text-xl text-yellow-400 font-semibold mb-4">FSN {t('mining')}</div>
+                <div className="text-xl text-yellow-400 font-semibold mb-4">{t('miningPage.fsn')} {t('mining')}</div>
                 
                 {/* Progress Bar */}
                 <div className="w-full bg-gray-700 rounded-full h-3 mb-4 overflow-hidden">
@@ -391,7 +391,7 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
         </div>
                 
                 <div className="text-sm text-gray-400">
-                  {Math.floor(mined)} / {PLAN_LIMITS[normalizedPlan]} FSN
+                  {Math.floor(mined)} / {PLAN_LIMITS[normalizedPlan]} {t('miningPage.fsn')}
                 </div>
               </div>
 
@@ -502,15 +502,15 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
-                    <span className="text-gray-300">Daily mining rewards</span>
+                    <span className="text-gray-300">{t('miningPage.dailyMiningRewards')}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
-                    <span className="text-gray-300">12-hour mining cycles</span>
+                    <span className="text-gray-300">{t('miningPage.miningCycles')}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full"></div>
-                    <span className="text-gray-300">Manual claim system</span>
+                    <span className="text-gray-300">{t('miningPage.manualClaimSystem')}</span>
                   </div>
                 </div>
 
@@ -538,21 +538,21 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                     <FaChartLine className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Mining Stats</h3>
-                    <p className="text-sm text-gray-400">Performance Overview</p>
+                    <h3 className="text-lg font-bold text-white">{t('miningPage.miningStats')}</h3>
+                    <p className="text-sm text-gray-400">{t('miningPage.performanceOverview')}</p>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Current Mined</span>
+                    <span className="text-gray-400 text-sm">{t('miningPage.currentMined')}</span>
                     <span className="text-yellow-400 font-semibold">{Math.floor(mined)} FSN</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Daily Limit</span>
+                    <span className="text-gray-400 text-sm">{t('miningPage.dailyLimit')}</span>
                     <span className="text-white font-semibold">{PLAN_LIMITS[normalizedPlan]} FSN</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Progress</span>
+                    <span className="text-gray-400 text-sm">{t('miningPage.progress')}</span>
                     <span className="text-green-400 font-semibold">{Math.round((mined / PLAN_LIMITS[normalizedPlan]) * 100)}%</span>
                   </div>
                 </div>

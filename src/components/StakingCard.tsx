@@ -42,13 +42,13 @@ const StakingCard = ({ plan, lockedAmount }: StakingCardProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FaLock className="w-5 h-5 text-amber-400" />
-            <span className="text-sm text-gray-400 font-medium">Locked Amount</span>
+            <span className="text-sm text-gray-400 font-medium">{t('stakingCard.lockedAmount')}</span>
           </div>
           <div className="text-right">
             <div className="text-2xl sm:text-3xl font-bold text-white">
               {lockedAmount.toLocaleString()}
             </div>
-            <div className="text-sm text-amber-400 font-semibold">FSN</div>
+            <div className="text-sm text-amber-400 font-semibold">{t('stakingPage.fsn')}</div>
           </div>
         </div>
       </div>
@@ -57,15 +57,15 @@ const StakingCard = ({ plan, lockedAmount }: StakingCardProps) => {
       <div className="space-y-3">
         <div className="flex items-center gap-3 text-sm">
           <div className="w-2 h-2 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
-          <span className="text-gray-300">Passive income generation</span>
+          <span className="text-gray-300">{t('stakingCard.passiveIncome')}</span>
         </div>
         <div className="flex items-center gap-3 text-sm">
           <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
-          <span className="text-gray-300">Flexible staking periods</span>
+          <span className="text-gray-300">{t('stakingCard.flexiblePeriods')}</span>
         </div>
         <div className="flex items-center gap-3 text-sm">
           <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full"></div>
-          <span className="text-gray-300">High APY returns</span>
+          <span className="text-gray-300">{t('stakingCard.highApyReturns')}</span>
         </div>
       </div>
 
@@ -74,11 +74,11 @@ const StakingCard = ({ plan, lockedAmount }: StakingCardProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FaChartLine className="w-4 h-4 text-green-400" />
-            <span className="text-xs text-gray-400">Status</span>
+            <span className="text-xs text-gray-400">{t('stakingCard.status')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-xs text-green-400 font-medium">Active</span>
+            <span className="text-xs text-green-400 font-medium">{t('stakingCard.active')}</span>
           </div>
         </div>
       </div>

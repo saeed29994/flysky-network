@@ -4,7 +4,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 import en from './locales/en/en.json';
 import ar from './locales/ar/ar.json';
-import zh from './locales/zh-CN/zh-CN.json'; // ✅ تمت إضافة الصينية
+import zh from './locales/zh-CN/zh-CN.json';
+import tr from './locales/tr/tr.json';
 
 i18n
   .use(LanguageDetector)
@@ -13,10 +14,11 @@ i18n
     resources: {
       en: { translation: en },
       ar: { translation: ar },
-      zh: { translation: zh }, // ✅ إضافة الصينية
+      zh: { translation: zh },
+      tr: { translation: tr },
     },
     fallbackLng: 'en',
-    supportedLngs: ['en', 'ar', 'zh'], // ✅ دعم الصينية
+    supportedLngs: ['en', 'ar', 'zh', 'tr'],
     interpolation: {
       escapeValue: false,
     },

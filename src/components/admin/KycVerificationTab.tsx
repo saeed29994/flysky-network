@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { 
   Shield, 
   CheckCircle, 
@@ -16,6 +17,7 @@ import {
 } from 'lucide-react';
 
 const KycVerificationTab = () => {
+  const { t } = useTranslation();
   const [kycRequests, setKycRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -93,7 +95,7 @@ const KycVerificationTab = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-3xl lg:text-5xl font-bold text-white mb-4 tracking-tight"
               >
-                🛡️ KYC Verification
+                🛡️ {t('admin.kyc.title')}
               </motion.h1>
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
@@ -101,7 +103,7 @@ const KycVerificationTab = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-gray-300 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed"
               >
-                Review and manage user identity verification requests
+                {t('admin.kyc.description')}
               </motion.p>
             </div>
           </div>
@@ -124,7 +126,7 @@ const KycVerificationTab = () => {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-white">{kycRequests.length}</h3>
-                  <p className="text-gray-400">Pending Requests</p>
+                  <p className="text-gray-400">{t('admin.kyc.pendingRequests')}</p>
                 </div>
               </div>
             </div>
@@ -136,7 +138,7 @@ const KycVerificationTab = () => {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-white">0</h3>
-                  <p className="text-gray-400">Approved Today</p>
+                  <p className="text-gray-400">{t('admin.kyc.approvedToday')}</p>
                 </div>
               </div>
             </div>
@@ -148,7 +150,7 @@ const KycVerificationTab = () => {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-white">0</h3>
-                  <p className="text-gray-400">Rejected Today</p>
+                  <p className="text-gray-400">{t('admin.kyc.rejectedToday')}</p>
                 </div>
               </div>
             </div>
@@ -168,8 +170,8 @@ const KycVerificationTab = () => {
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white">Pending KYC Requests</h2>
-                  <p className="text-gray-400">Review user verification documents</p>
+                  <h2 className="text-xl font-bold text-white">{t('admin.kyc.pendingKycRequests')}</h2>
+                  <p className="text-gray-400">{t('admin.kyc.reviewDocuments')}</p>
                 </div>
               </div>
             </div>
@@ -178,15 +180,15 @@ const KycVerificationTab = () => {
               {loading ? (
                 <div className="text-center py-12">
                   <div className="w-12 h-12 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="text-gray-400">Loading KYC requests...</p>
+                  <p className="text-gray-400">{t('admin.kyc.loading')}</p>
                 </div>
               ) : kycRequests.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <BadgeCheck className="w-8 h-8 text-gray-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">No Pending Requests</h3>
-                  <p className="text-gray-400">All KYC verification requests have been processed</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">{t('admin.kyc.noPendingRequests')}</h3>
+                  <p className="text-gray-400">{t('admin.kyc.allProcessed')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -270,7 +272,7 @@ const KycVerificationTab = () => {
                     </div>
                     <div>
                       <h2 className="text-xl font-bold text-white">User Details</h2>
-                      <p className="text-gray-400">KYC verification information</p>
+                      <p className="text-gray-400">{t('admin.kyc.verificationInfo')}</p>
                     </div>
                   </div>
                   <button
@@ -319,7 +321,7 @@ const KycVerificationTab = () => {
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                     <Shield className="w-5 h-5" />
-                    KYC Documents
+                    {t('admin.kyc.documents')}
                   </h3>
                   
                   <div className="space-y-4">
@@ -346,7 +348,7 @@ const KycVerificationTab = () => {
                       <div className="bg-white/5 rounded-lg p-4 border border-white/10">
                         <div className="flex items-center gap-3">
                           <AlertCircle className="w-5 h-5 text-yellow-400" />
-                          <span className="text-gray-400">No KYC documents uploaded</span>
+                          <span className="text-gray-400">{t('admin.kyc.noDocuments')}</span>
                         </div>
                       </div>
                     )}
@@ -360,7 +362,7 @@ const KycVerificationTab = () => {
                     className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-medium hover:from-green-600 hover:to-emerald-600 transition-colors flex items-center justify-center gap-2"
                   >
                     <CheckCircle className="w-5 h-5" />
-                    Approve KYC
+                    {t('admin.kyc.approve')}
                   </button>
                   
                   <button
@@ -368,7 +370,7 @@ const KycVerificationTab = () => {
                     className="flex-1 bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-xl font-medium hover:from-red-600 hover:to-pink-600 transition-colors flex items-center justify-center gap-2"
                   >
                     <XCircle className="w-5 h-5" />
-                    Reject KYC
+                    {t('admin.kyc.reject')}
                   </button>
                 </div>
               </div>

@@ -40,39 +40,39 @@ const Contact = () => {
       title: t('contact.email'),
       value: 'support@fsncrew.io',
       link: 'mailto:support@fsncrew.io',
-      description: 'Get in touch via email'
+      description: t('contact.getInTouchViaEmail')
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: t('contact.phone'),
       value: '+1 (555) 123-4567',
       link: 'tel:+15551234567',
-      description: 'Call us directly'
+      description: t('contact.callUsDirectly')
     },
     {
       icon: <MapPin className="w-6 h-6" />,
       title: t('contact.address'),
       value: 'FlySky Network Headquarters',
       link: null,
-      description: 'Our main office'
+      description: t('contact.ourMainOffice')
     }
   ];
 
   const supportFeatures = [
     {
       icon: <Clock className="w-5 h-5" />,
-      title: '24/7 Support',
-      description: 'Round the clock assistance'
+      title: t('contact.support247'),
+      description: t('contact.roundTheClockAssistance')
     },
     {
       icon: <Shield className="w-5 h-5" />,
-      title: 'Secure Communication',
-      description: 'Your data is protected'
+      title: t('contact.secureCommunication'),
+      description: t('contact.yourDataIsProtected')
     },
     {
       icon: <MessageCircle className="w-5 h-5" />,
-      title: 'Quick Response',
-      description: 'We reply within 24 hours'
+      title: t('contact.quickResponse'),
+      description: t('contact.weReplyWithin24Hours')
     }
   ];
 
@@ -213,7 +213,7 @@ const Contact = () => {
             {/* Support Features */}
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
               <h2 className="text-2xl font-bold text-white mb-6">
-                Why Choose Our Support?
+                {t('contact.supportFeatures')}
               </h2>
               
               <div className="space-y-4">

@@ -42,8 +42,8 @@ const PlanComparisonCard: React.FC<PlanComparisonCardProps> = ({ userPlan, class
           <FaGem className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-white">Plan Comparison</h3>
-          <p className="text-sm text-gray-400">Daily limits by plan</p>
+          <h3 className="text-lg font-bold text-white">{t('planComparison.title')}</h3>
+          <p className="text-sm text-gray-400">{t('planComparison.subtitle')}</p>
         </div>
       </div>
 
@@ -53,12 +53,12 @@ const PlanComparisonCard: React.FC<PlanComparisonCardProps> = ({ userPlan, class
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-300">{getPlanLabel(planName, t)}</span>
               {planName === userPlan && (
-                <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full">Current</span>
+                <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full">{t('planComparison.current')}</span>
               )}
             </div>
             <div className="text-right">
               <div className="text-lg font-bold text-white">{limit} FSN</div>
-              <div className="text-xs text-gray-400">per day</div>
+              <div className="text-xs text-gray-400">{t('planComparison.perDay')}</div>
             </div>
           </div>
         ))}
@@ -70,7 +70,7 @@ const PlanComparisonCard: React.FC<PlanComparisonCardProps> = ({ userPlan, class
           className="w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
         >
           <FaArrowUp className="inline mr-2" />
-          Upgrade Plan
+          {t('planComparison.upgradePlan')}
         </button>
       )}
     </motion.div>

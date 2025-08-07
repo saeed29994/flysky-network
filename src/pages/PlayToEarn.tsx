@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Gamepad2, Clock, Star } from 'lucide-react';
 import playImage from '../assets/play_to_earn.jpg';
 import playImageMobile from '../assets/play_mobile.jpg';
 
 const PlayToEarn = () => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -39,7 +39,7 @@ const PlayToEarn = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-3xl lg:text-5xl font-bold text-white mb-4 tracking-tight"
               >
-                🎮 Play to Earn
+                🎮 {t('playToEarnPage.title')}
               </motion.h1>
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
@@ -47,7 +47,7 @@ const PlayToEarn = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-gray-300 text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
               >
-                Turn your gaming skills into real rewards! Play exciting games, complete missions, and earn FSN tokens.
+                {t('playToEarnPage.description')}
               </motion.p>
             </div>
           </div>
@@ -74,8 +74,8 @@ const PlayToEarn = () => {
                     <Clock className="w-5 h-5 text-white" />
                   </div>
                   <div className="min-w-0">
-                    <h2 className="text-xl font-bold text-white mb-1">Coming Soon</h2>
-                    <p className="text-gray-400 text-sm leading-relaxed">We're working hard to bring you amazing gaming experiences</p>
+                    <h2 className="text-xl font-bold text-white mb-1">{t('playToEarnPage.comingSoon')}</h2>
+                    <p className="text-gray-400 text-sm leading-relaxed">{t('playToEarnPage.workingHard')}</p>
                   </div>
                 </div>
               </div>
@@ -104,12 +104,12 @@ const PlayToEarn = () => {
                   <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <Star className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Stay Tuned!</h3>
+                  <h3 className="text-2xl font-bold text-white mb-4">{t('playToEarnPage.stayTuned')}</h3>
                   <p className="text-gray-400 mb-6 max-w-md mx-auto leading-relaxed">
-                    Our Play to Earn gaming platform is under development. Get ready to turn your gaming skills into real FSN rewards!
+                    {t('playToEarnPage.underDevelopment')}
                   </p>
                   <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-4 border border-yellow-500/30">
-                    <p className="text-yellow-400 font-medium">Coming Soon</p>
+                    <p className="text-yellow-400 font-medium">{t('playToEarnPage.comingSoon')}</p>
                   </div>
                 </div>
               </div>
@@ -131,8 +131,8 @@ const PlayToEarn = () => {
                 <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center mb-4 shadow-lg">
                   <Star className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-3">Daily Rewards</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">Earn FSN tokens daily by completing missions and challenges</p>
+                <h3 className="text-lg font-bold text-white mb-3">{t('playToEarnPage.dailyRewards')}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{t('playToEarnPage.dailyRewardsDescription')}</p>
               </motion.div>
 
               <motion.div
@@ -144,8 +144,8 @@ const PlayToEarn = () => {
                 <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-4 shadow-lg">
                   <Gamepad2 className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-3">Token Rewards</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">Convert your gaming achievements into real FSN tokens</p>
+                <h3 className="text-lg font-bold text-white mb-3">{t('playToEarnPage.tokenRewards')}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{t('playToEarnPage.tokenRewardsDescription')}</p>
               </motion.div>
             </motion.div>
           </div>
@@ -165,8 +165,8 @@ const PlayToEarn = () => {
                     <Gamepad2 className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Gaming Platform</h3>
-                    <p className="text-sm text-gray-400">What to expect</p>
+                    <h3 className="text-lg font-bold text-white">{t('playToEarnPage.gamingPlatform')}</h3>
+                    <p className="text-sm text-gray-400">{t('playToEarnPage.whatToExpect')}</p>
                   </div>
                 </div>
 
@@ -176,8 +176,8 @@ const PlayToEarn = () => {
                       1
                     </div>
                     <div>
-                      <h4 className="text-white font-medium text-sm">Start Playing</h4>
-                      <p className="text-gray-400 text-xs">Begin your gaming journey</p>
+                      <h4 className="text-white font-medium text-sm">{t('playToEarnPage.startPlaying')}</h4>
+                      <p className="text-gray-400 text-xs">{t('playToEarnPage.beginJourney')}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -185,8 +185,8 @@ const PlayToEarn = () => {
                       2
                     </div>
                     <div>
-                      <h4 className="text-white font-medium text-sm">Choose Game</h4>
-                      <p className="text-gray-400 text-xs">Select from various game modes</p>
+                      <h4 className="text-white font-medium text-sm">{t('playToEarnPage.chooseGame')}</h4>
+                      <p className="text-gray-400 text-xs">{t('playToEarnPage.selectGameModes')}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -194,8 +194,8 @@ const PlayToEarn = () => {
                       3
                     </div>
                     <div>
-                      <h4 className="text-white font-medium text-sm">Play & Earn</h4>
-                      <p className="text-gray-400 text-xs">Complete missions and earn FSN</p>
+                      <h4 className="text-white font-medium text-sm">{t('playToEarnPage.playAndEarn')}</h4>
+                      <p className="text-gray-400 text-xs">{t('playToEarnPage.completeMissions')}</p>
                     </div>
                   </div>
                 </div>
@@ -208,34 +208,34 @@ const PlayToEarn = () => {
                     <Star className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Rewards Preview</h3>
-                    <p className="text-sm text-gray-400">Earning structure</p>
+                    <h3 className="text-lg font-bold text-white">{t('playToEarnPage.rewardsPreview')}</h3>
+                    <p className="text-sm text-gray-400">{t('playToEarnPage.earningStructure')}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-4 border border-green-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold text-sm">Daily Login</span>
+                      <span className="text-white font-semibold text-sm">{t('playToEarnPage.dailyLogin')}</span>
                       <span className="text-green-400 font-bold text-sm">50 FSN</span>
                     </div>
-                    <p className="text-xs text-gray-300">Log in daily to earn rewards</p>
+                    <p className="text-xs text-gray-300">{t('playToEarnPage.dailyLoginDescription')}</p>
                   </div>
 
                   <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 border border-blue-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold text-sm">Game Wins</span>
+                      <span className="text-white font-semibold text-sm">{t('playToEarnPage.gameWins')}</span>
                       <span className="text-blue-400 font-bold text-sm">100 FSN</span>
                     </div>
-                    <p className="text-xs text-gray-300">Win games to earn tokens</p>
+                    <p className="text-xs text-gray-300">{t('playToEarnPage.gameWinsDescription')}</p>
                   </div>
 
                   <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-4 border border-purple-500/30">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold text-sm">Achievements</span>
+                      <span className="text-white font-semibold text-sm">{t('playToEarnPage.achievements')}</span>
                       <span className="text-purple-400 font-bold text-sm">200 FSN</span>
                     </div>
-                    <p className="text-xs text-gray-300">Unlock special achievements</p>
+                    <p className="text-xs text-gray-300">{t('playToEarnPage.achievementsDescription')}</p>
                   </div>
                 </div>
               </div>
