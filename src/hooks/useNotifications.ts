@@ -1,269 +1,184 @@
-import { useState, useEffect } from 'react';
-import { auth, db } from '../firebase';
-import { 
-  collection, 
-  query, 
-  orderBy, 
-  limit, 
-  onSnapshot,
-  Timestamp,
-  doc,
-  getDoc
-} from 'firebase/firestore';
-import { 
-  Notification, 
-  markNotificationAsRead,
-  markAllNotificationsAsRead,
-  deleteNotification,
-  NotificationType
-} from '../utils/notificationSystem';
+// 📁 src/hooks/useNotifications.ts
 
-// Interface for user notification preferences
-interface NotificationPreferences {
-  inApp: boolean;        // Control in-app notifications (toast, bell)
-  push: boolean;         // Control push notifications
-  email: boolean;        // Control email notifications
-  marketing: boolean;    // Control marketing emails
-  rewards: boolean;      // Control reward notifications
-  security: boolean;     // Control security notifications
+import { useState, useEffect, useCallback } from 'react';
+import { db } from '../firebase';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
+import { apiService } from '../utils/apiService';
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+  status: 'sent' | 'scheduled' | 'draft' | 'failed';
+  targetAudience: 'all' | 'premium' | 'new' | 'inactive';
+  platforms: string[];
+  sentAt?: Date;
+  scheduledFor?: Date;
+  recipients: number;
+  opened: number;
+  clicked: number;
+  createdAt: Date;
+  createdBy: string;
 }
 
-// Default preferences if not set
-const DEFAULT_PREFERENCES: NotificationPreferences = {
-  inApp: true,
-  push: true,
-  email: true,
-  marketing: false,
-  rewards: true,
-  security: true
-};
+interface UseNotificationsReturn {
+  notifications: Notification[];
+  loading: boolean;
+  error: string | null;
+  sendNotification: (title: string, body: string) => Promise<boolean>;
+  refreshNotifications: () => Promise<void>;
+  deleteNotification: (id: string) => Promise<boolean>;
+  updateNotification: (id: string, updates: Partial<Notification>) => Promise<boolean>;
+}
 
-export const useNotifications = (limitCount = 20) => {
+export const useNotifications = (): UseNotificationsReturn => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [newNotification, setNewNotification] = useState<Notification | null>(null);
-  const [preferences, setPreferences] = useState<NotificationPreferences>(DEFAULT_PREFERENCES);
+  const [error, setError] = useState<string | null>(null);
 
-  // First, fetch user notification preferences
-  useEffect(() => {
-    const fetchNotificationPreferences = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+  const fetchNotifications = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-      try {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (userDoc.exists() && userDoc.data().notifications) {
-          const userPrefs = userDoc.data().notifications;
-          
-          // Convert from the old format to our new format if needed
-          setPreferences({
-            inApp: userPrefs.inApp !== undefined ? userPrefs.inApp : true,
-            push: userPrefs.push !== undefined ? userPrefs.push : true,
-            email: userPrefs.email !== undefined ? userPrefs.email : true,
-            marketing: userPrefs.marketing !== undefined ? userPrefs.marketing : false,
-            rewards: userPrefs.rewards !== undefined ? userPrefs.rewards : true,
-            security: userPrefs.security !== undefined ? userPrefs.security : true
-          });
-        }
-      } catch (err) {
-        console.error('Error fetching notification preferences:', err);
-      }
-    };
+      // Fetch notifications from Firestore
+      const notificationsRef = collection(db, 'notifications');
+      const notificationsQuery = query(
+        notificationsRef,
+        orderBy('createdAt', 'desc'),
+        limit(100)
+      );
 
-    fetchNotificationPreferences();
+      const snapshot = await getDocs(notificationsQuery);
+      const fetchedNotifications: Notification[] = [];
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        fetchedNotifications.push({
+          id: doc.id,
+          title: data.title || '',
+          message: data.message || '',
+          type: data.type || 'info',
+          status: data.status || 'draft',
+          targetAudience: data.targetAudience || 'all',
+          platforms: data.platforms || [],
+          sentAt: data.sentAt?.toDate(),
+          scheduledFor: data.scheduledFor?.toDate(),
+          recipients: data.recipients || 0,
+          opened: data.opened || 0,
+          clicked: data.clicked || 0,
+          createdAt: data.createdAt?.toDate() || new Date(),
+          createdBy: data.createdBy || 'System',
+        });
+      });
+
+      setNotifications(fetchedNotifications);
+    } catch (err) {
+      console.error('Error fetching notifications:', err);
+      setError('Failed to load notifications');
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  // Should we show in-app notifications based on preferences and notification type?
-  const shouldShowNotification = (notificationType: NotificationType): boolean => {
-    // If in-app notifications are disabled, don't show any
-    if (!preferences.inApp) return false;
-    
-    // Otherwise, check specific notification types
-    switch (notificationType) {
-      case 'claim_reward':
-      case 'referral_bonus':
-        return preferences.rewards;
-      case 'system':
-        return preferences.security;
-      case 'inbox_message':
-      case 'mining_reminder':
-      case 'staking_reminder':
-      default:
-        return true; // Always show other types if in-app is enabled
+  const sendNotification = useCallback(async (title: string, body: string): Promise<boolean> => {
+    try {
+      setError(null);
+
+      // Fetch all tokens from Firestore
+      const tokensSnapshot = await getDocs(collection(db, 'userTokens'));
+      const tokens: string[] = [];
+      
+      tokensSnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.token) {
+          tokens.push(data.token);
+        }
+      });
+
+      if (tokens.length === 0) {
+        setError('No users registered for notifications');
+        return false;
+      }
+
+      // Send notification via API
+      const response = await apiService.sendNotification({
+        title,
+        body,
+        tokens,
+      });
+
+      if (!response.success) {
+        setError(response.error || 'Failed to send notification');
+        return false;
+      }
+
+      // Add to local notifications list
+      const newNotification: Notification = {
+        id: `notif${Date.now()}`,
+        title,
+        message: body,
+        type: 'info',
+        status: 'sent',
+        targetAudience: 'all',
+        platforms: ['mobile', 'web'],
+        sentAt: new Date(),
+        recipients: tokens.length,
+        opened: 0,
+        clicked: 0,
+        createdAt: new Date(),
+        createdBy: 'Admin',
+      };
+
+      setNotifications(prev => [newNotification, ...prev]);
+      return true;
+    } catch (err) {
+      console.error('Error sending notification:', err);
+      setError('Failed to send notification');
+      return false;
     }
-  };
+  }, []);
+
+  const deleteNotification = useCallback(async (id: string): Promise<boolean> => {
+    try {
+      setNotifications(prev => prev.filter(n => n.id !== id));
+      return true;
+    } catch (err) {
+      console.error('Error deleting notification:', err);
+      setError('Failed to delete notification');
+      return false;
+    }
+  }, []);
+
+  const updateNotification = useCallback(async (id: string, updates: Partial<Notification>): Promise<boolean> => {
+    try {
+      setNotifications(prev => 
+        prev.map(n => n.id === id ? { ...n, ...updates } : n)
+      );
+      return true;
+    } catch (err) {
+      console.error('Error updating notification:', err);
+      setError('Failed to update notification');
+      return false;
+    }
+  }, []);
+
+  const refreshNotifications = useCallback(async () => {
+    await fetchNotifications();
+  }, [fetchNotifications]);
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    
-    // Query for notifications, sorted by timestamp (newest first)
-    const notificationsRef = collection(db, `users/${user.uid}/notifications`);
-    const q = query(
-      notificationsRef, 
-      orderBy('timestamp', 'desc'), 
-      limit(limitCount)
-    );
-
-    // Setup real-time listener
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        // Process notifications
-        const notificationsData = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Notification[];
-
-        // Update notifications state
-        setNotifications(notificationsData);
-        
-        // Update unread count
-        const unreadNotifications = notificationsData.filter(n => !n.read);
-        setUnreadCount(unreadNotifications.length);
-        
-        // Check for new notifications (within the last 10 seconds)
-        const tenSecondsAgo = new Date(Date.now() - 10000);
-        const recentNotifications = notificationsData.filter(notification => {
-          // Check if timestamp is a Firestore timestamp
-          if (notification.timestamp instanceof Timestamp) {
-            return notification.timestamp.toDate() > tenSecondsAgo;
-          }
-          // Fallback for any numeric timestamp (milliseconds)
-          return (notification.timestamp as any) > tenSecondsAgo.getTime();
-        });
-
-        // Set the most recent notification for toast display
-        // Only update if we find a newer notification or don't have one yet
-        if (recentNotifications.length > 0 && !recentNotifications[0].read) {
-          const newest = recentNotifications[0];
-          
-          // Only show if the notification type is enabled in preferences
-          if (shouldShowNotification(newest.type)) {
-            // Update if:
-            // 1. We don't have a notification yet
-            // 2. This is a different notification (new ID)
-            // 3. This is a newer notification (compare timestamps)
-            if (!newNotification || 
-                newest.id !== newNotification.id || 
-                (newest.timestamp && newNotification.timestamp && 
-                newest.timestamp > newNotification.timestamp)) {
-              setNewNotification(newest);
-            }
-          }
-        }
-
-        setLoading(false);
-        setError(null);
-      },
-      (err) => {
-        console.error('Error fetching notifications:', err);
-        setError(err);
-        setLoading(false);
-      }
-    );
-
-    // Cleanup subscription
-    return () => unsubscribe();
-  }, [limitCount, preferences]); // Add preferences as dependency
-
-  // Mark a notification as read
-  const markAsRead = async (notificationId: string) => {
-    const user = auth.currentUser;
-    if (!user) return false;
-    
-    const success = await markNotificationAsRead(user.uid, notificationId);
-    
-    if (success) {
-      // Update local state to avoid waiting for the snapshot update
-      setNotifications(prev => 
-        prev.map(n => 
-          n.id === notificationId ? { ...n, read: true } : n
-        )
-      );
-      setUnreadCount(prev => Math.max(0, prev - 1));
-      
-      // If this was the new notification being shown in toast, clear it
-      if (newNotification?.id === notificationId) {
-        setNewNotification(null);
-      }
-    }
-    
-    return success;
-  };
-
-  // Mark all notifications as read
-  const markAllAsRead = async () => {
-    const user = auth.currentUser;
-    if (!user) return false;
-    
-    const success = await markAllNotificationsAsRead(user.uid);
-    
-    if (success) {
-      // Update local state to avoid waiting for the snapshot update
-      setNotifications(prev => 
-        prev.map(n => ({ ...n, read: true }))
-      );
-      setUnreadCount(0);
-      setNewNotification(null);
-    }
-    
-    return success;
-  };
-
-  // Delete a notification
-  const removeNotification = async (notificationId: string) => {
-    const user = auth.currentUser;
-    if (!user) return false;
-    
-    const success = await deleteNotification(user.uid, notificationId);
-    
-    if (success) {
-      // Update local state
-      const updatedNotifications = notifications.filter(n => n.id !== notificationId);
-      setNotifications(updatedNotifications);
-      
-      // Update unread count if the removed notification was unread
-      const wasUnread = notifications.find(n => n.id === notificationId)?.read === false;
-      if (wasUnread) {
-        setUnreadCount(prev => Math.max(0, prev - 1));
-      }
-      
-      // If this was the new notification being shown in toast, clear it
-      if (newNotification?.id === notificationId) {
-        setNewNotification(null);
-      }
-    }
-    
-    return success;
-  };
-
-  // Clear the new notification (e.g., after showing toast)
-  const clearNewNotification = () => {
-    // Use setTimeout to prevent clearing too early
-    // This gives animations time to complete
-    setTimeout(() => {
-      setNewNotification(null);
-    }, 300); // Short delay to ensure animation completes
-  };
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   return {
     notifications,
-    unreadCount,
     loading,
     error,
-    newNotification,
-    preferences,
-    markAsRead,
-    markAllAsRead,
-    removeNotification,
-    clearNewNotification
+    sendNotification,
+    refreshNotifications,
+    deleteNotification,
+    updateNotification,
   };
 }; 

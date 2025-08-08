@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+  const { t } = useTranslation();
   const [isAdmin, setIsAdmin] = useState(false);
   const [checking, setChecking] = useState(true);
 
@@ -27,7 +29,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   if (checking) {
     return (
       <div className="flex items-center justify-center min-h-screen text-yellow-400 text-xl">
-        Checking admin permissions...
+        {t('admin.route.checking')}
       </div>
     );
   }

@@ -41,8 +41,8 @@ const LanguageSwitcher = ({ variant = 'desktop' }: LanguageSwitcherProps) => {
   }, []);
 
   if (variant === 'mobile') {
-    return (
-      <div className="relative" ref={dropdownRef}>
+      return (
+    <div className="relative z-[100001]" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center justify-between w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all duration-300"
@@ -55,7 +55,7 @@ const LanguageSwitcher = ({ variant = 'desktop' }: LanguageSwitcherProps) => {
         </button>
 
         {isOpen && (
-          <div className="absolute top-full mt-2 w-full bg-[#1a1242]/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden">
+          <div className="absolute top-full mt-2 w-full bg-[#1a1242] backdrop-blur-xl border border-white/40 rounded-2xl shadow-2xl z-[99999] overflow-hidden">
             <div className="py-2">
               {languages.map((language) => (
                 <button
@@ -72,7 +72,7 @@ const LanguageSwitcher = ({ variant = 'desktop' }: LanguageSwitcherProps) => {
                     <span className="text-sm font-medium">{language.name}</span>
                   </div>
                   {i18n.language === language.code && (
-                    <div className="w-2 h-2 bg-gradient-to-r from-[#FABA33] to-[#4F46E5] rounded-full"></div>
+                    <div className="ml-auto w-2 h-2 bg-gradient-to-r from-[#FABA33] to-[#4F46E5] rounded-full"></div>
                   )}
                 </button>
               ))}
@@ -83,8 +83,8 @@ const LanguageSwitcher = ({ variant = 'desktop' }: LanguageSwitcherProps) => {
     );
   }
 
-  return (
-    <div className="relative" ref={dropdownRef}>
+      return (
+      <div className="relative z-[100001]" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-2 text-white hover:text-[#FABA33] transition-all duration-200 rounded-lg hover:bg-white/5 backdrop-blur-sm"
@@ -95,7 +95,7 @@ const LanguageSwitcher = ({ variant = 'desktop' }: LanguageSwitcherProps) => {
       </button>
 
       {isOpen && (
-        <div className={`absolute top-full mt-2 w-48 bg-[#462674]/95 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-50 ${isRTL ? 'left-0' : 'right-0'}`}>
+        <div className={`absolute top-full mt-2 w-48 bg-[#462674] backdrop-blur-xl border border-white/40 rounded-xl shadow-2xl z-[99999] ${isRTL ? 'left-0' : 'right-0'}`}>
           <div className="py-2">
             {languages.map((language) => (
               <button

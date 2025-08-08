@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { collection, getDocs, doc, updateDoc, addDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { useTranslation } from 'react-i18next';
 import {
   FaCrown, FaStar, FaGem, FaCoins, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes, FaLock, FaUnlock, FaSpinner, FaEye
 } from 'react-icons/fa';
@@ -31,6 +32,7 @@ interface MembershipPlan {
 }
 
 const MembershipsTab = () => {
+  const { t } = useTranslation();
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -91,7 +93,7 @@ const MembershipsTab = () => {
     {
       id: 'economy',
       name: 'economy',
-      displayName: 'Economy Plan',
+      displayName: t('admin.memberships.defaultPlans.economy.name'),
       price: 0,
       duration: 'lifetime',
       features: ['Basic mining', 'Standard support', 'Community access'],
@@ -100,14 +102,14 @@ const MembershipsTab = () => {
       revenue: 0,
       color: 'from-green-500 to-emerald-500',
       icon: 'FaCoins',
-      description: 'Free plan for basic users',
+      description: t('admin.memberships.defaultPlans.economy.description'),
       bonus: 0,
       miningRate: '600 FSN / 12 hours'
     },
     {
       id: 'business',
       name: 'business',
-      displayName: 'Business Plan',
+      displayName: t('admin.memberships.defaultPlans.business.name'),
       price: 99,
       duration: 'monthly',
       features: ['Advanced mining', 'Priority support', 'Business tools', 'Analytics'],
@@ -117,14 +119,14 @@ const MembershipsTab = () => {
       color: 'from-purple-500 to-pink-500',
       icon: 'FaGem',
       maxUsers: 1000,
-      description: 'Professional plan for business users',
+      description: t('admin.memberships.defaultPlans.business.description'),
       bonus: 100000,
       miningRate: '3000 FSN / 12 hours'
     },
     {
       id: 'first-6',
       name: 'first-6',
-      displayName: 'First Class 6 Months',
+      displayName: t('admin.memberships.defaultPlans.first6.name'),
       price: 299,
       duration: '6months',
       features: ['Premium mining', 'VIP support', 'Exclusive features', 'Early access'],
@@ -135,14 +137,14 @@ const MembershipsTab = () => {
       icon: 'FaStar',
       discount: 15,
       popular: true,
-      description: 'Premium plan for serious users',
+      description: t('admin.memberships.defaultPlans.first6.description'),
       bonus: 500000,
       miningRate: '6000 FSN / 12 hours'
     },
     {
       id: 'first-lifetime',
       name: 'first-lifetime',
-      displayName: 'First Class Lifetime',
+      displayName: t('admin.memberships.defaultPlans.firstLifetime.name'),
       price: 999,
       duration: 'lifetime',
       features: ['Ultimate mining', '24/7 support', 'All features', 'Lifetime access'],
@@ -152,7 +154,7 @@ const MembershipsTab = () => {
       color: 'from-yellow-500 to-orange-500',
       icon: 'FaCrown',
       discount: 25,
-      description: 'Ultimate plan with lifetime access',
+      description: t('admin.memberships.defaultPlans.firstLifetime.description'),
       bonus: 1000000,
       miningRate: '6000 FSN / 12 hours'
     }
@@ -193,7 +195,7 @@ const MembershipsTab = () => {
 
   const handleCreatePlan = async () => {
     if (!newPlan.name || !newPlan.displayName || newPlan.price === undefined) {
-      alert('Please fill in all required fields');
+      alert(t('admin.memberships.fillRequiredFields'));
       return;
     }
 
@@ -229,7 +231,7 @@ const MembershipsTab = () => {
       });
     } catch (error) {
       console.error('Error creating plan:', error);
-      alert('Failed to create plan. Please try again.');
+      alert(t('admin.memberships.createPlanFailed'));
     } finally {
       setSaving(false);
     }
@@ -250,14 +252,14 @@ const MembershipsTab = () => {
       setEditingPlan(null);
     } catch (error) {
       console.error('Error updating plan:', error);
-      alert('Failed to update plan. Please try again.');
+      alert(t('admin.memberships.updatePlanFailed'));
     } finally {
       setSaving(false);
     }
   };
 
   const handleDeletePlan = async (planId: string) => {
-    if (!confirm('Are you sure you want to delete this plan? This action cannot be undone.')) {
+    if (!confirm(t('admin.memberships.confirmDelete'))) {
       return;
     }
 
@@ -269,7 +271,7 @@ const MembershipsTab = () => {
       setPlans(prev => prev.filter(plan => plan.id !== planId));
     } catch (error) {
       console.error('Error deleting plan:', error);
-      alert('Failed to delete plan. Please try again.');
+      alert(t('admin.memberships.deletePlanFailed'));
     } finally {
       setSaving(false);
     }
@@ -281,7 +283,7 @@ const MembershipsTab = () => {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <FaSpinner className="w-8 h-8 text-blue-400 animate-spin mx-auto mb-4" />
-          <p className="text-gray-400">Loading membership plans...</p>
+          <p className="text-gray-400">{t('admin.memberships.loadingPlans')}</p>
         </div>
       </div>
     );
@@ -304,7 +306,7 @@ const MembershipsTab = () => {
           className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 text-white px-6 py-3 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-lg"
         >
           {saving ? <FaSpinner className="w-4 h-4 animate-spin" /> : <FaPlus className="w-4 h-4" />}
-          Create Plan
+          {t('admin.memberships.createPlan')}
         </button>
       </div>
 
@@ -323,7 +325,7 @@ const MembershipsTab = () => {
             {plan.popular && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <span className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-1 rounded-full text-xs font-bold">
-                  MOST POPULAR
+                  {t('admin.memberships.mostPopular')}
                 </span>
               </div>
             )}
@@ -364,11 +366,11 @@ const MembershipsTab = () => {
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-white/5 rounded-lg p-3">
-                <p className="text-gray-400 text-xs">Subscribers</p>
+                <p className="text-gray-400 text-xs">{t('admin.memberships.subscribers')}</p>
                 <p className="text-white font-bold">{plan.userCount.toLocaleString()}</p>
               </div>
               <div className="bg-white/5 rounded-lg p-3">
-                <p className="text-gray-400 text-xs">Revenue</p>
+                <p className="text-gray-400 text-xs">{t('admin.memberships.revenue')}</p>
                 <p className="text-white font-bold">${plan.revenue.toLocaleString()}</p>
               </div>
             </div>
@@ -379,14 +381,14 @@ const MembershipsTab = () => {
                 className="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
               >
                 <FaEye className="w-3 h-3" />
-                View
+                {t('admin.memberships.view')}
               </button>
               <button
                 onClick={() => setEditingPlan(plan)}
                 className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
               >
                 <FaEdit className="w-3 h-3" />
-                Edit
+                {t('admin.memberships.edit')}
               </button>
               <button
                 onClick={() => handleUpdatePlan(plan.id, { isActive: !plan.isActive })}
@@ -398,7 +400,7 @@ const MembershipsTab = () => {
                 } ${saving ? 'opacity-50' : ''}`}
               >
                 {plan.isActive ? <FaLock className="w-3 h-3" /> : <FaUnlock className="w-3 h-3" />}
-                {plan.isActive ? 'Disable' : 'Enable'}
+                {plan.isActive ? t('admin.memberships.disable') : t('admin.memberships.enable')}
               </button>
               <button
                 onClick={() => handleDeletePlan(plan.id)}
@@ -422,13 +424,13 @@ const MembershipsTab = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaPlus className="w-4 h-4 text-blue-400" />
-              Create New Plan
+              {t('admin.memberships.createNewPlan')}
             </h3>
             
             <div className="space-y-4">
               <input
                 type="text"
-                placeholder="Plan Name (e.g., economy)"
+                placeholder={t('admin.memberships.planName')}
                 value={newPlan.name}
                 onChange={(e) => setNewPlan(prev => ({ ...prev, name: e.target.value }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -436,14 +438,14 @@ const MembershipsTab = () => {
               
               <input
                 type="text"
-                placeholder="Display Name (e.g., Economy Plan)"
+                placeholder={t('admin.memberships.displayName')}
                 value={newPlan.displayName}
                 onChange={(e) => setNewPlan(prev => ({ ...prev, displayName: e.target.value }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               
               <textarea
-                placeholder="Description"
+                placeholder={t('admin.memberships.description')}
                 value={newPlan.description}
                 onChange={(e) => setNewPlan(prev => ({ ...prev, description: e.target.value }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -452,7 +454,7 @@ const MembershipsTab = () => {
               
               <input
                 type="number"
-                placeholder="Price"
+                placeholder={t('admin.memberships.price')}
                 value={newPlan.price}
                 onChange={(e) => setNewPlan(prev => ({ ...prev, price: Number(e.target.value) }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -460,7 +462,7 @@ const MembershipsTab = () => {
               
               <input
                 type="number"
-                placeholder="Bonus FSN"
+                placeholder={t('admin.memberships.bonusFSN')}
                 value={newPlan.bonus}
                 onChange={(e) => setNewPlan(prev => ({ ...prev, bonus: Number(e.target.value) }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -468,7 +470,7 @@ const MembershipsTab = () => {
               
               <input
                 type="text"
-                placeholder="Mining Rate (e.g., 600 FSN / 12 hours)"
+                placeholder={t('admin.memberships.miningRate')}
                 value={newPlan.miningRate}
                 onChange={(e) => setNewPlan(prev => ({ ...prev, miningRate: e.target.value }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -479,10 +481,10 @@ const MembershipsTab = () => {
                 onChange={(e) => setNewPlan(prev => ({ ...prev, duration: e.target.value }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-                <option value="6months">6 Months</option>
-                <option value="lifetime">Lifetime</option>
+                <option value="monthly">{t('admin.memberships.monthly')}</option>
+                <option value="yearly">{t('admin.memberships.yearly')}</option>
+                <option value="6months">{t('admin.memberships.6months')}</option>
+                <option value="lifetime">{t('admin.memberships.lifetime')}</option>
               </select>
               
               <select
@@ -490,10 +492,10 @@ const MembershipsTab = () => {
                 onChange={(e) => setNewPlan(prev => ({ ...prev, icon: e.target.value }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="FaCoins">Coins</option>
-                <option value="FaGem">Gem</option>
-                <option value="FaStar">Star</option>
-                <option value="FaCrown">Crown</option>
+                <option value="FaCoins">{t('admin.memberships.coins')}</option>
+                <option value="FaGem">{t('admin.memberships.gem')}</option>
+                <option value="FaStar">{t('admin.memberships.star')}</option>
+                <option value="FaCrown">{t('admin.memberships.crown')}</option>
               </select>
               
               <select
@@ -501,10 +503,10 @@ const MembershipsTab = () => {
                 onChange={(e) => setNewPlan(prev => ({ ...prev, color: e.target.value }))}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="from-green-500 to-emerald-500">Green</option>
-                <option value="from-purple-500 to-pink-500">Purple</option>
-                <option value="from-blue-500 to-cyan-500">Blue</option>
-                <option value="from-yellow-500 to-orange-500">Yellow</option>
+                <option value="from-green-500 to-emerald-500">{t('admin.memberships.green')}</option>
+                <option value="from-purple-500 to-pink-500">{t('admin.memberships.purple')}</option>
+                <option value="from-blue-500 to-cyan-500">{t('admin.memberships.blue')}</option>
+                <option value="from-yellow-500 to-orange-500">{t('admin.memberships.yellow')}</option>
               </select>
               
               <div className="flex gap-2">
@@ -514,7 +516,7 @@ const MembershipsTab = () => {
                   className="flex-1 bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   {saving ? <FaSpinner className="w-4 h-4 animate-spin" /> : <FaCheck className="w-4 h-4" />}
-                  Create
+                  {t('admin.memberships.create')}
                 </button>
                 <button
                   onClick={() => setShowCreateModal(false)}
@@ -522,7 +524,7 @@ const MembershipsTab = () => {
                   className="flex-1 bg-gray-500 hover:bg-gray-600 disabled:opacity-50 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   <FaTimes className="w-4 h-4" />
-                  Cancel
+                  {t('admin.memberships.cancel')}
                 </button>
               </div>
             </div>
@@ -540,32 +542,32 @@ const MembershipsTab = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl w-full max-w-md">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaEye className="w-4 h-4 text-blue-400" />
-              Plan Details: {showViewModal.displayName}
+              {t('admin.memberships.planDetails')}: {showViewModal.displayName}
             </h3>
             
             <div className="space-y-4">
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Basic Information</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.memberships.basicInformation')}</h4>
                 <div className="space-y-2 text-sm">
-                  <p><span className="text-gray-400">Name:</span> <span className="text-white">{showViewModal.name}</span></p>
-                  <p><span className="text-gray-400">Display Name:</span> <span className="text-white">{showViewModal.displayName}</span></p>
-                  <p><span className="text-gray-400">Price:</span> <span className="text-white">${showViewModal.price}</span></p>
-                  <p><span className="text-gray-400">Duration:</span> <span className="text-white capitalize">{showViewModal.duration}</span></p>
-                  <p><span className="text-gray-400">Status:</span> <span className={`${showViewModal.isActive ? 'text-green-400' : 'text-red-400'}`}>
-                    {showViewModal.isActive ? 'Active' : 'Inactive'}
+                  <p><span className="text-gray-400">{t('admin.memberships.name')}:</span> <span className="text-white">{showViewModal.name}</span></p>
+                  <p><span className="text-gray-400">{t('admin.memberships.displayName')}:</span> <span className="text-white">{showViewModal.displayName}</span></p>
+                  <p><span className="text-gray-400">{t('admin.memberships.price')}:</span> <span className="text-white">${showViewModal.price}</span></p>
+                  <p><span className="text-gray-400">{t('admin.memberships.duration')}:</span> <span className="text-white capitalize">{showViewModal.duration}</span></p>
+                  <p><span className="text-gray-400">{t('admin.memberships.status')}:</span> <span className={`${showViewModal.isActive ? 'text-green-400' : 'text-red-400'}`}>
+                    {showViewModal.isActive ? t('admin.memberships.active') : t('admin.memberships.inactive')}
                   </span></p>
                 </div>
               </div>
               
               {showViewModal.description && (
                 <div className="bg-white/5 rounded-lg p-4">
-                  <h4 className="text-white font-semibold mb-2">Description</h4>
+                  <h4 className="text-white font-semibold mb-2">{t('admin.memberships.description')}</h4>
                   <p className="text-gray-300 text-sm">{showViewModal.description}</p>
                 </div>
               )}
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Features</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.memberships.features')}</h4>
                 <div className="space-y-1">
                   {showViewModal.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center gap-2">
@@ -577,14 +579,14 @@ const MembershipsTab = () => {
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Statistics</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.memberships.statistics')}</h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-400">Subscribers</p>
+                    <p className="text-gray-400">{t('admin.memberships.subscribers')}</p>
                     <p className="text-white font-bold">{showViewModal.userCount.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400">Revenue</p>
+                    <p className="text-gray-400">{t('admin.memberships.revenue')}</p>
                     <p className="text-white font-bold">${showViewModal.revenue.toLocaleString()}</p>
                   </div>
                 </div>
@@ -595,7 +597,7 @@ const MembershipsTab = () => {
                 className="w-full bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <FaTimes className="w-4 h-4" />
-                Close
+                {t('admin.memberships.close')}
               </button>
             </div>
           </div>
@@ -612,20 +614,20 @@ const MembershipsTab = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaEdit className="w-4 h-4 text-blue-400" />
-              Edit Plan: {editingPlan.displayName}
+              {t('admin.memberships.editPlan')}: {editingPlan.displayName}
             </h3>
             
             <div className="space-y-4">
               <input
                 type="text"
-                placeholder="Display Name"
+                placeholder={t('admin.memberships.displayName')}
                 value={editingPlan.displayName}
                 onChange={(e) => setEditingPlan(prev => prev ? { ...prev, displayName: e.target.value } : null)}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               
               <textarea
-                placeholder="Description"
+                placeholder={t('admin.memberships.description')}
                 value={editingPlan.description || ''}
                 onChange={(e) => setEditingPlan(prev => prev ? { ...prev, description: e.target.value } : null)}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -634,7 +636,7 @@ const MembershipsTab = () => {
               
               <input
                 type="number"
-                placeholder="Price"
+                placeholder={t('admin.memberships.price')}
                 value={editingPlan.price}
                 onChange={(e) => setEditingPlan(prev => prev ? { ...prev, price: Number(e.target.value) } : null)}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -642,7 +644,7 @@ const MembershipsTab = () => {
               
               <input
                 type="number"
-                placeholder="Bonus FSN"
+                placeholder={t('admin.memberships.bonusFSN')}
                 value={editingPlan.bonus || 0}
                 onChange={(e) => setEditingPlan(prev => prev ? { ...prev, bonus: Number(e.target.value) } : null)}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -650,7 +652,7 @@ const MembershipsTab = () => {
               
               <input
                 type="text"
-                placeholder="Mining Rate"
+                placeholder={t('admin.memberships.miningRate')}
                 value={editingPlan.miningRate || ''}
                 onChange={(e) => setEditingPlan(prev => prev ? { ...prev, miningRate: e.target.value } : null)}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -667,7 +669,7 @@ const MembershipsTab = () => {
                   className="flex-1 bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   {saving ? <FaSpinner className="w-4 h-4 animate-spin" /> : <FaCheck className="w-4 h-4" />}
-                  Update
+                  {t('admin.memberships.update')}
                 </button>
                 <button
                   onClick={() => setEditingPlan(null)}
@@ -675,7 +677,7 @@ const MembershipsTab = () => {
                   className="flex-1 bg-gray-500 hover:bg-gray-600 disabled:opacity-50 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   <FaTimes className="w-4 h-4" />
-                  Cancel
+                  {t('admin.memberships.cancel')}
                 </button>
               </div>
             </div>

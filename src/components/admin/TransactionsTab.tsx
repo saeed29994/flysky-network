@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
   FaCreditCard, FaSearch, FaEye, FaCheck, FaTimes,
   FaCalendarAlt, FaUser, FaCoins, FaArrowUp, FaArrowDown, FaGift, FaLock
@@ -21,7 +21,7 @@ interface Transaction {
 }
 
 const TransactionsTab = () => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
@@ -164,7 +164,7 @@ const TransactionsTab = () => {
           <div className="flex items-center gap-3">
             <FaCreditCard className="w-5 h-5 text-blue-400" />
             <div>
-              <p className="text-gray-400 text-sm">Total Transactions</p>
+              <p className="text-gray-400 text-sm">{t('admin.transaction.stats.totalTransactions', 'Total Transactions')}</p>
               <p className="text-white font-bold text-lg">{totalTransactions}</p>
             </div>
           </div>
@@ -174,7 +174,7 @@ const TransactionsTab = () => {
           <div className="flex items-center gap-3">
             <FaCoins className="w-5 h-5 text-green-400" />
             <div>
-              <p className="text-gray-400 text-sm">Total Volume</p>
+              <p className="text-gray-400 text-sm">{t('admin.transaction.stats.totalVolume', 'Total Volume')}</p>
               <p className="text-white font-bold text-lg">{totalVolume.toLocaleString()} FSN</p>
             </div>
           </div>
@@ -184,7 +184,7 @@ const TransactionsTab = () => {
           <div className="flex items-center gap-3">
             <FaCheck className="w-5 h-5 text-green-400" />
             <div>
-              <p className="text-gray-400 text-sm">Completed</p>
+              <p className="text-gray-400 text-sm">{t('admin.transaction.stats.completed', 'Completed')}</p>
               <p className="text-white font-bold text-lg">{completedTransactions}</p>
             </div>
           </div>
@@ -194,7 +194,7 @@ const TransactionsTab = () => {
           <div className="flex items-center gap-3">
             <FaCalendarAlt className="w-5 h-5 text-yellow-400" />
             <div>
-              <p className="text-gray-400 text-sm">Pending</p>
+              <p className="text-gray-400 text-sm">{t('admin.transaction.stats.pending', 'Pending')}</p>
               <p className="text-white font-bold text-lg">{pendingTransactions}</p>
             </div>
           </div>
@@ -209,7 +209,7 @@ const TransactionsTab = () => {
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search transactions..."
+                placeholder={t('admin.transaction.searchPlaceholder', 'Search transactions...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white/10 border border-white/20 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -222,10 +222,10 @@ const TransactionsTab = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Status</option>
-            <option value="completed">Completed</option>
-            <option value="pending">Pending</option>
-            <option value="failed">Failed</option>
+            <option value="all">{t('admin.transaction.filters.all', 'All Status')}</option>
+            <option value="completed">{t('admin.transaction.filters.completed', 'Completed')}</option>
+            <option value="pending">{t('admin.transaction.filters.pending', 'Pending')}</option>
+            <option value="failed">{t('admin.transaction.filters.failed', 'Failed')}</option>
           </select>
         </div>
       </div>
@@ -237,22 +237,22 @@ const TransactionsTab = () => {
             <thead className="bg-white/5">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Transaction
+                  {t('admin.transaction.table.transaction', 'Transaction')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  User
+                  {t('admin.transaction.table.user', 'User')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Amount
+                  {t('admin.transaction.table.amount', 'Amount')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Date
+                  {t('admin.transaction.table.date', 'Date')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Status
+                  {t('admin.transaction.table.status', 'Status')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Actions
+                  {t('admin.transaction.table.actions', 'Actions')}
                 </th>
               </tr>
             </thead>
@@ -270,7 +270,7 @@ const TransactionsTab = () => {
                         {getTransactionIcon(transaction.type)}
                       </div>
                       <div>
-                        <p className="text-white font-medium text-sm">{transaction.type}</p>
+                        <p className="text-white font-medium text-sm">{t(`admin.transaction.types.${transaction.type}`, transaction.type)}</p>
                         <p className="text-gray-400 text-xs">{transaction.description}</p>
                       </div>
                     </div>
@@ -293,7 +293,7 @@ const TransactionsTab = () => {
                   </td>
                   <td className="px-4 py-4">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(transaction.status)}`}>
-                      {transaction.status}
+                      {t(`admin.transaction.status.${transaction.status}`, transaction.status)}
                     </span>
                   </td>
                   <td className="px-4 py-4">
@@ -324,22 +324,22 @@ const TransactionsTab = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl w-full max-w-md">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaEye className="w-4 h-4 text-blue-400" />
-              Transaction Details
+              {t('admin.transaction.modal.title', 'Transaction Details')}
             </h3>
             
             <div className="space-y-4">
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Transaction Information</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.transaction.modal.transactionInfo', 'Transaction Information')}</h4>
                 <div className="space-y-2 text-sm">
                   <p><span className="text-gray-400">ID:</span> <span className="text-white">{selectedTransaction.id}</span></p>
-                  <p><span className="text-gray-400">Type:</span> <span className="text-white capitalize">{selectedTransaction.type}</span></p>
+                  <p><span className="text-gray-400">Type:</span> <span className="text-white capitalize">{t(`admin.transaction.types.${selectedTransaction.type}`, selectedTransaction.type)}</span></p>
                   <p><span className="text-gray-400">Amount:</span> <span className="text-white">{selectedTransaction.amount.toLocaleString()} {selectedTransaction.currency}</span></p>
-                  <p><span className="text-gray-400">Status:</span> <span className={`${getStatusColor(selectedTransaction.status)}`}>{selectedTransaction.status}</span></p>
+                  <p><span className="text-gray-400">Status:</span> <span className={`${getStatusColor(selectedTransaction.status)}`}>{t(`admin.transaction.status.${selectedTransaction.status}`, selectedTransaction.status)}</span></p>
                 </div>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">User Information</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.transaction.modal.userInfo', 'User Information')}</h4>
                 <div className="space-y-2 text-sm">
                   <p><span className="text-gray-400">Name:</span> <span className="text-white">{selectedTransaction.userName}</span></p>
                   <p><span className="text-gray-400">Email:</span> <span className="text-white">{selectedTransaction.userEmail}</span></p>
@@ -347,12 +347,12 @@ const TransactionsTab = () => {
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Description</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.transaction.modal.description', 'Description')}</h4>
                 <p className="text-gray-300 text-sm">{selectedTransaction.description}</p>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Timestamp</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.transaction.modal.timestamp', 'Timestamp')}</h4>
                 <p className="text-gray-300 text-sm">{selectedTransaction.timestamp}</p>
               </div>
               
@@ -361,7 +361,7 @@ const TransactionsTab = () => {
                 className="w-full bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <FaTimes className="w-4 h-4" />
-                Close
+                {t('admin.transaction.modal.close', 'Close')}
               </button>
             </div>
           </div>

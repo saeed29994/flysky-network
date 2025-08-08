@@ -155,8 +155,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 ${i18n.language === 'ar' ? 'md:pr-64' : 'md:pl-64'}`}>
       {/* Enhanced Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 bg-gradient-to-r from-slate-800/95 to-purple-800/95 backdrop-blur-md border-b border-white/10 flex justify-between items-center px-4 py-3 z-50">
-        <div className="flex items-center gap-3">
+      <div className={`md:hidden fixed top-0 left-0 right-0 bg-gradient-to-r from-slate-800/95 to-purple-800/95 backdrop-blur-md border-b border-white/10 flex justify-between items-center px-4 py-3 z-50 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex items-center gap-3 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
           <div className="relative">
             <img src={fsnLogo} alt="Logo" className="w-8 h-8" />
             <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-purple-600 rounded-full opacity-20 blur-sm"></div>
@@ -170,7 +170,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             <span className="text-xs text-gray-400">{userName}</span>
           </div>
         </div>
-        <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`} dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
           <LanguageSwitcher />
           <NotificationBell />
           <PushNotificationManager showInHeader={true} />
@@ -372,8 +372,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       </aside>
 
       {/* Desktop Notification Bell - Floating */}
-      <div className={`hidden md:block fixed top-6 z-40 ${i18n.language === 'ar' ? 'left-6' : 'right-6'}`}>
-        <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+      <div className={`hidden md:block fixed top-6 z-40 ${i18n.language === 'ar' ? 'left-6' : 'right-6'}`} dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
+        <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`} dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
           <LanguageSwitcher />
           <div className="bg-gradient-to-r from-purple-600/30 to-blue-600/30 p-1.5 rounded-full shadow-lg backdrop-blur-sm">
             <NotificationBell />

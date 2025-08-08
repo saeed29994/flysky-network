@@ -26,6 +26,7 @@ import i18n from '../i18n';
 import { Spinner } from '../components/ui/spinner';
 import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
 import fsnLogo from '../assets/fsn-logo.png';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -61,8 +62,8 @@ const SignupPage = () => {
 
     if (!inboxSnap.exists()) {
       await setDoc(inboxRef, {
-        title: '🎉 Welcome to FlySky Network!',
-        body: 'You\'ve earned a 500 FSN welcome bonus. Click below to claim your reward',
+        title: t('welcomeBonus.title'),
+        body: t('welcomeBonus.body', { amount: 500 }),
         timestamp: Date.now(),
         read: false,
         claimed: false,
@@ -71,8 +72,8 @@ const SignupPage = () => {
       });
 
       await sendFCMNotification({
-        title: '🎁 Welcome Bonus',
-        body: 'You received a 500 FSN welcome reward!',
+        title: t('welcomeBonus.fcmTitle'),
+        body: t('welcomeBonus.fcmBody', { amount: 500 }),
       });
     }
   };
@@ -215,6 +216,9 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4">
+      <div className={`hidden md:block fixed top-6 ${i18n.language === 'ar' ? 'left-6' : 'right-6'} z-50`}>
+        <LanguageSwitcher />
+      </div>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="relative inline-block">
@@ -367,15 +371,9 @@ const SignupPage = () => {
         </div>
 
         <div className="mt-6 text-center">
-          <select
-            onChange={(e) => i18n.changeLanguage(e.target.value)}
-            defaultValue={i18n.language}
-            className="bg-gray-800/50 text-white px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
-          >
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-            <option value="zh">🇨🇳 中文</option>
-          </select>
+          <div className="inline-block">
+            <LanguageSwitcher variant="mobile" />
+          </div>
         </div>
       </div>
     </div>

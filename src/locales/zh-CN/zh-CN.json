@@ -369,13 +369,41 @@
   "referralBonus": {
     "loading": "加载中...",
     "claimButton": "领取推荐奖励",
-    "noBonus": "没有可领取的奖励。",
+    "noBonus": "暂无可领取的奖励。",
     "claimedSuccess": "🎉 推荐奖励领取成功！",
     "claimedError": "领取奖励时发生错误。",
-    "fcmTitle": "🎁 推荐奖励就绪",
-    "fcmBody": "新的推荐已验证。您的奖励可以领取了！",
+    "fcmTitle": "🎁 推荐奖励已就绪",
+    "fcmBody": "有新的推荐已验证，您的奖励可以领取了！",
     "verifiedTitle": "推荐奖励已验证",
-    "verifiedBody": "恭喜！您的推荐已验证。您已获得 {{rewards}} FSN 代币。"
+    "verifiedBody": "恭喜！您的推荐已验证。您获得了 {{rewards}} 枚 FSN 代币。"
+  },
+  "welcomeBonus": {
+    "title": "🎉 欢迎加入 FlySky Network！",
+    "body": "您已获得 {{amount}} FSN 欢迎奖励。点击下方领取您的奖励",
+    "fcmTitle": "🎁 欢迎奖励",
+    "fcmBody": "您收到了 {{amount}} FSN 欢迎奖励！"
+  },
+  "pwa": {
+    "title": "安装 FlySky Network 应用",
+    "subtitle": {
+      "ios": "添加到主屏幕以便快速访问",
+      "default": "安装应用以获得更好体验"
+    },
+    "buttons": {
+      "howToInstall": "如何安装",
+      "install": "安装"
+    },
+    "toast": {
+      "installed": "应用安装成功！",
+      "installing": "正在安装应用...",
+      "cancelled": "已取消安装"
+    },
+    "ios": {
+      "title": "安装此应用：",
+      "step1": "点击分享按钮 📤",
+      "step2": "下拉并点击\"添加到主屏幕\" 🏠", 
+      "step3": "点击\"添加\"以确认"
+    }
   },
   "wallet": {
     "walletOverview": "💼 钱包概览",
@@ -1005,12 +1033,332 @@
   "notificationsEnabled": "当重要更新发生时，您将收到推送通知。",
   "notificationsDescription": "启用推送通知以接收有关奖励、消息和其他重要事件的更新。",
   "admin": {
+    "route": {
+      "checking": "正在检查管理员权限..."
+    },
+    "notifications": {
+      "title": "通知管理",
+      "description": "管理和跟踪所有平台通知",
+      "stats": {
+        "totalSent": "总发送数",
+        "avgOpenRate": "平均打开率",
+        "avgClickRate": "平均点击率",
+        "scheduled": "已安排",
+        "fromLastWeek": "较上周",
+        "nextScheduled": "下一个：12月25日 02:00"
+      },
+      "filters": {
+        "searchPlaceholder": "搜索通知...",
+        "allTypes": "所有类型",
+        "allStatus": "所有状态",
+        "allAudiences": "所有受众",
+        "info": "信息",
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误",
+        "sent": "已发送",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败",
+        "allUsers": "所有用户",
+        "premium": "高级",
+        "newUsers": "新用户",
+        "inactive": "非活跃",
+        "sortBy": {
+          "newestFirst": "最新优先",
+          "oldestFirst": "最旧优先",
+          "titleAZ": "标题A-Z",
+          "titleZA": "标题Z-A",
+          "mostRecipients": "最多接收者",
+          "mostOpened": "最多打开"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "已选择{{count}}个通知",
+        "resend": "重新发送",
+        "duplicate": "复制",
+        "delete": "删除",
+        "confirmDelete": "确定要删除{{count}}个通知吗？"
+      },
+      "table": {
+        "notification": "通知",
+        "type": "类型",
+        "status": "状态",
+        "audience": "受众",
+        "platforms": "平台",
+        "performance": "性能",
+        "created": "创建时间",
+        "actions": "操作",
+        "title": "标题",
+        "message": "消息",
+        "recipients": "接收者",
+        "opened": "打开",
+        "clicked": "点击",
+        "openRate": "打开率",
+        "clickRate": "点击率"
+      },
+      "mobile": {
+        "notifications": "通知",
+        "sent": "已发送",
+        "open": "打开",
+        "click": "点击"
+      },
+      "sendModal": {
+        "title": "发送通知",
+        "notificationTitle": "通知标题",
+        "titlePlaceholder": "输入通知标题...",
+        "notificationMessage": "通知消息",
+        "messagePlaceholder": "输入通知消息...",
+        "cancel": "取消",
+        "send": "发送",
+        "sending": "发送中...",
+        "pleaseEnterBoth": "请输入标题和内容。",
+        "noTokensFound": "未找到令牌。没有用户注册通知。",
+        "notificationSent": "通知发送成功！",
+        "failedToSend": "发送通知失败。服务器说：{{error}}",
+        "errorSending": "发送通知时出错。"
+      },
+      "actions": {
+        "sendNotification": "发送通知",
+        "send": "发送",
+        "refresh": "刷新通知",
+        "view": "查看通知",
+        "edit": "编辑通知",
+        "delete": "删除通知",
+        "dismissError": "关闭错误"
+      },
+      "status": {
+        "sent": "已发送",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败"
+      },
+      "types": {
+        "info": "信息",
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误"
+      },
+      "audience": {
+        "all": "全部",
+        "premium": "高级",
+        "new": "新",
+        "inactive": "非活跃"
+      },
+      "platforms": {
+        "mobile": "移动端",
+        "web": "网页",
+        "email": "邮件"
+      },
+      "pagination": {
+        "showing": "显示{{current}}/{{total}}个通知",
+        "previous": "上一页",
+        "next": "下一页"
+      },
+      "empty": {
+        "noNotifications": "未找到通知",
+        "loading": "正在加载通知..."
+      },
+      "error": {
+        "failedToLoad": "加载通知失败",
+        "failedToSend": "发送通知失败",
+        "failedToDelete": "删除通知失败",
+        "failedToUpdate": "更新通知失败"
+      }
+    },
+    "rewards": {
+      "stats": {
+        "totalRewards": "总奖励数",
+        "activeRewards": "活跃奖励",
+        "totalValue": "总价值",
+        "totalClaims": "总申领数"
+      },
+      "createReward": "创建奖励",
+      "searchPlaceholder": "搜索奖励...",
+      "filters": {
+        "allTypes": "所有类型",
+        "allStatus": "所有状态",
+        "active": "活跃",
+        "inactive": "非活跃",
+        "daily": "每日",
+        "weekly": "每周",
+        "monthly": "每月",
+        "achievement": "成就",
+        "referral": "推荐",
+        "bonus": "奖金",
+        "special": "特殊"
+      },
+      "rewardTypes": {
+        "daily": "每日",
+        "weekly": "每周",
+        "monthly": "每月",
+        "achievement": "成就",
+        "referral": "推荐",
+        "bonus": "奖金",
+        "special": "特殊"
+      },
+      "status": {
+        "active": "活跃",
+        "inactive": "非活跃"
+      },
+      "actions": {
+        "create": "创建",
+        "cancel": "取消",
+        "view": "查看",
+        "edit": "编辑",
+        "close": "关闭"
+      },
+      "details": {
+        "title": "奖励详情",
+        "basicInformation": "基本信息",
+        "statistics": "统计",
+        "requirements": "要求",
+        "id": "ID",
+        "type": "类型",
+        "amount": "金额",
+        "status": "状态",
+        "claims": "申领",
+        "period": "期间"
+      },
+      "form": {
+        "description": "描述"
+      },
+      "createModal": {
+        "title": "创建新奖励",
+        "namePlaceholder": "奖励名称",
+        "descriptionPlaceholder": "描述",
+        "selectType": "选择类型",
+        "amountPlaceholder": "金额",
+        "maxClaimsPlaceholder": "最大申领数"
+      },
+      "sampleRewards": {
+        "dailyLogin": {
+          "name": "每日登录奖励",
+          "description": "每日登录的奖励"
+        },
+        "weeklyMining": {
+          "name": "每周挖矿奖励",
+          "description": "持续挖矿活动的奖励"
+        },
+        "referralChampion": {
+          "name": "推荐冠军",
+          "description": "带来新用户的奖励"
+        },
+        "firstClassAchievement": {
+          "name": "头等舱成就",
+          "description": "高级会员的特殊奖励"
+        },
+        "monthlyStaking": {
+          "name": "每月质押奖励",
+          "description": "长期质押的奖励"
+        },
+        "specialEvent": {
+          "name": "特殊活动奖励",
+          "description": "限时活动奖励"
+        }
+      },
+      "requirements": {
+        "loginDaily": "每日登录",
+        "completeProfile": "完善个人资料",
+        "mineConsecutiveDays": "连续挖矿7天",
+        "minimumMined": "最少挖矿100 FSN",
+        "referActiveUsers": "推荐10个活跃用户",
+        "usersCompleteKYC": "用户必须完成KYC",
+        "upgradeToFirstClass": "升级到头等舱",
+        "maintainForDays": "维持30天",
+        "stakeMinimum": "最少质押1000 FSN",
+        "holdForDays": "持有30天",
+        "participateInEvent": "参与活动",
+        "completeAllChallenges": "完成所有挑战"
+      }
+    },
+    "transaction": {
+      "title": "交易管理",
+      "description": "监控和管理所有平台交易",
+      "searchPlaceholder": "搜索交易...",
+      "filters": {
+        "all": "所有状态",
+        "completed": "已完成",
+        "pending": "待处理",
+        "failed": "失败"
+      },
+      "stats": {
+        "totalTransactions": "总交易数",
+        "totalVolume": "总交易量",
+        "completed": "已完成",
+        "pending": "待处理"
+      },
+      "table": {
+        "transaction": "交易",
+        "user": "用户",
+        "amount": "金额",
+        "date": "日期",
+        "status": "状态",
+        "actions": "操作"
+      },
+      "types": {
+        "stake": "质押",
+        "reward": "奖励",
+        "referral": "推荐",
+        "mining": "挖矿",
+        "withdrawal": "提现",
+        "deposit": "充值",
+        "bonus": "奖金"
+      },
+      "status": {
+        "completed": "已完成",
+        "pending": "待处理",
+        "failed": "失败"
+      },
+      "modal": {
+        "title": "交易详情",
+        "transactionInfo": "交易信息",
+        "userInfo": "用户信息",
+        "description": "描述",
+        "timestamp": "时间戳",
+        "close": "关闭"
+      },
+      "noTransactions": "未找到交易",
+      "loading": "正在加载交易...",
+      "viewDetails": "查看详情"
+    },
     "dashboard": {
+      "title": "管理员仪表板",
+      "subtitle": "管理用户、KYC 和付款",
       "quickStatistics": "快速统计",
+      "detailedStatistics": "详细统计",
       "totalUsers": "总用户数",
       "totalAdmins": "总管理员数",
       "pendingKYC": "待处理 KYC",
-      "totalFSN": "总 FSN"
+      "verifiedKYC": "已验证 KYC",
+      "premiumPlans": "高级计划",
+      "totalBalance": "总余额",
+      "totalFSN": "总 FSN",
+      "businessPlans": "商务计划",
+      "firstClassPlans": "头等舱计划"
+    },
+    "tabs": {
+      "dashboard": "仪表板",
+      "users": "用户管理",
+      "kyc": "KYC 验证",
+      "payments": "手动支付",
+      "transactions": "交易",
+      "rewards": "奖励",
+      "notifications": "通知",
+      "content": "内容",
+      "memberships": "会员",
+      "sendNotification": "发送通知",
+      "short": {
+        "dashboard": "仪表板",
+        "users": "用户",
+        "kyc": "KYC",
+        "payments": "支付",
+        "transactions": "交易",
+        "rewards": "奖励",
+        "notifications": "通知",
+        "content": "内容",
+        "memberships": "会员"
+      }
     },
     "kyc": {
       "title": "KYC 验证",
@@ -1028,6 +1376,505 @@
       "noDocuments": "未上传 KYC 文档",
       "approve": "批准 KYC",
       "reject": "拒绝 KYC"
+    },
+    "users": {
+      "title": "用户管理",
+      "description": "管理用户账户、计划和状态",
+      "searchPlaceholder": "搜索用户...",
+      "loading": "正在加载用户...",
+      "confirmDelete": "确定要删除这个用户吗？",
+      "stats": {
+        "activeUsers": "活跃用户",
+        "premiumPlans": "高级计划",
+        "totalBalance": "总余额"
+      },
+      "filters": {
+        "all": "全部",
+        "active": "活跃",
+        "inactive": "非活跃",
+        "verified": "已验证",
+        "pending": "待处理",
+        "rejected": "已拒绝",
+        "allStatus": "所有状态",
+        "allPlans": "所有计划",
+        "economy": "经济舱",
+        "business": "商务舱",
+        "first6": "头等舱-6",
+        "firstLifetime": "头等舱-终身"
+      },
+      "sort": {
+        "newestFirst": "最新优先",
+        "oldestFirst": "最旧优先",
+        "nameAZ": "姓名A-Z",
+        "nameZA": "姓名Z-A",
+        "balanceHighLow": "余额高-低",
+        "balanceLowHigh": "余额低-高"
+      },
+      "bulk": {
+        "selectedUsers": "已选择{{count}}个用户",
+        "pleaseSelectUsers": "请先选择用户",
+        "confirmDelete": "确定要删除{{count}}个用户吗？"
+      },
+      "table": {
+        "user": "用户",
+        "name": "姓名",
+        "email": "邮箱",
+        "kyc": "KYC 状态",
+        "kycStatus": "KYC 状态",
+        "plan": "计划",
+        "balance": "余额",
+        "staking": "质押",
+        "status": "状态",
+        "created": "创建时间",
+        "joined": "加入时间",
+        "lastLogin": "最后登录",
+        "actions": "操作",
+        "id": "ID"
+      },
+      "modal": {
+        "updatePlan": "更新用户计划",
+        "selectPlan": "选择计划"
+      },
+      "actions": {
+        "edit": "编辑",
+        "delete": "删除",
+        "activate": "激活",
+        "deactivate": "停用",
+        "viewDetails": "查看详情"
+      },
+      "status": {
+        "active": "活跃",
+        "inactive": "非活跃",
+        "verified": "已验证",
+        "pending": "待处理",
+        "rejected": "已拒绝"
+      },
+      "noUsers": "未找到用户",
+      "loading": "正在加载用户..."
+    },
+    "transactions": {
+      "title": "交易管理",
+      "description": "监控和管理所有平台交易",
+      "searchPlaceholder": "搜索交易...",
+      "filters": {
+        "all": "全部",
+        "completed": "已完成",
+        "pending": "待处理",
+        "failed": "失败"
+      },
+      "table": {
+        "id": "交易ID",
+        "user": "用户",
+        "type": "类型",
+        "amount": "金额",
+        "description": "描述",
+        "timestamp": "日期时间",
+        "status": "状态"
+      },
+      "types": {
+        "stake": "质押",
+        "reward": "奖励",
+        "referral": "推荐",
+        "withdrawal": "提取",
+        "mining": "挖矿"
+      },
+      "status": {
+        "completed": "已完成",
+        "pending": "待处理",
+        "failed": "失败"
+      },
+      "noTransactions": "未找到交易",
+      "loading": "正在加载交易...",
+      "viewDetails": "查看详情"
+    },
+    "notifications": {
+      "title": "通知管理",
+      "description": "管理和跟踪所有平台通知",
+      "stats": {
+        "totalSent": "总发送数",
+        "avgOpenRate": "平均打开率",
+        "avgClickRate": "平均点击率",
+        "scheduled": "已安排",
+        "fromLastWeek": "较上周",
+        "nextScheduled": "下一个：12月25日 02:00"
+      },
+      "filters": {
+        "searchPlaceholder": "搜索通知...",
+        "allTypes": "所有类型",
+        "allStatus": "所有状态",
+        "allAudiences": "所有受众",
+        "info": "信息",
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误",
+        "sent": "已发送",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败",
+        "allUsers": "所有用户",
+        "premium": "高级",
+        "newUsers": "新用户",
+        "inactive": "非活跃",
+        "sortBy": {
+          "newestFirst": "最新优先",
+          "oldestFirst": "最旧优先",
+          "titleAZ": "标题A-Z",
+          "titleZA": "标题Z-A",
+          "mostRecipients": "最多接收者",
+          "mostOpened": "最多打开"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "已选择{{count}}个通知",
+        "resend": "重新发送",
+        "duplicate": "复制",
+        "delete": "删除",
+        "confirmDelete": "确定要删除{{count}}个通知吗？"
+      },
+      "table": {
+        "notification": "通知",
+        "type": "类型",
+        "status": "状态",
+        "audience": "受众",
+        "platforms": "平台",
+        "performance": "性能",
+        "created": "创建时间",
+        "actions": "操作",
+        "title": "标题",
+        "message": "消息",
+        "recipients": "接收者",
+        "opened": "打开",
+        "clicked": "点击",
+        "openRate": "打开率",
+        "clickRate": "点击率"
+      },
+      "mobile": {
+        "notifications": "通知",
+        "sent": "已发送",
+        "open": "打开",
+        "click": "点击"
+      },
+      "sendModal": {
+        "title": "发送通知",
+        "notificationTitle": "通知标题",
+        "titlePlaceholder": "输入通知标题...",
+        "notificationMessage": "通知消息",
+        "messagePlaceholder": "输入通知消息...",
+        "cancel": "取消",
+        "send": "发送",
+        "sending": "发送中...",
+        "pleaseEnterBoth": "请输入标题和内容。",
+        "noTokensFound": "未找到令牌。没有用户注册通知。",
+        "notificationSent": "通知发送成功！",
+        "failedToSend": "发送通知失败。服务器说：{{error}}",
+        "errorSending": "发送通知时出错。"
+      },
+      "actions": {
+        "sendNotification": "发送通知",
+        "send": "发送",
+        "refresh": "刷新通知",
+        "view": "查看通知",
+        "edit": "编辑通知",
+        "delete": "删除通知",
+        "dismissError": "关闭错误",
+        "close": "关闭"
+      },
+      "status": {
+        "sent": "已发送",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败"
+      },
+      "types": {
+        "info": "信息",
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误"
+      },
+      "audience": {
+        "all": "全部",
+        "premium": "高级",
+        "new": "新",
+        "inactive": "非活跃"
+      },
+      "platforms": {
+        "mobile": "移动端",
+        "web": "网页",
+        "email": "邮件"
+      },
+      "pagination": {
+        "showing": "显示{{current}}/{{total}}个通知",
+        "previous": "上一页",
+        "next": "下一页"
+      },
+      "empty": {
+        "noNotifications": "未找到通知",
+        "loading": "正在加载通知..."
+      },
+      "error": {
+        "failedToLoad": "加载通知失败",
+        "failedToSend": "发送通知失败",
+        "failedToDelete": "删除通知失败",
+        "failedToUpdate": "更新通知失败"
+      }
+    },
+    "content": {
+      "title": "内容管理",
+      "description": "管理平台内容和公告",
+      "createNew": "创建新内容",
+      "searchPlaceholder": "搜索内容...",
+      "stats": {
+        "totalContent": "总内容",
+        "activeContent": "活跃内容",
+        "totalViews": "总浏览量",
+        "totalClicks": "总点击量"
+      },
+      "actions": {
+        "createContent": "创建内容",
+        "view": "查看",
+        "edit": "编辑",
+        "delete": "删除",
+        "create": "创建",
+        "cancel": "取消",
+        "close": "关闭"
+      },
+      "search": {
+        "placeholder": "搜索内容..."
+      },
+      "filters": {
+        "allTypes": "所有类型",
+        "allStatus": "所有状态"
+      },
+      "types": {
+        "banner": "横幅",
+        "announcement": "公告",
+        "promotion": "推广",
+        "video": "视频",
+        "news": "新闻"
+      },
+      "status": {
+        "active": "活跃",
+        "inactive": "非活跃",
+        "draft": "草稿"
+      },
+      "priority": "优先级",
+      "views": "浏览量",
+      "clicks": "点击量",
+      "details": {
+        "title": "内容详情",
+        "basicInformation": "基本信息",
+        "description": "描述",
+        "performance": "性能",
+        "schedule": "时间安排",
+        "id": "ID",
+        "type": "类型",
+        "status": "状态",
+        "priority": "优先级"
+      },
+      "createModal": {
+        "title": "创建新内容",
+        "titlePlaceholder": "内容标题",
+        "descriptionPlaceholder": "描述",
+        "selectType": "选择类型",
+        "priorityPlaceholder": "优先级 (1-10)"
+      },
+      "sampleData": {
+        "welcomeTitle": "欢迎来到FlySky网络",
+        "welcomeDescription": "加入去中心化挖矿的未来",
+        "miningRewardsTitle": "新的挖矿奖励可用",
+        "miningRewardsDescription": "使用我们的新挖矿系统每天赚取高达3000 FSN",
+        "referralProgramTitle": "推荐计划启动",
+        "referralProgramDescription": "邀请朋友，每个推荐赚取1000 FSN",
+        "tutorialVideoTitle": "平台教程视频",
+        "tutorialVideoDescription": "学习如何最大化您的挖矿效率",
+        "holidayEventTitle": "节日特别活动",
+        "holidayEventDescription": "节日期间双倍奖励"
+      },
+      "table": {
+        "title": "标题",
+        "type": "类型",
+        "status": "状态",
+        "views": "浏览量",
+        "clicks": "点击量",
+        "created": "创建时间",
+        "actions": "操作"
+      },
+      "form": {
+        "title": "标题",
+        "content": "内容",
+        "type": "类型",
+        "status": "状态",
+        "image": "图片",
+        "link": "链接"
+      },
+      "noContent": "未找到内容",
+      "loading": "正在加载内容..."
+    },
+    "memberships": {
+      "title": "会员管理",
+      "description": "管理用户会员计划和订阅",
+      "createNew": "创建新计划",
+      "searchPlaceholder": "搜索会员...",
+      "filters": {
+        "all": "所有计划",
+        "economy": "经济舱",
+        "business": "商务舱",
+        "first-6": "头等舱（6个月）",
+        "first-lifetime": "头等舱（终身）"
+      },
+      "table": {
+        "user": "用户",
+        "plan": "计划",
+        "status": "状态",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "amount": "金额",
+        "actions": "操作"
+      },
+      "form": {
+        "user": "用户",
+        "plan": "计划",
+        "duration": "期限",
+        "amount": "金额",
+        "status": "状态"
+      },
+      "actions": {
+        "edit": "编辑",
+        "cancel": "取消",
+        "extend": "延期",
+        "viewDetails": "查看详情"
+      },
+      "status": {
+        "active": "活跃",
+        "expired": "已过期",
+        "cancelled": "已取消",
+        "pending": "待处理"
+      },
+      "noMemberships": "未找到会员",
+      "loading": "正在加载会员...",
+      "createPlan": "创建计划",
+      "loadingPlans": "正在加载会员计划...",
+      "mostPopular": "最受欢迎",
+      "subscribers": "订阅者",
+      "revenue": "收入",
+      "view": "查看",
+      "edit": "编辑",
+      "disable": "禁用",
+      "enable": "启用",
+      "delete": "删除",
+      "createNewPlan": "创建新计划",
+      "planName": "计划名称（例如：economy）",
+      "displayName": "显示名称（例如：经济计划）",
+      "description": "描述",
+      "price": "价格",
+      "bonusFSN": "FSN奖励",
+      "miningRate": "挖矿速率（例如：600 FSN / 12小时）",
+      "duration": "期限",
+      "icon": "图标",
+      "color": "颜色",
+      "monthly": "月付",
+      "yearly": "年付",
+      "6months": "6个月",
+      "lifetime": "终身",
+      "coins": "金币",
+      "gem": "宝石",
+      "star": "星星",
+      "crown": "皇冠",
+      "green": "绿色",
+      "purple": "紫色",
+      "blue": "蓝色",
+      "yellow": "黄色",
+      "create": "创建",
+      "cancel": "取消",
+      "planDetails": "计划详情",
+      "basicInformation": "基本信息",
+      "name": "名称",
+      "displayName": "显示名称",
+      "status": "状态",
+      "active": "活跃",
+      "inactive": "非活跃",
+      "features": "功能",
+      "statistics": "统计",
+      "close": "关闭",
+      "editPlan": "编辑计划",
+      "update": "更新",
+      "fillRequiredFields": "请填写所有必填字段",
+      "createPlanFailed": "创建计划失败。请重试。",
+      "updatePlanFailed": "更新计划失败。请重试。",
+      "deletePlanFailed": "删除计划失败。请重试。",
+      "confirmDelete": "您确定要删除此计划吗？此操作无法撤销。",
+      "defaultPlans": {
+        "economy": {
+          "name": "经济计划",
+          "description": "基础用户的免费计划"
+        },
+        "business": {
+          "name": "商务计划",
+          "description": "商务用户的专业计划"
+        },
+        "first6": {
+          "name": "头等舱6个月",
+          "description": "严肃用户的优质计划"
+        },
+        "firstLifetime": {
+          "name": "头等舱终身",
+          "description": "终身访问的终极计划"
+        }
+      }
+    },
+    "payments": {
+      "title": "手动支付",
+      "description": "审查和批准支付请求",
+      "searchPlaceholder": "按姓名、电子邮件或用户ID搜索",
+      "loading": "正在加载支付...",
+      "noPayments": "未找到手动支付。",
+      "table": {
+        "user": "用户",
+        "currency": "货币",
+        "txLink": "交易链接",
+        "fromAddress": "来源地址",
+        "status": "状态",
+        "proof": "证明",
+        "date": "日期",
+        "actions": "操作"
+      },
+      "status": {
+        "approved": "已批准",
+        "rejected": "已拒绝",
+        "pending": "待处理"
+      },
+      "actions": {
+        "approve": "批准",
+        "reject": "拒绝",
+        "view": "查看",
+        "download": "下载"
+      },
+      "confirmDelete": "您确定要删除此支付吗？",
+      "updateSuccess": "支付状态更新成功",
+      "updateError": "更新支付状态失败"
+    },
+    "common": {
+      "save": "保存",
+      "cancel": "取消",
+      "delete": "删除",
+      "edit": "编辑",
+      "view": "查看",
+      "close": "关闭",
+      "confirm": "确认",
+      "loading": "加载中...",
+      "search": "搜索",
+      "filter": "筛选",
+      "sort": "排序",
+      "actions": "操作",
+      "status": "状态",
+      "date": "日期",
+      "amount": "金额",
+      "details": "详情",
+      "noResults": "未找到结果",
+      "selectAll": "全选",
+      "bulkActions": "批量操作",
+      "exportData": "导出数据",
+      "refresh": "刷新"
     }
   },
   "enable": "启用",

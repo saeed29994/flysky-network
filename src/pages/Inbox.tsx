@@ -384,7 +384,11 @@ const Inbox = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className="text-lg font-semibold text-white truncate">
-                              {msg.type === 'referral_bonus' ? t('referralBonus.verifiedTitle') : msg.title}
+                              {msg.type === 'referral_bonus' 
+                                ? t('referralBonus.verifiedTitle') 
+                                : msg.type === 'welcome_bonus' 
+                                  ? t('welcomeBonus.title') 
+                                  : msg.title}
                             </h3>
                             {getMessageStatus(msg)}
                           </div>
@@ -395,7 +399,9 @@ const Inbox = () => {
                                     ? msg.i18nParams?.rewards.join(', ')
                                     : msg.amount || 0,
                                 })
-                              : msg.body}
+                              : msg.type === 'welcome_bonus'
+                                ? t('welcomeBonus.body', { amount: msg.amount || 0 })
+                                : msg.body}
                           </p>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 text-gray-500 text-sm">
@@ -471,7 +477,9 @@ const Inbox = () => {
                       <h2 className="text-xl font-bold text-white">
                         {selectedMessage.type === 'referral_bonus'
                           ? t('referralBonus.verifiedTitle')
-                          : selectedMessage.title}
+                          : selectedMessage.type === 'welcome_bonus'
+                            ? t('welcomeBonus.title')
+                            : selectedMessage.title}
                       </h2>
                       <p className="text-gray-300 text-sm flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5" />
@@ -496,7 +504,9 @@ const Inbox = () => {
                             ? selectedMessage.i18nParams?.rewards.join(', ')
                             : selectedMessage.amount || 0,
                         })
-                      : selectedMessage.body}
+                      : selectedMessage.type === 'welcome_bonus'
+                        ? t('welcomeBonus.body', { amount: selectedMessage.amount || 0 })
+                        : selectedMessage.body}
                   </p>
 
                   {!selectedMessage.claimed &&

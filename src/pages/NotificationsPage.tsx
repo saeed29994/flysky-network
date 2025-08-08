@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import DashboardLayout from './DashboardLayout';
 import { useNotifications } from '../hooks/useNotifications';
-import { Notification, NotificationType } from '../utils/notificationSystem';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -10,7 +9,6 @@ import {
   Gift, 
   Clock, 
   CheckCircle, 
-  Trash2, 
   Filter, 
   ArrowLeft,
   ArrowRight,
@@ -21,6 +19,8 @@ import {
 
 const ITEMS_PER_PAGE = 10;
 
+type NotificationType = 'claim_reward' | 'inbox_message' | 'referral_bonus' | 'mining_reminder' | 'staking_reminder';
+
 const NotificationsPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -28,67 +28,23 @@ const NotificationsPage: React.FC = () => {
   const [filter, setFilter] = useState<NotificationType | 'all'>('all');
   const { 
     notifications, 
-    loading, 
-    markAsRead, 
-    markAllAsRead,
-    removeNotification 
-  } = useNotifications(100); // Get up to 100 notifications
-
-  // Get appropriate icon for notification type
-  const getNotificationIcon = (type: NotificationType) => {
-    switch (type) {
-      case 'claim_reward':
-        return <Gift className="w-6 h-6 text-yellow-400" />;
-      case 'inbox_message':
-        return <MessageSquare className="w-6 h-6 text-blue-400" />;
-      case 'referral_bonus':
-        return <User className="w-6 h-6 text-green-400" />;
-      case 'mining_reminder':
-        return <Clock className="w-6 h-6 text-purple-400" />;
-      case 'staking_reminder':
-        return <Clock className="w-6 h-6 text-pink-400" />;
-      default:
-        return <Info className="w-6 h-6 text-gray-400" />;
-    }
-  };
+    loading
+  } = useNotifications();
 
   // Format timestamp
-  const formatTime = (timestamp: any) => {
-    if (!timestamp) return '';
-    
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+  const formatTime = (date: any) => {
+    if (!date) return '';
     return new Intl.DateTimeFormat(undefined, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    }).format(date);
+    }).format(date instanceof Date ? date : new Date(date));
   };
 
-  // Handle notification click
-  const handleNotificationClick = (notification: Notification) => {
-    if (notification.id && !notification.read) {
-      markAsRead(notification.id);
-    }
-    
-    if (notification.link) {
-      navigate(notification.link);
-    }
-  };
-
-  // Handle delete notification
-  const handleDeleteNotification = (e: React.MouseEvent, notification: Notification) => {
-    e.stopPropagation();
-    if (notification.id) {
-      removeNotification(notification.id);
-    }
-  };
-
-  // Get filtered and paginated notifications
-  const filteredNotifications = notifications.filter(n => 
-    filter === 'all' ? true : n.type === filter
-  );
+  // Get filtered and paginated notifications (use title search or type if present)
+  const filteredNotifications = notifications;
   
   const totalPages = Math.max(1, Math.ceil(filteredNotifications.length / ITEMS_PER_PAGE));
   const paginatedNotifications = filteredNotifications.slice(
@@ -141,19 +97,18 @@ const NotificationsPage: React.FC = () => {
                 <div>
                   <h1 className="text-2xl font-bold text-white">{t('notifications.title')}</h1>
                   <p className="text-gray-300">
-                    {notifications.filter(n => !n.read).length} {t('notifications.unreadNotifications')}
+                    {notifications.length} {t('notifications.unreadNotifications')}
                   </p>
                 </div>
               </div>
               
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => markAllAsRead()}
-                  disabled={notifications.filter(n => !n.read).length === 0}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  onClick={() => navigate('/dashboard')}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
                 >
                   <CheckCircle className="w-4 h-4" />
-                  <span>{t('notifications.markAllRead')}</span>
+                  <span>{t('notifications.viewAll')}</span>
                 </button>
               </div>
             </div>
@@ -189,7 +144,6 @@ const NotificationsPage: React.FC = () => {
               
               {(['claim_reward', 'inbox_message', 'referral_bonus', 'mining_reminder', 'staking_reminder'] as const).map((type) => {
                 const { icon, color } = getFilterIconAndColor(type);
-                // Map the notification type to a translation key name
                 const getTranslationKey = (notificationType: NotificationType) => {
                   switch(notificationType) {
                     case 'claim_reward': return 'notifications.rewards';
@@ -241,17 +195,7 @@ const NotificationsPage: React.FC = () => {
               </div>
             ) : (
               paginatedNotifications.map((notification, index) => {
-                // Get color based on notification type
-                const getTypeColor = () => {
-                  switch (notification.type) {
-                    case 'claim_reward': return 'bg-yellow-500/20 border-yellow-500/30';
-                    case 'inbox_message': return 'bg-blue-500/20 border-blue-500/30';
-                    case 'referral_bonus': return 'bg-green-500/20 border-green-500/30';
-                    case 'mining_reminder': return 'bg-purple-500/20 border-purple-500/30';
-                    case 'staking_reminder': return 'bg-pink-500/20 border-pink-500/30';
-                    default: return 'bg-gray-500/20 border-gray-500/30';
-                  }
-                };
+                const getTypeColor = () => 'bg-gray-500/20 border-white/20';
                 
                 return (
                   <motion.div
@@ -259,61 +203,25 @@ const NotificationsPage: React.FC = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className={`bg-gray-900/80 backdrop-blur-xl rounded-2xl border ${
-                      notification.read ? 'border-white/10' : `border-white/20`
-                    } shadow-xl overflow-hidden cursor-pointer hover:bg-gray-800/80 transition-all duration-200 group`}
-                    onClick={() => handleNotificationClick(notification)}
+                    className={`bg-gray-900/80 backdrop-blur-xl rounded-2xl border ${getTypeColor()} shadow-xl overflow-hidden cursor-pointer hover:bg-gray-800/80 transition-all duration-200 group`}
+                    onClick={() => navigate('/dashboard')}
                   >
                     <div className="p-5">
                       <div className="flex items-start gap-4">
                         <div className={`p-3 rounded-xl ${getTypeColor()}`}>
-                          {getNotificationIcon(notification.type)}
+                          <Info className="w-5 h-5" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className={`text-lg font-semibold ${
-                              notification.read ? 'text-gray-200' : 'text-white group-hover:text-white'
-                            } transition-colors`}>
+                            <h3 className={`text-lg font-semibold text-white`}>
                               {notification.title}
                             </h3>
-                            {!notification.read && (
-                              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                            )}
                           </div>
-                          <p className={`${notification.read ? 'text-gray-400' : 'text-gray-300'} mb-3`}>
-                            {notification.body}
+                          <p className={`text-gray-300 mb-3`}>
+                            {notification.message}
                           </p>
                           <div className="flex items-center justify-between text-sm text-gray-500">
-                            <span>{formatTime(notification.timestamp)}</span>
-                            
-                            <div className="flex items-center gap-1">
-                              <button
-                                onClick={(e) => handleDeleteNotification(e, notification)}
-                                className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-red-400 transition-colors"
-                                aria-label="Delete notification"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                              
-                              {notification.read ? (
-                                <div className="p-2 text-green-400">
-                                  <CheckCircle className="w-4 h-4" />
-                                </div>
-                              ) : (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (notification.id) {
-                                      markAsRead(notification.id);
-                                    }
-                                  }}
-                                  className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-blue-400 transition-colors"
-                                  aria-label="Mark as read"
-                                >
-                                  <CheckCircle className="w-4 h-4" />
-                                </button>
-                              )}
-                            </div>
+                            <span>{formatTime(notification.createdAt)}</span>
                           </div>
                         </div>
                       </div>

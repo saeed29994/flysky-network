@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
   FaGift, FaSearch, FaEye, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes, FaUser, FaCoins, FaStar, FaTrophy, FaMedal, FaCrown, FaGem
 } from 'react-icons/fa';
@@ -25,7 +25,7 @@ interface Reward {
 }
 
 const RewardsTab = () => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -33,12 +33,12 @@ const RewardsTab = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  // Placeholder data
+  // Placeholder data with translated content
   const rewards: Reward[] = [
     {
       id: 'RWD001',
-      name: 'Daily Login Bonus',
-      description: 'Reward for logging in daily',
+      name: t('admin.rewards.sampleRewards.dailyLogin.name'),
+      description: t('admin.rewards.sampleRewards.dailyLogin.description'),
       type: 'daily',
       amount: 50,
       currency: 'FSN',
@@ -47,14 +47,14 @@ const RewardsTab = () => {
       currentClaims: 847,
       startDate: '2024-01-01',
       endDate: '2024-12-31',
-      requirements: ['Login daily', 'Complete profile'],
+      requirements: [t('admin.rewards.requirements.loginDaily'), t('admin.rewards.requirements.completeProfile')],
       icon: 'FaGift',
       color: 'from-green-500 to-emerald-500'
     },
     {
       id: 'RWD002',
-      name: 'Weekly Mining Reward',
-      description: 'Bonus for consistent mining activity',
+      name: t('admin.rewards.sampleRewards.weeklyMining.name'),
+      description: t('admin.rewards.sampleRewards.weeklyMining.description'),
       type: 'weekly',
       amount: 200,
       currency: 'FSN',
@@ -63,14 +63,14 @@ const RewardsTab = () => {
       currentClaims: 234,
       startDate: '2024-01-01',
       endDate: '2024-12-31',
-      requirements: ['Mine for 7 consecutive days', 'Minimum 100 FSN mined'],
+      requirements: [t('admin.rewards.requirements.mineConsecutiveDays'), t('admin.rewards.requirements.minimumMined')],
       icon: 'FaCoins',
       color: 'from-blue-500 to-cyan-500'
     },
     {
       id: 'RWD003',
-      name: 'Referral Champion',
-      description: 'Reward for bringing new users',
+      name: t('admin.rewards.sampleRewards.referralChampion.name'),
+      description: t('admin.rewards.sampleRewards.referralChampion.description'),
       type: 'referral',
       amount: 1000,
       currency: 'FSN',
@@ -79,14 +79,14 @@ const RewardsTab = () => {
       currentClaims: 67,
       startDate: '2024-01-01',
       endDate: '2024-12-31',
-      requirements: ['Refer 10 active users', 'Users must complete KYC'],
+      requirements: [t('admin.rewards.requirements.referActiveUsers'), t('admin.rewards.requirements.usersCompleteKYC')],
       icon: 'FaUser',
       color: 'from-purple-500 to-pink-500'
     },
     {
       id: 'RWD004',
-      name: 'First Class Achievement',
-      description: 'Special reward for premium members',
+      name: t('admin.rewards.sampleRewards.firstClassAchievement.name'),
+      description: t('admin.rewards.sampleRewards.firstClassAchievement.description'),
       type: 'achievement',
       amount: 5000,
       currency: 'FSN',
@@ -95,14 +95,14 @@ const RewardsTab = () => {
       currentClaims: 23,
       startDate: '2024-01-01',
       endDate: '2024-12-31',
-      requirements: ['Upgrade to First Class', 'Maintain for 30 days'],
+      requirements: [t('admin.rewards.requirements.upgradeToFirstClass'), t('admin.rewards.requirements.maintainForDays')],
       icon: 'FaCrown',
       color: 'from-yellow-500 to-orange-500'
     },
     {
       id: 'RWD005',
-      name: 'Monthly Staking Bonus',
-      description: 'Reward for long-term staking',
+      name: t('admin.rewards.sampleRewards.monthlyStaking.name'),
+      description: t('admin.rewards.sampleRewards.monthlyStaking.description'),
       type: 'monthly',
       amount: 300,
       currency: 'FSN',
@@ -111,14 +111,14 @@ const RewardsTab = () => {
       currentClaims: 89,
       startDate: '2024-01-01',
       endDate: '2024-06-30',
-      requirements: ['Stake minimum 1000 FSN', 'Hold for 30 days'],
+      requirements: [t('admin.rewards.requirements.stakeMinimum'), t('admin.rewards.requirements.holdForDays')],
       icon: 'FaGem',
       color: 'from-red-500 to-pink-500'
     },
     {
       id: 'RWD006',
-      name: 'Special Event Reward',
-      description: 'Limited time event reward',
+      name: t('admin.rewards.sampleRewards.specialEvent.name'),
+      description: t('admin.rewards.sampleRewards.specialEvent.description'),
       type: 'special',
       amount: 1500,
       currency: 'FSN',
@@ -127,7 +127,7 @@ const RewardsTab = () => {
       currentClaims: 75,
       startDate: '2024-12-01',
       endDate: '2024-12-31',
-      requirements: ['Participate in event', 'Complete all challenges'],
+      requirements: [t('admin.rewards.requirements.participateInEvent'), t('admin.rewards.requirements.completeAllChallenges')],
       icon: 'FaTrophy',
       color: 'from-indigo-500 to-purple-500'
     }
@@ -194,7 +194,7 @@ const RewardsTab = () => {
           <div className="flex items-center gap-3">
             <FaGift className="w-5 h-5 text-blue-400" />
             <div>
-              <p className="text-gray-400 text-sm">Total Rewards</p>
+              <p className="text-gray-400 text-sm">{t('admin.rewards.stats.totalRewards')}</p>
               <p className="text-white font-bold text-lg">{totalRewards}</p>
             </div>
           </div>
@@ -204,7 +204,7 @@ const RewardsTab = () => {
           <div className="flex items-center gap-3">
             <FaCheck className="w-5 h-5 text-green-400" />
             <div>
-              <p className="text-gray-400 text-sm">Active Rewards</p>
+              <p className="text-gray-400 text-sm">{t('admin.rewards.stats.activeRewards')}</p>
               <p className="text-white font-bold text-lg">{activeRewards}</p>
             </div>
           </div>
@@ -214,7 +214,7 @@ const RewardsTab = () => {
           <div className="flex items-center gap-3">
             <FaCoins className="w-5 h-5 text-yellow-400" />
             <div>
-              <p className="text-gray-400 text-sm">Total Value</p>
+              <p className="text-gray-400 text-sm">{t('admin.rewards.stats.totalValue')}</p>
               <p className="text-white font-bold text-lg">{totalValue.toLocaleString()} FSN</p>
             </div>
           </div>
@@ -224,7 +224,7 @@ const RewardsTab = () => {
           <div className="flex items-center gap-3">
             <FaUser className="w-5 h-5 text-purple-400" />
             <div>
-              <p className="text-gray-400 text-sm">Total Claims</p>
+              <p className="text-gray-400 text-sm">{t('admin.rewards.stats.totalClaims')}</p>
               <p className="text-white font-bold text-lg">{totalClaims.toLocaleString()}</p>
             </div>
           </div>
@@ -238,7 +238,7 @@ const RewardsTab = () => {
           className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 py-3 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-lg"
         >
           <FaPlus className="w-4 h-4" />
-          Create Reward
+          {t('admin.rewards.createReward')}
         </button>
       </div>
 
@@ -250,7 +250,7 @@ const RewardsTab = () => {
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search rewards..."
+                placeholder={t('admin.rewards.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white/10 border border-white/20 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -263,14 +263,14 @@ const RewardsTab = () => {
             onChange={(e) => setTypeFilter(e.target.value)}
             className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Types</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="achievement">Achievement</option>
-            <option value="referral">Referral</option>
-            <option value="bonus">Bonus</option>
-            <option value="special">Special</option>
+            <option value="all">{t('admin.rewards.filters.allTypes')}</option>
+            <option value="daily">{t('admin.rewards.filters.daily')}</option>
+            <option value="weekly">{t('admin.rewards.filters.weekly')}</option>
+            <option value="monthly">{t('admin.rewards.filters.monthly')}</option>
+            <option value="achievement">{t('admin.rewards.filters.achievement')}</option>
+            <option value="referral">{t('admin.rewards.filters.referral')}</option>
+            <option value="bonus">{t('admin.rewards.filters.bonus')}</option>
+            <option value="special">{t('admin.rewards.filters.special')}</option>
           </select>
 
           <select
@@ -278,9 +278,9 @@ const RewardsTab = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
+            <option value="all">{t('admin.rewards.filters.allStatus')}</option>
+            <option value="active">{t('admin.rewards.filters.active')}</option>
+            <option value="inactive">{t('admin.rewards.filters.inactive')}</option>
           </select>
         </div>
       </div>
@@ -305,7 +305,7 @@ const RewardsTab = () => {
                 <div>
                   <h3 className="text-lg font-bold text-white">{reward.name}</h3>
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(reward.type)}`}>
-                    {reward.type}
+                    {t(`admin.rewards.rewardTypes.${reward.type}`)}
                   </span>
                 </div>
               </div>
@@ -314,7 +314,7 @@ const RewardsTab = () => {
                   {reward.amount.toLocaleString()} {reward.currency}
                 </p>
                 <p className={`text-sm ${reward.isActive ? 'text-green-400' : 'text-red-400'}`}>
-                  {reward.isActive ? 'Active' : 'Inactive'}
+                  {reward.isActive ? t('admin.rewards.status.active') : t('admin.rewards.status.inactive')}
                 </p>
               </div>
             </div>
@@ -323,17 +323,17 @@ const RewardsTab = () => {
 
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="bg-white/5 rounded-lg p-3">
-                <p className="text-gray-400 text-xs">Claims</p>
+                <p className="text-gray-400 text-xs">{t('admin.rewards.details.claims')}</p>
                 <p className="text-white font-bold">{reward.currentClaims}/{reward.maxClaims}</p>
               </div>
               <div className="bg-white/5 rounded-lg p-3">
-                <p className="text-gray-400 text-xs">Period</p>
+                <p className="text-gray-400 text-xs">{t('admin.rewards.details.period')}</p>
                 <p className="text-white font-bold text-sm">{reward.startDate} - {reward.endDate}</p>
               </div>
             </div>
 
             <div className="space-y-2 mb-4">
-              <p className="text-gray-400 text-xs font-medium">Requirements:</p>
+              <p className="text-gray-400 text-xs font-medium">{t('admin.rewards.details.requirements')}:</p>
               {reward.requirements.map((req, idx) => (
                 <div key={idx} className="flex items-center gap-2">
                   <FaCheck className="w-3 h-3 text-green-400 flex-shrink-0" />
@@ -351,7 +351,7 @@ const RewardsTab = () => {
                 className="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
               >
                 <FaEye className="w-3 h-3" />
-                View
+                {t('admin.rewards.actions.view')}
               </button>
               <button
                 onClick={() => {
@@ -361,7 +361,7 @@ const RewardsTab = () => {
                 className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
               >
                 <FaEdit className="w-3 h-3" />
-                Edit
+                {t('admin.rewards.actions.edit')}
               </button>
               <button
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
@@ -383,43 +383,43 @@ const RewardsTab = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl w-full max-w-md">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaEye className="w-4 h-4 text-blue-400" />
-              Reward Details: {selectedReward.name}
+              {t('admin.rewards.details.title')}: {selectedReward.name}
             </h3>
             
             <div className="space-y-4">
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Basic Information</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.rewards.details.basicInformation')}</h4>
                 <div className="space-y-2 text-sm">
-                  <p><span className="text-gray-400">ID:</span> <span className="text-white">{selectedReward.id}</span></p>
-                  <p><span className="text-gray-400">Type:</span> <span className="text-white capitalize">{selectedReward.type}</span></p>
-                  <p><span className="text-gray-400">Amount:</span> <span className="text-white">{selectedReward.amount.toLocaleString()} {selectedReward.currency}</span></p>
-                  <p><span className="text-gray-400">Status:</span> <span className={`${selectedReward.isActive ? 'text-green-400' : 'text-red-400'}`}>
-                    {selectedReward.isActive ? 'Active' : 'Inactive'}
+                  <p><span className="text-gray-400">{t('admin.rewards.details.id')}:</span> <span className="text-white">{selectedReward.id}</span></p>
+                  <p><span className="text-gray-400">{t('admin.rewards.details.type')}:</span> <span className="text-white capitalize">{t(`admin.rewards.rewardTypes.${selectedReward.type}`)}</span></p>
+                  <p><span className="text-gray-400">{t('admin.rewards.details.amount')}:</span> <span className="text-white">{selectedReward.amount.toLocaleString()} {selectedReward.currency}</span></p>
+                  <p><span className="text-gray-400">{t('admin.rewards.details.status')}:</span> <span className={`${selectedReward.isActive ? 'text-green-400' : 'text-red-400'}`}>
+                    {selectedReward.isActive ? t('admin.rewards.status.active') : t('admin.rewards.status.inactive')}
                   </span></p>
                 </div>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Description</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.rewards.form.description')}</h4>
                 <p className="text-gray-300 text-sm">{selectedReward.description}</p>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Statistics</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.rewards.details.statistics')}</h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-400">Claims</p>
+                    <p className="text-gray-400">{t('admin.rewards.details.claims')}</p>
                     <p className="text-white font-bold">{selectedReward.currentClaims}/{selectedReward.maxClaims}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400">Period</p>
+                    <p className="text-gray-400">{t('admin.rewards.details.period')}</p>
                     <p className="text-white font-bold text-xs">{selectedReward.startDate} - {selectedReward.endDate}</p>
                   </div>
                 </div>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Requirements</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.rewards.details.requirements')}</h4>
                 <div className="space-y-1">
                   {selectedReward.requirements.map((req, idx) => (
                     <div key={idx} className="flex items-center gap-2">
@@ -435,7 +435,7 @@ const RewardsTab = () => {
                 className="w-full bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <FaTimes className="w-4 h-4" />
-                Close
+                {t('admin.rewards.actions.close')}
               </button>
             </div>
           </div>
@@ -452,56 +452,56 @@ const RewardsTab = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaPlus className="w-4 h-4 text-green-400" />
-              Create New Reward
+              {t('admin.rewards.createModal.title')}
             </h3>
             
             <div className="space-y-4">
               <input
                 type="text"
-                placeholder="Reward Name"
+                placeholder={t('admin.rewards.createModal.namePlaceholder')}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               
               <textarea
-                placeholder="Description"
+                placeholder={t('admin.rewards.createModal.descriptionPlaceholder')}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={3}
               />
               
               <select className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Select Type</option>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="achievement">Achievement</option>
-                <option value="referral">Referral</option>
-                <option value="bonus">Bonus</option>
-                <option value="special">Special</option>
+                <option value="">{t('admin.rewards.createModal.selectType')}</option>
+                                  <option value="daily">{t('admin.rewards.filters.daily')}</option>
+                  <option value="weekly">{t('admin.rewards.filters.weekly')}</option>
+                  <option value="monthly">{t('admin.rewards.filters.monthly')}</option>
+                  <option value="achievement">{t('admin.rewards.filters.achievement')}</option>
+                  <option value="referral">{t('admin.rewards.filters.referral')}</option>
+                  <option value="bonus">{t('admin.rewards.filters.bonus')}</option>
+                  <option value="special">{t('admin.rewards.filters.special')}</option>
               </select>
               
               <input
                 type="number"
-                placeholder="Amount"
+                placeholder={t('admin.rewards.createModal.amountPlaceholder')}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               
               <input
                 type="number"
-                placeholder="Max Claims"
+                placeholder={t('admin.rewards.createModal.maxClaimsPlaceholder')}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               
               <div className="flex gap-2">
                 <button className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
                   <FaCheck className="w-4 h-4" />
-                  Create
+                  {t('admin.rewards.actions.create')}
                 </button>
                 <button
                   onClick={() => setShowCreateModal(false)}
                   className="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   <FaTimes className="w-4 h-4" />
-                  Cancel
+                  {t('admin.rewards.actions.cancel')}
                 </button>
               </div>
             </div>

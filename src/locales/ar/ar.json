@@ -379,6 +379,34 @@
     "verifiedTitle": "تم التحقق من مكافأة الإحالة",
     "verifiedBody": "تهانينا! تم التحقق من إحالتك. لقد ربحت {{rewards}} رمز FSN."
   },
+  "welcomeBonus": {
+    "title": "🎉 مرحبًا بك في شبكة فلاي سكاي!",
+    "body": "لقد حصلت على مكافأة ترحيبية بقيمة {{amount}} FSN. اضغط أدناه لتحصيل مكافأتك",
+    "fcmTitle": "🎁 مكافأة ترحيبية",
+    "fcmBody": "لقد تلقيت مكافأة ترحيبية بقيمة {{amount}} FSN!"
+  },
+  "pwa": {
+    "title": "تثبيت تطبيق فلاي سكاي نتورك",
+    "subtitle": {
+      "ios": "أضِف إلى الشاشة الرئيسية للوصول السريع",
+      "default": "ثبّت التطبيق لتجربة أفضل"
+    },
+    "buttons": {
+      "howToInstall": "كيفية التثبيت",
+      "install": "تثبيت"
+    },
+    "toast": {
+      "installed": "تم تثبيت التطبيق بنجاح!",
+      "installing": "جاري تثبيت التطبيق...",
+      "cancelled": "تم إلغاء التثبيت"
+    },
+    "ios": {
+      "title": "لتثبيت هذا التطبيق:",
+      "step1": "اضغط على زر المشاركة 📤",
+      "step2": "ثم اختر \"إضافة إلى الشاشة الرئيسية\" 🏠",
+      "step3": "اضغط \"إضافة\" للتأكيد"
+    }
+  },
   "wallet": {
     "walletOverview": "💼 نظرة عامة على المحفظة",
     "totalBalance": "إجمالي الرصيد",
@@ -1008,12 +1036,332 @@
   "notificationsEnabled": "ستتلقى إشعارات فورية عند حدوث تحديثات مهمة.",
   "notificationsDescription": "فعّل الإشعارات الفورية لتلقي تحديثات حول المكافآت والرسائل والأحداث المهمة الأخرى.",
   "admin": {
+    "route": {
+      "checking": "جاري التحقق من صلاحيات المشرف..."
+    },
+    "notifications": {
+      "title": "إدارة الإشعارات",
+      "description": "إدارة وتتبع جميع إشعارات المنصة",
+      "stats": {
+        "totalSent": "إجمالي المرسل",
+        "avgOpenRate": "متوسط معدل الفتح",
+        "avgClickRate": "متوسط معدل النقر",
+        "scheduled": "المجدولة",
+        "fromLastWeek": "من الأسبوع الماضي",
+        "nextScheduled": "التالي: 25 ديسمبر، 2:00 صباحاً"
+      },
+      "filters": {
+        "searchPlaceholder": "البحث في الإشعارات...",
+        "allTypes": "جميع الأنواع",
+        "allStatus": "جميع الحالات",
+        "allAudiences": "جميع الجماهير",
+        "info": "معلومات",
+        "success": "نجح",
+        "warning": "تحذير",
+        "error": "خطأ",
+        "sent": "مرسل",
+        "scheduled": "مجدول",
+        "draft": "مسودة",
+        "failed": "فشل",
+        "allUsers": "جميع المستخدمين",
+        "premium": "مميز",
+        "newUsers": "مستخدمين جدد",
+        "inactive": "غير نشط",
+        "sortBy": {
+          "newestFirst": "الأحدث أولاً",
+          "oldestFirst": "الأقدم أولاً",
+          "titleAZ": "العنوان أ-ي",
+          "titleZA": "العنوان ي-أ",
+          "mostRecipients": "الأكثر استقبالاً",
+          "mostOpened": "الأكثر فتحاً"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "{{count}} إشعار(ات) محدد(ة)",
+        "resend": "إعادة إرسال",
+        "duplicate": "نسخ",
+        "delete": "حذف",
+        "confirmDelete": "هل أنت متأكد من حذف {{count}} إشعار(ات)؟"
+      },
+      "table": {
+        "notification": "الإشعار",
+        "type": "النوع",
+        "status": "الحالة",
+        "audience": "الجمهور",
+        "platforms": "المنصات",
+        "performance": "الأداء",
+        "created": "تاريخ الإنشاء",
+        "actions": "الإجراءات",
+        "title": "العنوان",
+        "message": "الرسالة",
+        "recipients": "مستقبلين",
+        "opened": "مفتوح",
+        "clicked": "نقر",
+        "openRate": "معدل الفتح",
+        "clickRate": "معدل النقر"
+      },
+      "mobile": {
+        "notifications": "الإشعارات",
+        "sent": "مرسل",
+        "open": "فتح",
+        "click": "نقر"
+      },
+      "sendModal": {
+        "title": "إرسال إشعار",
+        "notificationTitle": "عنوان الإشعار",
+        "titlePlaceholder": "أدخل عنوان الإشعار...",
+        "notificationMessage": "رسالة الإشعار",
+        "messagePlaceholder": "أدخل رسالة الإشعار...",
+        "cancel": "إلغاء",
+        "send": "إرسال",
+        "sending": "جارٍ الإرسال...",
+        "pleaseEnterBoth": "يرجى إدخال العنوان والمحتوى.",
+        "noTokensFound": "لم يتم العثور على رموز. لا يوجد مستخدمين مسجلين للإشعارات.",
+        "notificationSent": "تم إرسال الإشعار بنجاح!",
+        "failedToSend": "فشل في إرسال الإشعارات. يقول الخادم: {{error}}",
+        "errorSending": "خطأ في إرسال الإشعار."
+      },
+      "actions": {
+        "sendNotification": "إرسال إشعار",
+        "send": "إرسال",
+        "refresh": "تحديث الإشعارات",
+        "view": "عرض الإشعار",
+        "edit": "تعديل الإشعار",
+        "delete": "حذف الإشعار",
+        "dismissError": "إغلاق الخطأ"
+      },
+      "status": {
+        "sent": "مرسل",
+        "scheduled": "مجدول",
+        "draft": "مسودة",
+        "failed": "فشل"
+      },
+      "types": {
+        "info": "معلومات",
+        "success": "نجح",
+        "warning": "تحذير",
+        "error": "خطأ"
+      },
+      "audience": {
+        "all": "الكل",
+        "premium": "مميز",
+        "new": "جديد",
+        "inactive": "غير نشط"
+      },
+      "platforms": {
+        "mobile": "الجوال",
+        "web": "الويب",
+        "email": "البريد الإلكتروني"
+      },
+      "pagination": {
+        "showing": "عرض {{current}} من {{total}} إشعار",
+        "previous": "السابق",
+        "next": "التالي"
+      },
+      "empty": {
+        "noNotifications": "لم يتم العثور على إشعارات",
+        "loading": "جارٍ تحميل الإشعارات..."
+      },
+      "error": {
+        "failedToLoad": "فشل في تحميل الإشعارات",
+        "failedToSend": "فشل في إرسال الإشعار",
+        "failedToDelete": "فشل في حذف الإشعار",
+        "failedToUpdate": "فشل في تحديث الإشعار"
+      }
+    },
+    "rewards": {
+      "stats": {
+        "totalRewards": "إجمالي المكافآت",
+        "activeRewards": "المكافآت النشطة",
+        "totalValue": "القيمة الإجمالية",
+        "totalClaims": "إجمالي المطالبات"
+      },
+      "createReward": "إنشاء مكافأة",
+      "searchPlaceholder": "البحث في المكافآت...",
+      "filters": {
+        "allTypes": "جميع الأنواع",
+        "allStatus": "جميع الحالات",
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "daily": "يومي",
+        "weekly": "أسبوعي",
+        "monthly": "شهري",
+        "achievement": "إنجاز",
+        "referral": "الإحالة",
+        "bonus": "مكافأة إضافية",
+        "special": "خاص"
+      },
+      "rewardTypes": {
+        "daily": "يومي",
+        "weekly": "أسبوعي",
+        "monthly": "شهري",
+        "achievement": "إنجاز",
+        "referral": "الإحالة",
+        "bonus": "مكافأة إضافية",
+        "special": "خاص"
+      },
+      "status": {
+        "active": "نشط",
+        "inactive": "غير نشط"
+      },
+      "actions": {
+        "create": "إنشاء",
+        "cancel": "إلغاء",
+        "view": "عرض",
+        "edit": "تعديل",
+        "close": "إغلاق"
+      },
+      "details": {
+        "title": "تفاصيل المكافأة",
+        "basicInformation": "المعلومات الأساسية",
+        "statistics": "الإحصائيات",
+        "requirements": "المتطلبات",
+        "id": "الرقم التعريفي",
+        "type": "النوع",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "claims": "المطالبات",
+        "period": "الفترة"
+      },
+      "form": {
+        "description": "الوصف"
+      },
+      "createModal": {
+        "title": "إنشاء مكافأة جديدة",
+        "namePlaceholder": "اسم المكافأة",
+        "descriptionPlaceholder": "الوصف",
+        "selectType": "اختر النوع",
+        "amountPlaceholder": "المبلغ",
+        "maxClaimsPlaceholder": "الحد الأقصى للمطالبات"
+      },
+      "sampleRewards": {
+        "dailyLogin": {
+          "name": "مكافأة تسجيل الدخول اليومي",
+          "description": "مكافأة لتسجيل الدخول يومياً"
+        },
+        "weeklyMining": {
+          "name": "مكافأة التعدين الأسبوعية",
+          "description": "مكافأة إضافية للنشاط المستمر في التعدين"
+        },
+        "referralChampion": {
+          "name": "بطل الإحالة",
+          "description": "مكافأة لجلب مستخدمين جدد"
+        },
+        "firstClassAchievement": {
+          "name": "إنجاز الدرجة الأولى",
+          "description": "مكافأة خاصة للأعضاء المميزين"
+        },
+        "monthlyStaking": {
+          "name": "مكافأة الرهان الشهرية",
+          "description": "مكافأة للرهان طويل الأمد"
+        },
+        "specialEvent": {
+          "name": "مكافأة الحدث الخاص",
+          "description": "مكافأة حدث محدودة الوقت"
+        }
+      },
+      "requirements": {
+        "loginDaily": "تسجيل الدخول يومياً",
+        "completeProfile": "إكمال الملف الشخصي",
+        "mineConsecutiveDays": "التعدين لمدة 7 أيام متتالية",
+        "minimumMined": "الحد الأدنى 100 FSN معدنة",
+        "referActiveUsers": "إحالة 10 مستخدمين نشطين",
+        "usersCompleteKYC": "يجب على المستخدمين إكمال التحقق من الهوية",
+        "upgradeToFirstClass": "الترقية إلى الدرجة الأولى",
+        "maintainForDays": "الحفاظ لمدة 30 يوماً",
+        "stakeMinimum": "الرهان بحد أدنى 1000 FSN",
+        "holdForDays": "الاحتفاظ لمدة 30 يوماً",
+        "participateInEvent": "المشاركة في الحدث",
+        "completeAllChallenges": "إكمال جميع التحديات"
+      }
+    },
+    "transactions": {
+      "title": "إدارة المعاملات",
+      "description": "مراقبة وإدارة جميع معاملات المنصة",
+      "searchPlaceholder": "البحث في المعاملات...",
+      "filters": {
+        "all": "جميع الحالات",
+        "completed": "مكتمل",
+        "pending": "معلق",
+        "failed": "فشل"
+      },
+      "stats": {
+        "totalTransactions": "إجمالي المعاملات",
+        "totalVolume": "إجمالي الحجم",
+        "completed": "مكتمل",
+        "pending": "معلق"
+      },
+      "table": {
+        "transaction": "المعاملة",
+        "user": "المستخدم",
+        "amount": "المبلغ",
+        "date": "التاريخ",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "types": {
+        "stake": "الرهان",
+        "reward": "المكافأة",
+        "referral": "الإحالة",
+        "mining": "التعدين",
+        "withdrawal": "السحب",
+        "deposit": "الإيداع",
+        "bonus": "المكافأة الإضافية"
+      },
+      "status": {
+        "completed": "مكتمل",
+        "pending": "معلق",
+        "failed": "فشل"
+      },
+      "modal": {
+        "title": "تفاصيل المعاملة",
+        "transactionInfo": "معلومات المعاملة",
+        "userInfo": "معلومات المستخدم",
+        "description": "الوصف",
+        "timestamp": "الطابع الزمني",
+        "close": "إغلاق"
+      },
+      "noTransactions": "لم يتم العثور على معاملات",
+      "loading": "جاري تحميل المعاملات...",
+      "viewDetails": "عرض التفاصيل"
+    },
     "dashboard": {
+      "title": "لوحة تحكم المشرف",
+      "subtitle": "إدارة المستخدمين والتحقق من الهوية والمدفوعات",
       "quickStatistics": "إحصائيات سريعة",
+      "detailedStatistics": "إحصائيات مفصلة",
       "totalUsers": "إجمالي المستخدمين",
       "totalAdmins": "إجمالي المشرفين",
       "pendingKYC": "KYC معلق",
-      "totalFSN": "إجمالي FSN"
+      "verifiedKYC": "KYC مُتحقق",
+      "premiumPlans": "الخطط المميزة",
+      "totalBalance": "إجمالي الرصيد",
+      "totalFSN": "إجمالي FSN",
+      "businessPlans": "الخطط التجارية",
+      "firstClassPlans": "خطط الدرجة الأولى"
+    },
+    "tabs": {
+      "dashboard": "لوحة التحكم",
+      "users": "إدارة المستخدمين",
+      "kyc": "التحقق من الهوية",
+      "payments": "المدفوعات اليدوية",
+      "transactions": "المعاملات",
+      "rewards": "المكافآت",
+      "notifications": "الإشعارات",
+      "content": "المحتوى",
+      "memberships": "العضويات",
+      "sendNotification": "إرسال إشعار",
+      "short": {
+        "dashboard": "الرئيسية",
+        "users": "المستخدمين",
+        "kyc": "التحقق",
+        "payments": "المدفوعات",
+        "transactions": "المعاملات",
+        "rewards": "المكافآت",
+        "notifications": "الإشعارات",
+        "content": "المحتوى",
+        "memberships": "العضويات"
+      }
     },
     "kyc": {
       "title": "التحقق من الهوية",
@@ -1031,6 +1379,564 @@
       "noDocuments": "لم يتم رفع وثائق التحقق من الهوية",
       "approve": "الموافقة على التحقق من الهوية",
       "reject": "رفض التحقق من الهوية"
+    },
+    "users": {
+      "title": "إدارة المستخدمين",
+      "description": "إدارة حسابات المستخدمين والخطط والحالة",
+      "searchPlaceholder": "البحث عن المستخدمين...",
+      "loading": "جاري تحميل المستخدمين...",
+      "confirmDelete": "هل أنت متأكد من حذف هذا المستخدم؟",
+      "stats": {
+        "activeUsers": "المستخدمون النشطون",
+        "premiumPlans": "الخطط المميزة",
+        "totalBalance": "إجمالي الرصيد"
+      },
+      "filters": {
+        "all": "الكل",
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "verified": "مُتحقق",
+        "pending": "معلق",
+        "rejected": "مرفوض",
+        "allStatus": "جميع الحالات",
+        "allPlans": "جميع الخطط",
+        "economy": "الاقتصادية",
+        "business": "التجارية",
+        "first6": "الدرجة الأولى-6",
+        "firstLifetime": "الدرجة الأولى-مدى الحياة"
+      },
+      "sort": {
+        "newestFirst": "الأحدث أولاً",
+        "oldestFirst": "الأقدم أولاً",
+        "nameAZ": "الاسم أ-ي",
+        "nameZA": "الاسم ي-أ",
+        "balanceHighLow": "الرصيد عالي-منخفض",
+        "balanceLowHigh": "الرصيد منخفض-عالي"
+      },
+      "bulk": {
+        "selectedUsers": "{{count}} مستخدم محدد",
+        "pleaseSelectUsers": "يرجى تحديد المستخدمين أولاً",
+        "confirmDelete": "هل أنت متأكد من حذف {{count}} مستخدمين؟"
+      },
+      "table": {
+        "user": "المستخدم",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "kyc": "حالة التحقق",
+        "kycStatus": "حالة التحقق",
+        "plan": "الخطة",
+        "balance": "الرصيد",
+        "staking": "الستيكنج",
+        "status": "الحالة",
+        "created": "تاريخ الإنشاء",
+        "joined": "تاريخ الانضمام",
+        "lastLogin": "آخر تسجيل دخول",
+        "actions": "الإجراءات",
+        "id": "الهوية"
+      },
+      "modal": {
+        "updatePlan": "تحديث خطة المستخدم",
+        "selectPlan": "اختر الخطة"
+      },
+      "actions": {
+        "edit": "تعديل",
+        "delete": "حذف",
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل",
+        "viewDetails": "عرض التفاصيل"
+      },
+      "status": {
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "verified": "مُتحقق",
+        "pending": "معلق",
+        "rejected": "مرفوض"
+      },
+      "noUsers": "لم يتم العثور على مستخدمين",
+      "loading": "جاري تحميل المستخدمين..."
+    },
+    "transaction": {
+      "title": "إدارة المعاملات",
+      "description": "مراقبة وإدارة جميع معاملات المنصة",
+      "searchPlaceholder": "البحث عن المعاملات...",
+      "filters": {
+        "all": "الكل",
+        "completed": "مكتملة",
+        "pending": "معلقة",
+        "failed": "فاشلة"
+      },
+      "table": {
+        "id": "رقم المعاملة",
+        "user": "المستخدم",
+        "type": "النوع",
+        "amount": "المبلغ",
+        "description": "الوصف",
+        "timestamp": "التاريخ والوقت",
+        "status": "الحالة"
+      },
+      "types": {
+        "stake": "ستيك",
+        "reward": "مكافأة",
+        "referral": "إحالة",
+        "withdrawal": "سحب",
+        "mining": "تعدين"
+      },
+      "status": {
+        "completed": "مكتملة",
+        "pending": "معلقة",
+        "failed": "فاشلة"
+      },
+      "noTransactions": "لم يتم العثور على معاملات",
+      "loading": "جاري تحميل المعاملات...",
+      "viewDetails": "عرض التفاصيل"
+    },
+    "rewards": {
+      "title": "إدارة المكافآت",
+      "description": "إنشاء وإدارة برامج المكافآت",
+      "stats": {
+        "totalRewards": "إجمالي المكافآت",
+        "activeRewards": "المكافآت النشطة",
+        "totalValue": "القيمة الإجمالية",
+        "totalClaims": "إجمالي المطالبات"
+      },
+      "createNew": "إنشاء مكافأة جديدة",
+      "searchPlaceholder": "البحث عن المكافآت...",
+      "filters": {
+        "all": "جميع الأنواع",
+        "daily": "يومية",
+        "weekly": "أسبوعية",
+        "monthly": "شهرية",
+        "referral": "إحالة",
+        "achievement": "إنجاز"
+      },
+      "statusFilters": {
+        "all": "جميع الحالات",
+        "active": "نشطة",
+        "inactive": "غير نشطة"
+      },
+      "table": {
+        "name": "اسم المكافأة",
+        "type": "النوع",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "claims": "المطالبات",
+        "dates": "فترة النشاط",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "name": "اسم المكافأة",
+        "description": "الوصف",
+        "type": "النوع",
+        "amount": "المبلغ",
+        "currency": "العملة",
+        "maxClaims": "الحد الأقصى للمطالبات",
+        "startDate": "تاريخ البداية",
+        "endDate": "تاريخ النهاية",
+        "requirements": "المتطلبات",
+        "addRequirement": "إضافة متطلب"
+      },
+      "actions": {
+        "edit": "تعديل",
+        "delete": "حذف",
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل",
+        "viewDetails": "عرض التفاصيل"
+      },
+      "status": {
+        "active": "نشطة",
+        "inactive": "غير نشطة "
+      },
+      "noRewards": "لم يتم العثور على مكافآت",
+      "loading": "جاري تحميل المكافآت..."
+    },
+    "notifications": {
+      "title": "إدارة الإشعارات",
+      "description": "إدارة وتتبع جميع إشعارات المنصة",
+      "stats": {
+        "totalSent": "إجمالي المرسل",
+        "avgOpenRate": "متوسط معدل الفتح",
+        "avgClickRate": "متوسط معدل النقر",
+        "scheduled": "المجدولة",
+        "fromLastWeek": "من الأسبوع الماضي",
+        "nextScheduled": "التالي: 25 ديسمبر، 2:00 صباحاً"
+      },
+      "filters": {
+        "searchPlaceholder": "البحث في الإشعارات...",
+        "allTypes": "جميع الأنواع",
+        "allStatus": "جميع الحالات",
+        "allAudiences": "جميع الجماهير",
+        "info": "معلومات",
+        "success": "نجح",
+        "warning": "تحذير",
+        "error": "خطأ",
+        "sent": "مرسل",
+        "scheduled": "مجدول",
+        "draft": "مسودة",
+        "failed": "فشل",
+        "allUsers": "جميع المستخدمين",
+        "premium": "مميز",
+        "newUsers": "مستخدمين جدد",
+        "inactive": "غير نشط",
+        "sortBy": {
+          "newestFirst": "الأحدث أولاً",
+          "oldestFirst": "الأقدم أولاً",
+          "titleAZ": "العنوان أ-ي",
+          "titleZA": "العنوان ي-أ",
+          "mostRecipients": "الأكثر استقبالاً",
+          "mostOpened": "الأكثر فتحاً"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "{{count}} إشعار(ات) محدد(ة)",
+        "resend": "إعادة إرسال",
+        "duplicate": "نسخ",
+        "delete": "حذف",
+        "confirmDelete": "هل أنت متأكد من حذف {{count}} إشعار(ات)؟"
+      },
+      "table": {
+        "notification": "الإشعار",
+        "type": "النوع",
+        "status": "الحالة",
+        "audience": "الجمهور",
+        "platforms": "المنصات",
+        "performance": "الأداء",
+        "created": "تاريخ الإنشاء",
+        "actions": "الإجراءات",
+        "title": "العنوان",
+        "message": "الرسالة",
+        "recipients": "مستقبلين",
+        "opened": "مفتوح",
+        "clicked": "نقر",
+        "openRate": "معدل الفتح",
+        "clickRate": "معدل النقر"
+      },
+      "mobile": {
+        "notifications": "الإشعارات",
+        "sent": "مرسل",
+        "open": "فتح",
+        "click": "نقر"
+      },
+      "sendModal": {
+        "title": "إرسال إشعار",
+        "notificationTitle": "عنوان الإشعار",
+        "titlePlaceholder": "أدخل عنوان الإشعار...",
+        "notificationMessage": "رسالة الإشعار",
+        "messagePlaceholder": "أدخل رسالة الإشعار...",
+        "cancel": "إلغاء",
+        "send": "إرسال",
+        "sending": "جارٍ الإرسال...",
+        "pleaseEnterBoth": "يرجى إدخال العنوان والمحتوى.",
+        "noTokensFound": "لم يتم العثور على رموز. لا يوجد مستخدمين مسجلين للإشعارات.",
+        "notificationSent": "تم إرسال الإشعار بنجاح!",
+        "failedToSend": "فشل في إرسال الإشعارات. يقول الخادم: {{error}}",
+        "errorSending": "خطأ في إرسال الإشعار."
+      },
+      "actions": {
+        "sendNotification": "إرسال إشعار",
+        "send": "إرسال",
+        "refresh": "تحديث الإشعارات",
+        "view": "عرض الإشعار",
+        "edit": "تعديل الإشعار",
+        "delete": "حذف الإشعار",
+        "dismissError": "إغلاق الخطأ",
+        "close": "إغلاق"
+      },
+      "status": {
+        "sent": "مرسل",
+        "scheduled": "مجدول",
+        "draft": "مسودة",
+        "failed": "فشل"
+      },
+      "types": {
+        "info": "معلومات",
+        "success": "نجح",
+        "warning": "تحذير",
+        "error": "خطأ"
+      },
+      "audience": {
+        "all": "الكل",
+        "premium": "مميز",
+        "new": "جديد",
+        "inactive": "غير نشط"
+      },
+      "platforms": {
+        "mobile": "الجوال",
+        "web": "الويب",
+        "email": "البريد الإلكتروني"
+      },
+      "pagination": {
+        "showing": "عرض {{current}} من {{total}} إشعار",
+        "previous": "السابق",
+        "next": "التالي"
+      },
+      "empty": {
+        "noNotifications": "لم يتم العثور على إشعارات",
+        "loading": "جارٍ تحميل الإشعارات..."
+      },
+      "error": {
+        "failedToLoad": "فشل في تحميل الإشعارات",
+        "failedToSend": "فشل في إرسال الإشعار",
+        "failedToDelete": "فشل في حذف الإشعار",
+        "failedToUpdate": "فشل في تحديث الإشعار"
+      }
+    },
+    "content": {
+      "title": "إدارة المحتوى",
+      "description": "إدارة محتوى المنصة والإعلانات",
+      "createNew": "إنشاء محتوى جديد",
+      "searchPlaceholder": "البحث عن المحتوى...",
+      "stats": {
+        "totalContent": "إجمالي المحتوى",
+        "activeContent": "المحتوى النشط",
+        "totalViews": "إجمالي المشاهدات",
+        "totalClicks": "إجمالي النقرات"
+      },
+      "actions": {
+        "createContent": "إنشاء محتوى",
+        "view": "عرض",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "create": "إنشاء",
+        "cancel": "إلغاء",
+        "close": "إغلاق"
+      },
+      "search": {
+        "placeholder": "البحث عن المحتوى..."
+      },
+      "filters": {
+        "allTypes": "جميع الأنواع",
+        "allStatus": "جميع الحالات"
+      },
+      "types": {
+        "banner": "لافتة",
+        "announcement": "إعلان",
+        "promotion": "ترويج",
+        "video": "فيديو",
+        "news": "أخبار"
+      },
+      "status": {
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "draft": "مسودة"
+      },
+      "priority": "الأولوية",
+      "views": "المشاهدات",
+      "clicks": "النقرات",
+      "details": {
+        "title": "تفاصيل المحتوى",
+        "basicInformation": "المعلومات الأساسية",
+        "description": "الوصف",
+        "performance": "الأداء",
+        "schedule": "الجدول الزمني",
+        "id": "الرقم التعريفي",
+        "type": "النوع",
+        "status": "الحالة",
+        "priority": "الأولوية"
+      },
+      "createModal": {
+        "title": "إنشاء محتوى جديد",
+        "titlePlaceholder": "عنوان المحتوى",
+        "descriptionPlaceholder": "الوصف",
+        "selectType": "اختر النوع",
+        "priorityPlaceholder": "الأولوية (1-10)"
+      },
+      "sampleData": {
+        "welcomeTitle": "مرحبًا بك في شبكة فلاي سكاي",
+        "welcomeDescription": "انضم إلى مستقبل التعدين اللامركزي",
+        "miningRewardsTitle": "مكافآت التعدين الجديدة متاحة",
+        "miningRewardsDescription": "اكسب حتى 3000 FSN يوميًا مع نظام التعدين الجديد",
+        "referralProgramTitle": "إطلاق برنامج الإحالة",
+        "referralProgramDescription": "ادع أصدقاءك واكسب 1000 FSN لكل إحالة",
+        "tutorialVideoTitle": "فيديو تعليمي للمنصة",
+        "tutorialVideoDescription": "تعلم كيفية تعظيم كفاءة التعدين",
+        "holidayEventTitle": "فعالية العطلات الخاصة",
+        "holidayEventDescription": "مكافآت مضاعفة خلال موسم العطلات"
+      },
+      "table": {
+        "title": "العنوان",
+        "type": "النوع",
+        "status": "الحالة",
+        "views": "المشاهدات",
+        "clicks": "النقرات",
+        "created": "تاريخ الإنشاء",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "title": "العنوان",
+        "content": "المحتوى",
+        "type": "النوع",
+        "status": "الحالة",
+        "image": "الصورة",
+        "link": "الرابط"
+      },
+      "noContent": "لم يتم العثور على محتوى",
+      "loading": "جاري تحميل المحتوى..."
+    },
+    "memberships": {
+      "title": "إدارة العضويات",
+      "description": "إدارة خطط العضوية والاشتراكات",
+      "createNew": "إنشاء خطة جديدة",
+      "searchPlaceholder": "البحث عن العضويات...",
+      "filters": {
+        "all": "جميع الخطط",
+        "economy": "الاقتصادية",
+        "business": "التجارية",
+        "first-6": "الدرجة الأولى (6 أشهر)",
+        "first-lifetime": "الدرجة الأولى (مدى الحياة)"
+      },
+      "table": {
+        "user": "المستخدم",
+        "plan": "الخطة",
+        "status": "الحالة",
+        "startDate": "تاريخ البداية",
+        "endDate": "تاريخ النهاية",
+        "amount": "المبلغ",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "user": "المستخدم",
+        "plan": "الخطة",
+        "duration": "المدة",
+        "amount": "المبلغ",
+        "status": "الحالة"
+      },
+      "actions": {
+        "edit": "تعديل",
+        "cancel": "إلغاء",
+        "extend": "تمديد",
+        "viewDetails": "عرض التفاصيل"
+      },
+      "status": {
+        "active": "نشطة",
+        "expired": "منتهية الصلاحية",
+        "cancelled": "ملغاة",
+        "pending": "معلقة"
+      },
+      "noMemberships": "لم يتم العثور على عضويات",
+      "loading": "جاري تحميل العضويات...",
+      "createPlan": "إنشاء خطة",
+      "loadingPlans": "جاري تحميل خطط العضوية...",
+      "mostPopular": "الأكثر شعبية",
+      "subscribers": "المشتركين",
+      "revenue": "الإيرادات",
+      "view": "عرض",
+      "edit": "تعديل",
+      "disable": "تعطيل",
+      "enable": "تفعيل",
+      "delete": "حذف",
+      "createNewPlan": "إنشاء خطة جديدة",
+      "planName": "اسم الخطة (مثال: economy)",
+      "displayName": "اسم العرض (مثال: الخطة الاقتصادية)",
+      "description": "الوصف",
+      "price": "السعر",
+      "bonusFSN": "مكافأة FSN",
+      "miningRate": "معدل التعدين (مثال: 600 FSN / 12 ساعة)",
+      "duration": "المدة",
+      "icon": "الأيقونة",
+      "color": "اللون",
+      "monthly": "شهري",
+      "yearly": "سنوي",
+      "6months": "6 أشهر",
+      "lifetime": "مدى الحياة",
+      "coins": "عملات",
+      "gem": "جوهرة",
+      "star": "نجمة",
+      "crown": "تاج",
+      "green": "أخضر",
+      "purple": "بنفسجي",
+      "blue": "أزرق",
+      "yellow": "أصفر",
+      "create": "إنشاء",
+      "cancel": "إلغاء",
+      "planDetails": "تفاصيل الخطة",
+      "basicInformation": "المعلومات الأساسية",
+      "name": "الاسم",
+      "displayName": "اسم العرض",
+      "status": "الحالة",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "features": "الميزات",
+      "statistics": "الإحصائيات",
+      "close": "إغلاق",
+      "editPlan": "تعديل الخطة",
+      "update": "تحديث",
+      "fillRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
+      "createPlanFailed": "فشل في إنشاء الخطة. يرجى المحاولة مرة أخرى.",
+      "updatePlanFailed": "فشل في تحديث الخطة. يرجى المحاولة مرة أخرى.",
+      "deletePlanFailed": "فشل في حذف الخطة. يرجى المحاولة مرة أخرى.",
+      "confirmDelete": "هل أنت متأكد من حذف هذه الخطة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "defaultPlans": {
+        "economy": {
+          "name": "الخطة الاقتصادية",
+          "description": "خطة مجانية للمستخدمين الأساسيين"
+        },
+        "business": {
+          "name": "الخطة التجارية",
+          "description": "خطة احترافية للمستخدمين التجاريين"
+        },
+        "first6": {
+          "name": "الدرجة الأولى 6 أشهر",
+          "description": "خطة متميزة للمستخدمين الجادين"
+        },
+        "firstLifetime": {
+          "name": "الدرجة الأولى مدى الحياة",
+          "description": "الخطة النهائية مع الوصول مدى الحياة"
+        }
+      }
+    },
+    "payments": {
+      "title": "المدفوعات اليدوية",
+      "description": "مراجعة والموافقة على طلبات الدفع",
+      "searchPlaceholder": "البحث بالاسم أو البريد الإلكتروني أو معرف المستخدم",
+      "loading": "جاري تحميل المدفوعات...",
+      "noPayments": "لم يتم العثور على مدفوعات يدوية.",
+      "table": {
+        "user": "المستخدم",
+        "currency": "العملة",
+        "txLink": "رابط المعاملة",
+        "fromAddress": "من العنوان",
+        "status": "الحالة",
+        "proof": "الإثبات",
+        "date": "التاريخ",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "approved": "موافق عليه",
+        "rejected": "مرفوض",
+        "pending": "معلق"
+      },
+      "actions": {
+        "approve": "موافقة",
+        "reject": "رفض",
+        "view": "عرض",
+        "download": "تحميل"
+      },
+      "confirmDelete": "هل أنت متأكد من حذف هذه المدفوعات؟",
+      "updateSuccess": "تم تحديث حالة الدفع بنجاح",
+      "updateError": "فشل في تحديث حالة الدفع"
+    },
+    "common": {
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "view": "عرض",
+      "close": "إغلاق",
+      "confirm": "تأكيد",
+      "loading": "جاري التحميل...",
+      "search": "بحث",
+      "filter": "تصفية",
+      "sort": "ترتيب",
+      "actions": "الإجراءات",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "amount": "المبلغ",
+      "details": "التفاصيل",
+      "noResults": "لم يتم العثور على نتائج",
+      "selectAll": "تحديد الكل",
+      "bulkActions": "الإجراءات المجمعة",
+      "exportData": "تصدير البيانات",
+      "refresh": "تحديث"
     }
   },
   "enable": "تفعيل",

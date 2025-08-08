@@ -380,6 +380,34 @@
     "verifiedTitle": "Referral Bonus Verified",
     "verifiedBody": "Congratulations! Your referral has been verified. You've earned {{rewards}} FSN tokens."
   },
+  "welcomeBonus": {
+    "title": "🎉 Welcome to FlySky Network!",
+    "body": "You've earned a {{amount}} FSN welcome bonus. Click below to claim your reward",
+    "fcmTitle": "🎁 Welcome Bonus",
+    "fcmBody": "You received a {{amount}} FSN welcome reward!"
+  },
+  "pwa": {
+    "title": "Install FlySky Network",
+    "subtitle": {
+      "ios": "Add to home screen for quick access",
+      "default": "Install app for better experience"
+    },
+    "buttons": {
+      "howToInstall": "How to Install",
+      "install": "Install"
+    },
+    "toast": {
+      "installed": "App installed successfully!",
+      "installing": "Installing app...",
+      "cancelled": "Installation cancelled"
+    },
+    "ios": {
+      "title": "To install this app:",
+      "step1": "Tap the Share button 📤",
+      "step2": "Scroll down and tap \"Add to Home Screen\" 🏠",
+      "step3": "Tap \"Add\" to confirm"
+    }
+  },
   "wallet": {
     "walletOverview": "💼 Wallet Overview",
     "totalBalance": "Total Balance",
@@ -1006,12 +1034,332 @@
   "notificationsEnabled": "You will receive push notifications when important updates happen.",
   "notificationsDescription": "Enable push notifications to receive updates about rewards, messages, and other important events.",
   "admin": {
+    "route": {
+      "checking": "Checking admin permissions..."
+    },
+    "notifications": {
+      "title": "Notifications Management",
+      "description": "Manage and track all platform notifications",
+      "stats": {
+        "totalSent": "Total Sent",
+        "avgOpenRate": "Avg. Open Rate",
+        "avgClickRate": "Avg. Click Rate",
+        "scheduled": "Scheduled",
+        "fromLastWeek": "from last week",
+        "nextScheduled": "Next: Dec 25, 2:00 AM"
+      },
+      "filters": {
+        "searchPlaceholder": "Search notifications...",
+        "allTypes": "All Types",
+        "allStatus": "All Status",
+        "allAudiences": "All Audiences",
+        "info": "Info",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error",
+        "sent": "Sent",
+        "scheduled": "Scheduled",
+        "draft": "Draft",
+        "failed": "Failed",
+        "allUsers": "All Users",
+        "premium": "Premium",
+        "newUsers": "New Users",
+        "inactive": "Inactive",
+        "sortBy": {
+          "newestFirst": "Newest First",
+          "oldestFirst": "Oldest First",
+          "titleAZ": "Title A-Z",
+          "titleZA": "Title Z-A",
+          "mostRecipients": "Most Recipients",
+          "mostOpened": "Most Opened"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "{{count}} notification(s) selected",
+        "resend": "Resend",
+        "duplicate": "Duplicate",
+        "delete": "Delete",
+        "confirmDelete": "Are you sure you want to delete {{count}} notification(s)?"
+      },
+      "table": {
+        "notification": "Notification",
+        "type": "Type",
+        "status": "Status",
+        "audience": "Audience",
+        "platforms": "Platforms",
+        "performance": "Performance",
+        "created": "Created",
+        "actions": "Actions",
+        "title": "Title",
+        "message": "Message",
+        "recipients": "recipients",
+        "opened": "opened",
+        "clicked": "clicked",
+        "openRate": "open rate",
+        "clickRate": "click rate"
+      },
+      "mobile": {
+        "notifications": "Notifications",
+        "sent": "sent",
+        "open": "open",
+        "click": "click"
+      },
+      "sendModal": {
+        "title": "Send Notification",
+        "notificationTitle": "Notification Title",
+        "titlePlaceholder": "Enter notification title...",
+        "notificationMessage": "Notification Message",
+        "messagePlaceholder": "Enter notification message...",
+        "cancel": "Cancel",
+        "send": "Send",
+        "sending": "Sending...",
+        "pleaseEnterBoth": "Please enter both title and body.",
+        "noTokensFound": "No tokens found. No users registered for notifications.",
+        "notificationSent": "Notification sent successfully!",
+        "failedToSend": "Failed to send notifications. Server says: {{error}}",
+        "errorSending": "Error sending notification."
+      },
+      "actions": {
+        "sendNotification": "Send Notification",
+        "send": "Send",
+        "refresh": "Refresh notifications",
+        "view": "View notification",
+        "edit": "Edit notification",
+        "delete": "Delete notification",
+        "dismissError": "Dismiss error"
+      },
+      "status": {
+        "sent": "Sent",
+        "scheduled": "Scheduled",
+        "draft": "Draft",
+        "failed": "Failed"
+      },
+      "types": {
+        "info": "Info",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error"
+      },
+      "audience": {
+        "all": "All",
+        "premium": "Premium",
+        "new": "New",
+        "inactive": "Inactive"
+      },
+      "platforms": {
+        "mobile": "Mobile",
+        "web": "Web",
+        "email": "Email"
+      },
+      "pagination": {
+        "showing": "Showing {{current}} of {{total}} notifications",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "empty": {
+        "noNotifications": "No notifications found",
+        "loading": "Loading notifications..."
+      },
+      "error": {
+        "failedToLoad": "Failed to load notifications",
+        "failedToSend": "Failed to send notification",
+        "failedToDelete": "Failed to delete notification",
+        "failedToUpdate": "Failed to update notification"
+      }
+    },
+    "rewards": {
+      "stats": {
+        "totalRewards": "Total Rewards",
+        "activeRewards": "Active Rewards",
+        "totalValue": "Total Value",
+        "totalClaims": "Total Claims"
+      },
+      "createReward": "Create Reward",
+      "searchPlaceholder": "Search rewards...",
+      "filters": {
+        "allTypes": "All Types",
+        "allStatus": "All Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "achievement": "Achievement",
+        "referral": "Referral",
+        "bonus": "Bonus",
+        "special": "Special"
+      },
+      "rewardTypes": {
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "achievement": "Achievement",
+        "referral": "Referral",
+        "bonus": "Bonus",
+        "special": "Special"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "actions": {
+        "create": "Create",
+        "cancel": "Cancel",
+        "view": "View",
+        "edit": "Edit",
+        "close": "Close"
+      },
+      "details": {
+        "title": "Reward Details",
+        "basicInformation": "Basic Information",
+        "statistics": "Statistics",
+        "requirements": "Requirements",
+        "id": "ID",
+        "type": "Type",
+        "amount": "Amount",
+        "status": "Status",
+        "claims": "Claims",
+        "period": "Period"
+      },
+      "form": {
+        "description": "Description"
+      },
+      "createModal": {
+        "title": "Create New Reward",
+        "namePlaceholder": "Reward Name",
+        "descriptionPlaceholder": "Description",
+        "selectType": "Select Type",
+        "amountPlaceholder": "Amount",
+        "maxClaimsPlaceholder": "Max Claims"
+      },
+      "sampleRewards": {
+        "dailyLogin": {
+          "name": "Daily Login Bonus",
+          "description": "Reward for logging in daily"
+        },
+        "weeklyMining": {
+          "name": "Weekly Mining Reward",
+          "description": "Bonus for consistent mining activity"
+        },
+        "referralChampion": {
+          "name": "Referral Champion",
+          "description": "Reward for bringing new users"
+        },
+        "firstClassAchievement": {
+          "name": "First Class Achievement",
+          "description": "Special reward for premium members"
+        },
+        "monthlyStaking": {
+          "name": "Monthly Staking Bonus",
+          "description": "Reward for long-term staking"
+        },
+        "specialEvent": {
+          "name": "Special Event Reward",
+          "description": "Limited time event reward"
+        }
+      },
+      "requirements": {
+        "loginDaily": "Login daily",
+        "completeProfile": "Complete profile",
+        "mineConsecutiveDays": "Mine for 7 consecutive days",
+        "minimumMined": "Minimum 100 FSN mined",
+        "referActiveUsers": "Refer 10 active users",
+        "usersCompleteKYC": "Users must complete KYC",
+        "upgradeToFirstClass": "Upgrade to First Class",
+        "maintainForDays": "Maintain for 30 days",
+        "stakeMinimum": "Stake minimum 1000 FSN",
+        "holdForDays": "Hold for 30 days",
+        "participateInEvent": "Participate in event",
+        "completeAllChallenges": "Complete all challenges"
+      }
+    },
+    "transaction": {
+      "title": "Transaction Management",
+      "description": "Monitor and manage all platform transactions",
+      "searchPlaceholder": "Search transactions...",
+      "filters": {
+        "all": "All Status",
+        "completed": "Completed",
+        "pending": "Pending",
+        "failed": "Failed"
+      },
+      "stats": {
+        "totalTransactions": "Total Transactions",
+        "totalVolume": "Total Volume",
+        "completed": "Completed",
+        "pending": "Pending"
+      },
+      "table": {
+        "transaction": "Transaction",
+        "user": "User",
+        "amount": "Amount",
+        "date": "Date",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "types": {
+        "stake": "Stake",
+        "reward": "Reward",
+        "referral": "Referral",
+        "mining": "Mining",
+        "withdrawal": "Withdrawal",
+        "deposit": "Deposit",
+        "bonus": "Bonus"
+      },
+      "status": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "failed": "Failed"
+      },
+      "modal": {
+        "title": "Transaction Details",
+        "transactionInfo": "Transaction Information",
+        "userInfo": "User Information",
+        "description": "Description",
+        "timestamp": "Timestamp",
+        "close": "Close"
+      },
+      "noTransactions": "No transactions found",
+      "loading": "Loading transactions...",
+      "viewDetails": "View Details"
+    },
     "dashboard": {
+      "title": "Admin Dashboard",
+      "subtitle": "Manage users, KYC, and payments",
       "quickStatistics": "Quick Statistics",
+      "detailedStatistics": "Detailed Statistics",
       "totalUsers": "Total Users",
       "totalAdmins": "Total Admins",
       "pendingKYC": "Pending KYC",
-      "totalFSN": "Total FSN"
+      "verifiedKYC": "Verified KYC",
+      "premiumPlans": "Premium Plans",
+      "totalBalance": "Total Balance",
+      "totalFSN": "Total FSN",
+      "businessPlans": "Business Plans",
+      "firstClassPlans": "First Class Plans"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "users": "Users Management",
+      "kyc": "KYC Verification",
+      "payments": "Manual Payments",
+      "transactions": "Transactions",
+      "rewards": "Rewards",
+      "notifications": "Notifications",
+      "content": "Content",
+      "memberships": "Memberships",
+      "sendNotification": "Send Notification",
+      "short": {
+        "dashboard": "Dashboard",
+        "users": "Users",
+        "kyc": "KYC",
+        "payments": "Payments",
+        "transactions": "Transactions",
+        "rewards": "Rewards",
+        "notifications": "Notify",
+        "content": "Content",
+        "memberships": "Members"
+      }
     },
     "kyc": {
       "title": "KYC Verification",
@@ -1029,9 +1377,725 @@
       "noDocuments": "No KYC documents uploaded",
       "approve": "Approve KYC",
       "reject": "Reject KYC"
+    },
+    "users": {
+      "title": "Users Management",
+      "description": "Manage user accounts, plans, and status",
+      "searchPlaceholder": "Search users...",
+      "loading": "Loading users...",
+      "confirmDelete": "Are you sure you want to delete this user?",
+      "stats": {
+        "activeUsers": "Active Users",
+        "premiumPlans": "Premium Plans",
+        "totalBalance": "Total Balance"
+      },
+      "filters": {
+        "all": "All",
+        "active": "Active",
+        "inactive": "Inactive",
+        "verified": "Verified",
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "allStatus": "All Status",
+        "allPlans": "All Plans",
+        "economy": "Economy",
+        "business": "Business",
+        "first6": "First-6",
+        "firstLifetime": "First-Lifetime"
+      },
+      "sort": {
+        "newestFirst": "Newest First",
+        "oldestFirst": "Oldest First",
+        "nameAZ": "Name A-Z",
+        "nameZA": "Name Z-A",
+        "balanceHighLow": "Balance High-Low",
+        "balanceLowHigh": "Balance Low-High"
+      },
+      "bulk": {
+        "selectedUsers": "{{count}} users selected",
+        "pleaseSelectUsers": "Please select users first",
+        "confirmDelete": "Are you sure you want to delete {{count}} users?"
+      },
+      "table": {
+        "user": "User",
+        "name": "Name",
+        "email": "Email",
+        "kyc": "KYC Status",
+        "kycStatus": "KYC Status",
+        "plan": "Plan",
+        "balance": "Balance",
+        "staking": "Staking",
+        "status": "Status",
+        "created": "Created",
+        "joined": "Joined",
+        "lastLogin": "Last Login",
+        "actions": "Actions",
+        "id": "ID"
+      },
+      "modal": {
+        "updatePlan": "Update User Plan",
+        "selectPlan": "Select Plan"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "viewDetails": "View Details"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "verified": "Verified",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      },
+      "noUsers": "No users found",
+      "loading": "Loading users..."
+    },
+    "transactions": {
+      "title": "Transaction Management",
+      "description": "Monitor and manage all platform transactions",
+      "searchPlaceholder": "Search transactions...",
+      "filters": {
+        "all": "All",
+        "completed": "Completed",
+        "pending": "Pending",
+        "failed": "Failed"
+      },
+      "table": {
+        "id": "Transaction ID",
+        "user": "User",
+        "type": "Type",
+        "amount": "Amount",
+        "description": "Description",
+        "timestamp": "Date & Time",
+        "status": "Status"
+      },
+      "types": {
+        "stake": "Stake",
+        "reward": "Reward",
+        "referral": "Referral",
+        "withdrawal": "Withdrawal",
+        "mining": "Mining"
+      },
+      "status": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "failed": "Failed"
+      },
+      "noTransactions": "No transactions found",
+      "loading": "Loading transactions...",
+      "viewDetails": "View Details"
+    },
+    "rewards": {
+      "title": "Rewards Management",
+      "description": "Create and manage reward programs",
+      "createNew": "Create New Reward",
+      "searchPlaceholder": "Search rewards...",
+      "filters": {
+        "all": "All Types",
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "referral": "Referral",
+        "achievement": "Achievement"
+      },
+      "statusFilters": {
+        "all": "All Status",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "table": {
+        "name": "Reward Name",
+        "type": "Type",
+        "amount": "Amount",
+        "status": "Status",
+        "claims": "Claims",
+        "dates": "Active Period",
+        "actions": "Actions"
+      },
+      "form": {
+        "name": "Reward Name",
+        "description": "Description",
+        "type": "Type",
+        "amount": "Amount",
+        "currency": "Currency",
+        "maxClaims": "Max Claims",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "requirements": "Requirements",
+        "addRequirement": "Add Requirement"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "viewDetails": "View Details"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "noRewards": "No rewards found",
+      "loading": "Loading rewards..."
+    },
+    "notifications": {
+      "title": "Notifications Management",
+      "description": "Manage and track all platform notifications",
+      "stats": {
+        "totalSent": "Total Sent",
+        "avgOpenRate": "Avg. Open Rate",
+        "avgClickRate": "Avg. Click Rate",
+        "scheduled": "Scheduled",
+        "fromLastWeek": "from last week",
+        "nextScheduled": "Next: Dec 25, 2:00 AM"
+      },
+      "filters": {
+        "searchPlaceholder": "Search notifications...",
+        "allTypes": "All Types",
+        "allStatus": "All Status",
+        "allAudiences": "All Audiences",
+        "info": "Info",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error",
+        "sent": "Sent",
+        "scheduled": "Scheduled",
+        "draft": "Draft",
+        "failed": "Failed",
+        "allUsers": "All Users",
+        "premium": "Premium",
+        "newUsers": "New Users",
+        "inactive": "Inactive",
+        "sortBy": {
+          "newestFirst": "Newest First",
+          "oldestFirst": "Oldest First",
+          "titleAZ": "Title A-Z",
+          "titleZA": "Title Z-A",
+          "mostRecipients": "Most Recipients",
+          "mostOpened": "Most Opened"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "{{count}} notification(s) selected",
+        "resend": "Resend",
+        "duplicate": "Duplicate",
+        "delete": "Delete",
+        "confirmDelete": "Are you sure you want to delete {{count}} notification(s)?"
+      },
+      "table": {
+        "notification": "Notification",
+        "type": "Type",
+        "status": "Status",
+        "audience": "Audience",
+        "platforms": "Platforms",
+        "performance": "Performance",
+        "created": "Created",
+        "actions": "Actions",
+        "title": "Title",
+        "message": "Message",
+        "recipients": "recipients",
+        "opened": "opened",
+        "clicked": "clicked",
+        "openRate": "open rate",
+        "clickRate": "click rate"
+      },
+      "mobile": {
+        "notifications": "Notifications",
+        "sent": "sent",
+        "open": "open",
+        "click": "click"
+      },
+      "sendModal": {
+        "title": "Send Notification",
+        "notificationTitle": "Notification Title",
+        "titlePlaceholder": "Enter notification title...",
+        "notificationMessage": "Notification Message",
+        "messagePlaceholder": "Enter notification message...",
+        "cancel": "Cancel",
+        "send": "Send",
+        "sending": "Sending...",
+        "pleaseEnterBoth": "Please enter both title and body.",
+        "noTokensFound": "No tokens found. No users registered for notifications.",
+        "notificationSent": "Notification sent successfully!",
+        "failedToSend": "Failed to send notifications. Server says: {{error}}",
+        "errorSending": "Error sending notification."
+      },
+      "actions": {
+        "sendNotification": "Send Notification",
+        "send": "Send",
+        "refresh": "Refresh notifications",
+        "view": "View notification",
+        "edit": "Edit notification",
+        "delete": "Delete notification",
+        "dismissError": "Dismiss error",
+        "close": "Close"
+      },
+      "status": {
+        "sent": "Sent",
+        "scheduled": "Scheduled",
+        "draft": "Draft",
+        "failed": "Failed"
+      },
+      "types": {
+        "info": "Info",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error"
+      },
+      "audience": {
+        "all": "All",
+        "premium": "Premium",
+        "new": "New",
+        "inactive": "Inactive"
+      },
+      "platforms": {
+        "mobile": "Mobile",
+        "web": "Web",
+        "email": "Email"
+      },
+      "pagination": {
+        "showing": "Showing {{current}} of {{total}} notifications",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "empty": {
+        "noNotifications": "No notifications found",
+        "loading": "Loading notifications..."
+      },
+      "error": {
+        "failedToLoad": "Failed to load notifications",
+        "failedToSend": "Failed to send notification",
+        "failedToDelete": "Failed to delete notification",
+        "failedToUpdate": "Failed to update notification"
+      }
+    },
+    "content": {
+      "title": "Content Management",
+      "description": "Manage platform content and announcements",
+      "createNew": "Create New Content",
+      "searchPlaceholder": "Search content...",
+      "stats": {
+        "totalContent": "Total Content",
+        "activeContent": "Active Content",
+        "totalViews": "Total Views",
+        "totalClicks": "Total Clicks"
+      },
+      "actions": {
+        "createContent": "Create Content",
+        "view": "View",
+        "edit": "Edit",
+        "delete": "Delete",
+        "create": "Create",
+        "cancel": "Cancel",
+        "close": "Close"
+      },
+      "search": {
+        "placeholder": "Search content..."
+      },
+      "filters": {
+        "allTypes": "All Types",
+        "allStatus": "All Status"
+      },
+      "types": {
+        "banner": "Banner",
+        "announcement": "Announcement",
+        "promotion": "Promotion",
+        "video": "Video",
+        "news": "News"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "draft": "Draft"
+      },
+      "priority": "Priority",
+      "views": "Views",
+      "clicks": "Clicks",
+      "details": {
+        "title": "Content Details",
+        "basicInformation": "Basic Information",
+        "description": "Description",
+        "performance": "Performance",
+        "schedule": "Schedule",
+        "id": "ID",
+        "type": "Type",
+        "status": "Status",
+        "priority": "Priority"
+      },
+      "createModal": {
+        "title": "Create New Content",
+        "titlePlaceholder": "Content Title",
+        "descriptionPlaceholder": "Description",
+        "selectType": "Select Type",
+        "priorityPlaceholder": "Priority (1-10)"
+      },
+      "sampleData": {
+        "welcomeTitle": "Welcome to FlySky Network",
+        "welcomeDescription": "Join the future of decentralized mining",
+        "miningRewardsTitle": "New Mining Rewards Available",
+        "miningRewardsDescription": "Earn up to 3000 FSN daily with our new mining system",
+        "referralProgramTitle": "Referral Program Launch",
+        "referralProgramDescription": "Invite friends and earn 1000 FSN per referral",
+        "tutorialVideoTitle": "Platform Tutorial Video",
+        "tutorialVideoDescription": "Learn how to maximize your mining efficiency",
+        "holidayEventTitle": "Holiday Special Event",
+        "holidayEventDescription": "Double rewards during holiday season"
+      },
+      "table": {
+        "title": "Title",
+        "type": "Type",
+        "status": "Status",
+        "views": "Views",
+        "clicks": "Clicks",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "form": {
+        "title": "Title",
+        "content": "Content",
+        "type": "Type",
+        "status": "Status",
+        "image": "Image",
+        "link": "Link"
+      },
+      "noContent": "No content found",
+      "loading": "Loading content..."
+    },
+    "memberships": {
+      "title": "Memberships Management",
+      "description": "Manage user membership plans and subscriptions",
+      "createNew": "Create New Plan",
+      "searchPlaceholder": "Search memberships...",
+      "filters": {
+        "all": "All Plans",
+        "economy": "Economy",
+        "business": "Business",
+        "first-6": "First Class (6M)",
+        "first-lifetime": "First Class (Lifetime)"
+      },
+      "table": {
+        "user": "User",
+        "plan": "Plan",
+        "status": "Status",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "amount": "Amount",
+        "actions": "Actions"
+      },
+      "form": {
+        "user": "User",
+        "plan": "Plan",
+        "duration": "Duration",
+        "amount": "Amount",
+        "status": "Status"
+      },
+      "actions": {
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "extend": "Extend",
+        "viewDetails": "View Details"
+      },
+      "status": {
+        "active": "Active",
+        "expired": "Expired",
+        "cancelled": "Cancelled",
+        "pending": "Pending"
+      },
+      "noMemberships": "No memberships found",
+      "loading": "Loading memberships...",
+      "createPlan": "Create Plan",
+      "loadingPlans": "Loading membership plans...",
+      "mostPopular": "MOST POPULAR",
+      "subscribers": "Subscribers",
+      "revenue": "Revenue",
+      "view": "View",
+      "edit": "Edit",
+      "disable": "Disable",
+      "enable": "Enable",
+      "delete": "Delete",
+      "createNewPlan": "Create New Plan",
+      "planName": "Plan Name (e.g., economy)",
+      "displayName": "Display Name (e.g., Economy Plan)",
+      "description": "Description",
+      "price": "Price",
+      "bonusFSN": "Bonus FSN",
+      "miningRate": "Mining Rate (e.g., 600 FSN / 12 hours)",
+      "duration": "Duration",
+      "icon": "Icon",
+      "color": "Color",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "6months": "6 Months",
+      "lifetime": "Lifetime",
+      "coins": "Coins",
+      "gem": "Gem",
+      "star": "Star",
+      "crown": "Crown",
+      "green": "Green",
+      "purple": "Purple",
+      "blue": "Blue",
+      "yellow": "Yellow",
+      "create": "Create",
+      "cancel": "Cancel",
+      "planDetails": "Plan Details",
+      "basicInformation": "Basic Information",
+      "name": "Name",
+      "displayName": "Display Name",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "features": "Features",
+      "statistics": "Statistics",
+      "close": "Close",
+      "editPlan": "Edit Plan",
+      "update": "Update",
+      "fillRequiredFields": "Please fill in all required fields",
+      "createPlanFailed": "Failed to create plan. Please try again.",
+      "updatePlanFailed": "Failed to update plan. Please try again.",
+      "deletePlanFailed": "Failed to delete plan. Please try again.",
+      "confirmDelete": "Are you sure you want to delete this plan? This action cannot be undone.",
+      "defaultPlans": {
+        "economy": {
+          "name": "Economy Plan",
+          "description": "Free plan for basic users"
+        },
+        "business": {
+          "name": "Business Plan",
+          "description": "Professional plan for business users"
+        },
+        "first6": {
+          "name": "First Class 6 Months",
+          "description": "Premium plan for serious users"
+        },
+        "firstLifetime": {
+          "name": "First Class Lifetime",
+          "description": "Ultimate plan with lifetime access"
+        }
+      }
+    },
+    "common": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "view": "View",
+      "close": "Close",
+      "confirm": "Confirm",
+      "loading": "Loading...",
+      "search": "Search",
+      "filter": "Filter",
+      "sort": "Sort",
+      "actions": "Actions",
+      "status": "Status",
+      "date": "Date",
+      "amount": "Amount",
+      "details": "Details",
+      "noResults": "No results found",
+      "selectAll": "Select All",
+      "bulkActions": "Bulk Actions",
+      "exportData": "Export Data",
+      "refresh": "Refresh"
+    },
+    "payments": {
+      "title": "Manual Payments",
+      "description": "Review and approve payment requests",
+      "searchPlaceholder": "Search by name, email, or user ID",
+      "loading": "Loading payments...",
+      "noPayments": "No manual payments found.",
+      "table": {
+        "user": "User",
+        "currency": "Currency",
+        "txLink": "TX Link",
+        "fromAddress": "From Address",
+        "status": "Status",
+        "proof": "Proof",
+        "date": "Date",
+        "actions": "Actions"
+      },
+      "status": {
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "pending": "Pending"
+      },
+      "actions": {
+        "approve": "Approve",
+        "reject": "Reject",
+        "view": "View",
+        "download": "Download"
+      },
+      "confirmDelete": "Are you sure you want to delete this payment?",
+      "updateSuccess": "Payment status updated successfully",
+      "updateError": "Failed to update payment status"
+    },
+    "users": {
+      "title": "Users Management",
+      "description": "Manage user accounts and plans",
+      "searchPlaceholder": "Search by name, email, or user ID",
+      "loading": "Loading users...",
+      "confirmDelete": "Are you sure you want to delete this user?",
+      "updatePlan": "Update User Plan",
+      "selectPlan": "Select Plan",
+      "planUpdated": "Plan updated successfully",
+      "pleaseSelectPlan": "Please select a new plan!",
+      "kycVerified": "KYC verified successfully",
+      "table": {
+        "user": "User",
+        "name": "Name",
+        "email": "Email",
+        "kyc": "KYC Status",
+        "kycStatus": "KYC Status",
+        "plan": "Plan",
+        "balance": "Balance",
+        "staking": "Staking",
+        "status": "Status",
+        "created": "Created",
+        "joined": "Joined",
+        "lastLogin": "Last Login",
+        "actions": "Actions",
+        "id": "ID"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "viewDetails": "View Details",
+        "verifyKYC": "Verify KYC",
+        "verified": "Verified"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "verified": "Verified",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      },
+      "noUsers": "No users found",
+      "loading": "Loading users..."
     }
   },
   "enable": "Enable",
   "enabled": "Enabled",
-  "requesting": "Requesting..."
+  "requesting": "Requesting...",
+  "rewards": {
+    "title": "Rewards Management",
+    "description": "Create and manage reward programs",
+    "stats": {
+      "totalRewards": "Total Rewards",
+      "activeRewards": "Active Rewards",
+      "totalValue": "Total Value",
+      "totalClaims": "Total Claims"
+    },
+    "createReward": "Create Reward",
+    "searchPlaceholder": "Search rewards...",
+    "filters": {
+      "allTypes": "All Types",
+      "allStatus": "All Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "achievement": "Achievement",
+      "referral": "Referral",
+      "bonus": "Bonus",
+      "special": "Special"
+    },
+    "rewardTypes": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "achievement": "Achievement",
+      "referral": "Referral",
+      "bonus": "Bonus",
+      "special": "Special"
+    },
+    "form": {
+      "name": "Reward Name",
+      "description": "Description",
+      "type": "Type",
+      "amount": "Amount",
+      "currency": "Currency",
+      "maxClaims": "Max Claims",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "requirements": "Requirements",
+      "addRequirement": "Add Requirement"
+    },
+    "actions": {
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "create": "Create",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "details": {
+      "title": "Reward Details",
+      "basicInformation": "Basic Information",
+      "statistics": "Statistics",
+      "requirements": "Requirements",
+      "id": "ID",
+      "type": "Type",
+      "amount": "Amount",
+      "status": "Status",
+      "claims": "Claims",
+      "period": "Period"
+    },
+    "createModal": {
+      "title": "Create New Reward",
+      "namePlaceholder": "Reward Name",
+      "descriptionPlaceholder": "Description",
+      "selectType": "Select Type",
+      "amountPlaceholder": "Amount",
+      "maxClaimsPlaceholder": "Max Claims"
+    },
+    "sampleRewards": {
+      "dailyLogin": {
+        "name": "Daily Login Bonus",
+        "description": "Reward for logging in daily"
+      },
+      "weeklyMining": {
+        "name": "Weekly Mining Reward",
+        "description": "Bonus for consistent mining activity"
+      },
+      "referralChampion": {
+        "name": "Referral Champion",
+        "description": "Reward for bringing new users"
+      },
+      "firstClassAchievement": {
+        "name": "First Class Achievement",
+        "description": "Special reward for premium members"
+      },
+      "monthlyStaking": {
+        "name": "Monthly Staking Bonus",
+        "description": "Reward for long-term staking"
+      },
+      "specialEvent": {
+        "name": "Special Event Reward",
+        "description": "Limited time event reward"
+      }
+    },
+    "requirements": {
+      "loginDaily": "Login daily",
+      "completeProfile": "Complete profile",
+      "mineConsecutiveDays": "Mine for 7 consecutive days",
+      "minimumMined": "Minimum 100 FSN mined",
+      "referActiveUsers": "Refer 10 active users",
+      "usersCompleteKYC": "Users must complete KYC",
+      "upgradeToFirstClass": "Upgrade to First Class",
+      "maintainForDays": "Maintain for 30 days",
+      "stakeMinimum": "Stake minimum 1000 FSN",
+      "holdForDays": "Hold for 30 days",
+      "participateInEvent": "Participate in event",
+      "completeAllChallenges": "Complete all challenges"
+    }
+  }
 }

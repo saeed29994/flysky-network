@@ -1,6 +1,6 @@
 // 📁 AdminDashboard.tsx
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Tab } from '@headlessui/react';
 import { db } from '../firebase';
 import {
@@ -11,12 +11,13 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { motion } from 'framer-motion';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
   FaUsers, FaIdCard, FaCreditCard, FaChartLine, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes,
   FaCrown, FaStar, FaGem, FaCoins, FaUserCheck, FaEye, FaDownload,
   FaGift, FaImage, FaChartBar
 } from 'react-icons/fa';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 // Import admin components
 import MembershipsTab from '../components/admin/MembershipsTab';
@@ -52,18 +53,19 @@ interface ManualPayment {
 }
 
 const AdminDashboard = () => {
-  // const { t } = useTranslation();
-  const [tabs] = useState([
-    { name: 'Dashboard', icon: FaChartLine },
-    { name: 'Users Management', icon: FaUsers },
-    { name: 'KYC Verification', icon: FaIdCard },
-    { name: 'Manual Payments', icon: FaCreditCard },
-    { name: 'Memberships', icon: FaCrown },
-    { name: 'Transactions', icon: FaCreditCard },
-    { name: 'Rewards', icon: FaGift },
-    { name: 'Content', icon: FaImage },
-    { name: 'Notifications', icon: FaChartBar },
-  ]);
+  const { t, i18n } = useTranslation();
+  
+  const tabs = useMemo(() => [
+    { key: 'dashboard', name: t('admin.tabs.dashboard'), shortName: t('admin.tabs.short.dashboard'), icon: FaChartLine },
+    { key: 'users', name: t('admin.tabs.users'), shortName: t('admin.tabs.short.users'), icon: FaUsers },
+    { key: 'kyc', name: t('admin.tabs.kyc'), shortName: t('admin.tabs.short.kyc'), icon: FaIdCard },
+    { key: 'payments', name: t('admin.tabs.payments'), shortName: t('admin.tabs.short.payments'), icon: FaCreditCard },
+    { key: 'memberships', name: t('admin.tabs.memberships'), shortName: t('admin.tabs.short.memberships'), icon: FaCrown },
+    { key: 'transactions', name: t('admin.tabs.transactions'), shortName: t('admin.tabs.short.transactions'), icon: FaCreditCard },
+    { key: 'rewards', name: t('admin.tabs.rewards'), shortName: t('admin.tabs.short.rewards'), icon: FaGift },
+    { key: 'content', name: t('admin.tabs.content'), shortName: t('admin.tabs.short.content'), icon: FaImage },
+    { key: 'notifications', name: t('admin.tabs.notifications'), shortName: t('admin.tabs.short.notifications'), icon: FaChartBar },
+  ], [t]);
 
   const [users, setUsers] = useState<User[]>([]);
   const [manualPayments, setManualPayments] = useState<ManualPayment[]>([]);
@@ -130,14 +132,14 @@ const AdminDashboard = () => {
   }, []);
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Are you sure you want to delete this user?')) return;
+    if (!confirm(t('admin.users.confirmDelete'))) return;
     await deleteDoc(doc(db, 'users', userId));
     setUsers((prev) => prev.filter((user) => user.id !== userId));
   };
 
   const handleUpdatePlan = async (userId: string) => {
     if (!newPlan) {
-      alert('Please select a new plan!');
+      alert(t('admin.users.pleaseSelectPlan'));
       return;
     }
     const userRef = doc(db, 'users', userId);
@@ -207,16 +209,21 @@ const AdminDashboard = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-white/10 backdrop-blur-sm border-b border-white/20"
+        className="bg-white/10 backdrop-blur-sm border-b border-white/20 relative z-[100000]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-              <FaChartLine className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+          <div className="flex items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                <FaChartLine className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{t('admin.dashboard.title', 'Admin Dashboard')}</h1>
+                <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.subtitle', 'Manage users, KYC, and payments')}</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">Admin Dashboard</h1>
-              <p className="text-gray-400 text-xs sm:text-sm">Manage users, KYC, and payments</p>
+            <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <LanguageSwitcher />
             </div>
           </div>
         </div>
@@ -239,7 +246,7 @@ const AdminDashboard = () => {
                     }`}
                   >
                     <tab.icon className="w-4 h-4" />
-                    <span className="text-center leading-tight">{tab.name.split(' ')[0]}</span>
+                    <span className="text-center leading-tight">{tab.shortName}</span>
                   </button>
                 ))}
               </div>
@@ -285,7 +292,7 @@ const AdminDashboard = () => {
                         <FaUsers className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-gray-400 text-xs sm:text-sm">Total Users</p>
+                        <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.totalUsers')}</p>
                         <p className="text-xl sm:text-2xl font-bold text-white">{totalUsers}</p>
                       </div>
                     </div>
@@ -297,7 +304,7 @@ const AdminDashboard = () => {
                         <FaUserCheck className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-gray-400 text-xs sm:text-sm">Verified KYC</p>
+                        <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.verifiedKYC')}</p>
                         <p className="text-xl sm:text-2xl font-bold text-white">{verifiedKycUsers}</p>
                       </div>
                     </div>
@@ -309,7 +316,7 @@ const AdminDashboard = () => {
                         <FaGem className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-gray-400 text-xs sm:text-sm">Premium Plans</p>
+                        <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.premiumPlans')}</p>
                         <p className="text-xl sm:text-2xl font-bold text-white">{businessPlans + firstClassPlans}</p>
                       </div>
                     </div>
@@ -321,7 +328,7 @@ const AdminDashboard = () => {
                         <FaCoins className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-gray-400 text-xs sm:text-sm">Total Balance</p>
+                        <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.totalBalance')}</p>
                         <p className="text-xl sm:text-2xl font-bold text-white">{totalBalance.toLocaleString()} FSN</p>
                       </div>
                     </div>
@@ -332,19 +339,19 @@ const AdminDashboard = () => {
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl">
                   <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-3">
                     <FaChartLine className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
-                    Detailed Statistics
+                    {t('admin.dashboard.detailedStatistics')}
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <div className="bg-white/5 rounded-xl p-3 sm:p-4">
-                      <p className="text-gray-400 text-xs sm:text-sm">Business Plans</p>
+                      <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.businessPlans')}</p>
                       <p className="text-base sm:text-lg font-bold text-white">{businessPlans}</p>
                     </div>
                     <div className="bg-white/5 rounded-xl p-3 sm:p-4">
-                      <p className="text-gray-400 text-xs sm:text-sm">First Class Plans</p>
+                      <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.firstClassPlans')}</p>
                       <p className="text-base sm:text-lg font-bold text-white">{firstClassPlans}</p>
                     </div>
                     <div className="bg-white/5 rounded-xl p-3 sm:p-4">
-                      <p className="text-gray-400 text-xs sm:text-sm">Pending KYC</p>
+                      <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.pendingKYC')}</p>
                       <p className="text-base sm:text-lg font-bold text-white">{totalUsers - verifiedKycUsers}</p>
                     </div>
                   </div>
@@ -366,8 +373,8 @@ const AdminDashboard = () => {
                       <FaUsers className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-lg sm:text-xl font-bold text-white">Users Management</h2>
-                      <p className="text-gray-400 text-xs sm:text-sm">Manage user accounts and plans</p>
+                                          <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.users.title')}</h2>
+                    <p className="text-gray-400 text-xs sm:text-sm">{t('admin.users.description')}</p>
                     </div>
                   </div>
 
@@ -376,7 +383,7 @@ const AdminDashboard = () => {
                     <FaSearch className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <input
                       type="text"
-                      placeholder="Search by name, email, or user ID"
+                      placeholder={t('admin.users.searchPlaceholder')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent backdrop-blur-sm text-sm sm:text-base"
@@ -414,7 +421,7 @@ const AdminDashboard = () => {
                               <div>
                                 <p className="text-white font-medium text-sm">{user.fullName}</p>
                                 <p className="text-gray-400 text-xs">{user.email}</p>
-                                <p className="text-gray-400 text-xs mt-1">ID: {user.id.substring(0, 8)}...</p>
+                                <p className="text-gray-400 text-xs mt-1">{t('admin.users.table.id')}: {user.id.substring(0, 8)}...</p>
                               </div>
 
                               <div className="text-gray-300 text-xs">
@@ -431,14 +438,14 @@ const AdminDashboard = () => {
                                   className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
                                 >
                                   <FaEdit className="w-3 h-3" />
-                                  {editingUserId === user.id ? 'Cancel' : 'Edit'}
+                                  {editingUserId === user.id ? t('admin.common.cancel') : t('admin.common.edit')}
                                 </button>
                                 <button
                                   onClick={() => handleDeleteUser(user.id)}
                                   className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
                                 >
                                   <FaTrash className="w-3 h-3" />
-                                  Delete
+                                  {t('admin.common.delete')}
                                 </button>
                               </div>
                             </div>
@@ -452,13 +459,13 @@ const AdminDashboard = () => {
                           <table className="w-full">
                             <thead>
                               <tr className="bg-white/10 border-b border-white/10">
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">User ID</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Name</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Email</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Plan</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Balance</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Staking</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Actions</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.id')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.name')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.email')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.plan')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.balance')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.staking')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.common.actions')}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -494,14 +501,14 @@ const AdminDashboard = () => {
                                         className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                                       >
                                         <FaEdit className="w-3 h-3" />
-                                        {editingUserId === user.id ? 'Cancel' : 'Edit'}
+                                        {editingUserId === user.id ? t('admin.common.cancel') : t('admin.common.edit')}
                                       </button>
                                       <button
                                         onClick={() => handleDeleteUser(user.id)}
                                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                                       >
                                         <FaTrash className="w-3 h-3" />
-                                        Delete
+                                        {t('admin.common.delete')}
                                       </button>
                                     </div>
                                   </td>
@@ -523,7 +530,7 @@ const AdminDashboard = () => {
                     >
                       <h3 className="text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <FaEdit className="w-4 h-4 text-yellow-400" />
-                        Update User Plan
+                        {t('admin.users.updatePlan')}
                       </h3>
                       <div className="flex flex-col sm:flex-row gap-4">
                         <select
@@ -531,7 +538,7 @@ const AdminDashboard = () => {
                           onChange={(e) => setNewPlan(e.target.value)}
                           className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm sm:text-base"
                         >
-                          <option value="">Select Plan</option>
+                          <option value="">{t('admin.users.selectPlan')}</option>
                           <option value="economy">Economy</option>
                           <option value="business">Business</option>
                           <option value="first-6">First-6</option>
@@ -542,7 +549,7 @@ const AdminDashboard = () => {
                           className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
                         >
                           <FaCheck className="w-4 h-4" />
-                          Update Plan
+                          {t('admin.users.updatePlan')}
                         </button>
                       </div>
                     </motion.div>
@@ -565,8 +572,8 @@ const AdminDashboard = () => {
                       <FaIdCard className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-lg sm:text-xl font-bold text-white">KYC Verification</h2>
-                      <p className="text-gray-400 text-xs sm:text-sm">Verify user identity documents</p>
+                                          <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.kyc.title')}</h2>
+                    <p className="text-gray-400 text-xs sm:text-sm">{t('admin.kyc.description')}</p>
                     </div>
                   </div>
 
@@ -575,7 +582,7 @@ const AdminDashboard = () => {
                     <FaSearch className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <input
                       type="text"
-                      placeholder="Search by name, email, or user ID"
+                      placeholder={t('admin.users.searchPlaceholder')}
                       value={kycSearchQuery}
                       onChange={(e) => setKycSearchQuery(e.target.value)}
                       className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent backdrop-blur-sm text-sm sm:text-base"
@@ -585,7 +592,7 @@ const AdminDashboard = () => {
                   {loading ? (
                     <div className="flex items-center justify-center py-8 sm:py-12">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      <span className="ml-3 text-gray-400 text-sm sm:text-base">Loading users...</span>
+                      <span className="ml-3 text-gray-400 text-sm sm:text-base">{t('admin.users.loading')}</span>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -603,7 +610,7 @@ const AdminDashboard = () => {
                               <div>
                                 <p className="text-white font-medium text-sm">{user.fullName}</p>
                                 <p className="text-gray-400 text-xs">{user.email}</p>
-                                <p className="text-gray-400 text-xs mt-1">ID: {user.id.substring(0, 8)}...</p>
+                                <p className="text-gray-400 text-xs mt-1">{t('admin.users.table.id')}: {user.id.substring(0, 8)}...</p>
                               </div>
 
                               <div className="flex items-center justify-between">
@@ -620,13 +627,13 @@ const AdminDashboard = () => {
                                     onClick={() => handleKycVerification(user.id)}
                                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-xs"
                                   >
-                                    <FaCheck className="w-3 h-3" />
-                                    Verify KYC
+                                                                      <FaCheck className="w-3 h-3" />
+                                  {t('admin.users.actions.verifyKYC')}
                                   </button>
                                 ) : (
                                   <span className="text-green-400 font-semibold flex items-center gap-2 text-xs">
-                                    <FaUserCheck className="w-3 h-3" />
-                                    Verified
+                                                                      <FaUserCheck className="w-3 h-3" />
+                                  {t('admin.users.actions.verified')}
                                   </span>
                                 )}
                               </div>
@@ -641,11 +648,11 @@ const AdminDashboard = () => {
                           <table className="w-full">
                             <thead>
                               <tr className="bg-white/10 border-b border-white/10">
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">User ID</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Name</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Email</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">KYC Status</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Actions</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.id')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.name')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.email')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.kycStatus')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.common.actions')}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -676,12 +683,12 @@ const AdminDashboard = () => {
                                         className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
                                       >
                                         <FaCheck className="w-4 h-4" />
-                                        Verify KYC
+                                        {t('admin.users.actions.verifyKYC')}
                                       </button>
                                     ) : (
                                       <span className="text-green-400 font-semibold flex items-center gap-2">
                                         <FaUserCheck className="w-4 h-4" />
-                                        Verified
+                                        {t('admin.users.actions.verified')}
                                       </span>
                                     )}
                                   </td>
@@ -711,15 +718,15 @@ const AdminDashboard = () => {
                       <FaCreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-lg sm:text-xl font-bold text-white">Manual Payments</h2>
-                      <p className="text-gray-400 text-xs sm:text-sm">Review and approve payment requests</p>
+                      <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.payments.title')}</h2>
+                      <p className="text-gray-400 text-xs sm:text-sm">{t('admin.payments.description')}</p>
                     </div>
                   </div>
 
                   {manualPayments.length === 0 ? (
                     <div className="text-center py-8 sm:py-12">
                       <FaCreditCard className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-400 text-sm sm:text-base">No manual payments found.</p>
+                      <p className="text-gray-400 text-sm sm:text-base">{t('admin.payments.noPayments')}</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -735,10 +742,10 @@ const AdminDashboard = () => {
                           >
                             <div className="space-y-3">
                               <div>
-                                <p className="text-white font-medium text-sm">User: {p.uid}</p>
-                                <p className="text-gray-400 text-xs">Currency: {p.currency}</p>
-                                <p className="text-gray-400 text-xs">From: {p.fromAddress.substring(0, 12)}...</p>
-                                <p className="text-gray-400 text-xs">Date: {p.timestamp?.toDate().toLocaleDateString()}</p>
+                                <p className="text-white font-medium text-sm">{t('admin.payments.table.user')}: {p.uid}</p>
+                                <p className="text-gray-400 text-xs">{t('admin.payments.table.currency')}: {p.currency}</p>
+                                <p className="text-gray-400 text-xs">{t('admin.payments.table.fromAddress')}: {p.fromAddress.substring(0, 12)}...</p>
+                                <p className="text-gray-400 text-xs">{t('admin.payments.table.date')}: {p.timestamp?.toDate().toLocaleDateString()}</p>
                               </div>
 
                               <div className="flex items-center justify-between">
@@ -782,7 +789,7 @@ const AdminDashboard = () => {
                                     className="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
                                   >
                                     <FaCheck className="w-3 h-3" />
-                                    Approve
+                                    {t('admin.payments.actions.approve')}
                                   </button>
                                   <button
                                     onClick={async () => {
@@ -792,7 +799,7 @@ const AdminDashboard = () => {
                                     className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
                                   >
                                     <FaTimes className="w-3 h-3" />
-                                    Reject
+                                    {t('admin.payments.actions.reject')}
                                   </button>
                                 </div>
                               )}
@@ -807,14 +814,14 @@ const AdminDashboard = () => {
                           <table className="w-full">
                             <thead>
                               <tr className="bg-white/10 border-b border-white/10">
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">User ID</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Currency</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">TX Link</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">From Address</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Status</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Proof</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Date</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">Actions</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.payments.table.user')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.payments.table.currency')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.payments.table.txLink')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.payments.table.fromAddress')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.payments.table.status')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.payments.table.proof')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.payments.table.date')}</th>
+                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.common.actions')}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -835,7 +842,7 @@ const AdminDashboard = () => {
                                       className="text-blue-400 hover:text-blue-300 underline flex items-center gap-1"
                                     >
                                       <FaEye className="w-3 h-3" />
-                                      View
+                                      {t('admin.payments.actions.view')}
                                     </a>
                                   </td>
                                   <td className="py-4 px-4 text-gray-300 text-sm break-all max-w-[120px]">{p.fromAddress}</td>
@@ -857,7 +864,7 @@ const AdminDashboard = () => {
                                       className="text-green-400 hover:text-green-300 underline flex items-center gap-1"
                                     >
                                       <FaDownload className="w-3 h-3" />
-                                      Image
+                                      {t('admin.payments.actions.download')}
                                     </a>
                                   </td>
                                   <td className="py-4 px-4 text-gray-300 text-sm">{p.timestamp?.toDate().toLocaleString()}</td>
@@ -871,7 +878,7 @@ const AdminDashboard = () => {
                                         className="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                                       >
                                         <FaCheck className="w-3 h-3" />
-                                        Approve
+                                        {t('admin.payments.actions.approve')}
                                       </button>
                                       <button
                                         onClick={async () => {
@@ -881,7 +888,7 @@ const AdminDashboard = () => {
                                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                                       >
                                         <FaTimes className="w-3 h-3" />
-                                        Reject
+                                        {t('admin.payments.actions.reject')}
                                       </button>
                                     </div>
                                   </td>

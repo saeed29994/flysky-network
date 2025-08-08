@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
   FaUsers, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes,
   FaCrown, FaStar, FaGem, FaCoins, FaUserCheck,
@@ -25,7 +25,7 @@ interface User {
 }
 
 const UsersManagementTab = () => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -135,7 +135,7 @@ const UsersManagementTab = () => {
 
   const handleBulkAction = (action: string) => {
     if (selectedUsers.length === 0) {
-      alert('Please select users first');
+      alert(t('admin.users.bulk.pleaseSelectUsers'));
       return;
     }
     
@@ -151,7 +151,7 @@ const UsersManagementTab = () => {
         ));
         break;
       case 'delete':
-        if (confirm(`Are you sure you want to delete ${selectedUsers.length} users?`)) {
+        if (confirm(t('admin.users.bulk.confirmDelete', { count: selectedUsers.length }))) {
           setUsers(prev => prev.filter(user => !selectedUsers.includes(user.id)));
         }
         break;
@@ -173,8 +173,8 @@ const UsersManagementTab = () => {
             <FaUsers className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white">Users Management</h2>
-            <p className="text-gray-400 text-sm">Manage user accounts, plans, and permissions</p>
+            <h2 className="text-xl font-bold text-white">{t('admin.users.title')}</h2>
+            <p className="text-gray-400 text-sm">{t('admin.users.description')}</p>
           </div>
         </div>
 
@@ -184,7 +184,7 @@ const UsersManagementTab = () => {
             <div className="flex items-center gap-3">
               <FaUsers className="w-5 h-5 text-blue-400" />
               <div>
-                <p className="text-gray-400 text-sm">Total Users</p>
+                <p className="text-gray-400 text-sm">{t('admin.dashboard.totalUsers')}</p>
                 <p className="text-white font-bold text-lg">{users.length}</p>
               </div>
             </div>
@@ -193,7 +193,7 @@ const UsersManagementTab = () => {
             <div className="flex items-center gap-3">
               <FaUserCheck className="w-5 h-5 text-green-400" />
               <div>
-                <p className="text-gray-400 text-sm">Active Users</p>
+                <p className="text-gray-400 text-sm">{t('admin.users.stats.activeUsers')}</p>
                 <p className="text-white font-bold text-lg">{users.filter(u => u.isActive).length}</p>
               </div>
             </div>
@@ -202,7 +202,7 @@ const UsersManagementTab = () => {
             <div className="flex items-center gap-3">
               <FaGem className="w-5 h-5 text-purple-400" />
               <div>
-                <p className="text-gray-400 text-sm">Premium Plans</p>
+                <p className="text-gray-400 text-sm">{t('admin.users.stats.premiumPlans')}</p>
                 <p className="text-white font-bold text-lg">{users.filter(u => u.plan !== 'economy').length}</p>
               </div>
             </div>
@@ -211,7 +211,7 @@ const UsersManagementTab = () => {
             <div className="flex items-center gap-3">
               <FaWallet className="w-5 h-5 text-yellow-400" />
               <div>
-                <p className="text-gray-400 text-sm">Total Balance</p>
+                <p className="text-gray-400 text-sm">{t('admin.users.stats.totalBalance')}</p>
                 <p className="text-white font-bold text-lg">{users.reduce((sum, u) => sum + u.balance, 0).toLocaleString()} FSN</p>
               </div>
             </div>
@@ -224,7 +224,7 @@ const UsersManagementTab = () => {
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
               type="text"
-              placeholder="Search users..."
+              placeholder={t('admin.users.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm"
@@ -236,9 +236,9 @@ const UsersManagementTab = () => {
             onChange={(e) => setFilterStatus(e.target.value)}
             className="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-sm"
           >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
+            <option value="all">{t('admin.users.filters.allStatus')}</option>
+            <option value="active">{t('admin.users.filters.active')}</option>
+            <option value="inactive">{t('admin.users.filters.inactive')}</option>
           </select>
           
           <select
@@ -246,11 +246,11 @@ const UsersManagementTab = () => {
             onChange={(e) => setFilterPlan(e.target.value)}
             className="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-sm"
           >
-            <option value="all">All Plans</option>
-            <option value="economy">Economy</option>
-            <option value="business">Business</option>
-            <option value="first-6">First-6</option>
-            <option value="first-lifetime">First-Lifetime</option>
+            <option value="all">{t('admin.users.filters.allPlans')}</option>
+            <option value="economy">{t('admin.users.filters.economy')}</option>
+            <option value="business">{t('admin.users.filters.business')}</option>
+            <option value="first-6">{t('admin.users.filters.first6')}</option>
+            <option value="first-lifetime">{t('admin.users.filters.firstLifetime')}</option>
           </select>
           
           <select
@@ -262,12 +262,12 @@ const UsersManagementTab = () => {
             }}
             className="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-sm"
           >
-            <option value="createdAt-desc">Newest First</option>
-            <option value="createdAt-asc">Oldest First</option>
-            <option value="fullName-asc">Name A-Z</option>
-            <option value="fullName-desc">Name Z-A</option>
-            <option value="balance-desc">Balance High-Low</option>
-            <option value="balance-asc">Balance Low-High</option>
+            <option value="createdAt-desc">{t('admin.users.sort.newestFirst')}</option>
+            <option value="createdAt-asc">{t('admin.users.sort.oldestFirst')}</option>
+            <option value="fullName-asc">{t('admin.users.sort.nameAZ')}</option>
+            <option value="fullName-desc">{t('admin.users.sort.nameZA')}</option>
+            <option value="balance-desc">{t('admin.users.sort.balanceHighLow')}</option>
+            <option value="balance-asc">{t('admin.users.sort.balanceLowHigh')}</option>
           </select>
         </div>
 
@@ -275,28 +275,28 @@ const UsersManagementTab = () => {
         {selectedUsers.length > 0 && (
           <div className="bg-white/5 rounded-xl p-4 mb-6">
             <div className="flex items-center justify-between">
-              <span className="text-white font-medium">{selectedUsers.length} users selected</span>
+              <span className="text-white font-medium">{t('admin.users.bulk.selectedUsers', { count: selectedUsers.length })}</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleBulkAction('activate')}
                   className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm"
                 >
                   <FaUnlock className="w-3 h-3" />
-                  Activate
+                  {t('admin.users.actions.activate')}
                 </button>
                 <button
                   onClick={() => handleBulkAction('deactivate')}
                   className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm"
                 >
                   <FaBan className="w-3 h-3" />
-                  Deactivate
+                  {t('admin.users.actions.deactivate')}
                 </button>
                 <button
                   onClick={() => handleBulkAction('delete')}
                   className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm"
                 >
                   <FaTrash className="w-3 h-3" />
-                  Delete
+                  {t('admin.users.actions.delete')}
                 </button>
               </div>
             </div>
@@ -309,7 +309,7 @@ const UsersManagementTab = () => {
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-            <span className="ml-3 text-gray-400">Loading users...</span>
+            <span className="ml-3 text-gray-400">{t('admin.users.loading')}</span>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -329,13 +329,13 @@ const UsersManagementTab = () => {
                       className="rounded border-white/30 bg-white/10"
                     />
                   </th>
-                  <th className="py-4 px-4 text-left text-gray-300 font-medium">User</th>
-                  <th className="py-4 px-4 text-left text-gray-300 font-medium">Plan</th>
-                  <th className="py-4 px-4 text-left text-gray-300 font-medium">Balance</th>
-                  <th className="py-4 px-4 text-left text-gray-300 font-medium">KYC Status</th>
-                  <th className="py-4 px-4 text-left text-gray-300 font-medium">Status</th>
-                  <th className="py-4 px-4 text-left text-gray-300 font-medium">Joined</th>
-                  <th className="py-4 px-4 text-left text-gray-300 font-medium">Actions</th>
+                  <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.user')}</th>
+                  <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.plan')}</th>
+                  <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.balance')}</th>
+                  <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.kycStatus')}</th>
+                  <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.status')}</th>
+                  <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.joined')}</th>
+                  <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -365,7 +365,7 @@ const UsersManagementTab = () => {
                       <div>
                         <p className="text-white font-medium">{user.fullName}</p>
                         <p className="text-gray-400 text-sm">{user.email}</p>
-                        <p className="text-gray-500 text-xs">ID: {user.id.substring(0, 8)}...</p>
+                        <p className="text-gray-500 text-xs">{t('admin.users.table.id')}: {user.id.substring(0, 8)}...</p>
                       </div>
                     </td>
                     <td className="py-4 px-4">
@@ -385,7 +385,10 @@ const UsersManagementTab = () => {
                           ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
                           : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
                       }`}>
-                        {user.kycStatus}
+                        {user.kycStatus === 'Verified' ? t('admin.users.status.verified') : 
+                         user.kycStatus === 'Pending' ? t('admin.users.status.pending') :
+                         user.kycStatus === 'Rejected' ? t('admin.users.status.rejected') :
+                         user.kycStatus}
                       </span>
                     </td>
                     <td className="py-4 px-4">
@@ -394,7 +397,7 @@ const UsersManagementTab = () => {
                           ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
                           : 'bg-red-500/20 text-red-400 border border-red-500/30'
                       }`}>
-                        {user.isActive ? 'Active' : 'Inactive'}
+                        {user.isActive ? t('admin.users.status.active') : t('admin.users.status.inactive')}
                       </span>
                     </td>
                     <td className="py-4 px-4 text-gray-300 text-sm">
@@ -407,7 +410,7 @@ const UsersManagementTab = () => {
                           className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 text-sm"
                         >
                           <FaEdit className="w-3 h-3" />
-                          Edit
+                          {t('admin.users.actions.edit')}
                         </button>
                         <button
                           onClick={() => {
@@ -422,18 +425,18 @@ const UsersManagementTab = () => {
                           }`}
                         >
                           {user.isActive ? <FaBan className="w-3 h-3" /> : <FaUnlock className="w-3 h-3" />}
-                          {user.isActive ? 'Deactivate' : 'Activate'}
+                          {user.isActive ? t('admin.users.actions.deactivate') : t('admin.users.actions.activate')}
                         </button>
                         <button
                           onClick={() => {
-                            if (confirm('Are you sure you want to delete this user?')) {
+                            if (confirm(t('admin.users.confirmDelete'))) {
                               setUsers(prev => prev.filter(u => u.id !== user.id));
                             }
                           }}
                           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 text-sm"
                         >
                           <FaTrash className="w-3 h-3" />
-                          Delete
+                          {t('admin.users.actions.delete')}
                         </button>
                       </div>
                     </td>
@@ -454,7 +457,7 @@ const UsersManagementTab = () => {
         >
           <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
             <FaEdit className="w-4 h-4 text-blue-400" />
-            Update User Plan
+            {t('admin.users.modal.updatePlan')}
           </h3>
           <div className="flex flex-col sm:flex-row gap-4">
             <select
@@ -462,11 +465,11 @@ const UsersManagementTab = () => {
               onChange={(e) => setNewPlan(e.target.value)}
               className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Select Plan</option>
-              <option value="economy">Economy</option>
-              <option value="business">Business</option>
-              <option value="first-6">First-6</option>
-              <option value="first-lifetime">First-Lifetime</option>
+              <option value="">{t('admin.users.modal.selectPlan')}</option>
+              <option value="economy">{t('admin.users.filters.economy')}</option>
+              <option value="business">{t('admin.users.filters.business')}</option>
+              <option value="first-6">{t('admin.users.filters.first6')}</option>
+              <option value="first-lifetime">{t('admin.users.filters.firstLifetime')}</option>
             </select>
             <button
               onClick={() => {
@@ -481,7 +484,7 @@ const UsersManagementTab = () => {
               className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
             >
               <FaCheck className="w-4 h-4" />
-              Update Plan
+              {t('admin.users.modal.updatePlan')}
             </button>
             <button
               onClick={() => {
@@ -491,7 +494,7 @@ const UsersManagementTab = () => {
               className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
             >
               <FaTimes className="w-4 h-4" />
-              Cancel
+              {t('admin.common.cancel')}
             </button>
           </div>
         </motion.div>

@@ -12,10 +12,10 @@ interface NotificationProviderProps {
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }) => {
   const navigate = useNavigate();
   const { 
-    newNotification, 
-    markAsRead, 
-    clearNewNotification 
+    notifications,
   } = useNotifications();
+
+  const latest = notifications[0];
 
   // Handle navigation
   const handleNavigate = (link: string) => {
@@ -26,9 +26,9 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     <>
       {children}
       <NotificationToast 
-        notification={newNotification} 
-        onClose={clearNewNotification}
-        onRead={markAsRead}
+        notification={latest as any}
+        onClose={() => {}}
+        onRead={() => {}}
         onNavigate={handleNavigate}
       />
     </>

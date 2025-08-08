@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import {
   FaImage, FaSearch, FaEye, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes,
   FaBullhorn, FaNewspaper, FaVideo, FaLink, FaCalendarAlt, FaEye as FaVisibility
@@ -22,6 +23,7 @@ interface Content {
 }
 
 const ContentTab = () => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -33,11 +35,11 @@ const ContentTab = () => {
   const contents: Content[] = [
     {
       id: 'CONT001',
-      title: 'Welcome to FlySky Network',
+      title: t('admin.content.sampleData.welcomeTitle'),
       type: 'banner',
       status: 'active',
       imageUrl: '/src/assets/banner1.jpg',
-      description: 'Join the future of decentralized mining',
+      description: t('admin.content.sampleData.welcomeDescription'),
       startDate: '2024-01-01',
       endDate: '2024-12-31',
       priority: 1,
@@ -46,11 +48,11 @@ const ContentTab = () => {
     },
     {
       id: 'CONT002',
-      title: 'New Mining Rewards Available',
+      title: t('admin.content.sampleData.miningRewardsTitle'),
       type: 'announcement',
       status: 'active',
       imageUrl: '/src/assets/banner2.jpg',
-      description: 'Earn up to 3000 FSN daily with our new mining system',
+      description: t('admin.content.sampleData.miningRewardsDescription'),
       startDate: '2024-12-01',
       endDate: '2024-12-31',
       priority: 2,
@@ -59,11 +61,11 @@ const ContentTab = () => {
     },
     {
       id: 'CONT003',
-      title: 'Referral Program Launch',
+      title: t('admin.content.sampleData.referralProgramTitle'),
       type: 'promotion',
       status: 'active',
       imageUrl: '/src/assets/Referral_Program.jpg',
-      description: 'Invite friends and earn 1000 FSN per referral',
+      description: t('admin.content.sampleData.referralProgramDescription'),
       startDate: '2024-11-15',
       endDate: '2024-12-31',
       priority: 3,
@@ -72,11 +74,11 @@ const ContentTab = () => {
     },
     {
       id: 'CONT004',
-      title: 'Platform Tutorial Video',
+      title: t('admin.content.sampleData.tutorialVideoTitle'),
       type: 'video',
       status: 'active',
       imageUrl: '/src/assets/play_mobile.jpg',
-      description: 'Learn how to maximize your mining efficiency',
+      description: t('admin.content.sampleData.tutorialVideoDescription'),
       startDate: '2024-10-01',
       endDate: '2024-12-31',
       priority: 4,
@@ -85,11 +87,11 @@ const ContentTab = () => {
     },
     {
       id: 'CONT005',
-      title: 'Holiday Special Event',
+      title: t('admin.content.sampleData.holidayEventTitle'),
       type: 'promotion',
       status: 'draft',
       imageUrl: '/src/assets/banner5.jpg',
-      description: 'Double rewards during holiday season',
+      description: t('admin.content.sampleData.holidayEventDescription'),
       startDate: '2024-12-20',
       endDate: '2024-12-31',
       priority: 1,
@@ -161,7 +163,7 @@ const ContentTab = () => {
           <div className="flex items-center gap-3">
             <FaImage className="w-5 h-5 text-blue-400" />
             <div>
-              <p className="text-gray-400 text-sm">Total Content</p>
+              <p className="text-gray-400 text-sm">{t('admin.content.stats.totalContent')}</p>
               <p className="text-white font-bold text-lg">{totalContent}</p>
             </div>
           </div>
@@ -171,7 +173,7 @@ const ContentTab = () => {
           <div className="flex items-center gap-3">
             <FaCheck className="w-5 h-5 text-green-400" />
             <div>
-              <p className="text-gray-400 text-sm">Active Content</p>
+              <p className="text-gray-400 text-sm">{t('admin.content.stats.activeContent')}</p>
               <p className="text-white font-bold text-lg">{activeContent}</p>
             </div>
           </div>
@@ -181,7 +183,7 @@ const ContentTab = () => {
           <div className="flex items-center gap-3">
             <FaVisibility className="w-5 h-5 text-yellow-400" />
             <div>
-              <p className="text-gray-400 text-sm">Total Views</p>
+              <p className="text-gray-400 text-sm">{t('admin.content.stats.totalViews')}</p>
               <p className="text-white font-bold text-lg">{totalViews.toLocaleString()}</p>
             </div>
           </div>
@@ -191,7 +193,7 @@ const ContentTab = () => {
           <div className="flex items-center gap-3">
             <FaLink className="w-5 h-5 text-purple-400" />
             <div>
-              <p className="text-gray-400 text-sm">Total Clicks</p>
+              <p className="text-gray-400 text-sm">{t('admin.content.stats.totalClicks')}</p>
               <p className="text-white font-bold text-lg">{totalClicks.toLocaleString()}</p>
             </div>
           </div>
@@ -205,7 +207,7 @@ const ContentTab = () => {
           className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-lg"
         >
           <FaPlus className="w-4 h-4" />
-          Create Content
+          {t('admin.content.actions.createContent')}
         </button>
       </div>
 
@@ -217,7 +219,7 @@ const ContentTab = () => {
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search content..."
+                placeholder={t('admin.content.search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white/10 border border-white/20 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -230,12 +232,12 @@ const ContentTab = () => {
             onChange={(e) => setTypeFilter(e.target.value)}
             className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Types</option>
-            <option value="banner">Banner</option>
-            <option value="announcement">Announcement</option>
-            <option value="promotion">Promotion</option>
-            <option value="video">Video</option>
-            <option value="news">News</option>
+            <option value="all">{t('admin.content.filters.allTypes')}</option>
+            <option value="banner">{t('admin.content.types.banner')}</option>
+            <option value="announcement">{t('admin.content.types.announcement')}</option>
+            <option value="promotion">{t('admin.content.types.promotion')}</option>
+            <option value="video">{t('admin.content.types.video')}</option>
+            <option value="news">{t('admin.content.types.news')}</option>
           </select>
 
           <select
@@ -243,10 +245,10 @@ const ContentTab = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="draft">Draft</option>
+            <option value="all">{t('admin.content.filters.allStatus')}</option>
+            <option value="active">{t('admin.content.status.active')}</option>
+            <option value="inactive">{t('admin.content.status.inactive')}</option>
+            <option value="draft">{t('admin.content.status.draft')}</option>
           </select>
         </div>
       </div>
@@ -272,16 +274,16 @@ const ContentTab = () => {
                   <h3 className="text-lg font-bold text-white">{content.title}</h3>
                   <div className="flex gap-2">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getTypeColor(content.type)}`}>
-                      {content.type}
+                      {t(`admin.content.types.${content.type}`)}
                     </span>
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(content.status)}`}>
-                      {content.status}
+                      {t(`admin.content.status.${content.status}`)}
                     </span>
                   </div>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-400">Priority</p>
+                <p className="text-sm text-gray-400">{t('admin.content.priority')}</p>
                 <p className="text-white font-bold">{content.priority}</p>
               </div>
             </div>
@@ -290,11 +292,11 @@ const ContentTab = () => {
 
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="bg-white/5 rounded-lg p-3">
-                <p className="text-gray-400 text-xs">Views</p>
+                <p className="text-gray-400 text-xs">{t('admin.content.views')}</p>
                 <p className="text-white font-bold">{content.views.toLocaleString()}</p>
               </div>
               <div className="bg-white/5 rounded-lg p-3">
-                <p className="text-gray-400 text-xs">Clicks</p>
+                <p className="text-gray-400 text-xs">{t('admin.content.clicks')}</p>
                 <p className="text-white font-bold">{content.clicks.toLocaleString()}</p>
               </div>
             </div>
@@ -315,11 +317,11 @@ const ContentTab = () => {
                 className="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
               >
                 <FaEye className="w-3 h-3" />
-                View
+                {t('admin.content.actions.view')}
               </button>
               <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm">
                 <FaEdit className="w-3 h-3" />
-                Edit
+                {t('admin.content.actions.edit')}
               </button>
               <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm">
                 <FaTrash className="w-3 h-3" />
@@ -339,41 +341,41 @@ const ContentTab = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl w-full max-w-md">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaEye className="w-4 h-4 text-blue-400" />
-              Content Details: {selectedContent.title}
+              {t('admin.content.details.title')}: {selectedContent.title}
             </h3>
             
             <div className="space-y-4">
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Basic Information</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.content.details.basicInformation')}</h4>
                 <div className="space-y-2 text-sm">
-                  <p><span className="text-gray-400">ID:</span> <span className="text-white">{selectedContent.id}</span></p>
-                  <p><span className="text-gray-400">Type:</span> <span className="text-white capitalize">{selectedContent.type}</span></p>
-                  <p><span className="text-gray-400">Status:</span> <span className={`${getStatusColor(selectedContent.status)}`}>{selectedContent.status}</span></p>
-                  <p><span className="text-gray-400">Priority:</span> <span className="text-white">{selectedContent.priority}</span></p>
+                  <p><span className="text-gray-400">{t('admin.content.details.id')}:</span> <span className="text-white">{selectedContent.id}</span></p>
+                  <p><span className="text-gray-400">{t('admin.content.details.type')}:</span> <span className="text-white capitalize">{t(`admin.content.types.${selectedContent.type}`)}</span></p>
+                  <p><span className="text-gray-400">{t('admin.content.details.status')}:</span> <span className={`${getStatusColor(selectedContent.status)}`}>{t(`admin.content.status.${selectedContent.status}`)}</span></p>
+                  <p><span className="text-gray-400">{t('admin.content.details.priority')}:</span> <span className="text-white">{selectedContent.priority}</span></p>
                 </div>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Description</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.content.details.description')}</h4>
                 <p className="text-gray-300 text-sm">{selectedContent.description}</p>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Performance</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.content.details.performance')}</h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-400">Views</p>
+                    <p className="text-gray-400">{t('admin.content.views')}</p>
                     <p className="text-white font-bold">{selectedContent.views.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400">Clicks</p>
+                    <p className="text-gray-400">{t('admin.content.clicks')}</p>
                     <p className="text-white font-bold">{selectedContent.clicks.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Schedule</h4>
+                <h4 className="text-white font-semibold mb-2">{t('admin.content.details.schedule')}</h4>
                 <p className="text-gray-300 text-sm">{selectedContent.startDate} - {selectedContent.endDate}</p>
               </div>
               
@@ -382,7 +384,7 @@ const ContentTab = () => {
                 className="w-full bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <FaTimes className="w-4 h-4" />
-                Close
+                {t('admin.content.actions.close')}
               </button>
             </div>
           </div>
@@ -399,48 +401,48 @@ const ContentTab = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaPlus className="w-4 h-4 text-purple-400" />
-              Create New Content
+              {t('admin.content.createModal.title')}
             </h3>
             
             <div className="space-y-4">
               <input
                 type="text"
-                placeholder="Content Title"
+                placeholder={t('admin.content.createModal.titlePlaceholder')}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               
               <textarea
-                placeholder="Description"
+                placeholder={t('admin.content.createModal.descriptionPlaceholder')}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={3}
               />
               
               <select className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Select Type</option>
-                <option value="banner">Banner</option>
-                <option value="announcement">Announcement</option>
-                <option value="promotion">Promotion</option>
-                <option value="video">Video</option>
-                <option value="news">News</option>
+                <option value="">{t('admin.content.createModal.selectType')}</option>
+                <option value="banner">{t('admin.content.types.banner')}</option>
+                <option value="announcement">{t('admin.content.types.announcement')}</option>
+                <option value="promotion">{t('admin.content.types.promotion')}</option>
+                <option value="video">{t('admin.content.types.video')}</option>
+                <option value="news">{t('admin.content.types.news')}</option>
               </select>
               
               <input
                 type="number"
-                placeholder="Priority (1-10)"
+                placeholder={t('admin.content.createModal.priorityPlaceholder')}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               
               <div className="flex gap-2">
                 <button className="flex-1 bg-purple-500 hover:bg-purple-600 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
                   <FaCheck className="w-4 h-4" />
-                  Create
+                  {t('admin.content.actions.create')}
                 </button>
                 <button
                   onClick={() => setShowCreateModal(false)}
                   className="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   <FaTimes className="w-4 h-4" />
-                  Cancel
+                  {t('admin.content.actions.cancel')}
                 </button>
               </div>
             </div>
