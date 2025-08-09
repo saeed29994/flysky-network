@@ -519,7 +519,18 @@
     "rewards": "Rewards",
     "earnWhileHavingFun": "Earn while having fun",
     "readyToGetStarted": "Ready to Get Started?",
-    "getStartedToday": "Get Started Today"
+    "getStartedToday": "Get Started Today",
+    "smartContract": "SMART CONTRACT",
+    "from": "from",
+    "p1": "FlySky is a Web3-powered digital ecosystem designed to make crypto accessible for everyone.",
+    "p2": "Our platform combines mining, staking, gaming, and NFTs into a seamless experience where users can earn, grow, and engage all in one place.",
+    "scLabel": "SMART - CONTRACT ",
+    "scDesc": "- is a decentralized crypto application.",
+    "who": {
+      "title": "WHO WE ARE",
+      "p1": "FlySky Network is a next-generation digital economy platform that combines mining, staking, gaming, and NFTs into one seamless experience.",
+      "p2": "We are committed to building a vibrant ecosystem where users can earn, trade, and grow their assets through engaging interactions."
+    }
   },
   "profile": {
     "loadingProfile": "Loading profile...",
@@ -2096,6 +2107,155 @@
       "holdForDays": "Hold for 30 days",
       "participateInEvent": "Participate in event",
       "completeAllChallenges": "Complete all challenges"
+    }
+  },
+  "landing": {
+    "hero": {
+      "brand": "FlySky Network",
+      "tagline": "Mine. Earn. Grow.",
+      "desc": "FlySky is a Web3 platform where users earn crypto through daily mining, staking, referrals, and more.",
+      "alt": {
+        "heroBanner": "FlySky Network Hero Banner",
+        "heroBannerMobile": "FlySky Network Hero Banner (Mobile)"
+      }
+    },
+    "cta": {
+      "joinNow": "Join Now",
+      "openDashboard": "Open Dashboard",
+      "getStarted": "Get Started",
+      "createEarning": "Create Earning",
+      "readMore": "Read More",
+      "tryForFree": "Try For Free"
+    },
+    "store": {
+      "appStoreTop": "Download on the",
+      "appStore": "App Store",
+      "getItOn": "GET IT ON",
+      "googlePlay": "Google Play"
+    },
+    "header": {
+      "toggleMenu": "Toggle menu",
+      "closeMenu": "Close menu"
+    },
+    "menu": {
+      "about": "About",
+      "features": "Features",
+      "plans": "Plans",
+      "how-it-works": "How it Works"
+    },
+    "features": {
+      "titleMobile": "OUR FEATURES",
+      "titleDesktop": "POWERFUL FEATURES",
+      "subtitle": "Everything you need to start earning crypto today",
+      "alt": { "border": "Feature border" },
+      "items": {
+        "mining": { "title": "DAILY MINING", "desc": "Earn crypto every day through automated mining processes" },
+        "membership": { "title": "MEMBERSHIP PLANS", "desc": "Choose from Economy, Business, or First Class plans" },
+        "staking": { "title": "STAKING REWARDS", "desc": "Stake your tokens and earn passive income with high APY" },
+        "referral": { "title": "REFERRAL PROGRAM", "desc": "Invite friends and earn commission from their activities" },
+        "watchToEarn": { "title": "WATCH TO EARN", "desc": "Watch advertisements and earn rewards for your time" },
+        "playToEarn": { "title": "PLAY TO EARN", "desc": "Play mini-games and complete in game challenges to earn FSN tokens" }
+      }
+    },
+    "getStarted": {
+      "titlePart1": "Start earning with",
+      "titleEmphasis": "FlySky now!",
+      "subtitle": "Join thousands of users already earning crypto daily",
+      "alt": "Start earning with FlySky"
+    },
+    "who": {
+      "title": "WHO WE ARE",
+      "p1": "FlySky Network is a next-generation digital economy platform that combines mining, staking, gaming, and NFTs into one seamless experience.",
+      "p2": "We are committed to building a vibrant ecosystem where users can earn, trade, and grow their assets through engaging interactions."
+    },
+    "hiw": {
+      "title": "HOW IT WORKS",
+      "subtitle": "Join thousands of users earning crypto through our innovative platform",
+      "steps": {
+        "1": { "title": "Register", "desc": "Create your account and verify your identity to start crypto earning journey", "cta": "Sign Up" },
+        "2": { "title": "Start Mining", "desc": "Begin the automated mining process", "cta": "Start Mining" },
+        "3": { "title": "CLAIM REWARDS", "desc": "Withdraw earned crypto rewards directly to your wallet", "cta": "Claim Now" }
+      }
+    },
+    "footer": {
+      "tagline": "Mine. Earn. Grow.",
+      "language": "Language",
+      "rights": "All rights reserved.",
+      "links": {
+        "terms": "Terms",
+        "privacy": "Privacy",
+        "contact": "Contact"
+      }
+    }
+  },
+  "features": {
+    "titleMobile": "OUR FEATURES",
+    "titleDesktop": "POWERFUL FEATURES",
+    "subtitle": "Everything you need to start earning crypto today",
+    "alt": {
+      "border": "Feature border"
+    },
+    "items": {
+      "mining": { "title": "DAILY MINING", "desc": "Earn crypto every day through automated mining processes" },
+      "membership": { "title": "MEMBERSHIP PLANS", "desc": "Choose from Economy, Business, or First Class plans" },
+      "staking": { "title": "STAKING REWARDS", "desc": "Stake your tokens and earn passive income with high APY" },
+      "referral": { "title": "REFERRAL PROGRAM", "desc": "Invite friends and earn commission from their activities" },
+      "watchToEarn": { "title": "WATCH TO EARN", "desc": "Watch advertisements and earn rewards for your time" },
+      "playToEarn": { "title": "PLAY TO EARN", "desc": "Play mini-games and complete in game challenges to earn FSN tokens" }
+    }
+  },
+  "plans": {
+    "title": "Choose Your Plan",
+    "subtitle": "Unlock premium features and earn FSN rewards with our membership plans. FSN tokens are virtual in-app currency for enhanced features.",
+    "mostPopular": "Most Popular",
+    "items": {
+      "business": {
+        "title": "Business Class",
+        "price": "9.99",
+        "description": "All business class features to boost your FSN rewards with FlySky Network",
+        "features": ["Bonus 100,000 FSN", "Advanced mining", "Priority support", "Staking access"],
+        "buttonText": "Choose Business Class"
+      },
+      "first": {
+        "title": "First Class",
+        "price": "49.99",
+        "description": "All first class features to boost your FSN rewards with FlySky Network",
+        "features": ["Bonus 500,000 FSN", "All business features", "Faster mining", "Event access"],
+        "buttonText": "Choose First Class"
+      },
+      "firstLifetime": {
+        "title": "First class (Lifetime)",
+        "price": "99.99",
+        "description": "All first class (lifetime) features to boost your FSN rewards with FlySky Network",
+        "features": ["Bonus 1,000,000 FSN", "Highest mining", "Lifetime access", "Access to premium features"],
+        "buttonText": "Choose First-Lifetime"
+      }
+    }
+  },
+  "fsnInfo": {
+    "title": "About FSN Tokens",
+    "description": "FSN tokens are virtual in-app currency that can only be used within the app for features like Mining, Staking, and Upgrades. They cannot be withdrawn, sold, or traded externally.",
+    "miningRewards": { "title": "Mining Rewards", "desc": "Use FSN for faster mining and higher rewards" },
+    "stakingAccess": { "title": "Staking Access", "desc": "Stake FSN to earn additional rewards" },
+    "premiumFeatures": { "title": "Premium Features", "desc": "Unlock exclusive features and bonuses" }
+  },
+  "hiw": {
+    "title": "HOW IT WORKS",
+    "subtitle": "Join thousands of users earning crypto through our innovative platform",
+    "steps": {
+      "1": { "title": "Register", "desc": "Create your account and verify your identity to start crypto earning journey", "cta": "Sign Up" },
+      "2": { "title": "Start Mining", "desc": "Begin the automated mining process", "cta": "Start Mining" },
+      "3": { "title": "CLAIM REWARDS", "desc": "Withdraw earned crypto rewards directly to your wallet", "cta": "Claim Now" }
+    }
+  },
+  "footer": {
+    "tagline": "Mine. Earn. Grow.",
+    "language": "Language",
+    "rights": "All rights reserved.",
+    "links": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "contact": "Contact"
     }
   }
 }

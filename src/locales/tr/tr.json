@@ -494,7 +494,21 @@
     "rewards": "Ödüller",
     "earnWhileHavingFun": "Eğlenirken kazanın",
     "readyToGetStarted": "Başlamaya Hazır mısınız?",
-    "getStartedToday": "Bugün Başlayın"
+    "getStartedToday": "Bugün Başlayın",
+    "about": {
+      "smartContract": "AKILLI SÖZLEŞME",
+      "from": "tarafından",
+      "title": "HAKKIMIZDA",
+      "p1": "FlySky, kriptoyu herkes için erişilebilir kılmak üzere tasarlanmış Web3 tabanlı bir dijital ekosistemdir.",
+      "p2": "Platformumuz; madencilik, staking, oyun ve NFT'leri tek bir deneyimde birleştirerek kullanıcıların aynı yerde kazanmasını, büyümesini ve etkileşime geçmesini sağlar.",
+      "scLabel": "SMART - CONTRACT ",
+      "scDesc": "- merkeziyetsiz bir kripto uygulamasıdır."
+    },
+    "who": {
+      "title": "BİZ KİMİZ",
+      "p1": "FlySky Network, madencilik, staking, oyun ve NFT'leri bir araya getiren yeni nesil dijital ekonomi platformudur.",
+      "p2": "Kullanıcıların keyifli etkileşimlerle kazanç sağlayıp varlıklarını büyütebilecekleri canlı bir ekosistem inşa etmeye kararlıyız."
+    }
   },
   "profile": {
     "loadingProfile": "Profil yükleniyor...",
@@ -2020,5 +2034,124 @@
       "step2": "Aşağı kaydırın ve \"Ana Ekrana Ekle\"ye dokunun 🏠",
       "step3": "Onaylamak için \"Ekle\"ye dokunun"
     }
+  },
+  "landing": {
+    "hero": {
+      "brand": "FlySky Network",
+      "tagline": "Kaz. Kazan. Büyü.",
+      "desc": "FlySky, kullanıcıların günlük madencilik, staking, yönlendirme ve daha fazlasıyla kripto kazandığı bir Web3 platformudur.",
+      "alt": {
+        "heroBanner": "FlySky Network Ana Afiş",
+        "heroBannerMobile": "FlySky Network Ana Afiş (Mobil)"
+      }
+    },
+    "cta": {
+      "joinNow": "Hemen Katıl",
+      "openDashboard": "Paneli Aç",
+      "getStarted": "Başla",
+      "createEarning": "Kazanç Oluştur",
+      "readMore": "Daha Fazla Bilgi",
+      "tryForFree": "Ücretsiz Dene"
+    },
+    "store": {
+      "appStoreTop": "Şuradan indirin",
+      "appStore": "App Store",
+      "getItOn": "ŞURADAN EDİNİN",
+      "googlePlay": "Google Play"
+    },
+    "header": {
+      "toggleMenu": "Menüyü aç/kapat",
+      "closeMenu": "Menüyü kapat"
+    },
+    "menu": {
+      "about": "Hakkımızda",
+      "features": "Özellikler",
+      "plans": "Planlar",
+      "how-it-works": "Nasıl Çalışır"
+    },
+    "features": {
+      "titleMobile": "ÖZELLİKLERİMİZ",
+      "titleDesktop": "GÜÇLÜ ÖZELLİKLER",
+      "subtitle": "Bugün kripto kazanmaya başlamak için ihtiyacınız olan her şey",
+      "alt": { "border": "Bölüm kenarlığı" },
+      "items": {
+        "mining": { "title": "GÜNLÜK MADENCİLİK", "desc": "Otomatik madencilikle her gün kripto kazanın" },
+        "membership": { "title": "ÜYELİK PLANLARI", "desc": "Ekonomi, İş veya Birinci Sınıf planları arasından seçin" },
+        "staking": { "title": "STAKING ÖDÜLLERİ", "desc": "Tokenlarınızı stake edin ve yüksek APY ile pasif gelir elde edin" },
+        "referral": { "title": "YÖNLENDİRME PROGRAMI", "desc": "Arkadaşlarınızı davet edin ve aktivitelerinden komisyon kazanın" },
+        "watchToEarn": { "title": "İZLE VE KAZAN", "desc": "Reklamları izleyin ve zamanınız için ödül kazanın" },
+        "playToEarn": { "title": "OYNA VE KAZAN", "desc": "Mini oyunlar oynayın ve FSN kazanmak için görevleri tamamlayın" }
+      }
+    },
+    "getStarted": {
+      "titlePart1": "Şimdi kazanmaya başlayın",
+      "titleEmphasis": "FlySky ile!",
+      "subtitle": "Her gün kripto kazanan binlerce kullanıcıya katılın",
+      "alt": "FlySky ile kazanmaya başlayın"
+    },
+    "who": {
+      "title": "BİZ KİMİZ",
+      "p1": "FlySky Network, madencilik, staking, oyun ve NFT'leri bir araya getiren yeni nesil dijital ekonomi platformudur.",
+      "p2": "Kullanıcıların keyifli etkileşimlerle kazanç sağlayıp varlıklarını büyütebilecekleri canlı bir ekosistem inşa etmeye kararlıyız."
+    },
+    "footer": {
+      "tagline": "Kaz. Kazan. Büyü.",
+      "language": "Dil",
+      "rights": "Tüm hakları saklıdır.",
+      "links": {
+        "terms": "Şartlar",
+        "privacy": "Gizlilik",
+        "contact": "İletişim"
+      }
+    }
+  },
+  "plans": {
+    "title": "Planınızı Seçin",
+    "subtitle": "Üyelik planlarımızla premium özelliklerin kilidini açın ve FSN ödülleri kazanın. FSN, uygulama içi avantajlar için kullanılan sanal bir para birimidir.",
+    "mostPopular": "En Popüler",
+    "items": {
+      "business": {
+        "title": "İş Sınıfı",
+        "price": "9.99",
+        "description": "FlySky ile FSN ödüllerinizi artırmak için İş Sınıfı özelliklerinin tümü",
+        "features": ["100.000 FSN Bonus", "Gelişmiş madencilik", "Öncelikli destek", "Staking erişimi"],
+        "buttonText": "İş Sınıfını Seç"
+      },
+      "first": {
+        "title": "Birinci Sınıf",
+        "price": "49.99",
+        "description": "FSN ödüllerinizi artırmak için Birinci Sınıf özelliklerinin tümü",
+        "features": ["500.000 FSN Bonus", "Tüm iş sınıfı özellikleri", "Daha hızlı madencilik", "Etkinlik erişimi"],
+        "buttonText": "Birinci Sınıfı Seç"
+      },
+      "firstLifetime": {
+        "title": "Birinci Sınıf (Ömür Boyu)",
+        "price": "99.99",
+        "description": "FSN ödüllerinizi artırmak için Birinci Sınıf (Ömür Boyu) özelliklerinin tümü",
+        "features": ["1.000.000 FSN Bonus", "En yüksek madencilik", "Ömür boyu erişim", "Premium özelliklere erişim"],
+        "buttonText": "Ömür Boyu Planı Seç"
+      }
+    }
+  },
+  "fsnInfo": {
+    "title": "FSN Tokenları Hakkında",
+    "description": "FSN tokenları yalnızca uygulama içinde Madencilik, Staking ve Yükseltme gibi özellikler için kullanılabilen sanal bir para birimidir. Dışarıya çekilemez, satılamaz veya takas edilemez.",
+    "miningRewards": { "title": "Madencilik Ödülleri", "desc": "Daha hızlı madencilik ve daha yüksek ödüller için FSN kullanın" },
+    "stakingAccess": { "title": "Staking Erişimi", "desc": "Ek ödüller kazanmak için FSN stake edin" },
+    "premiumFeatures": { "title": "Premium Özellikler", "desc": "Özel özelliklerin ve bonusların kilidini açın" }
+  },
+  "hiw": {
+    "title": "NASIL ÇALIŞIR",
+    "subtitle": "Yenilikçi platformumuzla kripto kazanan binlerce kullanıcıya katılın",
+    "steps": {
+      "1": { "title": "Kayıt", "desc": "Hesabınızı oluşturun ve kimliğinizi doğrulayarak kazanma yolculuğunuza başlayın", "cta": "Kayıt Ol" },
+      "2": { "title": "Madenciliğe Başla", "desc": "Otomatik madencilik sürecini başlatın", "cta": "Madenciliğe Başla" },
+      "3": { "title": "ÖDÜLLERİ TALEP ET", "desc": "Kazandığınız kripto ödüllerini doğrudan cüzdanınıza çekin", "cta": "Şimdi Talep Et" }
+    }
+  },
+  "who": {
+    "title": "BİZ KİMİZ",
+    "p1": "FlySky Network, madencilik, staking, oyun ve NFT'leri bir araya getiren yeni nesil dijital ekonomi platformudur.",
+    "p2": "Kullanıcıların keyifli etkileşimlerle kazanç sağlayıp varlıklarını büyütebilecekleri canlı bir ekosistem inşa etmeye kararlıyız."
   }
 } 

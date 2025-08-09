@@ -6,9 +6,11 @@ import LandingHeader from './LandingHeader';
 import TypingAnimation from '../ui/typing-animation';
 import Ellipse from '../ui/ellipse';
 import { Apple, Play } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const HeroSection = () => {
     const { navigateToSignup, navigateToLogin } = useButtonActions();
+    const { t } = useTranslation();
 
     return (
         <>
@@ -24,7 +26,7 @@ const HeroSection = () => {
                         <div className="flex justify-center mb-0 mt-8 -mb-8">
                             <img
                                 src={heroBannerMobile}
-                                alt="FlySky Network Hero Banner"
+                                alt={t('landing.hero.alt.heroBannerMobile')}
                                 className="w-full max-w-md h-auto object-contain relative z-10"
                                 loading="lazy"
                             />
@@ -33,26 +35,26 @@ const HeroSection = () => {
                         {/* Text Content for Mobile/Tablet */}
                         <div className="text-center max-w-2xl mx-auto relative z-10">
                             <h2 className="font-inter font-bold text-4xl sm:text-4xl text-white mb-4">
-                                FlySky Network
+                                {t('landing.hero.brand')}
                             </h2>
                             <h1 className="font-bold mb-3">
                                 <div className="font-inter font-bold text-3xl sm:text-4xl leading-tight tracking-[0%] bg-gradient-to-r from-[#FABA33] to-[#4F46E5] bg-clip-text text-transparent">
                                     <TypingAnimation 
-                                        text="Mine. Earn. Grow." 
+                                        text={t('landing.hero.tagline')} 
                                         speed={150}
                                         className="bg-gradient-to-r from-[#FABA33] to-[#4F46E5] bg-clip-text text-transparent"
                                     />
                                 </div>
                             </h1>
                             <p className="text-center text-lg sm:text-xl text-white mb-6 font-inter font-normal leading-relaxed">
-                                FlySky is a Web3 platform where users earn crypto through daily mining, staking, referrals, and more.
+                                {t('landing.hero.desc')}
                             </p>
                             <div className="flex flex-row gap-4 mb-6">
                                 <Button
                                     className="flex-1 h-[40px] gap-[10px] rounded-[24px] pt-[10px] pb-[10px] bg-gradient-to-r from-[rgba(250,186,51,0.9)] to-[#4F46E5] shadow-[0px_16px_32px_0px_#00386140] text-white font-inter"
                                     onClick={navigateToSignup}
                                 >
-                                    Join Now
+                                    {t('landing.cta.joinNow')}
                                 </Button>
                                 <Button
                                     className="flex-1 h-[40px] gap-[10px] rounded-[24px] pt-[10px] pb-[10px] border border-transparent bg-transparent p-[1px] text-white font-inter relative overflow-hidden"
@@ -60,7 +62,7 @@ const HeroSection = () => {
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#FABA33] to-[#4F46E5] rounded-[24px]"></div>
                                     <span className="bg-[#110D24] hover:bg-[#1a1242] block rounded-[24px] px-[61px] py-[10px] w-full h-full flex items-center justify-center relative z-10">
-                                        Open Dashboard
+                                        {t('landing.cta.openDashboard')}
                                     </span>
                                 </Button>
                             </div>
@@ -74,8 +76,8 @@ const HeroSection = () => {
                                 >
                                     <Apple className="w-6 h-6" />
                                     <div className="text-center">
-                                        <div className="text-xs text-gray-300">Download on the</div>
-                                        <div className="text-sm font-semibold">App Store</div>
+                                        <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
+                                        <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
                                     </div>
                                 </button>
                                 
@@ -86,8 +88,8 @@ const HeroSection = () => {
                                 >
                                     <Play className="w-6 h-6" />
                                     <div className="text-center">
-                                        <div className="text-xs text-gray-300">GET IT ON</div>
-                                        <div className="text-sm font-semibold">Google Play</div>
+                                        <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
+                                        <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
                                     </div>
                                 </button>
                             </div>
@@ -116,14 +118,14 @@ const HeroSection = () => {
                                     <h1 className="font-bold mb-6">
                                         <div className="text-center font-inter font-bold text-[36px] leading-[38.4px] tracking-[0%] bg-gradient-to-r from-[#FABA33] to-[#4F46E5] bg-clip-text text-transparent">
                                             <TypingAnimation 
-                                                text="Mine. Earn. Grow." 
+                                                text={t('landing.hero.tagline')} 
                                                 speed={100}
                                                 className="bg-gradient-to-r from-[#FABA33] to-[#4F46E5] bg-clip-text text-transparent"
                                             />
                                         </div>
                                     </h1>
                                     <p className="w-[80%] text-lg sm:text-xl text-white mb-8 mx-auto font-inter font-normal text-[22px] leading-[133%]">
-                                        FlySky is a Web3 platform where users earn crypto through daily mining, staking, referrals, and more.
+                                        {t('landing.hero.desc')}
                                     </p>
                                     <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
                                         <Button
@@ -131,7 +133,7 @@ const HeroSection = () => {
                                             className="w-[173px] rounded-full shadow-lg"
                                             onClick={navigateToSignup}
                                         >
-                                            Join Now
+                                            {t('landing.cta.joinNow')}
                                         </Button>
                                         <Button
                                             className="w-[200px] h-[40px] gap-[10px] rounded-[24px] pt-[10px] pr-[61px] pb-[10px] pl-[61px] border border-transparent bg-transparent p-[1px] text-white font-inter relative overflow-hidden"
@@ -139,7 +141,7 @@ const HeroSection = () => {
                                         >
                                             <div className="absolute inset-0 bg-gradient-to-r from-[#FABA33] to-[#4F46E5] rounded-[24px]"></div>
                                             <span className="bg-[#110D24] hover:bg-[#1a1242] block rounded-[24px] px-[61px] py-[10px] w-full h-full flex items-center justify-center relative z-10">
-                                                Open Dashboard
+                                                {t('landing.cta.openDashboard')}
                                             </span>
                                         </Button>
                                     </div>
@@ -153,8 +155,8 @@ const HeroSection = () => {
                                         >
                                             <Apple className="w-6 h-6" />
                                             <div className="text-left">
-                                                <div className="text-xs text-gray-300">Download on the</div>
-                                                <div className="text-sm font-semibold">App Store</div>
+                                                <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
+                                                <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
                                             </div>
                                         </button>
                                         
@@ -165,8 +167,8 @@ const HeroSection = () => {
                                         >
                                             <Play className="w-6 h-6" />
                                             <div className="text-left">
-                                                <div className="text-xs text-gray-300">GET IT ON</div>
-                                                <div className="text-sm font-semibold">Google Play</div>
+                                                <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
+                                                <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
                                             </div>
                                         </button>
                                     </div>

@@ -3,8 +3,11 @@ import aboutCardSvg from '../../assets/landing/about-card.svg';
 import fsnLogoAbout from '../../assets/landing/fsn-logo-about.svg';
 import linesAboutBg from '../../assets/landing/lines-about-bg.svg';
 import Ellipse from '../ui/ellipse';
+import { useTranslation } from 'react-i18next';
 
 const AboutSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section id="about" className="py-10 px-4 relative">
       {/* Background SVG for larger screens only */}
@@ -36,8 +39,8 @@ const AboutSection = () => {
               {/* Content positioned within SVG */}
               <div className="relative z-10 p-10 text-center">
                 <div className="mb-6">
-                  <h3 className="text-[14px] sm:text-[17.98px] font-semibold text-white uppercase leading-[100%] tracking-[0%] font-inter mb-2">SMART CONTRACT</h3>
-                  <p className="text-white text-sm sm:text-base"><span className="italic text-gray-400 text-sm sm:text-base">from</span> FlySky Network</p>
+                  <h3 className="text-[14px] sm:text-[17.98px] font-semibold text-white uppercase leading-[100%] tracking-[0%] font-inter mb-2">{t(['landing.about.smartContract','about.smartContract'] as any)}</h3>
+                  <p className="text-white text-sm sm:text-base"><span className="italic text-gray-400 text-sm sm:text-base">{t(['landing.about.from','about.from'] as any)}</span> {t('landing.hero.brand')}</p>
                 </div>
                 
                 <div className="w-40 h-48 mx-auto mb-6 flex items-center justify-center">
@@ -52,7 +55,7 @@ const AboutSection = () => {
                   variant="normal" 
                   className="w-auto h-[40px] gap-[10px] rounded-[24px] pt-[10px] pb-[10px] border border-transparent bg-transparent p-[1px] text-white font-inter relative overflow-hidden text-sm sm:text-base"
                 >
-                  Try For Free
+                  {t('landing.cta.tryForFree')}
                 </Button>
               </div>
             </div>
@@ -60,17 +63,17 @@ const AboutSection = () => {
 
           {/* Right Side - About Text */}
           <div className="text-center lg:text-left flex flex-col justify-center h-full order-2 lg:order-2">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 lg:mb-8">ABOUT</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 lg:mb-8">{t(['landing.about.title','about.title'] as any)}</h2>
             <div className="space-y-4 lg:space-y-6">
               <p className="text-gray-200 text-sm sm:text-base lg:text-[22px]">
-                FlySky is a Web3-powered digital ecosystem designed to make crypto accessible for everyone.
+                {t(['landing.about.p1','about.p1'] as any)}
               </p>
               <p className="text-gray-200 text-sm sm:text-base lg:text-[22px]">
-                Our platform combines mining, staking, gaming, and NFTs into a seamless experience where users can earn, grow, and engage all in one place.
+                {t(['landing.about.p2','about.p2'] as any)}
               </p>
               <div className="mt-4">
-                <span className="bg-gradient-to-r from-yellow-500 to-purple-600 bg-clip-text text-transparent text-sm sm:text-base lg:text-xl font-semibold mb-2">SMART - CONTRACT </span>
-                <span className="text-gray-200 text-sm sm:text-base lg:text-xl font-semibold">- is a decentralized crypto application.</span>
+                <span className="bg-gradient-to-r from-yellow-500 to-purple-600 bg-clip-text text-transparent text-sm sm:text-base lg:text-xl font-semibold mb-2">{t(['landing.about.scLabel','about.scLabel'] as any)}</span>
+                <span className="text-gray-200 text-sm sm:text-base lg:text-xl font-semibold">{t(['landing.about.scDesc','about.scDesc'] as any)}</span>
               </div>
             </div>
           </div>

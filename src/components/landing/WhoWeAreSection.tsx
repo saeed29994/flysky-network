@@ -1,8 +1,10 @@
 import { Button } from '../ui/button';
 import whoWeAreSvg from '../../assets/landing/who-we-are.svg';
 import Ellipse from '../ui/ellipse';
+import { useTranslation } from 'react-i18next';
 
 const WhoWeAreSection = () => {
+  const { t } = useTranslation();
   return (
     <section id="who-we-are" className="py-16 px-4 relative">
       {/* Ellipse extending beyond section */}
@@ -24,21 +26,21 @@ const WhoWeAreSection = () => {
           {/* Right Section - Text Content and Button */}
           <div className="text-center lg:text-left flex flex-col justify-center h-full order-2 lg:order-2">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 lg:mb-8 uppercase tracking-wide">
-              WHO WE ARE
+              {t('landing.who.title')}
             </h2>
             <div className="space-y-4 lg:space-y-6">
               <p className="text-white text-base sm:text-lg lg:text-xl leading-relaxed">
-                FlySky Network is a next-generation digital economy platform that combines mining, staking, gaming, and NFTs into one seamless experience.
+                {t('landing.who.p1')}
               </p>
               <p className="text-white text-base sm:text-lg lg:text-xl leading-relaxed">
-                We are committed to building a vibrant ecosystem where users can earn, trade, and grow their assets through engaging interactions.
+                {t('landing.who.p2')}
               </p>
             </div>
             <div className="mt-8">
               <Button 
                 className="px-8 py-3 rounded-full text-white font-semibold bg-gradient-to-r from-[#FABA33] to-[#4F46E5] hover:from-[#FABA33]/90 hover:to-[#4F46E5]/90 transition-all duration-300 transform hover:scale-105"
               >
-                Read More
+                {t('landing.cta.readMore')}
               </Button>
             </div>
           </div>

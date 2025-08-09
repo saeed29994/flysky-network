@@ -2,9 +2,11 @@ import { useButtonActions } from '@/utils/buttonActions';
 import getStartedImage from '@/assets/landing/get-started-2.svg';
 import { Apple, Play } from 'lucide-react';
 import Ellipse from '../ui/ellipse';
+import { useTranslation } from 'react-i18next';
 
 const GetStartedSection = () => {
   const { navigateToSignup } = useButtonActions();
+  const { t } = useTranslation();
 
   return (
     <section className="py-16 px-4 relative">
@@ -17,7 +19,7 @@ const GetStartedSection = () => {
           <div className="flex-1">
             <img 
               src={getStartedImage} 
-              alt="Start earning with FlySky" 
+              alt={t('landing.getStarted.alt')}
               className="w-full max-w-md mx-auto lg:mx-0"
             />
           </div>
@@ -25,11 +27,11 @@ const GetStartedSection = () => {
           {/* Right Side - Text and CTA */}
           <div className="flex-1 text-center lg:text-left">
             <h2 className="mb-4 font-inter font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[56px] leading-tight text-center text-white">
-              Start earning with <br />
-              <span className="bg-gradient-to-r from-[#FABA33] to-[#4F46E5] bg-clip-text text-transparent">FlySky now!</span>
+              {t('landing.getStarted.titlePart1')}<br />
+              <span className="bg-gradient-to-r from-[#FABA33] to-[#4F46E5] bg-clip-text text-transparent">{t('landing.getStarted.titleEmphasis')}</span>
             </h2>
             <p className="mb-8 font-inter font-normal text-base sm:text-lg md:text-xl lg:text-[24px] leading-relaxed text-center text-[#E0E7FF]">
-              Join thousands of users already earning crypto daily
+              {t('landing.getStarted.subtitle')}
             </p>
             
             <div className="flex flex-row gap-4 justify-center items-center">
@@ -40,8 +42,8 @@ const GetStartedSection = () => {
               >
                 <Apple className="w-6 h-6" />
                 <div className="text-left">
-                  <div className="text-xs text-gray-300">Download on the</div>
-                  <div className="text-sm font-semibold">App Store</div>
+                  <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
+                  <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
                 </div>
               </button>
               
@@ -52,8 +54,8 @@ const GetStartedSection = () => {
               >
                 <Play className="w-6 h-6" />
                 <div className="text-left">
-                  <div className="text-xs text-gray-300">GET IT ON</div>
-                  <div className="text-sm font-semibold">Google Play</div>
+                  <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
+                  <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
                 </div>
               </button>
             </div>

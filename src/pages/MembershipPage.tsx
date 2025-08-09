@@ -265,7 +265,7 @@ const MembershipPage = () => {
                     </div>
 
                     <div className="space-y-4 mb-8">
-                      {features.map((feature: string, i: number) => (
+                      {features?.map((feature: string, i: number) => (
                         <div key={i} className="flex items-center gap-4">
                           <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
                           <span className="text-gray-300">{t(`feature.${feature}`) || feature}</span>

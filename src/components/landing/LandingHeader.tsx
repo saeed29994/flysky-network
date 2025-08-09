@@ -7,11 +7,13 @@ import { MENU_ITEMS } from '../../constants/landing';
 import { scrollToSection, getHeaderClasses, getHeaderInnerClasses } from '../../utils/landingUtils';
 import { useScrollEffect } from '../../hooks/useScrollEffect';
 import LanguageSwitcher from '../LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 const LandingHeader: React.FC = () => {
   const { navigateToSignup } = useButtonActions();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const scrolled = useScrollEffect();
+  const { t, i18n } = useTranslation();
 
   const handleScrollToSection = (sectionId: string) => {
     scrollToSection(sectionId);
@@ -29,7 +31,7 @@ const LandingHeader: React.FC = () => {
               alt="FlySky Network Logo"
               className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10"
             />
-            <span className="text-white font-bold text-base sm:text-lg">FlySky Network</span>
+            <span className="text-white font-bold text-base sm:text-lg">{t('landing.hero.brand')}</span>
           </div>
 
           <div className="flex items-center">
@@ -41,7 +43,7 @@ const LandingHeader: React.FC = () => {
                   onClick={() => handleScrollToSection(item.id)}
                   className="text-[#FFFFFFB5] hover:text-white text-sm font-semibold transition-all duration-200 relative group pb-1 cursor-pointer"
                 >
-                  {item.label}
+                  {t(`landing.menu.${item.id}`)}
                   <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-[#FABA33] to-[#4F46E5] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left"></div>
                 </button>
               ))}
@@ -58,14 +60,14 @@ const LandingHeader: React.FC = () => {
               onClick={navigateToSignup}
               className="hidden md:flex"
             >
-              Get Started
+              {t('landing.cta.getStarted')}
             </Button>
 
             {/* Mobile/Tablet Menu Button - Show on mobile and tablet */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden ml-4 text-white p-1 focus:outline-none"
-              aria-label="Toggle menu"
+              aria-label={t('landing.header.toggleMenu')}
             >
               {isMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -87,14 +89,14 @@ const LandingHeader: React.FC = () => {
 
       {/* Mobile/Tablet Menu Slide-in */}
       <div 
-        className={`fixed top-0 right-0 w-[70%] max-w-[350px] h-full bg-[#462674] bg-opacity-95 backdrop-blur-md z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed top-0 ${i18n.language === 'ar' ? 'left-0' : 'right-0'} w-[70%] max-w-[350px] h-full bg-[#462674] bg-opacity-95 backdrop-blur-md z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
+          isMenuOpen ? 'translate-x-0' : i18n.language === 'ar' ? '-translate-x-full' : 'translate-x-full'
         } p-6 pt-20 flex flex-col`}
       >
         <button 
           onClick={() => setIsMenuOpen(false)}
-          className="absolute top-5 right-5 text-white"
-          aria-label="Close menu"
+          className={`absolute top-5 ${i18n.language === 'ar' ? 'left-5' : 'right-5'} text-white`}
+          aria-label={t('landing.header.closeMenu')}
         >
           <X className="w-6 h-6" />
         </button>
@@ -106,7 +108,7 @@ const LandingHeader: React.FC = () => {
               onClick={() => handleScrollToSection(item.id)}
               className="text-white text-lg font-medium transition-all duration-200 hover:text-yellow-400 text-left"
             >
-              {item.label}
+              {t(`landing.menu.${item.id}`)}
             </button>
           ))}
         </nav>
@@ -125,7 +127,7 @@ const LandingHeader: React.FC = () => {
             }}
             className="w-full"
           >
-            Get Started
+            {t('landing.cta.getStarted')}
           </Button>
         </div>
       </div>

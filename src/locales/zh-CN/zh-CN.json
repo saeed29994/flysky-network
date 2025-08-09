@@ -36,8 +36,39 @@
   "noCompletedStaking": "尚无已完成的质押。",
   "claimed": "已领取 ✅",
   "plans": {
-    "economy": "经济舱",
-    "business": "商务舱"
+    "title": "选择您的套餐",
+    "subtitle": "通过我们的会员计划解锁高级功能并赚取 FSN。FSN 是应用内使用的虚拟代币，适用于更多功能。",
+    "mostPopular": "最受欢迎",
+    "items": {
+      "business": {
+        "title": "商务舱",
+        "price": "9.99",
+        "description": "包含所有商务舱功能，助力提升您的 FSN 奖励",
+        "features": ["100,000 FSN 奖励", "高级挖矿", "优先支持", "质押访问"],
+        "buttonText": "选择商务舱"
+      },
+      "first": {
+        "title": "头等舱",
+        "price": "49.99",
+        "description": "包含所有头等舱功能，助力提升您的 FSN 奖励",
+        "features": ["500,000 FSN 奖励", "包含所有商务功能", "更快的挖矿", "活动访问"],
+        "buttonText": "选择头等舱"
+      },
+      "firstLifetime": {
+        "title": "头等舱（终身）",
+        "price": "99.99",
+        "description": "包含头等舱（终身）功能，助力提升您的 FSN 奖励",
+        "features": ["1,000,000 FSN 奖励", "最高挖矿", "终身访问", "高级功能访问"],
+        "buttonText": "选择终身套餐"
+      }
+    }
+  },
+  "fsnInfo": {
+    "title": "关于 FSN 代币",
+    "description": "FSN 是仅能在应用内使用的虚拟代币，可用于挖矿、质押和升级等功能。不可提现、出售或外部交易。",
+    "miningRewards": { "title": "挖矿奖励", "desc": "使用 FSN 实现更快的挖矿和更高的奖励" },
+    "stakingAccess": { "title": "质押访问", "desc": "质押 FSN 以获得额外奖励" },
+    "premiumFeatures": { "title": "高级功能", "desc": "解锁专属功能与奖励" }
   },
   "first6": "头等舱（6个月）",
   "firstLifetime": "头等舱（终身）",
@@ -1879,5 +1910,121 @@
   },
   "enable": "启用",
   "enabled": "已启用",
-  "requesting": "请求中..."
+  "requesting": "请求中...",
+  "landing": {
+    "hero": {
+      "brand": "FlySky Network",
+      "tagline": "挖矿·赚取·成长",
+      "desc": "FlySky 是一个 Web3 平台，用户可通过每日挖矿、质押、推荐等方式赚取加密货币。",
+      "alt": {
+        "heroBanner": "FlySky Network 主横幅",
+        "heroBannerMobile": "FlySky Network 主横幅（移动端）"
+      }
+    },
+    "cta": {
+      "joinNow": "立即加入",
+      "openDashboard": "打开控制台",
+      "getStarted": "开始使用",
+      "createEarning": "开始赚钱",
+      "readMore": "了解更多",
+      "tryForFree": "免费试用"
+    },
+    "store": {
+      "appStoreTop": "下载自",
+      "appStore": "App Store",
+      "getItOn": "获取途径",
+      "googlePlay": "Google Play"
+    },
+    "header": {
+      "toggleMenu": "切换菜单",
+      "closeMenu": "关闭菜单"
+    },
+    "menu": {
+      "about": "关于我们",
+      "features": "功能",
+      "plans": "方案",
+      "how-it-works": "工作原理"
+    },
+    "features": {
+      "titleMobile": "我们的功能",
+      "titleDesktop": "强大的功能",
+      "subtitle": "开始赚取加密货币所需的一切",
+      "alt": { "border": "功能分隔线" },
+      "items": {
+        "mining": { "title": "每日挖矿", "desc": "通过自动化挖矿每天赚取加密货币" },
+        "membership": { "title": "会员计划", "desc": "从经济舱、商务舱或头等舱计划中选择" },
+        "staking": { "title": "质押奖励", "desc": "质押您的代币，以较高 APY 获得被动收入" },
+        "referral": { "title": "推荐计划", "desc": "邀请好友，获得他们活跃贡献的奖励" },
+        "watchToEarn": { "title": "看广告赚取", "desc": "观看广告并获得时间奖励" },
+        "playToEarn": { "title": "玩游戏赚取", "desc": "玩迷你游戏并完成挑战以赚取 FSN" }
+      }
+    },
+    "getStarted": {
+      "titlePart1": "开始与",
+      "titleEmphasis": "FlySky 一起赚钱！",
+      "subtitle": "加入每日赚取加密货币的数千名用户",
+      "alt": "开始与 FlySky 一起赚钱"
+    },
+    "who": {
+      "title": "我们是谁",
+      "p1": "FlySky Network 是新一代数字经济平台，将挖矿、质押、游戏和 NFT 融为一体，打造无缝体验。",
+      "p2": "我们致力于构建一个充满活力的生态系统，让用户通过有趣的互动赚取、交易并增长资产。"
+    },
+    "hiw": {
+      "title": "如何运作",
+      "subtitle": "加入数千名通过我们创新平台赚取加密货币的用户",
+      "steps": {
+        "1": { "title": "注册", "desc": "创建账号并完成身份验证，开始加密收益之旅", "cta": "立即注册" },
+        "2": { "title": "开始挖矿", "desc": "启动自动化挖矿流程", "cta": "开始挖矿" },
+        "3": { "title": "领取奖励", "desc": "将赚取的加密奖励直接提取到钱包", "cta": "立即领取" }
+      }
+    },
+    "footer": {
+      "tagline": "挖矿·赚取·成长",
+      "language": "语言",
+      "rights": "版权所有。",
+      "links": {
+        "terms": "条款",
+        "privacy": "隐私",
+        "contact": "联系我们"
+      }
+    }
+  },
+  "features": {
+    "titleMobile": "我们的功能",
+    "titleDesktop": "强大的功能",
+    "subtitle": "开始赚取加密货币所需的一切",
+    "alt": { "border": "功能分隔线" },
+    "items": {
+      "mining": { "title": "每日挖矿", "desc": "通过自动化挖矿每天赚取加密货币" },
+      "membership": { "title": "会员计划", "desc": "从经济舱、商务舱或头等舱计划中选择" },
+      "staking": { "title": "质押奖励", "desc": "质押您的代币，以较高 APY 获得被动收入" },
+      "referral": { "title": "推荐计划", "desc": "邀请好友，获得他们活跃贡献的奖励" },
+      "watchToEarn": { "title": "看广告赚取", "desc": "观看广告并获得时间奖励" },
+      "playToEarn": { "title": "玩游戏赚取", "desc": "玩迷你游戏并完成挑战以赚取 FSN" }
+    }
+  },
+  "hiw": {
+    "title": "如何运作",
+    "subtitle": "加入数千名通过我们创新平台赚取加密货币的用户",
+    "steps": {
+      "1": { "title": "注册", "desc": "创建账号并完成身份验证，开始加密收益之旅", "cta": "立即注册" },
+      "2": { "title": "开始挖矿", "desc": "启动自动化挖矿流程", "cta": "开始挖矿" },
+      "3": { "title": "领取奖励", "desc": "将赚取的加密奖励直接提取到钱包", "cta": "立即领取" }
+    }
+  },
+  "about": {
+    "smartContract": "智能合约",
+    "from": "来自",
+    "title": "关于我们",
+    "p1": "FlySky 是一个基于 Web3 的数字生态系统，旨在让每个人都能便捷接触加密世界。",
+    "p2": "我们的平台集成了挖矿、质押、游戏和 NFT，打造一体化的体验，让用户可以在同一个地方赚取、成长并参与。",
+    "scLabel": "SMART - CONTRACT ",
+    "scDesc": "- 去中心化加密应用。"
+  },
+  "who": {
+    "title": "我们是谁",
+    "p1": "FlySky Network 是新一代数字经济平台，将挖矿、质押、游戏和 NFT 融为一体。",
+    "p2": "我们致力于构建一个充满活力的生态系统，让用户通过有趣的互动赚取、交易并增长资产。"
+  }
 }

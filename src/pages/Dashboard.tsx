@@ -292,7 +292,7 @@ const Dashboard = () => {
         <div className="mb-8 sm:mb-12">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">{t('dashboard.features.title')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-            {features.map((feature, index) => (
+            {features?.map((feature, index) => (
               <Link key={index} to={feature.to} className="group">
                 <div className={`bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105 h-full ${feature.highlight ? 'ring-2 ring-purple-500/50' : ''}`}>
                   <div className="flex items-center justify-between mb-3 sm:mb-4">

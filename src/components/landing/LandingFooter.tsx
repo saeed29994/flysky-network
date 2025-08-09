@@ -3,6 +3,7 @@ import { ChevronDown, Twitter, MessageCircle, MessageSquare } from 'lucide-react
 import headerLogo from '../../assets/landing/header-logo.png';
 import { SOCIAL_LINKS, FOOTER_LINKS } from '../../constants/landing';
 import { handleExternalLink, scrollToTop, scrollToContact } from '../../utils/landingUtils';
+import { useTranslation } from 'react-i18next';
 
 interface FooterLink {
   name: string;
@@ -27,41 +28,47 @@ const handleFooterLinkClick = (link: FooterLink) => {
 };
 
 // Components
-const LogoSection: React.FC = () => (
-  <div className="flex flex-col items-start space-y-2 text-left">
-    <div className="flex items-center space-x-2 sm:space-x-3">
-      <img
-        src={headerLogo}
-        alt="FlySky Network Logo"
-        className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10"
-      />
-      <span className="text-white font-bold text-base sm:text-lg">FlySky Network</span>
+const LogoSection: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-col items-start space-y-2 text-left">
+      <div className="flex items-center space-x-2 sm:space-x-3">
+        <img
+          src={headerLogo}
+          alt="FlySky Network Logo"
+          className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10"
+        />
+        <span className="text-white font-bold text-base sm:text-lg">{t('landing.hero.brand')}</span>
+      </div>
+      <p className="text-sm bg-gradient-to-r from-[#FABA33] to-[#4F46E5] bg-clip-text text-transparent">
+        {t('landing.footer.tagline')}
+      </p>
     </div>
-    <p className="text-sm bg-gradient-to-r from-[#FABA33] to-[#4F46E5] bg-clip-text text-transparent">
-      Mine. Earn. Grow.
-    </p>
-  </div>
-);
+  );
+};
 
-const NavigationSection: React.FC = () => (
-  <div className="flex flex-col items-start sm:items-end space-y-4">
-    <nav className="flex flex-wrap justify-start sm:justify-end gap-4 sm:gap-6">
-      {FOOTER_LINKS.map((link) => (
-        <button
-          key={link.name}
-          onClick={() => handleFooterLinkClick(link)}
-          className="text-white hover:text-[#FABA33] transition-colors text-sm font-medium"
-        >
-          {link.name}
+const NavigationSection: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-col items-start sm:items-end space-y-4">
+      <nav className="flex flex-wrap justify-start sm:justify-end gap-4 sm:gap-6">
+        {FOOTER_LINKS.map((link) => (
+          <button
+            key={link.name}
+            onClick={() => handleFooterLinkClick(link)}
+            className="text-white hover:text-[#FABA33] transition-colors text-sm font-medium"
+          >
+            {t(`landing.footer.links.${link.name.toLowerCase()}`)}
+          </button>
+        ))}
+        <button className="flex items-center space-x-2 text-white cursor-pointer hover:text-[#FABA33] transition-colors">
+          <span className="text-sm font-medium">{t('landing.footer.language')}</span>
+          <ChevronDown className="w-4 h-4" />
         </button>
-      ))}
-      <button className="flex items-center space-x-2 text-white cursor-pointer hover:text-[#FABA33] transition-colors">
-        <span className="text-sm font-medium">Language</span>
-        <ChevronDown className="w-4 h-4" />
-      </button>
-    </nav>
-  </div>
-);
+      </nav>
+    </div>
+  );
+};
 
 const SocialIcons: React.FC = () => {
   const iconMap = {
@@ -89,13 +96,16 @@ const SocialIcons: React.FC = () => {
   );
 };
 
-const CopyrightSection: React.FC = () => (
-  <div className="border-t border-gray-500/40 mt-8 pt-8">
-    <p className="text-white text-center text-sm">
-      © {new Date().getFullYear()} FlySky Network. All rights reserved.
-    </p>
-  </div>
-);
+const CopyrightSection: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="border-t border-gray-500/40 mt-8 pt-8">
+      <p className="text-white text-center text-sm">
+        © {new Date().getFullYear()} {t('landing.hero.brand')}. {t('landing.footer.rights')}
+      </p>
+    </div>
+  );
+};
 
 // Main Component
 const LandingFooter: React.FC = () => {

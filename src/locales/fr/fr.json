@@ -334,7 +334,18 @@
     "roadmap": "Nous suivons un planning structuré divisé en phases comprenant lancement, expansion, partenariats et jeux. Chaque phase ouvre de nouvelles perspectives pour notre communauté.",
     "securityTitle": "Sécurité et transparence",
     "security": "Nous accordons la priorité à la protection des données utilisateur et à la transparence dans toutes les transactions via smart contracts et technologies blockchain modernes.",
-    "conclusion": "Rejoignez-nous maintenant et faites partie de l'avenir de l'économie numérique."
+    "conclusion": "Rejoignez-nous maintenant et faites partie de l'avenir de l'économie numérique.",
+    "smartContract": "CONTRAT INTELLIGENT",
+    "from": "de",
+    "p1": "FlySky est un écosystème numérique basé sur le Web3, conçu pour rendre la crypto accessible à tous.",
+    "p2": "Notre plateforme combine le minage, le staking, le gaming et les NFT dans une expérience unifiée permettant aux utilisateurs de gagner, grandir et s'engager au même endroit.",
+    "scLabel": "SMART - CONTRACT ",
+    "scDesc": "- est une application crypto décentralisée."
+  },
+  "who": {
+    "title": "QUI SOMMES-NOUS",
+    "p1": "FlySky Network est une plateforme d'économie numérique nouvelle génération combinant minage, staking, gaming et NFT.",
+    "p2": "Nous nous engageons à construire un écosystème dynamique où les utilisateurs peuvent gagner, échanger et faire croître leurs actifs grâce à des interactions attrayantes."
   },
   "kyc": {
     "title": "Vérification d'identité (KYC)",
@@ -1345,6 +1356,120 @@
       "step1": "Appuyez sur le bouton Partager 📤",
       "step2": "Faites défiler et appuyez sur \"Ajouter à l'écran d'accueil\" 🏠",
       "step3": "Appuyez sur \"Ajouter\" pour confirmer"
+    }
+  },
+  "landing": {
+    "hero": {
+      "brand": "FlySky Network",
+      "tagline": "Miner. Gagner. Grandir.",
+      "desc": "FlySky est une plateforme Web3 où les utilisateurs gagnent des cryptos via le minage quotidien, le staking, les parrainages et plus encore.",
+      "alt": {
+        "heroBanner": "Bannière principale FlySky Network",
+        "heroBannerMobile": "Bannière principale FlySky Network (Mobile)"
+      }
+    },
+    "cta": {
+      "joinNow": "Rejoindre maintenant",
+      "openDashboard": "Ouvrir le tableau de bord",
+      "getStarted": "Commencer",
+      "createEning": "Commencer à gagner",
+      "readMore": "En savoir plus",
+      "tryForFree": "Essayer gratuitement"
+    },
+    "store": {
+      "appStoreTop": "Télécharger sur",
+      "appStore": "App Store",
+      "getItOn": "DISPONIBLE SUR",
+      "googlePlay": "Google Play"
+    },
+    "header": {
+      "toggleMenu": "Basculer le menu",
+      "closeMenu": "Fermer le menu"
+    },
+    "menu": {
+      "about": "À propos",
+      "features": "Fonctionnalités",
+      "plans": "Offres",
+      "how-it-works": "Comment ça marche"
+    },
+    "features": {
+      "titleMobile": "NOS FONCTIONNALITÉS",
+      "titleDesktop": "DES FONCTIONNALITÉS PUISSANTES",
+      "subtitle": "Tout ce dont vous avez besoin pour commencer à gagner des cryptos dès aujourd'hui",
+      "alt": { "border": "Bordure de section" },
+      "items": {
+        "mining": { "title": "MINAGE QUOTIDIEN", "desc": "Gagnez des cryptos chaque jour grâce à un minage automatisé" },
+        "membership": { "title": "OFFRES D'ADHÉSION", "desc": "Choisissez parmi les offres Économie, Affaires ou Première Classe" },
+        "staking": { "title": "RÉCOMPENSES DE STAKING", "desc": "Staquez vos tokens et gagnez un revenu passif avec un APY élevé" },
+        "referral": { "title": "PROGRAMME DE PARRAINAGE", "desc": "Invitez des amis et gagnez des commissions sur leurs activités" },
+        "watchToEarn": { "title": "REGARDER POUR GAGNER", "desc": "Regardez des publicités et gagnez des récompenses pour votre temps" },
+        "playToEarn": { "title": "JOUER POUR GAGNER", "desc": "Jouez à des mini-jeux et relevez des défis pour gagner des FSN" }
+      }
+    },
+    "getStarted": {
+      "titlePart1": "Commencez à gagner avec",
+      "titleEmphasis": "FlySky dès maintenant !",
+      "subtitle": "Rejoignez des milliers d'utilisateurs qui gagnent déjà des cryptos chaque jour",
+      "alt": "Commencez à gagner avec FlySky"
+    },
+    "who": {
+      "title": "QUI SOMMES-NOUS",
+      "p1": "FlySky Network est une plateforme d'économie numérique nouvelle génération combinant minage, staking, gaming et NFT.",
+      "p2": "Nous nous engageons à construire un écosystème dynamique où les utilisateurs peuvent gagner, échanger et faire croître leurs actifs grâce à des interactions attrayantes."
+    },
+    "hiw": {
+      "title": "COMMENT ÇA MARCHE",
+      "subtitle": "Rejoignez des milliers d'utilisateurs qui gagnent des cryptos grâce à notre plateforme innovante",
+      "steps": {
+        "1": { "title": "Inscription", "desc": "Créez votre compte et vérifiez votre identité pour commencer à gagner des cryptos", "cta": "S'inscrire" },
+        "2": { "title": "Commencer le minage", "desc": "Lancez le processus de minage automatisé", "cta": "Démarrer le minage" },
+        "3": { "title": "RÉCUPÉRER LES RÉCOMPENSES", "desc": "Retirez vos récompenses de cryptos directement vers votre portefeuille", "cta": "Récupérer" }
+      }
+    },
+    "plans": {
+      "title": "Choisissez votre offre",
+      "subtitle": "Déverrouillez des fonctionnalités premium et gagnez des FSN avec nos offres d'adhésion. Les FSN sont une monnaie virtuelle utilisable dans l'application.",
+      "mostPopular": "Le plus populaire",
+      "items": {
+        "business": {
+          "title": "Classe Affaires",
+          "price": "9.99",
+          "description": "Toutes les fonctionnalités de la classe Affaires pour augmenter vos récompenses FSN avec FlySky",
+          "features": ["Bonus 100 000 FSN", "Minage avancé", "Support prioritaire", "Accès au staking"],
+          "buttonText": "Choisir Classe Affaires"
+        },
+        "first": {
+          "title": "Première Classe",
+          "price": "49.99",
+          "description": "Toutes les fonctionnalités de la Première Classe pour augmenter vos récompenses FSN",
+          "features": ["Bonus 500 000 FSN", "Toutes les fonctionnalités Affaires", "Minage plus rapide", "Accès aux événements"],
+          "buttonText": "Choisir Première Classe"
+        },
+        "firstLifetime": {
+          "title": "Première Classe (à vie)",
+          "price": "99.99",
+          "description": "Toutes les fonctionnalités de la Première Classe (à vie) pour augmenter vos récompenses FSN",
+          "features": ["Bonus 1 000 000 FSN", "Minage maximal", "Accès à vie", "Accès aux fonctionnalités premium"],
+          "buttonText": "Choisir Offre à vie"
+        }
+      }
+    },
+    "fsnInfo": {
+      "title": "À propos des tokens FSN",
+      "description": "Les tokens FSN sont une monnaie virtuelle utilisable uniquement dans l'application pour des fonctionnalités comme le minage, le staking et les améliorations. Ils ne peuvent pas être retirés, vendus ou échangés à l'extérieur.",
+      "miningRewards": { "title": "Récompenses de minage", "desc": "Utilisez FSN pour un minage plus rapide et des récompenses plus élevées" },
+      "stakingAccess": { "title": "Accès au staking", "desc": "Stakez des FSN pour gagner des récompenses supplémentaires" },
+      "premiumFeatures": { "title": "Fonctionnalités premium", "desc": "Déverrouillez des fonctionnalités et bonus exclusifs" }
+    },
+    "footer": {
+      "tagline": "Miner. Gagner. Grandir.",
+      "language": "Langue",
+      "rights": "Tous droits réservés.",
+      "links": {
+        "terms": "Conditions",
+        "privacy": "Confidentialité",
+        "contact": "Contact"
+      }
     }
   }
 }

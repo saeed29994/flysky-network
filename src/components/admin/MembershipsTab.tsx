@@ -356,7 +356,7 @@ const MembershipsTab = () => {
             )}
 
             <div className="space-y-3 mb-6">
-              {plan.features.map((feature, idx) => (
+              {plan.features?.map((feature, idx) => (
                 <div key={idx} className="flex items-center gap-2">
                   <FaCheck className="w-4 h-4 text-green-400 flex-shrink-0" />
                   <span className="text-gray-300 text-sm">{feature}</span>
@@ -569,7 +569,7 @@ const MembershipsTab = () => {
               <div className="bg-white/5 rounded-lg p-4">
                 <h4 className="text-white font-semibold mb-2">{t('admin.memberships.features')}</h4>
                 <div className="space-y-1">
-                  {showViewModal.features.map((feature, idx) => (
+                  {showViewModal?.features?.map((feature, idx) => (
                     <div key={idx} className="flex items-center gap-2">
                       <FaCheck className="w-3 h-3 text-green-400 flex-shrink-0" />
                       <span className="text-gray-300 text-sm">{feature}</span>

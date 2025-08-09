@@ -216,7 +216,7 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4">
-      <div className={`hidden md:block fixed top-6 ${i18n.language === 'ar' ? 'left-6' : 'right-6'} z-50`}>
+      <div className={`fixed top-6 ${i18n.language === 'ar' ? 'left-6' : 'right-6'} z-50`}>
         <LanguageSwitcher />
       </div>
       <div className="w-full max-w-md">
@@ -367,12 +367,6 @@ const SignupPage = () => {
                 </Link>
               </p>
             </form>
-          </div>
-        </div>
-
-        <div className="mt-6 text-center">
-          <div className="inline-block">
-            <LanguageSwitcher variant="mobile" />
           </div>
         </div>
       </div>

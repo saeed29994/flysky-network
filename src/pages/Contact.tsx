@@ -217,7 +217,7 @@ const Contact = () => {
               </h2>
               
               <div className="space-y-4">
-                {supportFeatures.map((feature, index) => (
+                {supportFeatures?.map((feature, index) => (
                   <div key={index} className="flex items-center gap-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center text-white">
                       {feature.icon}
