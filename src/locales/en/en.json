@@ -35,15 +35,51 @@
   "noActiveStaking": "You don't have any active staking entries.",
   "noCompletedStaking": "You don't have any completed staking entries.",
   "claimed": "Claimed ✅",
-
   "plans": {
-    "economy": "Economy Class",
-    "business": "Business Class"
+    "title": "Choose Your Plan",
+    "subtitle": "Unlock premium features and earn FSN rewards with our membership plans. FSN tokens are virtual in-app currency for enhanced features.",
+    "mostPopular": "Most Popular",
+    "items": {
+      "business": {
+        "title": "Business Class",
+        "price": "9.99",
+        "description": "All business class features to boost your FSN rewards with FlySky Network",
+        "features": [
+          "Bonus 100,000 FSN",
+          "Advanced mining",
+          "Priority support",
+          "Staking access"
+        ],
+        "buttonText": "Choose Business Class"
+      },
+      "first": {
+        "title": "First Class",
+        "price": "49.99",
+        "description": "All first class features to boost your FSN rewards with FlySky Network",
+        "features": [
+          "Bonus 500,000 FSN",
+          "All business features",
+          "Faster mining",
+          "Event access"
+        ],
+        "buttonText": "Choose First Class"
+      },
+      "firstLifetime": {
+        "title": "First class (Lifetime)",
+        "price": "99.99",
+        "description": "All first class (lifetime) features to boost your FSN rewards with FlySky Network",
+        "features": [
+          "Bonus 1,000,000 FSN",
+          "Highest mining",
+          "Lifetime access",
+          "Access to premium features"
+        ],
+        "buttonText": "Choose First-Lifetime"
+      }
+    }
   },
-
   "first6": "First Class (6 Months)",
   "firstLifetime": "First Class (Lifetime)",
-
   "stakingSection": {
     "endsOn": "Ends On",
     "expectedReturn": "Expected Return",
@@ -100,7 +136,6 @@
     "lifetimeAccess": "Lifetime Access",
     "accessToPremiumFeatures": "Access to Premium Features"
   },
-
   "dashboard": {
     "welcome": "Welcome to FlySky Network",
     "tagline": "Explore. Earn. Grow.",
@@ -368,7 +403,6 @@
   "pending": "Pending",
   "rejected": "Rejected",
   "claim": "Claim",
-  "claimed": "Claimed ✅",
   "referralBonus": {
     "loading": "Loading...",
     "claimButton": "Claim Referral Bonus",
@@ -611,24 +645,52 @@
     "Lifetime Perks": "Lifetime perks"
   },
   "features": {
-    "mining": "Start earning FSN tokens through our energy-efficient proof-of-activity model.",
-    "staking": "Stake your digital tokens and watch your assets grow while supporting the network.",
-    "gaming": "Enjoy exciting games that reward your skills with real digital assets.",
-    "nft": "Trade unique NFTs and unlock exclusive items and collectibles within games."
+    "titleMobile": "OUR FEATURES",
+    "titleDesktop": "POWERFUL FEATURES",
+    "subtitle": "Everything you need to start earning crypto today",
+    "alt": {
+      "border": "Feature border"
+    },
+    "items": {
+      "mining": {
+        "title": "DAILY MINING",
+        "desc": "Earn crypto every day through automated mining processes"
+      },
+      "membership": {
+        "title": "MEMBERSHIP PLANS",
+        "desc": "Choose from Economy, Business, or First Class plans"
+      },
+      "staking": {
+        "title": "STAKING REWARDS",
+        "desc": "Stake your tokens and earn passive income with high APY"
+      },
+      "referral": {
+        "title": "REFERRAL PROGRAM",
+        "desc": "Invite friends and earn commission from their activities"
+      },
+      "watchToEarn": {
+        "title": "WATCH TO EARN",
+        "desc": "Watch advertisements and earn rewards for your time"
+      },
+      "playToEarn": {
+        "title": "PLAY TO EARN",
+        "desc": "Play mini-games and complete in game challenges to earn FSN tokens"
+      }
+    }
   },
   "settingsSection": {
     "profileTitle": "Profile Information",
     "fullName": "Full Name",
     "email": "Email",
     "accountTitle": "Account Status",
-    "currentPlan": "Current Plan:",
-    "subscriptionEnds": "Subscription Ends On:",
+    "currentPlan": "Current Plan",
+    "subscriptionEnds": "Subscription Ends",
     "upgrade": "Upgrade Plan",
     "passwordTitle": "Change Password",
     "currentPassword": "Current Password",
     "newPassword": "New Password",
     "confirmPassword": "Confirm New Password",
-    "changePassword": "Update Password",
+    "changePassword": "Change Password",
     "languageTitle": "Preferred Language",
     "noImage": "No image available",
     "selectImage": "Please select an image",
@@ -650,17 +712,46 @@
     "activityTitle": "Account Activity",
     "selectLanguage": "Select Language",
     "profile": "Profile",
-    "security": "Security",
-    "notifications": "Notifications",
-    "appearance": "Appearance",
+    "security": {
+      "title": "Security Settings",
+      "twoFactor": "Two-Factor Authentication",
+      "loginHistory": "Login History",
+      "devices": "Connected Devices",
+      "sessions": "Active Sessions",
+      "passwordChange": "Password Change",
+      "emailVerification": "Email Verification",
+      "setup": "Set Up",
+      "manage": "Manage",
+      "view": "View"
+    },
+    "notifications": {
+      "title": "Notification Preferences",
+      "emailNotifications": "Email Notifications",
+      "pushNotifications": "Push Notifications",
+      "marketing": "Marketing Communications",
+      "newsletter": "Newsletter Subscription",
+      "updates": "Product Updates",
+      "security": "Security Alerts",
+      "rewards": "Rewards & Bonuses",
+      "staking": "Staking Updates",
+      "mining": "Mining Alerts"
+    },
+    "appearance": {
+      "title": "Appearance Settings",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System Default",
+      "compact": "Compact View",
+      "fontSize": "Font Size",
+      "animations": "Enable Animations"
+    },
     "account": "Account",
     "profileInformation": "Profile Information",
     "emailAddress": "Email Address",
     "enterFullName": "Enter your full name",
     "yourEmailAddress": "Your email address",
-    "saveAvatar": "Save Avatar",
     "uploading": "Uploading...",
-    "changePassword": "Change Password",
     "enterCurrentPassword": "Enter current password",
     "enterNewPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
@@ -685,8 +776,6 @@
     "soundEffects": "Sound Effects",
     "enableSoundEffectsForInteractions": "Enable sound effects for interactions",
     "accountInformation": "Account Information",
-    "currentPlan": "Current Plan",
-    "subscriptionEnds": "Subscription Ends",
     "language": "Language",
     "upgradeYourPlan": "Upgrade Your Plan",
     "unlockPremiumFeatures": "Unlock premium features and exclusive benefits with our First Class membership.",
@@ -699,30 +788,6 @@
     "failedToUpdateProfile": "Failed to update profile",
     "passwordsDontMatch": "Passwords don't match",
     "failedToUpdatePassword": "Failed to update password",
-    "notifications": {
-      "title": "Notification Preferences",
-      "emailNotifications": "Email Notifications",
-      "pushNotifications": "Push Notifications",
-      "marketing": "Marketing Communications",
-      "newsletter": "Newsletter Subscription",
-      "updates": "Product Updates",
-      "security": "Security Alerts",
-      "rewards": "Rewards & Bonuses",
-      "staking": "Staking Updates",
-      "mining": "Mining Alerts"
-    },
-    "security": {
-      "title": "Security Settings",
-      "twoFactor": "Two-Factor Authentication",
-      "loginHistory": "Login History",
-      "devices": "Connected Devices",
-      "sessions": "Active Sessions",
-      "passwordChange": "Password Change",
-      "emailVerification": "Email Verification",
-      "setup": "Set Up",
-      "manage": "Manage",
-      "view": "View"
-    },
     "preferences": {
       "title": "User Preferences",
       "theme": "Theme",
@@ -732,16 +797,6 @@
       "dateFormat": "Date Format",
       "autoplay": "Autoplay Videos",
       "sound": "Sound Effects"
-    },
-    "appearance": {
-      "title": "Appearance Settings",
-      "theme": "Theme",
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System Default",
-      "compact": "Compact View",
-      "fontSize": "Font Size",
-      "animations": "Enable Animations"
     },
     "activity": {
       "title": "Recent Activity",
@@ -920,7 +975,6 @@
     },
     "miningHistory": "Mining History"
   },
-
   "subscribeToPlan": "Subscribe to Plan",
   "selectedPlan": "Selected Plan",
   "price": "Price",
@@ -1045,6 +1099,29 @@
   "notificationsEnabled": "You will receive push notifications when important updates happen.",
   "notificationsDescription": "Enable push notifications to receive updates about rewards, messages, and other important events.",
   "admin": {
+    "common": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "view": "View",
+      "close": "Close",
+      "confirm": "Confirm",
+      "loading": "Loading...",
+      "search": "Search",
+      "filter": "Filter",
+      "sort": "Sort",
+      "actions": "Actions",
+      "status": "Status",
+      "date": "Date",
+      "amount": "Amount",
+      "details": "Details",
+      "noResults": "No results found",
+      "selectAll": "Select All",
+      "bulkActions": "Bulk Actions",
+      "exportData": "Export Data",
+      "refresh": "Refresh"
+    },
     "route": {
       "checking": "Checking admin permissions..."
     },
@@ -1137,7 +1214,8 @@
         "view": "View notification",
         "edit": "Edit notification",
         "delete": "Delete notification",
-        "dismissError": "Dismiss error"
+        "dismissError": "Dismiss error",
+        "close": "Close"
       },
       "status": {
         "sent": "Sent",
@@ -1179,14 +1257,16 @@
       }
     },
     "rewards": {
-      "stats": {
-        "totalRewards": "Total Rewards",
-        "activeRewards": "Active Rewards",
-        "totalValue": "Total Value",
-        "totalClaims": "Total Claims"
-      },
-      "createReward": "Create Reward",
+      "title": "Rewards Management",
+      "description": "Create and manage reward programs",
+      "createNew": "Create New Reward",
       "searchPlaceholder": "Search rewards...",
+    "stats": {
+      "totalRewards": "Total Rewards",
+      "activeRewards": "Active Rewards",
+      "totalValue": "Total Value",
+      "totalClaims": "Total Claims"
+    },
       "filters": {
         "allTypes": "All Types",
         "allStatus": "All Status",
@@ -1200,6 +1280,45 @@
         "bonus": "Bonus",
         "special": "Special"
       },
+      "statusFilters": {
+        "all": "All Status",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "table": {
+        "name": "Reward Name",
+        "type": "Type",
+        "amount": "Amount",
+        "status": "Status",
+        "claims": "Claims",
+        "dates": "Active Period",
+        "actions": "Actions"
+      },
+      "form": {
+        "name": "Reward Name",
+        "description": "Description",
+        "type": "Type",
+        "amount": "Amount",
+        "currency": "Currency",
+        "maxClaims": "Max Claims",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "requirements": "Requirements",
+        "addRequirement": "Add Requirement"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "viewDetails": "View Details"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "noRewards": "No rewards found",
+      "loading": "Loading rewards...",
       "rewardTypes": {
         "daily": "Daily",
         "weekly": "Weekly",
@@ -1208,17 +1327,6 @@
         "referral": "Referral",
         "bonus": "Bonus",
         "special": "Special"
-      },
-      "status": {
-        "active": "Active",
-        "inactive": "Inactive"
-      },
-      "actions": {
-        "create": "Create",
-        "cancel": "Cancel",
-        "view": "View",
-        "edit": "Edit",
-        "close": "Close"
       },
       "details": {
         "title": "Reward Details",
@@ -1231,9 +1339,6 @@
         "status": "Status",
         "claims": "Claims",
         "period": "Period"
-      },
-      "form": {
-        "description": "Description"
       },
       "createModal": {
         "title": "Create New Reward",
@@ -1391,42 +1496,19 @@
     },
     "users": {
       "title": "Users Management",
-      "description": "Manage user accounts, plans, and status",
-      "searchPlaceholder": "Search users...",
+      "description": "Manage user accounts and plans",
+      "searchPlaceholder": "Search by name, email, or user ID",
       "loading": "Loading users...",
       "confirmDelete": "Are you sure you want to delete this user?",
-      "stats": {
-        "activeUsers": "Active Users",
-        "premiumPlans": "Premium Plans",
-        "totalBalance": "Total Balance"
-      },
-      "filters": {
-        "all": "All",
-        "active": "Active",
-        "inactive": "Inactive",
-        "verified": "Verified",
-        "pending": "Pending",
-        "rejected": "Rejected",
-        "allStatus": "All Status",
-        "allPlans": "All Plans",
-        "economy": "Economy",
-        "business": "Business",
-        "first6": "First-6",
-        "firstLifetime": "First-Lifetime"
-      },
-      "sort": {
-        "newestFirst": "Newest First",
-        "oldestFirst": "Oldest First",
-        "nameAZ": "Name A-Z",
-        "nameZA": "Name Z-A",
-        "balanceHighLow": "Balance High-Low",
-        "balanceLowHigh": "Balance Low-High"
-      },
-      "bulk": {
-        "selectedUsers": "{{count}} users selected",
-        "pleaseSelectUsers": "Please select users first",
-        "confirmDelete": "Are you sure you want to delete {{count}} users?"
-      },
+      "deleteUser": "Delete User",
+      "deleteWarning": "Warning: This action cannot be undone",
+      "deleteWarningDescription": "Deleting this user will permanently remove their account, balance, and all associated data from the system.",
+      "userToDelete": "User to Delete",
+      "updatePlan": "Update User Plan",
+      "selectPlan": "Select Plan",
+      "planUpdated": "Plan updated successfully",
+      "pleaseSelectPlan": "Please select a new plan!",
+      "kycVerified": "KYC verified successfully",
       "table": {
         "user": "User",
         "name": "Name",
@@ -1443,16 +1525,14 @@
         "actions": "Actions",
         "id": "ID"
       },
-      "modal": {
-        "updatePlan": "Update User Plan",
-        "selectPlan": "Select Plan"
-      },
       "actions": {
         "edit": "Edit",
         "delete": "Delete",
         "activate": "Activate",
         "deactivate": "Deactivate",
-        "viewDetails": "View Details"
+        "viewDetails": "View Details",
+        "verifyKYC": "Verify KYC",
+        "verified": "Verified"
       },
       "status": {
         "active": "Active",
@@ -1461,8 +1541,7 @@
         "pending": "Pending",
         "rejected": "Rejected"
       },
-      "noUsers": "No users found",
-      "loading": "Loading users..."
+      "noUsers": "No users found"
     },
     "transactions": {
       "title": "Transaction Management",
@@ -1498,190 +1577,6 @@
       "noTransactions": "No transactions found",
       "loading": "Loading transactions...",
       "viewDetails": "View Details"
-    },
-    "rewards": {
-      "title": "Rewards Management",
-      "description": "Create and manage reward programs",
-      "createNew": "Create New Reward",
-      "searchPlaceholder": "Search rewards...",
-      "filters": {
-        "all": "All Types",
-        "daily": "Daily",
-        "weekly": "Weekly",
-        "monthly": "Monthly",
-        "referral": "Referral",
-        "achievement": "Achievement"
-      },
-      "statusFilters": {
-        "all": "All Status",
-        "active": "Active",
-        "inactive": "Inactive"
-      },
-      "table": {
-        "name": "Reward Name",
-        "type": "Type",
-        "amount": "Amount",
-        "status": "Status",
-        "claims": "Claims",
-        "dates": "Active Period",
-        "actions": "Actions"
-      },
-      "form": {
-        "name": "Reward Name",
-        "description": "Description",
-        "type": "Type",
-        "amount": "Amount",
-        "currency": "Currency",
-        "maxClaims": "Max Claims",
-        "startDate": "Start Date",
-        "endDate": "End Date",
-        "requirements": "Requirements",
-        "addRequirement": "Add Requirement"
-      },
-      "actions": {
-        "edit": "Edit",
-        "delete": "Delete",
-        "activate": "Activate",
-        "deactivate": "Deactivate",
-        "viewDetails": "View Details"
-      },
-      "status": {
-        "active": "Active",
-        "inactive": "Inactive"
-      },
-      "noRewards": "No rewards found",
-      "loading": "Loading rewards..."
-    },
-    "notifications": {
-      "title": "Notifications Management",
-      "description": "Manage and track all platform notifications",
-      "stats": {
-        "totalSent": "Total Sent",
-        "avgOpenRate": "Avg. Open Rate",
-        "avgClickRate": "Avg. Click Rate",
-        "scheduled": "Scheduled",
-        "fromLastWeek": "from last week",
-        "nextScheduled": "Next: Dec 25, 2:00 AM"
-      },
-      "filters": {
-        "searchPlaceholder": "Search notifications...",
-        "allTypes": "All Types",
-        "allStatus": "All Status",
-        "allAudiences": "All Audiences",
-        "info": "Info",
-        "success": "Success",
-        "warning": "Warning",
-        "error": "Error",
-        "sent": "Sent",
-        "scheduled": "Scheduled",
-        "draft": "Draft",
-        "failed": "Failed",
-        "allUsers": "All Users",
-        "premium": "Premium",
-        "newUsers": "New Users",
-        "inactive": "Inactive",
-        "sortBy": {
-          "newestFirst": "Newest First",
-          "oldestFirst": "Oldest First",
-          "titleAZ": "Title A-Z",
-          "titleZA": "Title Z-A",
-          "mostRecipients": "Most Recipients",
-          "mostOpened": "Most Opened"
-        }
-      },
-      "bulkActions": {
-        "selectedNotifications": "{{count}} notification(s) selected",
-        "resend": "Resend",
-        "duplicate": "Duplicate",
-        "delete": "Delete",
-        "confirmDelete": "Are you sure you want to delete {{count}} notification(s)?"
-      },
-      "table": {
-        "notification": "Notification",
-        "type": "Type",
-        "status": "Status",
-        "audience": "Audience",
-        "platforms": "Platforms",
-        "performance": "Performance",
-        "created": "Created",
-        "actions": "Actions",
-        "title": "Title",
-        "message": "Message",
-        "recipients": "recipients",
-        "opened": "opened",
-        "clicked": "clicked",
-        "openRate": "open rate",
-        "clickRate": "click rate"
-      },
-      "mobile": {
-        "notifications": "Notifications",
-        "sent": "sent",
-        "open": "open",
-        "click": "click"
-      },
-      "sendModal": {
-        "title": "Send Notification",
-        "notificationTitle": "Notification Title",
-        "titlePlaceholder": "Enter notification title...",
-        "notificationMessage": "Notification Message",
-        "messagePlaceholder": "Enter notification message...",
-        "cancel": "Cancel",
-        "send": "Send",
-        "sending": "Sending...",
-        "pleaseEnterBoth": "Please enter both title and body.",
-        "noTokensFound": "No tokens found. No users registered for notifications.",
-        "notificationSent": "Notification sent successfully!",
-        "failedToSend": "Failed to send notifications. Server says: {{error}}",
-        "errorSending": "Error sending notification."
-      },
-      "actions": {
-        "sendNotification": "Send Notification",
-        "send": "Send",
-        "refresh": "Refresh notifications",
-        "view": "View notification",
-        "edit": "Edit notification",
-        "delete": "Delete notification",
-        "dismissError": "Dismiss error",
-        "close": "Close"
-      },
-      "status": {
-        "sent": "Sent",
-        "scheduled": "Scheduled",
-        "draft": "Draft",
-        "failed": "Failed"
-      },
-      "types": {
-        "info": "Info",
-        "success": "Success",
-        "warning": "Warning",
-        "error": "Error"
-      },
-      "audience": {
-        "all": "All",
-        "premium": "Premium",
-        "new": "New",
-        "inactive": "Inactive"
-      },
-      "platforms": {
-        "mobile": "Mobile",
-        "web": "Web",
-        "email": "Email"
-      },
-      "pagination": {
-        "showing": "Showing {{current}} of {{total}} notifications",
-        "previous": "Previous",
-        "next": "Next"
-      },
-      "empty": {
-        "noNotifications": "No notifications found",
-        "loading": "Loading notifications..."
-      },
-      "error": {
-        "failedToLoad": "Failed to load notifications",
-        "failedToSend": "Failed to send notification",
-        "failedToDelete": "Failed to delete notification",
-        "failedToUpdate": "Failed to update notification"
-      }
     },
     "content": {
       "title": "Content Management",
@@ -1777,7 +1672,7 @@
     },
     "memberships": {
       "title": "Memberships Management",
-      "description": "Manage user membership plans and subscriptions",
+      "description": "Description",
       "createNew": "Create New Plan",
       "searchPlaceholder": "Search memberships...",
       "filters": {
@@ -1809,12 +1704,7 @@
         "extend": "Extend",
         "viewDetails": "View Details"
       },
-      "status": {
-        "active": "Active",
-        "expired": "Expired",
-        "cancelled": "Cancelled",
-        "pending": "Pending"
-      },
+      "status": "Status",
       "noMemberships": "No memberships found",
       "loading": "Loading memberships...",
       "createPlan": "Create Plan",
@@ -1829,8 +1719,7 @@
       "delete": "Delete",
       "createNewPlan": "Create New Plan",
       "planName": "Plan Name (e.g., economy)",
-      "displayName": "Display Name (e.g., Economy Plan)",
-      "description": "Description",
+      "displayName": "Display Name",
       "price": "Price",
       "bonusFSN": "Bonus FSN",
       "miningRate": "Mining Rate (e.g., 600 FSN / 12 hours)",
@@ -1854,8 +1743,6 @@
       "planDetails": "Plan Details",
       "basicInformation": "Basic Information",
       "name": "Name",
-      "displayName": "Display Name",
-      "status": "Status",
       "active": "Active",
       "inactive": "Inactive",
       "features": "Features",
@@ -1885,30 +1772,14 @@
           "name": "First Class Lifetime",
           "description": "Ultimate plan with lifetime access"
         }
-      }
-    },
-    "common": {
-      "save": "Save",
-      "cancel": "Cancel",
-      "delete": "Delete",
-      "edit": "Edit",
-      "view": "View",
-      "close": "Close",
-      "confirm": "Confirm",
-      "loading": "Loading...",
-      "search": "Search",
-      "filter": "Filter",
-      "sort": "Sort",
-      "actions": "Actions",
-      "status": "Status",
-      "date": "Date",
-      "amount": "Amount",
-      "details": "Details",
-      "noResults": "No results found",
-      "selectAll": "Select All",
-      "bulkActions": "Bulk Actions",
-      "exportData": "Export Data",
-      "refresh": "Refresh"
+      },
+      "planId": "Plan ID (e.g., economy, business)",
+      "durationDays": "Duration (days)",
+      "days": "days",
+      "createdAt": "Created At",
+      "featurePlaceholder": "Type a feature and press Add",
+      "addFeature": "Add Feature",
+      "featuresHelper": "Add each feature separately. You can remove items below."
     },
     "payments": {
       "title": "Manual Payments",
@@ -1940,66 +1811,13 @@
       "confirmDelete": "Are you sure you want to delete this payment?",
       "updateSuccess": "Payment status updated successfully",
       "updateError": "Failed to update payment status"
-    },
-    "users": {
-      "title": "Users Management",
-      "description": "Manage user accounts and plans",
-      "searchPlaceholder": "Search by name, email, or user ID",
-      "loading": "Loading users...",
-      "confirmDelete": "Are you sure you want to delete this user?",
-      "updatePlan": "Update User Plan",
-      "selectPlan": "Select Plan",
-      "planUpdated": "Plan updated successfully",
-      "pleaseSelectPlan": "Please select a new plan!",
-      "kycVerified": "KYC verified successfully",
-      "table": {
-        "user": "User",
-        "name": "Name",
-        "email": "Email",
-        "kyc": "KYC Status",
-        "kycStatus": "KYC Status",
-        "plan": "Plan",
-        "balance": "Balance",
-        "staking": "Staking",
-        "status": "Status",
-        "created": "Created",
-        "joined": "Joined",
-        "lastLogin": "Last Login",
-        "actions": "Actions",
-        "id": "ID"
-      },
-      "actions": {
-        "edit": "Edit",
-        "delete": "Delete",
-        "activate": "Activate",
-        "deactivate": "Deactivate",
-        "viewDetails": "View Details",
-        "verifyKYC": "Verify KYC",
-        "verified": "Verified"
-      },
-      "status": {
-        "active": "Active",
-        "inactive": "Inactive",
-        "verified": "Verified",
-        "pending": "Pending",
-        "rejected": "Rejected"
-      },
-      "noUsers": "No users found",
-      "loading": "Loading users..."
     }
   },
   "enable": "Enable",
   "enabled": "Enabled",
   "requesting": "Requesting...",
   "rewards": {
-    "title": "Rewards Management",
-    "description": "Create and manage reward programs",
-    "stats": {
-      "totalRewards": "Total Rewards",
-      "activeRewards": "Active Rewards",
-      "totalValue": "Total Value",
-      "totalClaims": "Total Claims"
-    },
+    
     "createReward": "Create Reward",
     "searchPlaceholder": "Search rewards...",
     "filters": {
@@ -2147,14 +1965,34 @@
       "titleMobile": "OUR FEATURES",
       "titleDesktop": "POWERFUL FEATURES",
       "subtitle": "Everything you need to start earning crypto today",
-      "alt": { "border": "Feature border" },
+      "alt": {
+        "border": "Feature border"
+      },
       "items": {
-        "mining": { "title": "DAILY MINING", "desc": "Earn crypto every day through automated mining processes" },
-        "membership": { "title": "MEMBERSHIP PLANS", "desc": "Choose from Economy, Business, or First Class plans" },
-        "staking": { "title": "STAKING REWARDS", "desc": "Stake your tokens and earn passive income with high APY" },
-        "referral": { "title": "REFERRAL PROGRAM", "desc": "Invite friends and earn commission from their activities" },
-        "watchToEarn": { "title": "WATCH TO EARN", "desc": "Watch advertisements and earn rewards for your time" },
-        "playToEarn": { "title": "PLAY TO EARN", "desc": "Play mini-games and complete in game challenges to earn FSN tokens" }
+        "mining": {
+          "title": "DAILY MINING",
+          "desc": "Earn crypto every day through automated mining processes"
+        },
+        "membership": {
+          "title": "MEMBERSHIP PLANS",
+          "desc": "Choose from Economy, Business, or First Class plans"
+        },
+        "staking": {
+          "title": "STAKING REWARDS",
+          "desc": "Stake your tokens and earn passive income with high APY"
+        },
+        "referral": {
+          "title": "REFERRAL PROGRAM",
+          "desc": "Invite friends and earn commission from their activities"
+        },
+        "watchToEarn": {
+          "title": "WATCH TO EARN",
+          "desc": "Watch advertisements and earn rewards for your time"
+        },
+        "playToEarn": {
+          "title": "PLAY TO EARN",
+          "desc": "Play mini-games and complete in game challenges to earn FSN tokens"
+        }
       }
     },
     "getStarted": {
@@ -2172,9 +2010,21 @@
       "title": "HOW IT WORKS",
       "subtitle": "Join thousands of users earning crypto through our innovative platform",
       "steps": {
-        "1": { "title": "Register", "desc": "Create your account and verify your identity to start crypto earning journey", "cta": "Sign Up" },
-        "2": { "title": "Start Mining", "desc": "Begin the automated mining process", "cta": "Start Mining" },
-        "3": { "title": "CLAIM REWARDS", "desc": "Withdraw earned crypto rewards directly to your wallet", "cta": "Claim Now" }
+        "1": {
+          "title": "Register",
+          "desc": "Create your account and verify your identity to start crypto earning journey",
+          "cta": "Sign Up"
+        },
+        "2": {
+          "title": "Start Mining",
+          "desc": "Begin the automated mining process",
+          "cta": "Start Mining"
+        },
+        "3": {
+          "title": "CLAIM REWARDS",
+          "desc": "Withdraw earned crypto rewards directly to your wallet",
+          "cta": "Claim Now"
+        }
       }
     },
     "footer": {
@@ -2188,64 +2038,41 @@
       }
     }
   },
-  "features": {
-    "titleMobile": "OUR FEATURES",
-    "titleDesktop": "POWERFUL FEATURES",
-    "subtitle": "Everything you need to start earning crypto today",
-    "alt": {
-      "border": "Feature border"
-    },
-    "items": {
-      "mining": { "title": "DAILY MINING", "desc": "Earn crypto every day through automated mining processes" },
-      "membership": { "title": "MEMBERSHIP PLANS", "desc": "Choose from Economy, Business, or First Class plans" },
-      "staking": { "title": "STAKING REWARDS", "desc": "Stake your tokens and earn passive income with high APY" },
-      "referral": { "title": "REFERRAL PROGRAM", "desc": "Invite friends and earn commission from their activities" },
-      "watchToEarn": { "title": "WATCH TO EARN", "desc": "Watch advertisements and earn rewards for your time" },
-      "playToEarn": { "title": "PLAY TO EARN", "desc": "Play mini-games and complete in game challenges to earn FSN tokens" }
-    }
-  },
-  "plans": {
-    "title": "Choose Your Plan",
-    "subtitle": "Unlock premium features and earn FSN rewards with our membership plans. FSN tokens are virtual in-app currency for enhanced features.",
-    "mostPopular": "Most Popular",
-    "items": {
-      "business": {
-        "title": "Business Class",
-        "price": "9.99",
-        "description": "All business class features to boost your FSN rewards with FlySky Network",
-        "features": ["Bonus 100,000 FSN", "Advanced mining", "Priority support", "Staking access"],
-        "buttonText": "Choose Business Class"
-      },
-      "first": {
-        "title": "First Class",
-        "price": "49.99",
-        "description": "All first class features to boost your FSN rewards with FlySky Network",
-        "features": ["Bonus 500,000 FSN", "All business features", "Faster mining", "Event access"],
-        "buttonText": "Choose First Class"
-      },
-      "firstLifetime": {
-        "title": "First class (Lifetime)",
-        "price": "99.99",
-        "description": "All first class (lifetime) features to boost your FSN rewards with FlySky Network",
-        "features": ["Bonus 1,000,000 FSN", "Highest mining", "Lifetime access", "Access to premium features"],
-        "buttonText": "Choose First-Lifetime"
-      }
-    }
-  },
   "fsnInfo": {
     "title": "About FSN Tokens",
     "description": "FSN tokens are virtual in-app currency that can only be used within the app for features like Mining, Staking, and Upgrades. They cannot be withdrawn, sold, or traded externally.",
-    "miningRewards": { "title": "Mining Rewards", "desc": "Use FSN for faster mining and higher rewards" },
-    "stakingAccess": { "title": "Staking Access", "desc": "Stake FSN to earn additional rewards" },
-    "premiumFeatures": { "title": "Premium Features", "desc": "Unlock exclusive features and bonuses" }
+    "miningRewards": {
+      "title": "Mining Rewards",
+      "desc": "Use FSN for faster mining and higher rewards"
+    },
+    "stakingAccess": {
+      "title": "Staking Access",
+      "desc": "Stake FSN to earn additional rewards"
+    },
+    "premiumFeatures": {
+      "title": "Premium Features",
+      "desc": "Unlock exclusive features and bonuses"
+    }
   },
   "hiw": {
     "title": "HOW IT WORKS",
     "subtitle": "Join thousands of users earning crypto through our innovative platform",
     "steps": {
-      "1": { "title": "Register", "desc": "Create your account and verify your identity to start crypto earning journey", "cta": "Sign Up" },
-      "2": { "title": "Start Mining", "desc": "Begin the automated mining process", "cta": "Start Mining" },
-      "3": { "title": "CLAIM REWARDS", "desc": "Withdraw earned crypto rewards directly to your wallet", "cta": "Claim Now" }
+      "1": {
+        "title": "Register",
+        "desc": "Create your account and verify your identity to start crypto earning journey",
+        "cta": "Sign Up"
+      },
+      "2": {
+        "title": "Start Mining",
+        "desc": "Begin the automated mining process",
+        "cta": "Start Mining"
+      },
+      "3": {
+        "title": "CLAIM REWARDS",
+        "desc": "Withdraw earned crypto rewards directly to your wallet",
+        "cta": "Claim Now"
+      }
     }
   },
   "footer": {
@@ -2257,5 +2084,11 @@
       "privacy": "Privacy",
       "contact": "Contact"
     }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "create": "Create"
   }
 }

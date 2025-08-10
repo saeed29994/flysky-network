@@ -15,9 +15,18 @@ import { useTranslation } from 'react-i18next';
 import {
   FaUsers, FaIdCard, FaCreditCard, FaChartLine, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes,
   FaCrown, FaStar, FaGem, FaCoins, FaUserCheck, FaEye, FaDownload,
-  FaGift, FaImage, FaChartBar
+  FaGift, FaImage, FaChartBar, FaExclamationTriangle
 } from 'react-icons/fa';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+
+// Import dialog components
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '../components/ui/dialog';
 
 // Import admin components
 import MembershipsTab from '../components/admin/MembershipsTab';
@@ -54,7 +63,7 @@ interface ManualPayment {
 
 const AdminDashboard = () => {
   const { t, i18n } = useTranslation();
-  
+
   const tabs = useMemo(() => [
     { key: 'dashboard', name: t('admin.tabs.dashboard'), shortName: t('admin.tabs.short.dashboard'), icon: FaChartLine },
     { key: 'users', name: t('admin.tabs.users'), shortName: t('admin.tabs.short.users'), icon: FaUsers },
@@ -72,9 +81,14 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [kycSearchQuery, setKycSearchQuery] = useState('');
-  const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [newPlan, setNewPlan] = useState('');
   const [selectedTab, setSelectedTab] = useState(0);
+  
+  // Dialog state
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deletingUser, setDeletingUser] = useState<User | null>(null);
 
   const fetchUsers = async () => {
     const snapshot = await getDocs(collection(db, 'users'));
@@ -132,9 +146,9 @@ const AdminDashboard = () => {
   }, []);
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm(t('admin.users.confirmDelete'))) return;
     await deleteDoc(doc(db, 'users', userId));
     setUsers((prev) => prev.filter((user) => user.id !== userId));
+    closeDeleteDialog();
   };
 
   const handleUpdatePlan = async (userId: string) => {
@@ -151,8 +165,31 @@ const AdminDashboard = () => {
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, plan: newPlan } : u))
     );
-    setEditingUserId(null);
+    setIsEditDialogOpen(false);
+    setEditingUser(null);
     setNewPlan('');
+  };
+
+  const openEditDialog = (user: User) => {
+    setEditingUser(user);
+    setNewPlan(user.plan);
+    setIsEditDialogOpen(true);
+  };
+
+  const closeEditDialog = () => {
+    setIsEditDialogOpen(false);
+    setEditingUser(null);
+    setNewPlan('');
+  };
+
+  const openDeleteDialog = (user: User) => {
+    setDeletingUser(user);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const closeDeleteDialog = () => {
+    setIsDeleteDialogOpen(false);
+    setDeletingUser(null);
   };
 
   const handleKycVerification = async (userId: string) => {
@@ -205,7 +242,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -239,11 +276,10 @@ const AdminDashboard = () => {
                   <button
                     key={tab.name}
                     onClick={() => setSelectedTab(index)}
-                    className={`flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-xl text-xs font-medium transition-all duration-300 ${
-                      selectedTab === index
+                    className={`flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-xl text-xs font-medium transition-all duration-300 ${selectedTab === index
                         ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg'
                         : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                    }`}
+                      }`}
                   >
                     <tab.icon className="w-4 h-4" />
                     <span className="text-center leading-tight">{tab.shortName}</span>
@@ -278,7 +314,7 @@ const AdminDashboard = () => {
           <Tab.Panels className="mt-6 lg:mt-8">
             {/* Dashboard Tab */}
             <Tab.Panel>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -361,7 +397,7 @@ const AdminDashboard = () => {
 
             {/* Users Management Tab */}
             <Tab.Panel>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
@@ -373,8 +409,8 @@ const AdminDashboard = () => {
                       <FaUsers className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
                     <div>
-                                          <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.users.title')}</h2>
-                    <p className="text-gray-400 text-xs sm:text-sm">{t('admin.users.description')}</p>
+                      <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.users.title')}</h2>
+                      <p className="text-gray-400 text-xs sm:text-sm">{t('admin.users.description')}</p>
                     </div>
                   </div>
 
@@ -400,7 +436,7 @@ const AdminDashboard = () => {
                       {/* Mobile Card View */}
                       <div className="lg:hidden space-y-4">
                         {filteredUsers.map((user, index) => (
-                          <motion.div 
+                          <motion.div
                             key={user.id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -417,7 +453,7 @@ const AdminDashboard = () => {
                                 </div>
                                 <span className="text-yellow-400 font-bold text-sm">{user.balance.toLocaleString()} FSN</span>
                               </div>
-                              
+
                               <div>
                                 <p className="text-white font-medium text-sm">{user.fullName}</p>
                                 <p className="text-gray-400 text-xs">{user.email}</p>
@@ -430,18 +466,14 @@ const AdminDashboard = () => {
 
                               <div className="flex gap-2 pt-2">
                                 <button
-                                  onClick={() =>
-                                    editingUserId === user.id
-                                      ? setEditingUserId(null)
-                                      : setEditingUserId(user.id)
-                                  }
+                                  onClick={() => openEditDialog(user)}
                                   className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
                                 >
                                   <FaEdit className="w-3 h-3" />
-                                  {editingUserId === user.id ? t('admin.common.cancel') : t('admin.common.edit')}
+                                  {t('admin.common.edit')}
                                 </button>
                                 <button
-                                  onClick={() => handleDeleteUser(user.id)}
+                                  onClick={() => openDeleteDialog(user)}
                                   className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
                                 >
                                   <FaTrash className="w-3 h-3" />
@@ -470,8 +502,8 @@ const AdminDashboard = () => {
                             </thead>
                             <tbody>
                               {filteredUsers.map((user, index) => (
-                                <motion.tr 
-                                  key={user.id} 
+                                <motion.tr
+                                  key={user.id}
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -493,18 +525,14 @@ const AdminDashboard = () => {
                                   <td className="py-4 px-4">
                                     <div className="flex items-center gap-2">
                                       <button
-                                        onClick={() =>
-                                          editingUserId === user.id
-                                            ? setEditingUserId(null)
-                                            : setEditingUserId(user.id)
-                                        }
+                                        onClick={() => openEditDialog(user)}
                                         className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                                       >
                                         <FaEdit className="w-3 h-3" />
-                                        {editingUserId === user.id ? t('admin.common.cancel') : t('admin.common.edit')}
+                                        {t('admin.common.edit')}
                                       </button>
                                       <button
-                                        onClick={() => handleDeleteUser(user.id)}
+                                        onClick={() => openDeleteDialog(user)}
                                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                                       >
                                         <FaTrash className="w-3 h-3" />
@@ -521,46 +549,14 @@ const AdminDashboard = () => {
                     </div>
                   )}
 
-                  {/* Edit Plan Modal */}
-                  {editingUserId && (
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="mt-6 bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20"
-                    >
-                      <h3 className="text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <FaEdit className="w-4 h-4 text-yellow-400" />
-                        {t('admin.users.updatePlan')}
-                      </h3>
-                      <div className="flex flex-col sm:flex-row gap-4">
-                        <select
-                          value={newPlan}
-                          onChange={(e) => setNewPlan(e.target.value)}
-                          className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm sm:text-base"
-                        >
-                          <option value="">{t('admin.users.selectPlan')}</option>
-                          <option value="economy">Economy</option>
-                          <option value="business">Business</option>
-                          <option value="first-6">First-6</option>
-                          <option value="first-lifetime">First-Lifetime</option>
-                        </select>
-                        <button
-                          onClick={() => handleUpdatePlan(editingUserId!)}
-                          className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
-                        >
-                          <FaCheck className="w-4 h-4" />
-                          {t('admin.users.updatePlan')}
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
+
                 </div>
               </motion.div>
             </Tab.Panel>
 
             {/* KYC Verification Tab */}
             <Tab.Panel>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -572,8 +568,8 @@ const AdminDashboard = () => {
                       <FaIdCard className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
                     <div>
-                                          <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.kyc.title')}</h2>
-                    <p className="text-gray-400 text-xs sm:text-sm">{t('admin.kyc.description')}</p>
+                      <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.kyc.title')}</h2>
+                      <p className="text-gray-400 text-xs sm:text-sm">{t('admin.kyc.description')}</p>
                     </div>
                   </div>
 
@@ -599,7 +595,7 @@ const AdminDashboard = () => {
                       {/* Mobile Card View */}
                       <div className="lg:hidden space-y-4">
                         {filteredKycUsers.map((user, index) => (
-                          <motion.div 
+                          <motion.div
                             key={user.id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -614,11 +610,10 @@ const AdminDashboard = () => {
                               </div>
 
                               <div className="flex items-center justify-between">
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                  user.kycStatus === 'Verified' 
-                                    ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.kycStatus === 'Verified'
+                                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                                     : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                                }`}>
+                                  }`}>
                                   {user.kycStatus}
                                 </span>
 
@@ -627,13 +622,13 @@ const AdminDashboard = () => {
                                     onClick={() => handleKycVerification(user.id)}
                                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-xs"
                                   >
-                                                                      <FaCheck className="w-3 h-3" />
-                                  {t('admin.users.actions.verifyKYC')}
+                                    <FaCheck className="w-3 h-3" />
+                                    {t('admin.users.actions.verifyKYC')}
                                   </button>
                                 ) : (
                                   <span className="text-green-400 font-semibold flex items-center gap-2 text-xs">
-                                                                      <FaUserCheck className="w-3 h-3" />
-                                  {t('admin.users.actions.verified')}
+                                    <FaUserCheck className="w-3 h-3" />
+                                    {t('admin.users.actions.verified')}
                                   </span>
                                 )}
                               </div>
@@ -657,8 +652,8 @@ const AdminDashboard = () => {
                             </thead>
                             <tbody>
                               {filteredKycUsers.map((user, index) => (
-                                <motion.tr 
-                                  key={user.id} 
+                                <motion.tr
+                                  key={user.id}
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -668,11 +663,10 @@ const AdminDashboard = () => {
                                   <td className="py-4 px-4 text-white font-medium">{user.fullName}</td>
                                   <td className="py-4 px-4 text-gray-300">{user.email}</td>
                                   <td className="py-4 px-4">
-                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                      user.kycStatus === 'Verified' 
-                                        ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.kycStatus === 'Verified'
+                                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                                         : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                                    }`}>
+                                      }`}>
                                       {user.kycStatus}
                                     </span>
                                   </td>
@@ -706,7 +700,7 @@ const AdminDashboard = () => {
 
             {/* Manual Payments Tab */}
             <Tab.Panel>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
@@ -733,7 +727,7 @@ const AdminDashboard = () => {
                       {/* Mobile Card View */}
                       <div className="lg:hidden space-y-4">
                         {manualPayments.map((p, index) => (
-                          <motion.div 
+                          <motion.div
                             key={p.id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -749,28 +743,27 @@ const AdminDashboard = () => {
                               </div>
 
                               <div className="flex items-center justify-between">
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                  p.status === 'approved' 
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${p.status === 'approved'
                                     ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                                     : p.status === 'rejected'
-                                    ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                                    : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                                }`}>
+                                      ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                                      : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                                  }`}>
                                   {p.status}
                                 </span>
 
                                 <div className="flex gap-2">
-                                  <a 
-                                    href={p.txLink} 
-                                    target="_blank" 
+                                  <a
+                                    href={p.txLink}
+                                    target="_blank"
                                     className="text-blue-400 hover:text-blue-300 text-xs flex items-center gap-1"
                                   >
                                     <FaEye className="w-3 h-3" />
                                     TX
                                   </a>
-                                  <a 
-                                    href={p.proofUrl} 
-                                    target="_blank" 
+                                  <a
+                                    href={p.proofUrl}
+                                    target="_blank"
                                     className="text-green-400 hover:text-green-300 text-xs flex items-center gap-1"
                                   >
                                     <FaDownload className="w-3 h-3" />
@@ -826,8 +819,8 @@ const AdminDashboard = () => {
                             </thead>
                             <tbody>
                               {manualPayments.map((p, index) => (
-                                <motion.tr 
-                                  key={p.id} 
+                                <motion.tr
+                                  key={p.id}
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -836,9 +829,9 @@ const AdminDashboard = () => {
                                   <td className="py-4 px-4 text-white font-medium">{p.uid}</td>
                                   <td className="py-4 px-4 text-gray-300">{p.currency}</td>
                                   <td className="py-4 px-4">
-                                    <a 
-                                      href={p.txLink} 
-                                      target="_blank" 
+                                    <a
+                                      href={p.txLink}
+                                      target="_blank"
                                       className="text-blue-400 hover:text-blue-300 underline flex items-center gap-1"
                                     >
                                       <FaEye className="w-3 h-3" />
@@ -847,20 +840,19 @@ const AdminDashboard = () => {
                                   </td>
                                   <td className="py-4 px-4 text-gray-300 text-sm break-all max-w-[120px]">{p.fromAddress}</td>
                                   <td className="py-4 px-4">
-                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                      p.status === 'approved' 
+                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${p.status === 'approved'
                                         ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                                         : p.status === 'rejected'
-                                        ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                                        : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                                    }`}>
+                                          ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                                          : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                                      }`}>
                                       {p.status}
                                     </span>
                                   </td>
                                   <td className="py-4 px-4">
-                                    <a 
-                                      href={p.proofUrl} 
-                                      target="_blank" 
+                                    <a
+                                      href={p.proofUrl}
+                                      target="_blank"
                                       className="text-green-400 hover:text-green-300 underline flex items-center gap-1"
                                     >
                                       <FaDownload className="w-3 h-3" />
@@ -931,6 +923,202 @@ const AdminDashboard = () => {
           </Tab.Panels>
         </Tab.Group>
       </div>
+
+      {/* Edit User Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="bg-white/10 backdrop-blur-sm border border-white/20 shadow-xl max-w-lg w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto [&>button]:text-white [&>button]:hover:text-gray-200 [&>button]:hover:bg-white/10 [&>button]:rounded-lg [&>button]:p-1 [&>button]:transition-all [&>button]:duration-200">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="flex items-center gap-3 text-lg sm:text-xl font-bold text-white pr-8">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
+                <FaEdit className="w-4 h-4 sm:w-5 sm:w-5 text-white" />
+              </div>
+              {t('admin.users.updatePlan')}
+            </DialogTitle>
+          </DialogHeader>
+          
+          {editingUser && (
+            <div className="space-y-4 sm:space-y-6">
+              {/* User Information Card */}
+              <div className="bg-white/5 rounded-2xl p-4 sm:p-6 space-y-4">
+                <h3 className="text-base sm:text-lg font-semibold text-white mb-3">
+                  {t('admin.users.userInformation')}
+                </h3>
+                
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <div className="flex-1">
+                      <label className="text-xs sm:text-sm font-medium text-gray-400 block mb-2">
+                        {t('admin.users.table.name')}
+                      </label>
+                      <p className="text-white font-medium text-sm sm:text-base">{editingUser.fullName}</p>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <label className="text-xs sm:text-sm font-medium text-gray-400 block mb-2">
+                        {t('admin.users.table.email')}
+                      </label>
+                      <p className="text-gray-300 text-sm sm:text-base truncate">{editingUser.email}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <div className="flex-1">
+                      <label className="text-xs sm:text-sm font-medium text-gray-400 block mb-2">
+                        {t('admin.users.table.plan')}
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <div className={`w-6 h-6 bg-gradient-to-r ${getPlanColor(editingUser.plan)} rounded-lg flex items-center justify-center`}>
+                          {getPlanIcon(editingUser.plan)}
+                        </div>
+                        <span className="text-white capitalize text-sm sm:text-base">{editingUser.plan}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <label className="text-xs sm:text-sm font-medium text-gray-400 block mb-2">
+                        {t('admin.users.table.balance')}
+                      </label>
+                      <p className="text-yellow-400 font-bold text-sm sm:text-base">{editingUser.balance.toLocaleString()} FSN</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Plan Selection */}
+              <div className="space-y-3">
+                <label className="text-sm sm:text-base font-medium text-white block">
+                  {t('admin.users.selectNewPlan')}
+                </label>
+                <select
+                  value={newPlan}
+                  onChange={(e) => setNewPlan(e.target.value)}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent backdrop-blur-sm text-sm sm:text-base transition-all duration-200"
+                >
+                  <option value="">{t('admin.users.selectPlan')}</option>
+                  <option value="economy">Economy</option>
+                  <option value="business">Business</option>
+                  <option value="first-6">First-6</option>
+                  <option value="first-lifetime">First-Lifetime</option>
+                </select>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter className="flex flex-col gap-3 pt-4 sm:pt-6">
+            <button
+              onClick={() => editingUser && handleUpdatePlan(editingUser.id)}
+              disabled={!newPlan}
+              className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-xl transition-all duration-200 font-medium text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg disabled:shadow-none"
+            >
+              <FaCheck className="w-4 h-4" />
+              {t('admin.users.updatePlan')}
+            </button>
+            <button
+              onClick={closeEditDialog}
+              className="w-full px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all duration-200 border border-white/20 hover:border-white/30 font-medium text-sm sm:text-base"
+            >
+              {t('admin.common.cancel')}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="bg-white/10 backdrop-blur-sm border border-white/20 shadow-xl max-w-lg w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto [&>button]:text-white [&>button]:hover:text-gray-200 [&>button]:hover:bg-white/10 [&>button]:rounded-lg [&>button]:p-1 [&>button]:transition-all [&>button]:duration-200">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="flex items-center gap-3 text-lg sm:text-xl font-bold text-white pr-8">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl flex items-center justify-center">
+                <FaTrash className="w-4 h-4 sm:w-5 sm:w-5 text-white" />
+              </div>
+              {t('admin.users.deleteUser')}
+            </DialogTitle>
+          </DialogHeader>
+          
+          {deletingUser && (
+            <div className="space-y-4 sm:space-y-6">
+              {/* Warning Message */}
+              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 sm:p-6">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <FaExclamationTriangle className="w-3 h-3 text-white" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-base sm:text-lg font-semibold text-red-400">
+                      {t('admin.users.deleteWarning')}
+                    </h3>
+                    <p className="text-red-300 text-sm sm:text-base">
+                      {t('admin.users.deleteWarningDescription')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* User Information Card */}
+              <div className="bg-white/5 rounded-2xl p-4 sm:p-6 space-y-4">
+                <h3 className="text-base sm:text-lg font-semibold text-white mb-3">
+                  {t('admin.users.userToDelete')}
+                </h3>
+                
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <div className="flex-1">
+                      <label className="text-xs sm:text-sm font-medium text-gray-400 block mb-2">
+                        {t('admin.users.table.name')}
+                      </label>
+                      <p className="text-white font-medium text-sm sm:text-base">{deletingUser.fullName}</p>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <label className="text-xs sm:text-sm font-medium text-gray-400 block mb-2">
+                        {t('admin.users.table.email')}
+                      </label>
+                      <p className="text-gray-300 text-sm sm:text-base truncate">{deletingUser.email}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <div className="flex-1">
+                      <label className="text-xs sm:text-sm font-medium text-gray-400 block mb-2">
+                        {t('admin.users.table.plan')}
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <div className={`w-6 h-6 bg-gradient-to-r ${getPlanColor(deletingUser.plan)} rounded-lg flex items-center justify-center`}>
+                          {getPlanIcon(deletingUser.plan)}
+                        </div>
+                        <span className="text-white capitalize text-sm sm:text-base">{deletingUser.plan}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <label className="text-xs sm:text-sm font-medium text-gray-400 block mb-2">
+                        {t('admin.users.table.balance')}
+                      </label>
+                      <p className="text-yellow-400 font-bold text-sm sm:text-base">{deletingUser.balance.toLocaleString()} FSN</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter className="flex flex-col gap-3 pt-4 sm:pt-6">
+            <button
+              onClick={() => deletingUser && handleDeleteUser(deletingUser.id)}
+              className="w-full px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-xl transition-all duration-200 font-medium text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg"
+            >
+              <FaTrash className="w-4 h-4" />
+              {t('admin.users.confirmDelete')}
+            </button>
+            <button
+              onClick={closeDeleteDialog}
+              className="w-full px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all duration-200 border border-white/20 hover:border-white/30 font-medium text-sm sm:text-base"
+            >
+              {t('admin.common.cancel')}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

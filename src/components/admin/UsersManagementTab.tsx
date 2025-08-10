@@ -107,25 +107,25 @@ const UsersManagementTab = () => {
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         user.id.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || 
-                         (filterStatus === 'active' && user.isActive) ||
-                         (filterStatus === 'inactive' && !user.isActive);
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.id.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = filterStatus === 'all' ||
+      (filterStatus === 'active' && user.isActive) ||
+      (filterStatus === 'inactive' && !user.isActive);
     const matchesPlan = filterPlan === 'all' || user.plan === filterPlan;
-    
+
     return matchesSearch && matchesStatus && matchesPlan;
   });
 
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     let aValue = a[sortBy as keyof User];
     let bValue = b[sortBy as keyof User];
-    
+
     if (sortBy === 'createdAt' || sortBy === 'lastLogin') {
       aValue = new Date(aValue as any).getTime();
       bValue = new Date(bValue as any).getTime();
     }
-    
+
     if (sortOrder === 'asc') {
       return aValue > bValue ? 1 : -1;
     } else {
@@ -138,15 +138,15 @@ const UsersManagementTab = () => {
       alert(t('admin.users.bulk.pleaseSelectUsers'));
       return;
     }
-    
+
     switch (action) {
       case 'activate':
-        setUsers(prev => prev.map(user => 
+        setUsers(prev => prev.map(user =>
           selectedUsers.includes(user.id) ? { ...user, isActive: true } : user
         ));
         break;
       case 'deactivate':
-        setUsers(prev => prev.map(user => 
+        setUsers(prev => prev.map(user =>
           selectedUsers.includes(user.id) ? { ...user, isActive: false } : user
         ));
         break;
@@ -160,7 +160,7 @@ const UsersManagementTab = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -230,7 +230,7 @@ const UsersManagementTab = () => {
               className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm"
             />
           </div>
-          
+
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
@@ -240,7 +240,7 @@ const UsersManagementTab = () => {
             <option value="active">{t('admin.users.filters.active')}</option>
             <option value="inactive">{t('admin.users.filters.inactive')}</option>
           </select>
-          
+
           <select
             value={filterPlan}
             onChange={(e) => setFilterPlan(e.target.value)}
@@ -252,7 +252,7 @@ const UsersManagementTab = () => {
             <option value="first-6">{t('admin.users.filters.first6')}</option>
             <option value="first-lifetime">{t('admin.users.filters.firstLifetime')}</option>
           </select>
-          
+
           <select
             value={`${sortBy}-${sortOrder}`}
             onChange={(e) => {
@@ -340,8 +340,8 @@ const UsersManagementTab = () => {
               </thead>
               <tbody>
                 {sortedUsers.map((user, index) => (
-                  <motion.tr 
-                    key={user.id} 
+                  <motion.tr
+                    key={user.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -380,23 +380,21 @@ const UsersManagementTab = () => {
                       <p className="text-white font-medium">{user.balance.toLocaleString()} FSN</p>
                     </td>
                     <td className="py-4 px-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        user.kycStatus === 'Verified' 
-                          ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.kycStatus === 'Verified'
+                          ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                           : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                      }`}>
-                        {user.kycStatus === 'Verified' ? t('admin.users.status.verified') : 
-                         user.kycStatus === 'Pending' ? t('admin.users.status.pending') :
-                         user.kycStatus === 'Rejected' ? t('admin.users.status.rejected') :
-                         user.kycStatus}
+                        }`}>
+                        {user.kycStatus === 'Verified' ? t('admin.users.status.verified') :
+                          user.kycStatus === 'Pending' ? t('admin.users.status.pending') :
+                            user.kycStatus === 'Rejected' ? t('admin.users.status.rejected') :
+                              user.kycStatus}
                       </span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        user.isActive 
-                          ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.isActive
+                          ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                           : 'bg-red-500/20 text-red-400 border border-red-500/30'
-                      }`}>
+                        }`}>
                         {user.isActive ? t('admin.users.status.active') : t('admin.users.status.inactive')}
                       </span>
                     </td>
@@ -414,15 +412,14 @@ const UsersManagementTab = () => {
                         </button>
                         <button
                           onClick={() => {
-                            setUsers(prev => prev.map(u => 
+                            setUsers(prev => prev.map(u =>
                               u.id === user.id ? { ...u, isActive: !u.isActive } : u
                             ));
                           }}
-                          className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 text-sm ${
-                            user.isActive 
-                              ? 'bg-yellow-500 hover:bg-yellow-600 text-white' 
+                          className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 text-sm ${user.isActive
+                              ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
                               : 'bg-green-500 hover:bg-green-600 text-white'
-                          }`}
+                            }`}
                         >
                           {user.isActive ? <FaBan className="w-3 h-3" /> : <FaUnlock className="w-3 h-3" />}
                           {user.isActive ? t('admin.users.actions.deactivate') : t('admin.users.actions.activate')}
@@ -450,7 +447,7 @@ const UsersManagementTab = () => {
 
       {/* Edit Plan Modal */}
       {editingUserId && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
@@ -474,7 +471,7 @@ const UsersManagementTab = () => {
             <button
               onClick={() => {
                 if (newPlan) {
-                  setUsers(prev => prev.map(u => 
+                  setUsers(prev => prev.map(u =>
                     u.id === editingUserId ? { ...u, plan: newPlan } : u
                   ));
                   setEditingUserId(null);

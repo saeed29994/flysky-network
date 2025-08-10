@@ -36,8 +36,47 @@
   "noCompletedStaking": "Henüz tamamlanan staking girişiniz yok.",
   "claimed": "Talep Edildi ✅",
   "plans": {
-    "economy": "Ekonomi Sınıfı",
-    "business": "İş Sınıfı"
+    "title": "Planınızı Seçin",
+    "subtitle": "Üyelik planlarımızla premium özelliklerin kilidini açın ve FSN ödülleri kazanın. FSN, uygulama içi avantajlar için kullanılan sanal bir para birimidir.",
+    "mostPopular": "En Popüler",
+    "items": {
+      "business": {
+        "title": "İş Sınıfı",
+        "price": "9.99",
+        "description": "FlySky ile FSN ödüllerinizi artırmak için İş Sınıfı özelliklerinin tümü",
+        "features": [
+          "100.000 FSN Bonus",
+          "Gelişmiş madencilik",
+          "Öncelikli destek",
+          "Staking erişimi"
+        ],
+        "buttonText": "İş Sınıfını Seç"
+      },
+      "first": {
+        "title": "Birinci Sınıf",
+        "price": "49.99",
+        "description": "FSN ödüllerinizi artırmak için Birinci Sınıf özelliklerinin tümü",
+        "features": [
+          "500.000 FSN Bonus",
+          "Tüm iş sınıfı özellikleri",
+          "Daha hızlı madencilik",
+          "Etkinlik erişimi"
+        ],
+        "buttonText": "Birinci Sınıfı Seç"
+      },
+      "firstLifetime": {
+        "title": "Birinci Sınıf (Ömür Boyu)",
+        "price": "99.99",
+        "description": "FSN ödüllerinizi artırmak için Birinci Sınıf (Ömür Boyu) özelliklerinin tümü",
+        "features": [
+          "1.000.000 FSN Bonus",
+          "En yüksek madencilik",
+          "Ömür boyu erişim",
+          "Premium özelliklere erişim"
+        ],
+        "buttonText": "Ömür Boyu Planı Seç"
+      }
+    }
   },
   "first6": "Birinci Sınıf (6 Ay)",
   "firstLifetime": "Birinci Sınıf (Ömür Boyu)",
@@ -301,7 +340,7 @@
     "watchAdsDaily": "Günlük {{count}} video reklam izleyin",
     "completeViewing": "İzlemeyi Tamamla",
     "watchEachAdCompletely": "Her reklamı tamamen izleyin (20 saniye)",
-    "claimRewards": "Ödülleri Talep Et",
+    "claimRewards": "Ödül Talep Et",
     "earnFSNTokens": "{{amount}} FSN token kazanın",
     "rewardsInfo": "Ödül Bilgileri",
     "dailyEarningStructure": "Günlük kazanç yapısı",
@@ -323,7 +362,6 @@
     "watched": "İzlenen reklamlar",
     "balance": "Mevcut bakiyeniz",
     "watchAd": "Reklam İzle",
-    "claimRewards": "Ödül Talep Et",
     "rewardClaimed": "🎉 {{amount}} FSN başarıyla talep edildi!",
     "adWatched": "✅ Reklam sayıldı!",
     "waitMessage": "Lütfen geri sayım bitene kadar bekleyin: {{time}}",
@@ -365,7 +403,6 @@
   "pending": "Bekliyor",
   "rejected": "Reddedildi",
   "claim": "Talep Et",
-  "claimed": "Talep Edildi ✅",
   "referralBonus": {
     "loading": "Yükleniyor...",
     "claimButton": "Yönlendirme Bonusunu Talep Et",
@@ -590,7 +627,6 @@
     "Access to Premium Features": "Premium özelliklere erişim",
     "Everything unlocked forever": "Sonsuza dek tüm özellikler açık",
     "Limited Staking": "Sınırlı Staking"
-
   },
   "features": {
     "mining": "Enerji verimli proof-of-activity modelimiz aracılığıyla FSN tokenları kazanmaya başlayın.",
@@ -603,14 +639,14 @@
     "fullName": "Tam Ad",
     "email": "E-posta",
     "accountTitle": "Hesap Durumu",
-    "currentPlan": "Mevcut Plan:",
-    "subscriptionEnds": "Abonelik Biter:",
+    "currentPlan": "Mevcut Plan",
+    "subscriptionEnds": "Abonelik Biter",
     "upgrade": "Planı Yükselt",
     "passwordTitle": "Şifre Değiştir",
     "currentPassword": "Mevcut Şifre",
     "newPassword": "Yeni Şifre",
     "confirmPassword": "Yeni Şifreyi Onayla",
-    "changePassword": "Şifreyi Güncelle",
+    "changePassword": "Şifre Değiştir",
     "languageTitle": "Tercih Edilen Dil",
     "noImage": "Resim mevcut değil",
     "selectImage": "Lütfen bir resim seçin",
@@ -632,17 +668,46 @@
     "activityTitle": "Hesap Aktivitesi",
     "selectLanguage": "Dil Seçin",
     "profile": "Profil",
-    "security": "Güvenlik",
-    "notifications": "Bildirimler",
-    "appearance": "Görünüm",
+    "security": {
+      "title": "Güvenlik Ayarları",
+      "twoFactor": "İki Faktörlü Kimlik Doğrulama",
+      "loginHistory": "Giriş Geçmişi",
+      "devices": "Bağlı Cihazlar",
+      "sessions": "Aktif Oturumlar",
+      "passwordChange": "Şifre Değişikliği",
+      "emailVerification": "E-posta Doğrulama",
+      "setup": "Kurulum",
+      "manage": "Yönet",
+      "view": "Görüntüle"
+    },
+    "notifications": {
+      "title": "Bildirim Tercihleri",
+      "emailNotifications": "E-posta Bildirimleri",
+      "pushNotifications": "Push Bildirimleri",
+      "marketing": "Pazarlama İletişimleri",
+      "newsletter": "Bülten Aboneliği",
+      "updates": "Ürün Güncellemeleri",
+      "security": "Güvenlik Uyarıları",
+      "rewards": "Ödüller ve Bonuslar",
+      "staking": "Staking Güncellemeleri",
+      "mining": "Madencilik Uyarıları"
+    },
+    "appearance": {
+      "title": "Görünüm Ayarları",
+      "theme": "Tema",
+      "light": "Açık",
+      "dark": "Koyu",
+      "system": "Sistem Varsayılanı",
+      "compact": "Kompakt Görünüm",
+      "fontSize": "Yazı Boyutu",
+      "animations": "Animasyonları Etkinleştir"
+    },
     "account": "Hesap",
     "profileInformation": "Profil Bilgileri",
     "emailAddress": "E-posta Adresi",
     "enterFullName": "Tam adınızı girin",
     "yourEmailAddress": "E-posta adresiniz",
-    "saveAvatar": "Avatar'ı Kaydet",
     "uploading": "Yükleniyor...",
-    "changePassword": "Şifre Değiştir",
     "enterCurrentPassword": "Mevcut şifreyi girin",
     "enterNewPassword": "Yeni şifreyi girin",
     "confirmNewPassword": "Yeni şifreyi onaylayın",
@@ -667,8 +732,6 @@
     "soundEffects": "Ses Efektleri",
     "enableSoundEffectsForInteractions": "Etkileşimler için ses efektlerini etkinleştir",
     "accountInformation": "Hesap Bilgileri",
-    "currentPlan": "Mevcut Plan",
-    "subscriptionEnds": "Abonelik Biter",
     "language": "Dil",
     "upgradeYourPlan": "Planınızı Yükseltin",
     "unlockPremiumFeatures": "Birinci Sınıf üyeliğimizle premium özellikleri ve özel faydaları açın.",
@@ -681,30 +744,6 @@
     "failedToUpdateProfile": "Profil güncellenemedi",
     "passwordsDontMatch": "Şifreler eşleşmiyor",
     "failedToUpdatePassword": "Şifre güncellenemedi",
-    "notifications": {
-      "title": "Bildirim Tercihleri",
-      "emailNotifications": "E-posta Bildirimleri",
-      "pushNotifications": "Push Bildirimleri",
-      "marketing": "Pazarlama İletişimleri",
-      "newsletter": "Bülten Aboneliği",
-      "updates": "Ürün Güncellemeleri",
-      "security": "Güvenlik Uyarıları",
-      "rewards": "Ödüller ve Bonuslar",
-      "staking": "Staking Güncellemeleri",
-      "mining": "Madencilik Uyarıları"
-    },
-    "security": {
-      "title": "Güvenlik Ayarları",
-      "twoFactor": "İki Faktörlü Kimlik Doğrulama",
-      "loginHistory": "Giriş Geçmişi",
-      "devices": "Bağlı Cihazlar",
-      "sessions": "Aktif Oturumlar",
-      "passwordChange": "Şifre Değişikliği",
-      "emailVerification": "E-posta Doğrulama",
-      "setup": "Kurulum",
-      "manage": "Yönet",
-      "view": "Görüntüle"
-    },
     "preferences": {
       "title": "Kullanıcı Tercihleri",
       "theme": "Tema",
@@ -714,16 +753,6 @@
       "dateFormat": "Tarih Formatı",
       "autoplay": "Videoları Otomatik Oynat",
       "sound": "Ses Efektleri"
-    },
-    "appearance": {
-      "title": "Görünüm Ayarları",
-      "theme": "Tema",
-      "light": "Açık",
-      "dark": "Koyu",
-      "system": "Sistem Varsayılanı",
-      "compact": "Kompakt Görünüm",
-      "fontSize": "Yazı Boyutu",
-      "animations": "Animasyonları Etkinleştir"
     },
     "activity": {
       "title": "Son Aktivite",
@@ -902,7 +931,6 @@
     },
     "miningHistory": "Madencilik Geçmişi"
   },
-
   "subscribeToPlan": "Plana Abone Ol",
   "selectedPlan": "Seçilen Plan",
   "price": "Fiyat",
@@ -1027,598 +1055,31 @@
   "notificationsEnabled": "Önemli güncellemeler olduğunda push bildirimleri alacaksınız.",
   "notificationsDescription": "Ödüller, mesajlar ve diğer önemli olaylar hakkında güncellemeler almak için push bildirimlerini etkinleştirin.",
   "admin": {
+    "common": {
+      "save": "Kaydet",
+      "cancel": "İptal",
+      "delete": "Sil",
+      "edit": "Düzenle",
+      "view": "Görüntüle",
+      "close": "Kapat",
+      "confirm": "Onayla",
+      "loading": "Yükleniyor...",
+      "search": "Ara",
+      "filter": "Filtrele",
+      "sort": "Sırala",
+      "actions": "İşlemler",
+      "status": "Durum",
+      "date": "Tarih",
+      "amount": "Miktar",
+      "details": "Detaylar",
+      "noResults": "Sonuç bulunamadı",
+      "selectAll": "Tümünü Seç",
+      "bulkActions": "Toplu İşlemler",
+      "exportData": "Veri Dışa Aktar",
+      "refresh": "Yenile"
+    },
     "route": {
       "checking": "Yönetici izinleri kontrol ediliyor..."
-    },
-    "notifications": {
-      "title": "Bildirim Yönetimi",
-      "description": "Platformdaki tüm bildirimleri yönetin ve takip edin",
-      "stats": {
-        "totalSent": "Toplam Gönderilen",
-        "avgOpenRate": "Ort. Açılma Oranı",
-        "avgClickRate": "Ort. Tıklama Oranı",
-        "scheduled": "Zamanlanmış",
-        "fromLastWeek": "geçen haftadan",
-        "nextScheduled": "Sonraki: 25 Ara, 02:00"
-      },
-      "filters": {
-        "searchPlaceholder": "Bildirim ara...",
-        "allTypes": "Tüm Türler",
-        "allStatus": "Tüm Durumlar",
-        "allAudiences": "Tüm Kitleler",
-        "info": "Bilgi",
-        "success": "Başarı",
-        "warning": "Uyarı",
-        "error": "Hata",
-        "sent": "Gönderildi",
-        "scheduled": "Zamanlandı",
-        "draft": "Taslak",
-        "failed": "Başarısız",
-        "allUsers": "Tüm Kullanıcılar",
-        "premium": "Premium",
-        "newUsers": "Yeni Kullanıcılar",
-        "inactive": "Pasif",
-        "sortBy": {
-          "newestFirst": "En Yeni Önce",
-          "oldestFirst": "En Eski Önce",
-          "titleAZ": "Başlık A-Z",
-          "titleZA": "Başlık Z-A",
-          "mostRecipients": "En Çok Alıcı",
-          "mostOpened": "En Çok Açılan"
-        }
-      },
-      "bulkActions": {
-        "selectedNotifications": "{{count}} bildirim seçildi",
-        "resend": "Yeniden Gönder",
-        "duplicate": "Çoğalt",
-        "delete": "Sil",
-        "confirmDelete": "{{count}} bildirimi silmek istediğinizden emin misiniz?"
-      },
-      "table": {
-        "notification": "Bildirim",
-        "type": "Tür",
-        "status": "Durum",
-        "audience": "Kitle",
-        "platforms": "Platformlar",
-        "performance": "Performans",
-        "created": "Oluşturuldu",
-        "actions": "İşlemler",
-        "title": "Başlık",
-        "message": "Mesaj",
-        "recipients": "alıcı",
-        "opened": "açıldı",
-        "clicked": "tıklandı",
-        "openRate": "açılma oranı",
-        "clickRate": "tıklama oranı"
-      },
-      "mobile": {
-        "notifications": "Bildirimler",
-        "sent": "gönderildi",
-        "open": "açıldı",
-        "click": "tıklandı"
-      },
-      "sendModal": {
-        "title": "Bildirim Gönder",
-        "notificationTitle": "Bildirim Başlığı",
-        "titlePlaceholder": "Bildirim başlığını girin...",
-        "notificationMessage": "Bildirim Mesajı",
-        "messagePlaceholder": "Bildirim mesajını girin...",
-        "cancel": "İptal",
-        "send": "Gönder",
-        "sending": "Gönderiliyor...",
-        "pleaseEnterBoth": "Lütfen hem başlık hem de içerik girin.",
-        "noTokensFound": "Token bulunamadı. Bildirimler için kayıtlı kullanıcı yok.",
-        "notificationSent": "Bildirim başarıyla gönderildi!",
-        "failedToSend": "Bildirim gönderilemedi. Sunucu diyor: {{error}}",
-        "errorSending": "Bildirim gönderilirken hata oluştu."
-      },
-      "actions": {
-        "sendNotification": "Bildirim Gönder",
-        "send": "Gönder",
-        "refresh": "Bildirimleri yenile",
-        "view": "Bildirimi görüntüle",
-        "edit": "Bildirimi düzenle",
-        "delete": "Bildirimi sil",
-        "dismissError": "Hatayı kapat"
-      },
-      "status": {
-        "sent": "Gönderildi",
-        "scheduled": "Zamanlandı",
-        "draft": "Taslak",
-        "failed": "Başarısız"
-      },
-      "types": {
-        "info": "Bilgi",
-        "success": "Başarı",
-        "warning": "Uyarı",
-        "error": "Hata"
-      },
-      "audience": {
-        "all": "Tümü",
-        "premium": "Premium",
-        "new": "Yeni",
-        "inactive": "Pasif"
-      },
-      "platforms": {
-        "mobile": "Mobil",
-        "web": "Web",
-        "email": "E-posta"
-      },
-      "pagination": {
-        "showing": "{{current}} / {{total}} bildirim gösteriliyor",
-        "previous": "Önceki",
-        "next": "Sonraki"
-      },
-      "empty": {
-        "noNotifications": "Bildirim bulunamadı",
-        "loading": "Bildirimler yükleniyor..."
-      },
-      "error": {
-        "failedToLoad": "Bildirimler yüklenemedi",
-        "failedToSend": "Bildirim gönderilemedi",
-        "failedToDelete": "Bildirim silinemedi",
-        "failedToUpdate": "Bildirim güncellenemedi"
-      }
-    },
-    "rewards": {
-      "stats": {
-        "totalRewards": "Toplam Ödüller",
-        "activeRewards": "Aktif Ödüller",
-        "totalValue": "Toplam Değer",
-        "totalClaims": "Toplam Talep"
-      },
-      "createReward": "Ödül Oluştur",
-      "searchPlaceholder": "Ödül ara...",
-      "filters": {
-        "allTypes": "Tüm Türler",
-        "allStatus": "Tüm Durumlar",
-        "active": "Aktif",
-        "inactive": "Pasif",
-        "daily": "Günlük",
-        "weekly": "Haftalık",
-        "monthly": "Aylık",
-        "achievement": "Başarı",
-        "referral": "Referans",
-        "bonus": "Bonus",
-        "special": "Özel"
-      },
-      "rewardTypes": {
-        "daily": "Günlük",
-        "weekly": "Haftalık",
-        "monthly": "Aylık",
-        "achievement": "Başarı",
-        "referral": "Referans",
-        "bonus": "Bonus",
-        "special": "Özel"
-      },
-      "status": {
-        "active": "Aktif",
-        "inactive": "Pasif"
-      },
-      "actions": {
-        "create": "Oluştur",
-        "cancel": "İptal",
-        "view": "Görüntüle",
-        "edit": "Düzenle",
-        "close": "Kapat"
-      },
-      "details": {
-        "title": "Ödül Detayları",
-        "basicInformation": "Temel Bilgiler",
-        "statistics": "İstatistikler",
-        "requirements": "Gereksinimler",
-        "id": "ID",
-        "type": "Tür",
-        "amount": "Miktar",
-        "status": "Durum",
-        "claims": "Talepler",
-        "period": "Dönem"
-      },
-      "form": {
-        "description": "Açıklama"
-      },
-      "createModal": {
-        "title": "Yeni Ödül Oluştur",
-        "namePlaceholder": "Ödül Adı",
-        "descriptionPlaceholder": "Açıklama",
-        "selectType": "Tür Seç",
-        "amountPlaceholder": "Miktar",
-        "maxClaimsPlaceholder": "Maksimum Talep"
-      },
-      "sampleRewards": {
-        "dailyLogin": {
-          "name": "Günlük Giriş Bonusu",
-          "description": "Günlük giriş için ödül"
-        },
-        "weeklyMining": {
-          "name": "Haftalık Madencilik Ödülü",
-          "description": "Tutarlı madencilik aktivitesi için bonus"
-        },
-        "referralChampion": {
-          "name": "Referans Şampiyonu",
-          "description": "Yeni kullanıcı getirmek için ödül"
-        },
-        "firstClassAchievement": {
-          "name": "Birinci Sınıf Başarı",
-          "description": "Premium üyeler için özel ödül"
-        },
-        "monthlyStaking": {
-          "name": "Aylık Staking Bonusu",
-          "description": "Uzun vadeli staking için ödül"
-        },
-        "specialEvent": {
-          "name": "Özel Etkinlik Ödülü",
-          "description": "Sınırlı süreli etkinlik ödülü"
-        }
-      },
-      "requirements": {
-        "loginDaily": "Günlük giriş yap",
-        "completeProfile": "Profili tamamla",
-        "mineConsecutiveDays": "7 gün üst üste madencilik yap",
-        "minimumMined": "Minimum 100 FSN madencilik",
-        "referActiveUsers": "10 aktif kullanıcı referans et",
-        "usersCompleteKYC": "Kullanıcılar KYC'yi tamamlamalı",
-        "upgradeToFirstClass": "Birinci Sınıfa yükselt",
-        "maintainForDays": "30 gün sürdür",
-        "stakeMinimum": "Minimum 1000 FSN stake et",
-        "holdForDays": "30 gün tut",
-        "participateInEvent": "Etkinliğe katıl",
-        "completeAllChallenges": "Tüm görevleri tamamla"
-      }
-    },
-    "transaction": {
-      "title": "İşlem Yönetimi",
-      "description": "Platform işlemlerini izleyin ve yönetin",
-      "searchPlaceholder": "İşlem ara...",
-      "filters": {
-        "all": "Tüm Durumlar",
-        "completed": "Tamamlandı",
-        "pending": "Beklemede",
-        "failed": "Başarısız"
-      },
-      "stats": {
-        "totalTransactions": "Toplam İşlemler",
-        "totalVolume": "Toplam Hacim",
-        "completed": "Tamamlandı",
-        "pending": "Beklemede"
-      },
-      "table": {
-        "transaction": "İşlem",
-        "user": "Kullanıcı",
-        "amount": "Miktar",
-        "date": "Tarih",
-        "status": "Durum",
-        "actions": "İşlemler"
-      },
-      "types": {
-        "stake": "Stake",
-        "reward": "Ödül",
-        "referral": "Referans",
-        "mining": "Madencilik",
-        "withdrawal": "Çekme",
-        "deposit": "Yatırma",
-        "bonus": "Bonus"
-      },
-      "status": {
-        "completed": "Tamamlandı",
-        "pending": "Beklemede",
-        "failed": "Başarısız"
-      },
-      "modal": {
-        "title": "İşlem Detayları",
-        "transactionInfo": "İşlem Bilgileri",
-        "userInfo": "Kullanıcı Bilgileri",
-        "description": "Açıklama",
-        "timestamp": "Zaman Damgası",
-        "close": "Kapat"
-      },
-      "noTransactions": "İşlem bulunamadı",
-      "loading": "İşlemler yükleniyor...",
-      "viewDetails": "Detayları Görüntüle"
-    },
-    "dashboard": {
-      "title": "Yönetici Paneli",
-      "subtitle": "Kullanıcıları, KYC ve ödemeleri yönetin",
-      "quickStatistics": "Hızlı İstatistikler",
-      "detailedStatistics": "Detaylı İstatistikler",
-      "totalUsers": "Toplam Kullanıcı",
-      "totalAdmins": "Toplam Yönetici",
-      "pendingKYC": "Bekleyen KYC",
-      "verifiedKYC": "Doğrulanmış KYC",
-      "premiumPlans": "Premium Planlar",
-      "totalBalance": "Toplam Bakiye",
-      "totalFSN": "Toplam FSN",
-      "businessPlans": "İş Planları",
-      "firstClassPlans": "Birinci Sınıf Planlar"
-    },
-    "tabs": {
-      "dashboard": "Panel",
-      "users": "Kullanıcı Yönetimi",
-      "kyc": "KYC Doğrulama",
-      "payments": "Manuel Ödemeler",
-      "transactions": "İşlemler",
-      "rewards": "Ödüller",
-      "notifications": "Bildirimler",
-      "content": "İçerik",
-      "memberships": "Üyelikler",
-      "sendNotification": "Bildirim Gönder",
-      "short": {
-        "dashboard": "Panel",
-        "users": "Kullanıcı",
-        "kyc": "KYC",
-        "payments": "Ödeme",
-        "transactions": "İşlem",
-        "rewards": "Ödül",
-        "notifications": "Bildirim",
-        "content": "İçerik",
-        "memberships": "Üyelik"
-      }
-    },
-    "kyc": {
-      "title": "KYC Doğrulama",
-      "description": "Kullanıcı kimlik doğrulama isteklerini inceleyin ve yönetin",
-      "pendingRequests": "Bekleyen İstekler",
-      "approvedToday": "Bugün Onaylandı",
-      "rejectedToday": "Bugün Reddedildi",
-      "pendingKycRequests": "Bekleyen KYC İstekleri",
-      "reviewDocuments": "Kullanıcı doğrulama belgelerini inceleyin",
-      "loading": "KYC istekleri yükleniyor...",
-      "noPendingRequests": "Bekleyen İstek Yok",
-      "allProcessed": "Tüm KYC doğrulama istekleri işlendi",
-      "verificationInfo": "KYC doğrulama bilgileri",
-      "documents": "KYC Belgeleri",
-      "noDocuments": "KYC belgesi yüklenmedi",
-      "approve": "KYC Onayla",
-      "reject": "KYC Reddet"
-    },
-    "users": {
-      "title": "Kullanıcı Yönetimi",
-      "description": "Kullanıcı hesaplarını, planlarını ve durumlarını yönetin",
-      "searchPlaceholder": "Kullanıcı ara...",
-      "loading": "Kullanıcılar yükleniyor...",
-      "confirmDelete": "Bu kullanıcıyı silmek istediğinizden emin misiniz?",
-      "stats": {
-        "activeUsers": "Aktif Kullanıcılar",
-        "premiumPlans": "Premium Planlar",
-        "totalBalance": "Toplam Bakiye"
-      },
-      "filters": {
-        "all": "Tümü",
-        "active": "Aktif",
-        "inactive": "Pasif",
-        "verified": "Doğrulanmış",
-        "pending": "Beklemede",
-        "rejected": "Reddedildi",
-        "allStatus": "Tüm Durumlar",
-        "allPlans": "Tüm Planlar",
-        "economy": "Ekonomi",
-        "business": "İş",
-        "first6": "Birinci Sınıf-6",
-        "firstLifetime": "Birinci Sınıf-Yaşam Boyu"
-      },
-      "sort": {
-        "newestFirst": "En Yeni İlk",
-        "oldestFirst": "En Eski İlk",
-        "nameAZ": "İsim A-Z",
-        "nameZA": "İsim Z-A",
-        "balanceHighLow": "Bakiye Yüksek-Düşük",
-        "balanceLowHigh": "Bakiye Düşük-Yüksek"
-      },
-      "bulk": {
-        "selectedUsers": "{{count}} kullanıcı seçildi",
-        "pleaseSelectUsers": "Lütfen önce kullanıcıları seçin",
-        "confirmDelete": "{{count}} kullanıcıyı silmek istediğinizden emin misiniz?"
-      },
-      "table": {
-        "user": "Kullanıcı",
-        "name": "İsim",
-        "email": "E-posta",
-        "kyc": "KYC Durumu",
-        "kycStatus": "KYC Durumu",
-        "plan": "Plan",
-        "balance": "Bakiye",
-        "staking": "Staking",
-        "status": "Durum",
-        "created": "Oluşturulma",
-        "joined": "Katılma Tarihi",
-        "lastLogin": "Son Giriş",
-        "actions": "İşlemler",
-        "id": "ID"
-      },
-      "modal": {
-        "updatePlan": "Kullanıcı Planını Güncelle",
-        "selectPlan": "Plan Seç"
-      },
-      "actions": {
-        "edit": "Düzenle",
-        "delete": "Sil",
-        "activate": "Etkinleştir",
-        "deactivate": "Devre Dışı Bırak",
-        "viewDetails": "Detayları Görüntüle"
-      },
-      "status": {
-        "active": "Aktif",
-        "inactive": "Pasif",
-        "verified": "Doğrulanmış",
-        "pending": "Beklemede",
-        "rejected": "Reddedildi"
-      },
-      "noUsers": "Kullanıcı bulunamadı",
-      "loading": "Kullanıcılar yükleniyor..."
-    },
-    "transactions": {
-      "title": "İşlem Yönetimi",
-      "description": "Tüm platform işlemlerini izleyin ve yönetin",
-      "searchPlaceholder": "İşlem ara...",
-      "filters": {
-        "all": "Tümü",
-        "completed": "Tamamlandı",
-        "pending": "Beklemede",
-        "failed": "Başarısız"
-      },
-      "table": {
-        "id": "İşlem ID",
-        "user": "Kullanıcı",
-        "type": "Tür",
-        "amount": "Miktar",
-        "description": "Açıklama",
-        "timestamp": "Tarih & Saat",
-        "status": "Durum"
-      },
-      "types": {
-        "stake": "Stake",
-        "reward": "Ödül",
-        "referral": "Referans",
-        "withdrawal": "Çekim",
-        "mining": "Madencilik"
-      },
-      "status": {
-        "completed": "Tamamlandı",
-        "pending": "Beklemede",
-        "failed": "Başarısız"
-      },
-      "noTransactions": "İşlem bulunamadı",
-      "loading": "İşlemler yükleniyor...",
-      "viewDetails": "Detayları Görüntüle"
-    },
-    "rewards": {
-      "title": "Ödül Yönetimi",
-      "description": "Ödül programları oluşturun ve yönetin",
-      "stats": {
-        "totalRewards": "Toplam Ödüller",
-        "activeRewards": "Aktif Ödüller",
-        "totalValue": "Toplam Değer",
-        "totalClaims": "Toplam Talepler"
-      },
-      "createReward": "Ödül Oluştur",
-      "createNew": "Yeni Ödül Oluştur",
-      "searchPlaceholder": "Ödül ara...",
-      "filters": {
-        "allTypes": "Tüm Türler",
-        "allStatus": "Tüm Durumlar",
-        "all": "Tüm Türler",
-        "daily": "Günlük",
-        "weekly": "Haftalık",
-        "monthly": "Aylık",
-        "referral": "Referans",
-        "achievement": "Başarı",
-        "bonus": "Bonus",
-        "special": "Özel",
-        "active": "Aktif",
-        "inactive": "Pasif"
-      },
-              "rewardTypes": {
-          "daily": "Günlük",
-          "weekly": "Haftalık",
-          "monthly": "Aylık",
-          "achievement": "Başarı",
-          "referral": "Referans",
-          "bonus": "Bonus",
-          "special": "Özel"
-        },
-        "statusFilters": {
-          "all": "Tüm Durumlar",
-          "active": "Aktif",
-          "inactive": "Pasif"
-        },
-      "table": {
-        "name": "Ödül Adı",
-        "type": "Tür",
-        "amount": "Miktar",
-        "status": "Durum",
-        "claims": "Talep Sayısı",
-        "dates": "Aktif Dönem",
-        "actions": "İşlemler"
-      },
-      "form": {
-        "name": "Ödül Adı",
-        "description": "Açıklama",
-        "type": "Tür",
-        "amount": "Miktar",
-        "currency": "Para Birimi",
-        "maxClaims": "Maksimum Talep",
-        "startDate": "Başlangıç Tarihi",
-        "endDate": "Bitiş Tarihi",
-        "requirements": "Gereksinimler",
-        "addRequirement": "Gereksinim Ekle"
-      },
-      "actions": {
-        "view": "Görüntüle",
-        "edit": "Düzenle",
-        "delete": "Sil",
-        "activate": "Etkinleştir",
-        "deactivate": "Devre Dışı Bırak",
-        "viewDetails": "Detayları Görüntüle",
-        "create": "Oluştur",
-        "cancel": "İptal",
-        "close": "Kapat"
-      },
-      "status": {
-        "active": "Aktif",
-        "inactive": "Pasif"
-      },
-      "details": {
-        "title": "Ödül Detayları",
-        "basicInformation": "Temel Bilgiler",
-        "statistics": "İstatistikler",
-        "requirements": "Gereksinimler",
-        "id": "ID",
-        "type": "Tür",
-        "amount": "Miktar",
-        "status": "Durum",
-        "claims": "Talepler",
-        "period": "Dönem"
-      },
-      "createModal": {
-        "title": "Yeni Ödül Oluştur",
-        "namePlaceholder": "Ödül Adı",
-        "descriptionPlaceholder": "Açıklama",
-        "selectType": "Tür Seçin",
-        "amountPlaceholder": "Miktar",
-        "maxClaimsPlaceholder": "Maksimum Talep"
-      },
-      "sampleRewards": {
-        "dailyLogin": {
-          "name": "Günlük Giriş Bonusu",
-          "description": "Günlük giriş için ödül"
-        },
-        "weeklyMining": {
-          "name": "Haftalık Madencilik Ödülü",
-          "description": "Tutarlı madencilik aktivitesi için bonus"
-        },
-        "referralChampion": {
-          "name": "Referans Şampiyonu",
-          "description": "Yeni kullanıcı getirenler için ödül"
-        },
-        "firstClassAchievement": {
-          "name": "Birinci Sınıf Başarısı",
-          "description": "Premium üyeler için özel ödül"
-        },
-        "monthlyStaking": {
-          "name": "Aylık Staking Bonusu",
-          "description": "Uzun vadeli staking için ödül"
-        },
-        "specialEvent": {
-          "name": "Özel Etkinlik Ödülü",
-          "description": "Sınırlı süreli etkinlik ödülü"
-        }
-      },
-      "requirements": {
-        "loginDaily": "Günlük giriş yapın",
-        "completeProfile": "Profili tamamlayın",
-        "mineConsecutiveDays": "7 gün üst üste madencilik yapın",
-        "minimumMined": "Minimum 100 FSN madencilik",
-        "referActiveUsers": "10 aktif kullanıcı referans edin",
-        "usersCompleteKYC": "Kullanıcılar KYC'yi tamamlamalı",
-        "upgradeToFirstClass": "Birinci Sınıfa yükseltin",
-        "maintainForDays": "30 gün sürdürün",
-        "stakeMinimum": "Minimum 1000 FSN stake edin",
-        "holdForDays": "30 gün tutun",
-        "participateInEvent": "Etkinliğe katılın",
-        "completeAllChallenges": "Tüm meydan okumaları tamamlayın"
-      },
-      "noRewards": "Ödül bulunamadı",
-      "loading": "Ödüller yükleniyor..."
     },
     "notifications": {
       "title": "Bildirim Yönetimi",
@@ -1751,6 +1212,364 @@
         "failedToUpdate": "Bildirim güncellenemedi"
       }
     },
+    "rewards": {
+      "title": "Ödül Yönetimi",
+      "description": "Ödül programları oluşturun ve yönetin",
+      "stats": {
+        "totalRewards": "Toplam Ödüller",
+        "activeRewards": "Aktif Ödüller",
+        "totalValue": "Toplam Değer",
+        "totalClaims": "Toplam Talepler"
+      },
+      "createReward": "Ödül Oluştur",
+      "createNew": "Yeni Ödül Oluştur",
+      "searchPlaceholder": "Ödül ara...",
+      "filters": {
+        "allTypes": "Tüm Türler",
+        "allStatus": "Tüm Durumlar",
+        "active": "Aktif",
+        "inactive": "Pasif",
+        "daily": "Günlük",
+        "weekly": "Haftalık",
+        "monthly": "Aylık",
+        "achievement": "Başarı",
+        "referral": "Referans",
+        "bonus": "Bonus",
+        "special": "Özel"
+      },
+      "rewardTypes": {
+        "daily": "Günlük",
+        "weekly": "Haftalık",
+        "monthly": "Aylık",
+        "achievement": "Başarı",
+        "referral": "Referans",
+        "bonus": "Bonus",
+        "special": "Özel"
+      },
+      "statusFilters": {
+        "all": "Tüm Durumlar",
+        "active": "Aktif",
+        "inactive": "Pasif"
+      },
+      "table": {
+        "name": "Ödül Adı",
+        "type": "Tür",
+        "amount": "Miktar",
+        "status": "Durum",
+        "claims": "Talep Sayısı",
+        "dates": "Aktif Dönem",
+        "actions": "İşlemler"
+      },
+      "form": {
+        "name": "Ödül Adı",
+        "description": "Açıklama",
+        "type": "Tür",
+        "amount": "Miktar",
+        "currency": "Para Birimi",
+        "maxClaims": "Maksimum Talep",
+        "startDate": "Başlangıç Tarihi",
+        "endDate": "Bitiş Tarihi",
+        "requirements": "Gereksinimler",
+        "addRequirement": "Gereksinim Ekle"
+      },
+      "actions": {
+        "view": "Görüntüle",
+        "edit": "Düzenle",
+        "delete": "Sil",
+        "activate": "Etkinleştir",
+        "deactivate": "Devre Dışı Bırak",
+        "viewDetails": "Detayları Görüntüle",
+        "create": "Oluştur",
+        "cancel": "İptal",
+        "close": "Kapat"
+      },
+      "status": {
+        "active": "Aktif",
+        "inactive": "Pasif"
+      },
+      "details": {
+        "title": "Ödül Detayları",
+        "basicInformation": "Temel Bilgiler",
+        "statistics": "İstatistikler",
+        "requirements": "Gereksinimler",
+        "id": "ID",
+        "type": "Tür",
+        "amount": "Miktar",
+        "status": "Durum",
+        "claims": "Talepler",
+        "period": "Dönem"
+      },
+      "createModal": {
+        "title": "Yeni Ödül Oluştur",
+        "namePlaceholder": "Ödül Adı",
+        "descriptionPlaceholder": "Açıklama",
+        "selectType": "Tür Seçin",
+        "amountPlaceholder": "Miktar",
+        "maxClaimsPlaceholder": "Maksimum Talep"
+      },
+      "sampleRewards": {
+        "dailyLogin": {
+          "name": "Günlük Giriş Bonusu",
+          "description": "Günlük giriş için ödül"
+        },
+        "weeklyMining": {
+          "name": "Haftalık Madencilik Ödülü",
+          "description": "Tutarlı madencilik aktivitesi için bonus"
+        },
+        "referralChampion": {
+          "name": "Referans Şampiyonu",
+          "description": "Yeni kullanıcı getirenler için ödül"
+        },
+        "firstClassAchievement": {
+          "name": "Birinci Sınıf Başarısı",
+          "description": "Premium üyeler için özel ödül"
+        },
+        "monthlyStaking": {
+          "name": "Aylık Staking Bonusu",
+          "description": "Uzun vadeli staking için ödül"
+        },
+        "specialEvent": {
+          "name": "Özel Etkinlik Ödülü",
+          "description": "Sınırlı süreli etkinlik ödülü"
+        }
+      },
+      "requirements": {
+        "loginDaily": "Günlük giriş yapın",
+        "completeProfile": "Profili tamamlayın",
+        "mineConsecutiveDays": "7 gün üst üste madencilik yapın",
+        "minimumMined": "Minimum 100 FSN madencilik",
+        "referActiveUsers": "10 aktif kullanıcı referans edin",
+        "usersCompleteKYC": "Kullanıcılar KYC'yi tamamlamalı",
+        "upgradeToFirstClass": "Birinci Sınıfa yükseltin",
+        "maintainForDays": "30 gün sürdürün",
+        "stakeMinimum": "Minimum 1000 FSN stake edin",
+        "holdForDays": "30 gün tutun",
+        "participateInEvent": "Etkinliğe katılın",
+        "completeAllChallenges": "Tüm meydan okumaları tamamlayın"
+      },
+      "noRewards": "Ödül bulunamadı",
+      "loading": "Ödüller yükleniyor..."
+    },
+    "transaction": {
+      "title": "İşlem Yönetimi",
+      "description": "Platform işlemlerini izleyin ve yönetin",
+      "searchPlaceholder": "İşlem ara...",
+      "filters": {
+        "all": "Tüm Durumlar",
+        "completed": "Tamamlandı",
+        "pending": "Beklemede",
+        "failed": "Başarısız"
+      },
+      "stats": {
+        "totalTransactions": "Toplam İşlemler",
+        "totalVolume": "Toplam Hacim",
+        "completed": "Tamamlandı",
+        "pending": "Beklemede"
+      },
+      "table": {
+        "transaction": "İşlem",
+        "user": "Kullanıcı",
+        "amount": "Miktar",
+        "date": "Tarih",
+        "status": "Durum",
+        "actions": "İşlemler"
+      },
+      "types": {
+        "stake": "Stake",
+        "reward": "Ödül",
+        "referral": "Referans",
+        "mining": "Madencilik",
+        "withdrawal": "Çekme",
+        "deposit": "Yatırma",
+        "bonus": "Bonus"
+      },
+      "status": {
+        "completed": "Tamamlandı",
+        "pending": "Beklemede",
+        "failed": "Başarısız"
+      },
+      "modal": {
+        "title": "İşlem Detayları",
+        "transactionInfo": "İşlem Bilgileri",
+        "userInfo": "Kullanıcı Bilgileri",
+        "description": "Açıklama",
+        "timestamp": "Zaman Damgası",
+        "close": "Kapat"
+      },
+      "noTransactions": "İşlem bulunamadı",
+      "loading": "İşlemler yükleniyor...",
+      "viewDetails": "Detayları Görüntüle"
+    },
+    "dashboard": {
+      "title": "Yönetici Paneli",
+      "subtitle": "Kullanıcıları, KYC ve ödemeleri yönetin",
+      "quickStatistics": "Hızlı İstatistikler",
+      "detailedStatistics": "Detaylı İstatistikler",
+      "totalUsers": "Toplam Kullanıcı",
+      "totalAdmins": "Toplam Yönetici",
+      "pendingKYC": "Bekleyen KYC",
+      "verifiedKYC": "Doğrulanmış KYC",
+      "premiumPlans": "Premium Planlar",
+      "totalBalance": "Toplam Bakiye",
+      "totalFSN": "Toplam FSN",
+      "businessPlans": "İş Planları",
+      "firstClassPlans": "Birinci Sınıf Planlar"
+    },
+    "tabs": {
+      "dashboard": "Panel",
+      "users": "Kullanıcı Yönetimi",
+      "kyc": "KYC Doğrulama",
+      "payments": "Manuel Ödemeler",
+      "transactions": "İşlemler",
+      "rewards": "Ödüller",
+      "notifications": "Bildirimler",
+      "content": "İçerik",
+      "memberships": "Üyelikler",
+      "sendNotification": "Bildirim Gönder",
+      "short": {
+        "dashboard": "Panel",
+        "users": "Kullanıcı",
+        "kyc": "KYC",
+        "payments": "Ödeme",
+        "transactions": "İşlem",
+        "rewards": "Ödül",
+        "notifications": "Bildirim",
+        "content": "İçerik",
+        "memberships": "Üyelik"
+      }
+    },
+    "kyc": {
+      "title": "KYC Doğrulama",
+      "description": "Kullanıcı kimlik doğrulama isteklerini inceleyin ve yönetin",
+      "pendingRequests": "Bekleyen İstekler",
+      "approvedToday": "Bugün Onaylandı",
+      "rejectedToday": "Bugün Reddedildi",
+      "pendingKycRequests": "Bekleyen KYC İstekleri",
+      "reviewDocuments": "Kullanıcı doğrulama belgelerini inceleyin",
+      "loading": "KYC istekleri yükleniyor...",
+      "noPendingRequests": "Bekleyen İstek Yok",
+      "allProcessed": "Tüm KYC doğrulama istekleri işlendi",
+      "verificationInfo": "KYC doğrulama bilgileri",
+      "documents": "KYC Belgeleri",
+      "noDocuments": "KYC belgesi yüklenmedi",
+      "approve": "KYC Onayla",
+      "reject": "KYC Reddet"
+    },
+    "users": {
+      "title": "Kullanıcı Yönetimi",
+      "description": "Kullanıcı hesaplarını, planlarını ve durumlarını yönetin",
+      "searchPlaceholder": "Kullanıcı ara...",
+      "loading": "Kullanıcılar yükleniyor...",
+      "confirmDelete": "Bu kullanıcıyı silmek istediğinizden emin misiniz?",
+      "deleteUser": "Kullanıcıyı Sil",
+      "deleteWarning": "Uyarı: Bu işlem geri alınamaz",
+      "deleteWarningDescription": "Bu kullanıcıyı silmek, hesabını, bakiyesini ve tüm ilişkili verilerini sistemden kalıcı olarak kaldıracaktır.",
+      "userToDelete": "Silinecek Kullanıcı",
+      "stats": {
+        "activeUsers": "Aktif Kullanıcılar",
+        "premiumPlans": "Premium Planlar",
+        "totalBalance": "Toplam Bakiye"
+      },
+      "filters": {
+        "all": "Tümü",
+        "active": "Aktif",
+        "inactive": "Pasif",
+        "verified": "Doğrulanmış",
+        "pending": "Beklemede",
+        "rejected": "Reddedildi",
+        "allStatus": "Tüm Durumlar",
+        "allPlans": "Tüm Planlar",
+        "economy": "Ekonomi",
+        "business": "İş",
+        "first6": "Birinci Sınıf-6",
+        "firstLifetime": "Birinci Sınıf-Yaşam Boyu"
+      },
+      "sort": {
+        "newestFirst": "En Yeni İlk",
+        "oldestFirst": "En Eski İlk",
+        "nameAZ": "İsim A-Z",
+        "nameZA": "İsim Z-A",
+        "balanceHighLow": "Bakiye Yüksek-Düşük",
+        "balanceLowHigh": "Bakiye Düşük-Yüksek"
+      },
+      "bulk": {
+        "selectedUsers": "{{count}} kullanıcı seçildi",
+        "pleaseSelectUsers": "Lütfen önce kullanıcıları seçin",
+        "confirmDelete": "{{count}} kullanıcıyı silmek istediğinizden emin misiniz?"
+      },
+      "table": {
+        "user": "Kullanıcı",
+        "name": "İsim",
+        "email": "E-posta",
+        "kyc": "KYC Durumu",
+        "kycStatus": "KYC Durumu",
+        "plan": "Plan",
+        "balance": "Bakiye",
+        "staking": "Staking",
+        "status": "Durum",
+        "created": "Oluşturulma",
+        "joined": "Katılma Tarihi",
+        "lastLogin": "Son Giriş",
+        "actions": "İşlemler",
+        "id": "ID"
+      },
+      "modal": {
+        "updatePlan": "Kullanıcı Planını Güncelle",
+        "selectPlan": "Plan Seç"
+      },
+      "userInformation": "Kullanıcı Bilgileri",
+      "selectNewPlan": "Yeni Plan Seç",
+      "actions": {
+        "edit": "Düzenle",
+        "delete": "Sil",
+        "activate": "Etkinleştir",
+        "deactivate": "Devre Dışı Bırak",
+        "viewDetails": "Detayları Görüntüle"
+      },
+      "status": {
+        "active": "Aktif",
+        "inactive": "Pasif",
+        "verified": "Doğrulanmış",
+        "pending": "Beklemede",
+        "rejected": "Reddedildi"
+      },
+      "noUsers": "Kullanıcı bulunamadı"
+    },
+    "transactions": {
+      "title": "İşlem Yönetimi",
+      "description": "Tüm platform işlemlerini izleyin ve yönetin",
+      "searchPlaceholder": "İşlem ara...",
+      "filters": {
+        "all": "Tümü",
+        "completed": "Tamamlandı",
+        "pending": "Beklemede",
+        "failed": "Başarısız"
+      },
+      "table": {
+        "id": "İşlem ID",
+        "user": "Kullanıcı",
+        "type": "Tür",
+        "amount": "Miktar",
+        "description": "Açıklama",
+        "timestamp": "Tarih & Saat",
+        "status": "Durum"
+      },
+      "types": {
+        "stake": "Stake",
+        "reward": "Ödül",
+        "referral": "Referans",
+        "withdrawal": "Çekim",
+        "mining": "Madencilik"
+      },
+      "status": {
+        "completed": "Tamamlandı",
+        "pending": "Beklemede",
+        "failed": "Başarısız"
+      },
+      "noTransactions": "İşlem bulunamadı",
+      "loading": "İşlemler yükleniyor...",
+      "viewDetails": "Detayları Görüntüle"
+    },
     "content": {
       "title": "İçerik Yönetimi",
       "description": "Platform içeriği ve duyuruları yönetin",
@@ -1845,7 +1664,7 @@
     },
     "memberships": {
       "title": "Üyelik Yönetimi",
-      "description": "Kullanıcı üyelik planları ve aboneliklerini yönetin",
+      "description": "Açıklama",
       "createNew": "Yeni Plan Oluştur",
       "searchPlaceholder": "Üyelik ara...",
       "filters": {
@@ -1877,12 +1696,7 @@
         "extend": "Uzat",
         "viewDetails": "Detayları Görüntüle"
       },
-      "status": {
-        "active": "Aktif",
-        "expired": "Süresi Doldu",
-        "cancelled": "İptal Edildi",
-        "pending": "Beklemede"
-      },
+      "status": "Durum",
       "noMemberships": "Üyelik bulunamadı",
       "loading": "Üyelikler yükleniyor...",
       "createPlan": "Plan Oluştur",
@@ -1897,8 +1711,7 @@
       "delete": "Sil",
       "createNewPlan": "Yeni Plan Oluştur",
       "planName": "Plan Adı (örn: economy)",
-      "displayName": "Görünen Ad (örn: Ekonomi Planı)",
-      "description": "Açıklama",
+      "displayName": "Görünen Ad",
       "price": "Fiyat",
       "bonusFSN": "FSN Bonusu",
       "miningRate": "Madencilik Oranı (örn: 600 FSN / 12 saat)",
@@ -1922,8 +1735,6 @@
       "planDetails": "Plan Detayları",
       "basicInformation": "Temel Bilgiler",
       "name": "Ad",
-      "displayName": "Görünen Ad",
-      "status": "Durum",
       "active": "Aktif",
       "inactive": "Pasif",
       "features": "Özellikler",
@@ -1953,7 +1764,14 @@
           "name": "Birinci Sınıf Yaşam Boyu",
           "description": "Yaşam boyu erişimli nihai plan"
         }
-      }
+      },
+      "planId": "Plan ID (örn: economy, business)",
+      "durationDays": "Süre (gün)",
+      "days": "gün",
+      "createdAt": "Oluşturulma",
+      "featurePlaceholder": "Bir özellik yazın ve Ekle'ye tıklayın",
+      "addFeature": "Özellik Ekle",
+      "featuresHelper": "Her özelliği ayrı ayrı ekleyin. Aşağıdan öğeleri kaldırabilirsiniz."
     },
     "payments": {
       "title": "Manuel Ödemeler",
@@ -1985,29 +1803,6 @@
       "confirmDelete": "Bu ödemeyi silmek istediğinizden emin misiniz?",
       "updateSuccess": "Ödeme durumu başarıyla güncellendi",
       "updateError": "Ödeme durumu güncellenirken hata oluştu"
-    },
-    "common": {
-      "save": "Kaydet",
-      "cancel": "İptal",
-      "delete": "Sil",
-      "edit": "Düzenle",
-      "view": "Görüntüle",
-      "close": "Kapat",
-      "confirm": "Onayla",
-      "loading": "Yükleniyor...",
-      "search": "Ara",
-      "filter": "Filtrele",
-      "sort": "Sırala",
-      "actions": "İşlemler",
-      "status": "Durum",
-      "date": "Tarih",
-      "amount": "Miktar",
-      "details": "Detaylar",
-      "noResults": "Sonuç bulunamadı",
-      "selectAll": "Tümünü Seç",
-      "bulkActions": "Toplu İşlemler",
-      "exportData": "Veri Dışa Aktar",
-      "refresh": "Yenile"
     }
   },
   "enable": "Etkinleştir",
@@ -2073,14 +1868,34 @@
       "titleMobile": "ÖZELLİKLERİMİZ",
       "titleDesktop": "GÜÇLÜ ÖZELLİKLER",
       "subtitle": "Bugün kripto kazanmaya başlamak için ihtiyacınız olan her şey",
-      "alt": { "border": "Bölüm kenarlığı" },
+      "alt": {
+        "border": "Bölüm kenarlığı"
+      },
       "items": {
-        "mining": { "title": "GÜNLÜK MADENCİLİK", "desc": "Otomatik madencilikle her gün kripto kazanın" },
-        "membership": { "title": "ÜYELİK PLANLARI", "desc": "Ekonomi, İş veya Birinci Sınıf planları arasından seçin" },
-        "staking": { "title": "STAKING ÖDÜLLERİ", "desc": "Tokenlarınızı stake edin ve yüksek APY ile pasif gelir elde edin" },
-        "referral": { "title": "YÖNLENDİRME PROGRAMI", "desc": "Arkadaşlarınızı davet edin ve aktivitelerinden komisyon kazanın" },
-        "watchToEarn": { "title": "İZLE VE KAZAN", "desc": "Reklamları izleyin ve zamanınız için ödül kazanın" },
-        "playToEarn": { "title": "OYNA VE KAZAN", "desc": "Mini oyunlar oynayın ve FSN kazanmak için görevleri tamamlayın" }
+        "mining": {
+          "title": "GÜNLÜK MADENCİLİK",
+          "desc": "Otomatik madencilikle her gün kripto kazanın"
+        },
+        "membership": {
+          "title": "ÜYELİK PLANLARI",
+          "desc": "Ekonomi, İş veya Birinci Sınıf planları arasından seçin"
+        },
+        "staking": {
+          "title": "STAKING ÖDÜLLERİ",
+          "desc": "Tokenlarınızı stake edin ve yüksek APY ile pasif gelir elde edin"
+        },
+        "referral": {
+          "title": "YÖNLENDİRME PROGRAMI",
+          "desc": "Arkadaşlarınızı davet edin ve aktivitelerinden komisyon kazanın"
+        },
+        "watchToEarn": {
+          "title": "İZLE VE KAZAN",
+          "desc": "Reklamları izleyin ve zamanınız için ödül kazanın"
+        },
+        "playToEarn": {
+          "title": "OYNA VE KAZAN",
+          "desc": "Mini oyunlar oynayın ve FSN kazanmak için görevleri tamamlayın"
+        }
       }
     },
     "getStarted": {
@@ -2105,53 +1920,54 @@
       }
     }
   },
-  "plans": {
-    "title": "Planınızı Seçin",
-    "subtitle": "Üyelik planlarımızla premium özelliklerin kilidini açın ve FSN ödülleri kazanın. FSN, uygulama içi avantajlar için kullanılan sanal bir para birimidir.",
-    "mostPopular": "En Popüler",
-    "items": {
-      "business": {
-        "title": "İş Sınıfı",
-        "price": "9.99",
-        "description": "FlySky ile FSN ödüllerinizi artırmak için İş Sınıfı özelliklerinin tümü",
-        "features": ["100.000 FSN Bonus", "Gelişmiş madencilik", "Öncelikli destek", "Staking erişimi"],
-        "buttonText": "İş Sınıfını Seç"
-      },
-      "first": {
-        "title": "Birinci Sınıf",
-        "price": "49.99",
-        "description": "FSN ödüllerinizi artırmak için Birinci Sınıf özelliklerinin tümü",
-        "features": ["500.000 FSN Bonus", "Tüm iş sınıfı özellikleri", "Daha hızlı madencilik", "Etkinlik erişimi"],
-        "buttonText": "Birinci Sınıfı Seç"
-      },
-      "firstLifetime": {
-        "title": "Birinci Sınıf (Ömür Boyu)",
-        "price": "99.99",
-        "description": "FSN ödüllerinizi artırmak için Birinci Sınıf (Ömür Boyu) özelliklerinin tümü",
-        "features": ["1.000.000 FSN Bonus", "En yüksek madencilik", "Ömür boyu erişim", "Premium özelliklere erişim"],
-        "buttonText": "Ömür Boyu Planı Seç"
-      }
-    }
-  },
   "fsnInfo": {
     "title": "FSN Tokenları Hakkında",
     "description": "FSN tokenları yalnızca uygulama içinde Madencilik, Staking ve Yükseltme gibi özellikler için kullanılabilen sanal bir para birimidir. Dışarıya çekilemez, satılamaz veya takas edilemez.",
-    "miningRewards": { "title": "Madencilik Ödülleri", "desc": "Daha hızlı madencilik ve daha yüksek ödüller için FSN kullanın" },
-    "stakingAccess": { "title": "Staking Erişimi", "desc": "Ek ödüller kazanmak için FSN stake edin" },
-    "premiumFeatures": { "title": "Premium Özellikler", "desc": "Özel özelliklerin ve bonusların kilidini açın" }
+    "miningRewards": {
+      "title": "Madencilik Ödülleri",
+      "desc": "Daha hızlı madencilik ve daha yüksek ödüller için FSN kullanın"
+    },
+    "stakingAccess": {
+      "title": "Staking Erişimi",
+      "desc": "Ek ödüller kazanmak için FSN stake edin"
+    },
+    "premiumFeatures": {
+      "title": "Premium Özellikler",
+      "desc": "Özel özelliklerin ve bonusların kilidini açın"
+    }
   },
   "hiw": {
     "title": "NASIL ÇALIŞIR",
     "subtitle": "Yenilikçi platformumuzla kripto kazanan binlerce kullanıcıya katılın",
     "steps": {
-      "1": { "title": "Kayıt", "desc": "Hesabınızı oluşturun ve kimliğinizi doğrulayarak kazanma yolculuğunuza başlayın", "cta": "Kayıt Ol" },
-      "2": { "title": "Madenciliğe Başla", "desc": "Otomatik madencilik sürecini başlatın", "cta": "Madenciliğe Başla" },
-      "3": { "title": "ÖDÜLLERİ TALEP ET", "desc": "Kazandığınız kripto ödüllerini doğrudan cüzdanınıza çekin", "cta": "Şimdi Talep Et" }
+      "1": {
+        "title": "Kayıt",
+        "desc": "Hesabınızı oluşturun ve kimliğinizi doğrulayarak kazanma yolculuğunuza başlayın",
+        "cta": "Kayıt Ol"
+      },
+      "2": {
+        "title": "Madenciliğe Başla",
+        "desc": "Otomatik madencilik sürecini başlatın",
+        "cta": "Madenciliğe Başla"
+      },
+      "3": {
+        "title": "ÖDÜLLERİ TALEP ET",
+        "desc": "Kazandığınız kripto ödüllerini doğrudan cüzdanınıza çekin",
+        "cta": "Şimdi Talep Et"
+      }
     }
   },
   "who": {
     "title": "BİZ KİMİZ",
     "p1": "FlySky Network, madencilik, staking, oyun ve NFT'leri bir araya getiren yeni nesil dijital ekonomi platformudur.",
     "p2": "Kullanıcıların keyifli etkileşimlerle kazanç sağlayıp varlıklarını büyütebilecekleri canlı bir ekosistem inşa etmeye kararlıyız."
+  },
+  "common": {
+    "cancel": "İptal",
+    "delete": "Sil",
+    "confirm": "Onayla",
+    "create": "Oluştur",
+    "view": "Görüntüle",
+    "edit": "Düzenle"
   }
-} 
+}
