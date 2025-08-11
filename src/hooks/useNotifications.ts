@@ -5,7 +5,6 @@ import { db, functions } from '../firebase';
 import { collection, getDocs, query, orderBy, limit, addDoc, Timestamp, where } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { apiService } from '../utils/apiService';
-import { auth } from '../firebase';
 
 export interface Notification {
   id: string;
