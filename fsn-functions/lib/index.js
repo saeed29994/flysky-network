@@ -367,12 +367,13 @@ exports.sendManualNotification = functions.https.onCall(async (data, context) =>
         throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated to send notifications');
     }
     try {
-        const adminSnapshot = await admin.firestore().collection('admins').doc(context.auth.uid).get();
-        if (!adminSnapshot.exists) {
+        const userSnapshot = await admin.firestore().collection('users').doc(context.auth.uid).get();
+        if (!userSnapshot.exists || userSnapshot.data()?.role !== 'admin') {
             throw new functions.https.HttpsError('permission-denied', 'User does not have admin privileges');
         }
     }
     catch (err) {
+        console.error('❌ Error checking admin status:', err);
         throw new functions.https.HttpsError('internal', 'Error checking admin status');
     }
     // Validate request data
