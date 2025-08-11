@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNotifications } from '../../hooks/useNotifications';
+import { useNotifications, NotificationPayload, NotificationLog } from '../../hooks/useNotifications';
 import { useTranslation } from 'react-i18next';
 import {
   FaBell, FaSearch, FaEdit, FaTrash, FaTimes, FaEye,
   FaClock, FaUser, FaGlobe, FaMobile,
   FaDesktop, FaEnvelope, FaPaperPlane, FaChartLine,
   FaExclamationTriangle, FaInfoCircle, FaCheckCircle, FaTimesCircle, FaCrown, FaUsers,
-  FaSync
+  FaSync, FaCalendarAlt, FaList, FaCode
 } from 'react-icons/fa';
 
 interface FilterState {
@@ -31,8 +31,10 @@ const NotificationsTab = () => {
     loading,
     error,
     sendNotification,
+    sendAdvancedNotification,
     refreshNotifications,
     deleteNotification,
+    getNotificationLogs,
   } = useNotifications();
 
   // State management
@@ -54,6 +56,22 @@ const NotificationsTab = () => {
   const [sendBody, setSendBody] = useState('');
   const [sending, setSending] = useState(false);
   const [showError, setShowError] = useState(false);
+
+  // Advanced notification modal state
+  const [showAdvancedModal, setShowAdvancedModal] = useState(false);
+  const [advancedTitle, setAdvancedTitle] = useState('');
+  const [advancedBody, setAdvancedBody] = useState('');
+  const [selectedAudience, setSelectedAudience] = useState<'all' | 'premium' | 'new' | 'inactive'>('all');
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['mobile', 'web']);
+  const [isScheduled, setIsScheduled] = useState(false);
+  const [scheduledDate, setScheduledDate] = useState<string>('');
+  const [scheduledTime, setScheduledTime] = useState<string>('');
+
+  // Notification logs state
+  const [showLogsModal, setShowLogsModal] = useState(false);
+  const [selectedNotificationLogs, setSelectedNotificationLogs] = useState<NotificationLog[]>([]);
+  const [selectedNotificationId, setSelectedNotificationId] = useState<string | null>(null);
+  const [loadingLogs, setLoadingLogs] = useState(false);
 
   // Clear error after 5 seconds
   useEffect(() => {
@@ -215,8 +233,90 @@ const NotificationsTab = () => {
     }
   };
 
+  const handleSendAdvancedNotification = async () => {
+    if (!advancedTitle.trim() || !advancedBody.trim()) {
+      alert(t('admin.notifications.sendModal.pleaseEnterBoth'));
+      return;
+    }
+
+    setSending(true);
+    try {
+      let scheduledFor: Date | null = null;
+      
+      if (isScheduled && scheduledDate && scheduledTime) {
+        scheduledFor = new Date(`${scheduledDate}T${scheduledTime}`);
+        
+        // Validate the date is in the future
+        if (scheduledFor <= new Date()) {
+          // Use the existing error state instead of trying to set it directly
+          alert(t('admin.notifications.advancedModal.futureTimeRequired'));
+          setSending(false);
+          return;
+        }
+      }
+
+      const payload: NotificationPayload = {
+        title: advancedTitle.trim(),
+        body: advancedBody.trim(),
+        targetAudience: selectedAudience,
+        platforms: selectedPlatforms,
+        scheduledFor: scheduledFor,
+      };
+
+      const success = await sendAdvancedNotification(payload);
+      if (success) {
+        setAdvancedTitle('');
+        setAdvancedBody('');
+        setSelectedAudience('all');
+        setSelectedPlatforms(['mobile', 'web']);
+        setIsScheduled(false);
+        setScheduledDate('');
+        setScheduledTime('');
+        setShowAdvancedModal(false);
+      }
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const togglePlatform = (platform: string) => {
+    setSelectedPlatforms(prev => 
+      prev.includes(platform)
+        ? prev.filter(p => p !== platform)
+        : [...prev, platform]
+    );
+  };
+
   const handleRefresh = async () => {
     await refreshNotifications();
+  };
+
+  const handleViewLogs = async (notificationId: string) => {
+    setLoadingLogs(true);
+    setSelectedNotificationId(notificationId);
+    try {
+      const notificationLogs = await getNotificationLogs(notificationId);
+      setSelectedNotificationLogs(notificationLogs);
+      setShowLogsModal(true);
+    } catch (err) {
+      console.error('Error fetching notification logs:', err);
+    } finally {
+      setLoadingLogs(false);
+    }
+  };
+
+  const handleRefreshLogs = async () => {
+    if (selectedNotificationId) {
+      setLoadingLogs(true);
+      try {
+        const notificationLogs = await getNotificationLogs(selectedNotificationId);
+        setSelectedNotificationLogs(notificationLogs);
+      } catch (err) {
+        console.error('Error refreshing notification logs:', err);
+      } finally {
+        setLoadingLogs(false);
+      }
+    }
   };
 
   // Loading state
@@ -282,7 +382,7 @@ const NotificationsTab = () => {
               <FaSync className="w-4 h-4 text-white" />
             </button>
           <button
-            onClick={() => setShowSendModal(true)}
+            onClick={() => setShowAdvancedModal(true)}
             className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 sm:px-6 py-2 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-base flex items-center justify-center gap-2"
           >
             <FaPaperPlane className="w-4 h-4" />
@@ -300,7 +400,6 @@ const NotificationsTab = () => {
               <span className="text-gray-400 text-xs sm:text-sm">{t('admin.notifications.stats.totalSent')}</span>
             </div>
             <p className="text-white font-bold text-lg sm:text-2xl">{notifications.filter(n => n.status === 'sent').length}</p>
-            <p className="text-blue-400 text-xs sm:text-sm">+12% {t('admin.notifications.stats.fromLastWeek')}</p>
           </div>
 
           <div className="bg-white/5 rounded-xl p-3 sm:p-4">
@@ -308,8 +407,19 @@ const NotificationsTab = () => {
               <FaEye className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
               <span className="text-gray-400 text-xs sm:text-sm">{t('admin.notifications.stats.avgOpenRate')}</span>
             </div>
-            <p className="text-white font-bold text-lg sm:text-2xl">72.3%</p>
-            <p className="text-green-400 text-xs sm:text-sm">+5.2% {t('admin.notifications.stats.fromLastWeek')}</p>
+            <p className="text-white font-bold text-lg sm:text-2xl">
+              {(() => {
+                const sentNotifications = notifications.filter(n => n.status === 'sent');
+                if (sentNotifications.length === 0) return '0%';
+                
+                const totalOpened = sentNotifications.reduce((sum, n) => sum + n.opened, 0);
+                const totalRecipients = sentNotifications.reduce((sum, n) => sum + n.recipients, 0);
+                
+                return totalRecipients > 0 
+                  ? `${((totalOpened / totalRecipients) * 100).toFixed(1)}%` 
+                  : '0%';
+              })()}
+            </p>
           </div>
 
           <div className="bg-white/5 rounded-xl p-3 sm:p-4">
@@ -317,8 +427,19 @@ const NotificationsTab = () => {
               <FaChartLine className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
               <span className="text-gray-400 text-xs sm:text-sm">{t('admin.notifications.stats.avgClickRate')}</span>
             </div>
-            <p className="text-white font-bold text-lg sm:text-2xl">18.7%</p>
-            <p className="text-purple-400 text-xs sm:text-sm">+2.1% {t('admin.notifications.stats.fromLastWeek')}</p>
+            <p className="text-white font-bold text-lg sm:text-2xl">
+              {(() => {
+                const sentNotifications = notifications.filter(n => n.status === 'sent');
+                if (sentNotifications.length === 0) return '0%';
+                
+                const totalClicked = sentNotifications.reduce((sum, n) => sum + n.clicked, 0);
+                const totalOpened = sentNotifications.reduce((sum, n) => sum + n.opened, 0);
+                
+                return totalOpened > 0 
+                  ? `${((totalClicked / totalOpened) * 100).toFixed(1)}%` 
+                  : '0%';
+              })()}
+            </p>
           </div>
 
           <div className="bg-white/5 rounded-xl p-3 sm:p-4">
@@ -327,7 +448,26 @@ const NotificationsTab = () => {
               <span className="text-gray-400 text-xs sm:text-sm">{t('admin.notifications.stats.scheduled')}</span>
             </div>
             <p className="text-white font-bold text-lg sm:text-2xl">{notifications.filter(n => n.status === 'scheduled').length}</p>
-            <p className="text-yellow-400 text-xs sm:text-sm">{t('admin.notifications.stats.nextScheduled')}</p>
+            {(() => {
+              const scheduledNotifications = notifications
+                .filter(n => n.status === 'scheduled' && n.scheduledFor)
+                .sort((a, b) => a.scheduledFor!.getTime() - b.scheduledFor!.getTime());
+              
+              if (scheduledNotifications.length > 0) {
+                const nextScheduled = scheduledNotifications[0];
+                const date = nextScheduled.scheduledFor!;
+                const isToday = new Date().toDateString() === date.toDateString();
+                const dateStr = isToday ? 'Today' : date.toLocaleDateString();
+                const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                return (
+                  <p className="text-yellow-400 text-xs sm:text-sm">
+                    {`${t('admin.notifications.stats.nextScheduled')}: ${dateStr} ${timeStr}`}
+                  </p>
+                );
+              }
+              return null;
+            })()}
           </div>
         </div>
       </div>
@@ -494,12 +634,22 @@ const NotificationsTab = () => {
                         {notification.platforms.includes('mobile') && <FaMobile className="w-3 h-3 text-blue-400" />}
                         {notification.platforms.includes('web') && <FaDesktop className="w-3 h-3 text-green-400" />}
                         {notification.platforms.includes('email') && <FaEnvelope className="w-3 h-3 text-purple-400" />}
+                        {notification.platforms.includes('inbox') && <FaBell className="w-3 h-3 text-yellow-400" />}
                       </div>
                     </div>
 
                     {notification.status === 'sent' && (
                       <div className="text-xs text-gray-400">
                         {notification.recipients.toLocaleString()} {t('admin.notifications.mobile.sent')} • {getOpenRate(notification.opened, notification.recipients)}% {t('admin.notifications.mobile.open')} • {getClickRate(notification.clicked, notification.opened)}% {t('admin.notifications.mobile.click')}
+                      </div>
+                    )}
+
+                    {notification.status === 'scheduled' && notification.scheduledFor && (
+                      <div className="text-xs flex items-center gap-1 text-blue-400">
+                        <FaCalendarAlt className="w-3 h-3" />
+                        <span>
+                          {notification.scheduledFor.toLocaleDateString()} • {notification.scheduledFor.toLocaleTimeString()}
+                        </span>
                       </div>
                     )}
 
@@ -519,6 +669,13 @@ const NotificationsTab = () => {
                         aria-label={`${t('admin.notifications.actions.edit')}: ${notification.title}`}
                       >
                         <FaEdit className="w-3 h-3 text-green-400" />
+                      </button>
+                      <button 
+                        onClick={() => handleViewLogs(notification.id)}
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        aria-label="View logs"
+                      >
+                        <FaList className="w-3 h-3 text-purple-400" />
                       </button>
                       <button 
                         className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -600,6 +757,7 @@ const NotificationsTab = () => {
                         {notification.platforms.includes('mobile') && <FaMobile className="w-4 h-4 text-blue-400" />}
                         {notification.platforms.includes('web') && <FaDesktop className="w-4 h-4 text-green-400" />}
                         {notification.platforms.includes('email') && <FaEnvelope className="w-4 h-4 text-purple-400" />}
+                        {notification.platforms.includes('inbox') && <FaBell className="w-4 h-4 text-yellow-400" />}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -618,6 +776,14 @@ const NotificationsTab = () => {
                       <div className="text-sm">
                         <div className="text-white">{notification.createdAt.toLocaleDateString()}</div>
                         <div className="text-gray-400">{notification.createdAt.toLocaleTimeString()}</div>
+                        {notification.status === 'scheduled' && notification.scheduledFor && (
+                          <div className="flex items-center gap-1 mt-1 text-blue-400">
+                            <FaCalendarAlt className="w-3 h-3" />
+                            <span className="text-xs">
+                              {notification.scheduledFor.toLocaleDateString()} • {notification.scheduledFor.toLocaleTimeString()}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -633,6 +799,13 @@ const NotificationsTab = () => {
                           aria-label={`${t('admin.notifications.actions.edit')}: ${notification.title}`}
                         >
                           <FaEdit className="w-4 h-4 text-green-400" />
+                        </button>
+                        <button 
+                          onClick={() => handleViewLogs(notification.id)}
+                          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                          aria-label="View logs"
+                        >
+                          <FaList className="w-4 h-4 text-purple-400" />
                         </button>
                         <button 
                           className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -674,7 +847,201 @@ const NotificationsTab = () => {
         </div>
       </div>
 
-      {/* Send Notification Modal */}
+      {/* Advanced Notification Modal */}
+      <AnimatePresence>
+      {showAdvancedModal && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowAdvancedModal(false)}
+        >
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl w-full max-w-xl mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <FaPaperPlane className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
+                {t('admin.notifications.advancedModal.title')}
+              </h3>
+              <button
+                onClick={() => setShowAdvancedModal(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+                aria-label={t('admin.notifications.actions.close')}
+              >
+                <FaTimes className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-5">
+              {/* Title & Message */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-gray-300 text-xs sm:text-sm font-medium mb-2">
+                    {t('admin.notifications.sendModal.notificationTitle')}
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedTitle}
+                    onChange={(e) => setAdvancedTitle(e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 backdrop-blur-sm text-sm sm:text-base"
+                    placeholder={t('admin.notifications.sendModal.titlePlaceholder')}
+                    aria-label={t('admin.notifications.sendModal.notificationTitle')}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 text-xs sm:text-sm font-medium mb-2">
+                    {t('admin.notifications.sendModal.notificationMessage')}
+                  </label>
+                  <textarea
+                    value={advancedBody}
+                    onChange={(e) => setAdvancedBody(e.target.value)}
+                    rows={3}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 backdrop-blur-sm resize-none text-sm sm:text-base"
+                    placeholder={t('admin.notifications.sendModal.messagePlaceholder')}
+                    aria-label={t('admin.notifications.sendModal.notificationMessage')}
+                  />
+                </div>
+              </div>
+              
+              {/* Options Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Left Column - Audience */}
+                <div>
+                  <label className="block text-gray-300 text-xs sm:text-sm font-medium mb-2">
+                    {t('admin.notifications.advancedModal.targetAudience')}
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { id: 'all', icon: <FaGlobe className="w-3 h-3" />, label: 'all' },
+                      { id: 'premium', icon: <FaCrown className="w-3 h-3" />, label: 'premium' },
+                      { id: 'new', icon: <FaUser className="w-3 h-3" />, label: 'new' },
+                      { id: 'inactive', icon: <FaClock className="w-3 h-3" />, label: 'inactive' }
+                    ].map(audience => (
+                      <button
+                        key={audience.id}
+                        type="button"
+                        onClick={() => setSelectedAudience(audience.id as any)}
+                        className={`flex items-center w-full gap-2 px-3 py-2 rounded-lg border ${
+                          selectedAudience === audience.id 
+                            ? 'bg-purple-500/30 border-purple-500/50 text-white' 
+                            : 'bg-white/5 border-white/10 text-gray-300'
+                        } transition-colors`}
+                      >
+                        {audience.icon}
+                        <span className="text-sm">{t(`admin.notifications.audience.${audience.label}`)}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Column - Platforms & Scheduling */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-gray-300 text-xs sm:text-sm font-medium mb-2">
+                      {t('admin.notifications.advancedModal.platforms')}
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { id: 'mobile', icon: <FaMobile className="w-3 h-3" />, color: 'blue', label: 'mobile' },
+                        { id: 'web', icon: <FaDesktop className="w-3 h-3" />, color: 'green', label: 'web' },
+                        { id: 'email', icon: <FaEnvelope className="w-3 h-3" />, color: 'purple', label: 'email' },
+                        { id: 'inbox', icon: <FaBell className="w-3 h-3" />, color: 'yellow', label: 'inbox' }
+                      ].map(platform => (
+                        <button
+                          key={platform.id}
+                          type="button"
+                          onClick={() => togglePlatform(platform.id)}
+                          className={`flex items-center justify-center gap-1 px-2 py-1 rounded-lg border ${
+                            selectedPlatforms.includes(platform.id) 
+                              ? `bg-${platform.color}-500/30 border-${platform.color}-500/50 text-white` 
+                              : 'bg-white/5 border-white/10 text-gray-300'
+                          } transition-colors`}
+                        >
+                          {platform.icon}
+                          <span className="text-xs">{t(`admin.notifications.platforms.${platform.label}`)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <input
+                        type="checkbox"
+                        id="scheduleNotification"
+                        checked={isScheduled}
+                        onChange={() => setIsScheduled(!isScheduled)}
+                        className="rounded border-white/30 bg-white/10 text-purple-500 focus:ring-purple-500"
+                      />
+                      <label htmlFor="scheduleNotification" className="text-gray-300 text-xs sm:text-sm font-medium">
+                        {t('admin.notifications.advancedModal.scheduleForLater')}
+                      </label>
+                    </div>
+                    
+                    {isScheduled && (
+                      <div className="grid grid-cols-2 gap-2 mt-2">
+                        <div>
+                          <input
+                            type="date"
+                            value={scheduledDate}
+                            onChange={(e) => setScheduledDate(e.target.value)}
+                            min={new Date().toISOString().split('T')[0]}
+                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-purple-500 backdrop-blur-sm text-xs"
+                          />
+                        </div>
+                        <div>
+                          <input
+                            type="time"
+                            value={scheduledTime}
+                            onChange={(e) => setScheduledTime(e.target.value)}
+                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-purple-500 backdrop-blur-sm text-xs"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                <button
+                  onClick={() => setShowAdvancedModal(false)}
+                  className="flex-1 px-4 py-2 sm:py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-colors text-sm sm:text-base"
+                >
+                  {t('admin.notifications.sendModal.cancel')}
+                </button>
+                <button
+                  onClick={handleSendAdvancedNotification}
+                  disabled={sending || !advancedTitle.trim() || !advancedBody.trim() || (isScheduled && (!scheduledDate || !scheduledTime)) || selectedPlatforms.length === 0}
+                  className="flex-1 px-4 py-2 sm:py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
+                >
+                  {sending ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      {isScheduled ? t('admin.notifications.advancedModal.scheduling') : t('admin.notifications.sendModal.sending')}
+                    </>
+                  ) : (
+                    <>
+                      {isScheduled ? <FaCalendarAlt className="w-4 h-4" /> : <FaPaperPlane className="w-4 h-4" />}
+                      {isScheduled ? t('admin.notifications.advancedModal.schedule') : t('admin.notifications.sendModal.send')}
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+      </AnimatePresence>
+
+      {/* Send Notification Modal (Original) */}
       <AnimatePresence>
       {showSendModal && (
         <motion.div 
@@ -759,6 +1126,146 @@ const NotificationsTab = () => {
                   )}
                 </button>
               </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+      </AnimatePresence>
+
+      {/* Notification Logs Modal */}
+      <AnimatePresence>
+      {showLogsModal && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowLogsModal(false)}
+        >
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl w-full max-w-4xl mx-4 max-h-[80vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <FaList className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
+                Notification Logs
+              </h3>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleRefreshLogs}
+                  disabled={loadingLogs}
+                  className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors disabled:opacity-50"
+                  aria-label="Refresh logs"
+                >
+                  <FaSync className={`w-4 h-4 text-white ${loadingLogs ? 'animate-spin' : ''}`} />
+                </button>
+                <button
+                  onClick={() => setShowLogsModal(false)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                  aria-label="Close"
+                >
+                  <FaTimes className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="overflow-y-auto flex-grow">
+              {loadingLogs ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span className="ml-3 text-gray-400">Loading logs...</span>
+                </div>
+              ) : selectedNotificationLogs.length === 0 ? (
+                <div className="text-center py-12">
+                  <FaList className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-400">No logs found for this notification</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {selectedNotificationLogs.map((log) => (
+                    <div 
+                      key={log.id}
+                      className={`bg-white/5 rounded-xl p-4 border ${
+                        log.status === 'success' 
+                          ? 'border-green-500/30' 
+                          : log.status === 'partial_success'
+                            ? 'border-yellow-500/30'
+                            : 'border-red-500/30'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          {log.status === 'success' ? (
+                            <FaCheckCircle className="w-4 h-4 text-green-400" />
+                          ) : log.status === 'partial_success' ? (
+                            <FaExclamationTriangle className="w-4 h-4 text-yellow-400" />
+                          ) : (
+                            <FaTimesCircle className="w-4 h-4 text-red-400" />
+                          )}
+                          <span className="text-white font-medium capitalize">{log.status.replace('_', ' ')}</span>
+                        </div>
+                        <span className="text-gray-400 text-xs">
+                          {log.timestamp.toLocaleString()}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                        <div>
+                          <span className="text-gray-400 text-xs">Recipients:</span>
+                          <span className="text-white text-sm ml-2">{log.recipients}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-400 text-xs">Processing Time:</span>
+                          <span className="text-white text-sm ml-2">{log.processingTime}ms</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-400 text-xs">Success:</span>
+                          <span className="text-green-400 text-sm ml-2">{log.successCount}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-400 text-xs">Errors:</span>
+                          <span className="text-red-400 text-sm ml-2">{log.errorCount}</span>
+                        </div>
+                      </div>
+                      
+                      {log.error && (
+                        <div className="mt-3 p-2 bg-red-500/10 border border-red-500/20 rounded-lg">
+                          <div className="flex items-center gap-2 mb-1">
+                            <FaExclamationTriangle className="w-3 h-3 text-red-400" />
+                            <span className="text-red-400 text-xs font-medium">Error:</span>
+                          </div>
+                          <pre className="text-red-300 text-xs overflow-x-auto whitespace-pre-wrap">{log.error}</pre>
+                        </div>
+                      )}
+                      
+                      {log.errorCount > 0 && log.errors && (
+                        <div className="mt-3">
+                          <button 
+                            className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300"
+                            onClick={() => {
+                              // Toggle showing detailed errors
+                              const detailsEl = document.getElementById(`error-details-${log.id}`);
+                              if (detailsEl) {
+                                detailsEl.classList.toggle('hidden');
+                              }
+                            }}
+                          >
+                            <FaCode className="w-3 h-3" />
+                            <span>Toggle Error Details ({log.errorCount})</span>
+                          </button>
+                          <div id={`error-details-${log.id}`} className="hidden mt-2 p-2 bg-gray-900/50 rounded-lg max-h-32 overflow-y-auto">
+                            <pre className="text-gray-300 text-xs">{JSON.stringify(log.errors, null, 2)}</pre>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </motion.div>
         </motion.div>

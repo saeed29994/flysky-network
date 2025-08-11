@@ -1,8 +1,9 @@
 // 📁 src/hooks/useNotifications.ts
 
 import { useState, useEffect, useCallback } from 'react';
-import { db } from '../firebase';
-import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
+import { db, functions } from '../firebase';
+import { collection, getDocs, query, orderBy, limit, addDoc, Timestamp, where } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 import { apiService } from '../utils/apiService';
 
 export interface Notification {
@@ -10,31 +11,68 @@ export interface Notification {
   title: string;
   message: string;
   type: 'info' | 'success' | 'warning' | 'error';
-  status: 'sent' | 'scheduled' | 'draft' | 'failed';
+  status: 'sent' | 'scheduled' | 'draft' | 'failed' | 'processing';
   targetAudience: 'all' | 'premium' | 'new' | 'inactive';
   platforms: string[];
   sentAt?: Date;
   scheduledFor?: Date;
+  processedAt?: Date;
   recipients: number;
   opened: number;
   clicked: number;
   createdAt: Date;
   createdBy: string;
+  successCount?: number;
+  errorCount?: number;
+  error?: string;
+}
+
+export interface NotificationLog {
+  id: string;
+  notificationId: string;
+  title: string;
+  message: string;
+  status: 'success' | 'partial_success' | 'failed';
+  error?: string;
+  errorDetails?: string;
+  targetAudience: string;
+  platforms: string[];
+  timestamp: Date;
+  processingTime: number;
+  recipients: number;
+  successCount: number;
+  errorCount: number;
+  errors?: Array<{ token: string; error: string }>;
+}
+
+export interface NotificationPayload {
+  title: string;
+  body: string;
+  targetAudience?: 'all' | 'premium' | 'new' | 'inactive';
+  platforms?: string[];
+  scheduledFor?: Date | null;
 }
 
 interface UseNotificationsReturn {
   notifications: Notification[];
+  logs: NotificationLog[];
   loading: boolean;
+  logsLoading: boolean;
   error: string | null;
   sendNotification: (title: string, body: string) => Promise<boolean>;
+  sendAdvancedNotification: (payload: NotificationPayload) => Promise<boolean>;
   refreshNotifications: () => Promise<void>;
+  refreshLogs: () => Promise<void>;
   deleteNotification: (id: string) => Promise<boolean>;
   updateNotification: (id: string, updates: Partial<Notification>) => Promise<boolean>;
+  getNotificationLogs: (notificationId: string) => Promise<NotificationLog[]>;
 }
 
 export const useNotifications = (): UseNotificationsReturn => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [logs, setLogs] = useState<NotificationLog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [logsLoading, setLogsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchNotifications = useCallback(async () => {
@@ -65,11 +103,15 @@ export const useNotifications = (): UseNotificationsReturn => {
           platforms: data.platforms || [],
           sentAt: data.sentAt?.toDate(),
           scheduledFor: data.scheduledFor?.toDate(),
+          processedAt: data.processedAt?.toDate(),
           recipients: data.recipients || 0,
           opened: data.opened || 0,
           clicked: data.clicked || 0,
           createdAt: data.createdAt?.toDate() || new Date(),
           createdBy: data.createdBy || 'System',
+          successCount: data.successCount || 0,
+          errorCount: data.errorCount || 0,
+          error: data.error || undefined
         });
       });
 
@@ -79,6 +121,89 @@ export const useNotifications = (): UseNotificationsReturn => {
       setError('Failed to load notifications');
     } finally {
       setLoading(false);
+    }
+  }, []);
+
+  const fetchNotificationLogs = useCallback(async () => {
+    try {
+      setLogsLoading(true);
+
+      // Fetch the most recent logs
+      const logsRef = collection(db, 'notificationLogs');
+      const logsQuery = query(
+        logsRef,
+        orderBy('timestamp', 'desc'),
+        limit(50)
+      );
+
+      const snapshot = await getDocs(logsQuery);
+      const fetchedLogs: NotificationLog[] = [];
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        fetchedLogs.push({
+          id: doc.id,
+          notificationId: data.notificationId || '',
+          title: data.title || '',
+          message: data.message || '',
+          status: data.status || 'failed',
+          error: data.error,
+          errorDetails: data.errorDetails,
+          targetAudience: data.targetAudience || 'all',
+          platforms: data.platforms || [],
+          timestamp: data.timestamp?.toDate() || new Date(),
+          processingTime: data.processingTime || 0,
+          recipients: data.recipients || 0,
+          successCount: data.successCount || 0,
+          errorCount: data.errorCount || 0
+        });
+      });
+
+      setLogs(fetchedLogs);
+    } catch (err) {
+      console.error('Error fetching notification logs:', err);
+    } finally {
+      setLogsLoading(false);
+    }
+  }, []);
+
+  const getNotificationLogs = useCallback(async (notificationId: string): Promise<NotificationLog[]> => {
+    try {
+      // Fetch logs for a specific notification
+      const logsRef = collection(db, 'notificationLogs');
+      const logsQuery = query(
+        logsRef,
+        where('notificationId', '==', notificationId),
+        orderBy('timestamp', 'desc')
+      );
+
+      const snapshot = await getDocs(logsQuery);
+      const notificationLogs: NotificationLog[] = [];
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        notificationLogs.push({
+          id: doc.id,
+          notificationId: data.notificationId || '',
+          title: data.title || '',
+          message: data.message || '',
+          status: data.status || 'failed',
+          error: data.error,
+          errorDetails: data.errorDetails,
+          targetAudience: data.targetAudience || 'all',
+          platforms: data.platforms || [],
+          timestamp: data.timestamp?.toDate() || new Date(),
+          processingTime: data.processingTime || 0,
+          recipients: data.recipients || 0,
+          successCount: data.successCount || 0,
+          errorCount: data.errorCount || 0
+        });
+      });
+
+      return notificationLogs;
+    } catch (err) {
+      console.error('Error fetching notification logs:', err);
+      return [];
     }
   }, []);
 
@@ -131,6 +256,22 @@ export const useNotifications = (): UseNotificationsReturn => {
         createdBy: 'Admin',
       };
 
+      // Store in Firestore
+      await addDoc(collection(db, 'notifications'), {
+        title: newNotification.title,
+        message: newNotification.message,
+        type: newNotification.type,
+        status: newNotification.status,
+        targetAudience: newNotification.targetAudience,
+        platforms: newNotification.platforms,
+        sentAt: Timestamp.fromDate(newNotification.sentAt || new Date()),
+        recipients: newNotification.recipients,
+        opened: newNotification.opened,
+        clicked: newNotification.clicked,
+        createdAt: Timestamp.fromDate(newNotification.createdAt),
+        createdBy: newNotification.createdBy,
+      });
+
       setNotifications(prev => [newNotification, ...prev]);
       return true;
     } catch (err) {
@@ -139,6 +280,61 @@ export const useNotifications = (): UseNotificationsReturn => {
       return false;
     }
   }, []);
+
+  const sendAdvancedNotification = useCallback(async (payload: NotificationPayload): Promise<boolean> => {
+    try {
+      setError(null);
+      const { title, body, targetAudience = 'all', platforms = ['mobile', 'web'], scheduledFor = null } = payload;
+
+      // Use the Cloud Function for sending notifications
+      const sendManualNotification = httpsCallable(functions, 'sendManualNotification');
+      
+      // If scheduled for later, store in Firestore
+      if (scheduledFor) {
+        // Create notification document with scheduled status
+        const notificationData: Record<string, any> = {
+          title,
+          message: body,
+          type: 'info',
+          status: 'scheduled',
+          targetAudience,
+          platforms,
+          scheduledFor: Timestamp.fromDate(scheduledFor),
+          recipients: 0,
+          opened: 0,
+          clicked: 0,
+          createdAt: Timestamp.fromDate(new Date()),
+          createdBy: 'Admin',
+        };
+        
+        // Store in Firestore
+        await addDoc(collection(db, 'notifications'), notificationData);
+        
+        // Refresh notifications to show the new scheduled one
+        await fetchNotifications();
+        return true;
+      } else {
+        // Send immediately via Cloud Function
+        await sendManualNotification({
+          title,
+          message: body,
+          targetAudience,
+          platforms,
+          type: 'info'
+        });
+        
+        // Refresh notifications to show the new one
+        await fetchNotifications();
+        await fetchNotificationLogs();
+        
+        return true;
+      }
+    } catch (err) {
+      console.error('Error sending advanced notification:', err);
+      setError(`Failed to send notification: ${(err as Error).message}`);
+      return false;
+    }
+  }, [fetchNotifications, fetchNotificationLogs]);
 
   const deleteNotification = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -168,17 +364,27 @@ export const useNotifications = (): UseNotificationsReturn => {
     await fetchNotifications();
   }, [fetchNotifications]);
 
+  const refreshLogs = useCallback(async () => {
+    await fetchNotificationLogs();
+  }, [fetchNotificationLogs]);
+
   useEffect(() => {
     fetchNotifications();
-  }, [fetchNotifications]);
+    fetchNotificationLogs();
+  }, [fetchNotifications, fetchNotificationLogs]);
 
   return {
     notifications,
+    logs,
     loading,
+    logsLoading,
     error,
     sendNotification,
+    sendAdvancedNotification,
     refreshNotifications,
+    refreshLogs,
     deleteNotification,
     updateNotification,
+    getNotificationLogs,
   };
 }; 

@@ -1126,33 +1126,42 @@
       "checking": "Checking admin permissions..."
     },
     "notifications": {
-      "title": "Notifications Management",
-      "description": "Manage and track all platform notifications",
+      "title": "Notification Management",
+      "description": "Send and manage notifications to users",
+      "actions": {
+        "sendNotification": "Send Notification",
+        "send": "Send",
+        "refresh": "Refresh Notifications",
+        "view": "View",
+        "edit": "Edit",
+        "delete": "Delete",
+        "close": "Close"
+      },
       "stats": {
         "totalSent": "Total Sent",
         "avgOpenRate": "Avg. Open Rate",
         "avgClickRate": "Avg. Click Rate",
         "scheduled": "Scheduled",
         "fromLastWeek": "from last week",
-        "nextScheduled": "Next: Dec 25, 2:00 AM"
+        "nextScheduled": "Next: Tomorrow 9:00 AM"
       },
       "filters": {
         "searchPlaceholder": "Search notifications...",
         "allTypes": "All Types",
-        "allStatus": "All Status",
-        "allAudiences": "All Audiences",
         "info": "Info",
         "success": "Success",
         "warning": "Warning",
         "error": "Error",
+        "allStatus": "All Status",
         "sent": "Sent",
         "scheduled": "Scheduled",
         "draft": "Draft",
         "failed": "Failed",
+        "allAudiences": "All Audiences",
         "allUsers": "All Users",
-        "premium": "Premium",
+        "premium": "Premium Users",
         "newUsers": "New Users",
-        "inactive": "Inactive",
+        "inactive": "Inactive Users",
         "sortBy": {
           "newestFirst": "Newest First",
           "oldestFirst": "Oldest First",
@@ -1163,11 +1172,11 @@
         }
       },
       "bulkActions": {
-        "selectedNotifications": "{{count}} notification(s) selected",
+        "selectedNotifications": "{{count}} notifications selected",
         "resend": "Resend",
         "duplicate": "Duplicate",
         "delete": "Delete",
-        "confirmDelete": "Are you sure you want to delete {{count}} notification(s)?"
+        "confirmDelete": "Are you sure you want to delete {{count}} notifications?"
       },
       "table": {
         "notification": "Notification",
@@ -1178,11 +1187,7 @@
         "performance": "Performance",
         "created": "Created",
         "actions": "Actions",
-        "title": "Title",
-        "message": "Message",
         "recipients": "recipients",
-        "opened": "opened",
-        "clicked": "clicked",
         "openRate": "open rate",
         "clickRate": "click rate"
       },
@@ -1192,30 +1197,11 @@
         "open": "open",
         "click": "click"
       },
-      "sendModal": {
-        "title": "Send Notification",
-        "notificationTitle": "Notification Title",
-        "titlePlaceholder": "Enter notification title...",
-        "notificationMessage": "Notification Message",
-        "messagePlaceholder": "Enter notification message...",
-        "cancel": "Cancel",
-        "send": "Send",
-        "sending": "Sending...",
-        "pleaseEnterBoth": "Please enter both title and body.",
-        "noTokensFound": "No tokens found. No users registered for notifications.",
-        "notificationSent": "Notification sent successfully!",
-        "failedToSend": "Failed to send notifications. Server says: {{error}}",
-        "errorSending": "Error sending notification."
-      },
-      "actions": {
-        "sendNotification": "Send Notification",
-        "send": "Send",
-        "refresh": "Refresh notifications",
-        "view": "View notification",
-        "edit": "Edit notification",
-        "delete": "Delete notification",
-        "dismissError": "Dismiss error",
-        "close": "Close"
+      "types": {
+        "info": "Info",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error"
       },
       "status": {
         "sent": "Sent",
@@ -1223,37 +1209,47 @@
         "draft": "Draft",
         "failed": "Failed"
       },
-      "types": {
-        "info": "Info",
-        "success": "Success",
-        "warning": "Warning",
-        "error": "Error"
-      },
       "audience": {
-        "all": "All",
+        "all": "All Users",
         "premium": "Premium",
-        "new": "New",
+        "new": "New Users",
         "inactive": "Inactive"
       },
       "platforms": {
-        "mobile": "Mobile",
-        "web": "Web",
-        "email": "Email"
+        "mobile": "Mobile App",
+        "web": "Web Browser",
+        "email": "Email",
+        "inbox": "App Inbox"
+      },
+      "empty": {
+        "noNotifications": "No notifications found"
       },
       "pagination": {
         "showing": "Showing {{current}} of {{total}} notifications",
         "previous": "Previous",
         "next": "Next"
       },
-      "empty": {
-        "noNotifications": "No notifications found",
-        "loading": "Loading notifications..."
+      "sendModal": {
+        "title": "Send Notification",
+        "notificationTitle": "Notification Title",
+        "titlePlaceholder": "Enter notification title...",
+        "notificationMessage": "Notification Message",
+        "messagePlaceholder": "Enter notification message...",
+        "pleaseEnterBoth": "Please enter both title and message",
+        "cancel": "Cancel",
+        "send": "Send",
+        "sending": "Sending..."
       },
-      "error": {
-        "failedToLoad": "Failed to load notifications",
-        "failedToSend": "Failed to send notification",
-        "failedToDelete": "Failed to delete notification",
-        "failedToUpdate": "Failed to update notification"
+      "advancedModal": {
+        "title": "Advanced Notification",
+        "targetAudience": "Target Audience",
+        "platforms": "Delivery Channels",
+        "scheduleForLater": "Schedule for later",
+        "date": "Date",
+        "time": "Time",
+        "schedule": "Schedule",
+        "scheduling": "Scheduling...",
+        "futureTimeRequired": "Scheduled time must be in the future"
       }
     },
     "rewards": {
