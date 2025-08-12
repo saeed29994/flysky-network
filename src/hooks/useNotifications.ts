@@ -286,6 +286,9 @@ export const useNotifications = (): UseNotificationsReturn => {
       setError(null);
       const { title, body, targetAudience = 'all', platforms = ['mobile', 'web'], scheduledFor = null } = payload;
 
+      // Use the Cloud Function for sending notifications
+      const sendManualNotification = httpsCallable(functions, 'sendManualNotification');
+      
       // If scheduled for later, store in Firestore
       if (scheduledFor) {
         // Create notification document with scheduled status
@@ -312,8 +315,6 @@ export const useNotifications = (): UseNotificationsReturn => {
         return true;
       } else {
         // Send immediately via Cloud Function
-        const sendManualNotification = httpsCallable(functions, 'sendManualNotification');
-        
         await sendManualNotification({
           title,
           message: body,

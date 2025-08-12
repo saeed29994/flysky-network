@@ -136,9 +136,10 @@
     "firstLifetime": "最大回报的终身计划。"
   },
   "planNames": {
-    "economy": "经济舱：",
+    "economy": "经济舱",
     "business": "商务舱",
     "first": "头等舱",
+    "first-6": "头等舱（6个月）",
     "first-lifetime": "头等舱（终身）"
   },
   "planFeatures": {
@@ -945,7 +946,11 @@
       "first-6": "头等舱（6个月）",
       "first-lifetime": "头等舱（终身）"
     },
-    "miningHistory": "挖矿历史"
+    "miningHistory": "挖矿历史",
+    "loading": "加载中...",
+    "loadingPlanData": "正在加载计划数据...",
+    "planNotFound": "未找到计划",
+    "planNotFoundDesc": "无法加载计划信息。请稍后重试。"
   },
   "subscribeToPlan": "订阅计划",
   "selectedPlan": "选定计划",
@@ -1228,6 +1233,41 @@
       }
     },
     "rewards": {
+      "title": "奖励管理",
+      "description": "创建和管理奖励计划",
+      "staking": {
+        "title": "质押",
+        "description": "配置质押期限和奖励",
+        "duration": "期限",
+        "reward": "奖励",
+        "status": "状态",
+        "addDuration": "添加期限",
+        "units": {
+          "days": "天",
+          "weeks": "周",
+          "months": "月",
+          "years": "年"
+        }
+      },
+      "referrals": {
+        "title": "推荐",
+        "description": "管理推荐等级和奖励",
+        "tier": "等级",
+        "referralRange": "推荐范围",
+        "referrals": "推荐",
+        "reward": "奖励",
+        "status": "状态",
+        "addTier": "添加等级"
+      },
+      "watchAds": {
+        "title": "观看广告",
+        "description": "配置观看广告奖励",
+        "adsCount": "广告数量",
+        "ads": "广告",
+        "reward": "奖励",
+        "status": "状态",
+        "addReward": "添加奖励"
+      },
       "stats": {
         "totalRewards": "总奖励数",
         "activeRewards": "活跃奖励",
@@ -1262,6 +1302,14 @@
         "active": "活跃",
         "inactive": "非活跃"
       },
+      "noData": "暂无{{section}}数据",
+      "startAdding": "开始添加您的第一个{{section}}配置",
+      "clickToExpand": "点击展开",
+      "clickToCollapse": "点击收起",
+      "quickActions": "快速操作",
+      "quickActions.addStaking": "添加质押期限",
+      "quickActions.addReferral": "添加推荐等级",
+      "quickActions.addWatchAd": "添加观看广告奖励",
       "actions": {
         "create": "创建",
         "cancel": "取消",
@@ -1333,56 +1381,7 @@
         "completeAllChallenges": "完成所有挑战"
       }
     },
-    "transaction": {
-      "title": "交易管理",
-      "description": "监控和管理所有平台交易",
-      "searchPlaceholder": "搜索交易...",
-      "filters": {
-        "all": "所有状态",
-        "completed": "已完成",
-        "pending": "待处理",
-        "failed": "失败"
-      },
-      "stats": {
-        "totalTransactions": "总交易数",
-        "totalVolume": "总交易量",
-        "completed": "已完成",
-        "pending": "待处理"
-      },
-      "table": {
-        "transaction": "交易",
-        "user": "用户",
-        "amount": "金额",
-        "date": "日期",
-        "status": "状态",
-        "actions": "操作"
-      },
-      "types": {
-        "stake": "质押",
-        "reward": "奖励",
-        "referral": "推荐",
-        "mining": "挖矿",
-        "withdrawal": "提现",
-        "deposit": "充值",
-        "bonus": "奖金"
-      },
-      "status": {
-        "completed": "已完成",
-        "pending": "待处理",
-        "failed": "失败"
-      },
-      "modal": {
-        "title": "交易详情",
-        "transactionInfo": "交易信息",
-        "userInfo": "用户信息",
-        "description": "描述",
-        "timestamp": "时间戳",
-        "close": "关闭"
-      },
-      "noTransactions": "未找到交易",
-      "loading": "正在加载交易...",
-      "viewDetails": "查看详情"
-    },
+
     "dashboard": {
       "title": "管理员仪表板",
       "subtitle": "管理用户、KYC 和付款",
@@ -1520,38 +1519,8 @@
     },
     "transactions": {
       "title": "交易管理",
-      "description": "监控和管理所有平台交易",
-      "searchPlaceholder": "搜索交易...",
-      "filters": {
-        "all": "全部",
-        "completed": "已完成",
-        "pending": "待处理",
-        "failed": "失败"
-      },
-      "table": {
-        "id": "交易ID",
-        "user": "用户",
-        "type": "类型",
-        "amount": "金额",
-        "description": "描述",
-        "timestamp": "日期时间",
-        "status": "状态"
-      },
-      "types": {
-        "stake": "质押",
-        "reward": "奖励",
-        "referral": "推荐",
-        "withdrawal": "提取",
-        "mining": "挖矿"
-      },
-      "status": {
-        "completed": "已完成",
-        "pending": "待处理",
-        "failed": "失败"
-      },
-      "noTransactions": "未找到交易",
-      "loading": "正在加载交易...",
-      "viewDetails": "查看详情"
+      "noTransactions": "无交易数据",
+      "description": "交易数据将在可用时显示在此处。"
     },
     "content": {
       "title": "内容管理",
@@ -1751,6 +1720,7 @@
       "planId": "计划 ID（例如：economy、business）",
       "durationDays": "期限（天）",
       "days": "天",
+      "dailyMiningReward": "每日挖矿奖励（FSN）",
       "createdAt": "创建时间",
       "featurePlaceholder": "输入功能后点击添加",
       "addFeature": "添加功能",
@@ -1929,6 +1899,7 @@
     "p2": "我们致力于构建一个充满活力的生态系统，让用户通过有趣的互动赚取、交易并增长资产。"
   },
   "common": {
+    "loading": "加载中...",
     "cancel": "取消",
     "delete": "删除",
     "confirm": "确认",

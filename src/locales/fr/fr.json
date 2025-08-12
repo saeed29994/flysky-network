@@ -569,6 +569,39 @@
     "rewards": {
       "title": "Gestion des récompenses",
       "description": "Créer et gérer les programmes de récompenses",
+      "staking": {
+        "title": "Staking",
+        "description": "Configurer les durées et récompenses de staking",
+        "duration": "Durée",
+        "reward": "Récompense",
+        "status": "Statut",
+        "addDuration": "Ajouter une durée",
+        "units": {
+          "days": "Jours",
+          "weeks": "Semaines",
+          "months": "Mois",
+          "years": "Années"
+        }
+      },
+      "referrals": {
+        "title": "Parrainages",
+        "description": "Gérer les niveaux et récompenses de parrainage",
+        "tier": "Niveau",
+        "referralRange": "Plage de parrainage",
+        "referrals": "Parrainages",
+        "reward": "Récompense",
+        "status": "Statut",
+        "addTier": "Ajouter un niveau"
+      },
+      "watchAds": {
+        "title": "Regarder des publicités",
+        "description": "Configurer les récompenses de visionnage de publicités",
+        "adsCount": "Nombre de publicités",
+        "ads": "Publicités",
+        "reward": "Récompense",
+        "status": "Statut",
+        "addReward": "Ajouter une récompense"
+      },
       "stats": {
         "totalRewards": "Total des récompenses",
         "activeRewards": "Récompenses actives",
@@ -616,12 +649,21 @@
         "delete": "Supprimer",
         "activate": "Activer",
         "deactivate": "Désactiver",
-        "viewDetails": "Voir les détails"
+        "viewDetails": "Voir les détails",
+        "view": "Voir"
       },
       "status": {
         "active": "Actif",
         "inactive": "Inactif"
       },
+      "noData": "Aucune donnée {{section}} pour le moment",
+      "startAdding": "Commencez à ajouter votre première configuration {{section}}",
+      "clickToExpand": "Cliquez pour développer",
+      "clickToCollapse": "Cliquez pour réduire",
+      "quickActions": "Actions Rapides",
+      "quickActions.addStaking": "Ajouter une durée de staking",
+      "quickActions.addReferral": "Ajouter un niveau de parrainage",
+      "quickActions.addWatchAd": "Ajouter une récompense de visionnage",
       "noRewards": "Aucune récompense trouvée",
       "loading": "Chargement des récompenses...",
       "rewardTypes": {
@@ -694,56 +736,7 @@
         "completeAllChallenges": "Compléter tous les défis"
       }
     },
-    "transaction": {
-      "title": "Gestion des transactions",
-      "description": "Surveiller et gérer toutes les transactions de la plateforme",
-      "searchPlaceholder": "Rechercher des transactions...",
-      "filters": {
-        "all": "Tous les statuts",
-        "completed": "Terminé",
-        "pending": "En attente",
-        "failed": "Échoué"
-      },
-      "stats": {
-        "totalTransactions": "Total des transactions",
-        "totalVolume": "Volume total",
-        "completed": "Terminé",
-        "pending": "En attente"
-      },
-      "table": {
-        "transaction": "Transaction",
-        "user": "Utilisateur",
-        "amount": "Montant",
-        "date": "Date",
-        "status": "Statut",
-        "actions": "Actions"
-      },
-      "types": {
-        "stake": "Stake",
-        "reward": "Récompense",
-        "referral": "Parrainage",
-        "mining": "Exploitation minière",
-        "withdrawal": "Retrait",
-        "deposit": "Dépôt",
-        "bonus": "Bonus"
-      },
-      "status": {
-        "completed": "Terminé",
-        "pending": "En attente",
-        "failed": "Échoué"
-      },
-      "modal": {
-        "title": "Détails de la transaction",
-        "transactionInfo": "Informations de transaction",
-        "userInfo": "Informations utilisateur",
-        "description": "Description",
-        "timestamp": "Horodatage",
-        "close": "Fermer"
-      },
-      "noTransactions": "Aucune transaction trouvée",
-      "loading": "Chargement des transactions...",
-      "viewDetails": "Voir les détails"
-    },
+
     "dashboard": {
       "title": "Tableau de bord administrateur",
       "subtitle": "Gérer les utilisateurs, KYC et paiements",
@@ -881,38 +874,8 @@
     },
     "transactions": {
       "title": "Gestion des transactions",
-      "description": "Surveiller et gérer toutes les transactions de la plateforme",
-      "searchPlaceholder": "Rechercher des transactions...",
-      "filters": {
-        "all": "Toutes",
-        "completed": "Terminées",
-        "pending": "En attente",
-        "failed": "Échouées"
-      },
-      "table": {
-        "id": "ID de transaction",
-        "user": "Utilisateur",
-        "type": "Type",
-        "amount": "Montant",
-        "description": "Description",
-        "timestamp": "Date et heure",
-        "status": "Statut"
-      },
-      "types": {
-        "stake": "Stake",
-        "reward": "Récompense",
-        "referral": "Parrainage",
-        "withdrawal": "Retrait",
-        "mining": "Mining"
-      },
-      "status": {
-        "completed": "Terminée",
-        "pending": "En attente",
-        "failed": "Échouée"
-      },
-      "noTransactions": "Aucune transaction trouvée",
-      "loading": "Chargement des transactions...",
-      "viewDetails": "Voir les détails"
+      "noTransactions": "Aucune donnée de transaction",
+      "description": "Les données de transaction seront affichées ici lorsqu'elles seront disponibles."
     },
     "content": {
       "title": "Gestion du contenu",
@@ -1112,6 +1075,7 @@
       "planId": "ID du plan (ex: economy, business)",
       "durationDays": "Durée (jours)",
       "days": "jours",
+      "dailyMiningReward": "Récompense de minage quotidienne (FSN)",
       "createdAt": "Créé le",
       "featurePlaceholder": "Saisir une fonctionnalité puis cliquer Ajouter",
       "addFeature": "Ajouter une fonctionnalité",
@@ -1356,9 +1320,52 @@
         "privacy": "Confidentialité",
         "contact": "Contact"
       }
+    },
+    "miningPage": {
+      "balance": "Solde",
+      "available": "Disponible",
+      "fsn": "FSN",
+      "currentPlan": "Plan Actuel",
+      "currentCycle": "Cycle Actuel",
+      "complete": "Terminé",
+      "day": "Jour",
+      "progress": "Progression",
+      "dailyMiningRewards": "Récompenses de minage quotidiennes",
+      "miningCycles": "Cycles de minage de 12 heures",
+      "manualClaimSystem": "Système de récupération manuelle",
+      "miningStats": "Statistiques de Minage",
+      "performanceOverview": "Aperçu des Performances",
+      "currentMined": "Miné Actuellement",
+      "fsnDailyMining": "Minage Quotidien FSN",
+      "readyToMine": "Prêt à commencer le minage ?",
+      "startMining": "Commencer le Minage",
+      "dailyLimit": "Limite Quotidienne",
+      "cycle": "Cycle",
+      "hours": "heures",
+      "claimType": "Type de Récupération",
+      "manual": "Manuel",
+      "dailyLimitLabel": "Limite Quotidienne",
+      "timeRemaining": "Temps Restant",
+      "readyToClaim": "⏳ Prêt à récupérer votre récompense de minage !",
+      "unlockRewards": "Déverrouiller les Récompenses",
+      "claim": "Récupérer la Récompense",
+      "miningInProgress": "Minage en Cours",
+      "planNames": {
+        "economy": "Classe Économie",
+        "business": "Classe Affaires",
+        "first": "Première Classe",
+        "first-6": "Première Classe (6 Mois)",
+        "first-lifetime": "Première Classe (Vie)"
+      },
+      "miningHistory": "Historique de Minage",
+      "loading": "Chargement...",
+      "loadingPlanData": "Chargement des données du plan...",
+      "planNotFound": "Plan Non Trouvé",
+      "planNotFoundDesc": "Impossible de charger les informations du plan. Veuillez réessayer plus tard."
     }
   },
   "common": {
+    "loading": "Chargement...",
     "cancel": "Annuler",
     "delete": "Supprimer",
     "confirm": "Confirmer",

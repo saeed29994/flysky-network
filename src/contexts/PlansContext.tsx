@@ -32,6 +32,7 @@ export const PlansProvider = ({ children }: { children: ReactNode }) => {
           plansData[doc.id as PlanType] = {
             createdAt: data.createdAt.toDate(),
             durationDays: data.durationDays,
+            dailyMiningReward: data.dailyMiningReward || 0,
             features: data.features,
             name: data.name,
             price: data.price

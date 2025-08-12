@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaGem, FaArrowUp } from 'react-icons/fa';
-import { PLAN_LIMITS } from '../utils/planConstants';
+import { FaGem, FaArrowUp, FaSpinner } from 'react-icons/fa';
+import { fetchPlansFromFirebase, FirebasePlan } from '../utils/plansService';
 
 interface PlanComparisonCardProps {
   userPlan: string;
@@ -13,6 +13,25 @@ interface PlanComparisonCardProps {
 const PlanComparisonCard: React.FC<PlanComparisonCardProps> = ({ userPlan, className = '' }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [plansData, setPlansData] = useState<Record<string, FirebasePlan>>({});
+  const [loading, setLoading] = useState(true);
+
+  // Fetch plans data from Firebase
+  useEffect(() => {
+    const loadPlansData = async () => {
+      try {
+        setLoading(true);
+        const plans = await fetchPlansFromFirebase();
+        setPlansData(plans);
+      } catch (error) {
+        console.error('Error loading plans data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPlansData();
+  }, []);
 
   const getPlanLabel = (plan: string, t: any) => {
     switch (plan) {
@@ -29,6 +48,22 @@ const PlanComparisonCard: React.FC<PlanComparisonCardProps> = ({ userPlan, class
   const handleUpgrade = () => {
     navigate('/membership');
   };
+
+  if (loading) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl ${className}`}
+      >
+        <div className="flex items-center justify-center py-8">
+          <FaSpinner className="w-6 h-6 text-blue-400 animate-spin" />
+          <span className="ml-3 text-gray-400">{t('common.loading')}</span>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div 
@@ -48,16 +83,18 @@ const PlanComparisonCard: React.FC<PlanComparisonCardProps> = ({ userPlan, class
       </div>
 
       <div className="space-y-3 mb-6">
-        {Object.entries(PLAN_LIMITS).map(([planName, limit]) => (
-          <div key={planName} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+        {Object.entries(plansData)
+          .sort(([, planA], [, planB]) => (planA.price || 0) - (planB.price || 0)) // Sort by price ascending to descending
+          .map(([planId, plan]) => (
+          <div key={planId} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
             <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-300">{getPlanLabel(planName, t)}</span>
-              {planName === userPlan && (
+              <span className="text-sm text-gray-300">{plan.name || getPlanLabel(planId, t)}</span>
+              {planId === userPlan && (
                 <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full">{t('planComparison.current')}</span>
               )}
             </div>
             <div className="text-right">
-              <div className="text-lg font-bold text-white">{limit} FSN</div>
+              <div className="text-lg font-bold text-white">{plan.dailyMiningReward || 0} FSN</div>
               <div className="text-xs text-gray-400">{t('planComparison.perDay')}</div>
             </div>
           </div>

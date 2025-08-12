@@ -995,7 +995,11 @@
       "first-6": "الدرجة الأولى (6 أشهر)",
       "first-lifetime": "الدرجة الأولى (مدى الحياة)"
     },
-    "miningHistory": "سجل التعدين"
+    "miningHistory": "سجل التعدين",
+    "loading": "جاري التحميل...",
+    "loadingPlanData": "جاري تحميل بيانات الخطة...",
+    "planNotFound": "الخطة غير موجودة",
+    "planNotFoundDesc": "تعذر تحميل معلومات الخطة. يرجى المحاولة مرة أخرى لاحقاً."
   },
   "subscribeToPlan": "الاشتراك في الخطة",
   "selectedPlan": "الخطة المختارة",
@@ -1281,6 +1285,39 @@
     "rewards": {
       "title": "إدارة المكافآت",
       "description": "إنشاء وإدارة برامج المكافآت",
+      "staking": {
+        "title": "التخزين",
+        "description": "تكوين مدة التخزين والمكافآت",
+        "duration": "المدة",
+        "reward": "المكافأة",
+        "status": "الحالة",
+        "addDuration": "إضافة مدة",
+        "units": {
+          "days": "أيام",
+          "weeks": "أسابيع",
+          "months": "أشهر",
+          "years": "سنوات"
+        }
+      },
+      "referrals": {
+        "title": "الإحالات",
+        "description": "إدارة مستويات الإحالة والمكافآت",
+        "tier": "المستوى",
+        "referralRange": "نطاق الإحالة",
+        "referrals": "الإحالات",
+        "reward": "المكافأة",
+        "status": "الحالة",
+        "addTier": "إضافة مستوى"
+      },
+      "watchAds": {
+        "title": "مشاهدة الإعلانات",
+        "description": "تكوين مكافآت مشاهدة الإعلانات",
+        "adsCount": "عدد الإعلانات",
+        "ads": "إعلانات",
+        "reward": "المكافأة",
+        "status": "الحالة",
+        "addReward": "إضافة مكافأة"
+      },
       "stats": {
         "totalRewards": "إجمالي المكافآت",
         "activeRewards": "المكافآت النشطة",
@@ -1328,12 +1365,21 @@
         "delete": "حذف",
         "activate": "تفعيل",
         "deactivate": "إلغاء التفعيل",
-        "viewDetails": "عرض التفاصيل"
+        "viewDetails": "عرض التفاصيل",
+        "view": "عرض"
       },
       "status": {
         "active": "نشطة",
         "inactive": "غير نشطة "
       },
+      "noData": "لا توجد بيانات {{section}} بعد",
+      "startAdding": "ابدأ في إضافة أول تكوين {{section}} الخاص بك",
+      "clickToExpand": "انقر للتوسيع",
+      "clickToCollapse": "انقر للطي",
+      "quickActions": "إجراءات سريعة",
+      "quickActions.addStaking": "إضافة مدة تخزين",
+      "quickActions.addReferral": "إضافة مستوى إحالة",
+      "quickActions.addWatchAd": "إضافة مكافأة مشاهدة إعلان",
       "noRewards": "لم يتم العثور على مكافآت",
       "loading": "جاري تحميل المكافآت...",
       "rewardTypes": {
@@ -1406,56 +1452,7 @@
         "completeAllChallenges": "إكمال جميع التحديات"
       }
     },
-    "transactions": {
-      "title": "إدارة المعاملات",
-      "description": "مراقبة وإدارة جميع معاملات المنصة",
-      "searchPlaceholder": "البحث في المعاملات...",
-      "filters": {
-        "all": "جميع الحالات",
-        "completed": "مكتمل",
-        "pending": "معلق",
-        "failed": "فشل"
-      },
-      "stats": {
-        "totalTransactions": "إجمالي المعاملات",
-        "totalVolume": "إجمالي الحجم",
-        "completed": "مكتمل",
-        "pending": "معلق"
-      },
-      "table": {
-        "transaction": "المعاملة",
-        "user": "المستخدم",
-        "amount": "المبلغ",
-        "date": "التاريخ",
-        "status": "الحالة",
-        "actions": "الإجراءات"
-      },
-      "types": {
-        "stake": "الرهان",
-        "reward": "المكافأة",
-        "referral": "الإحالة",
-        "mining": "التعدين",
-        "withdrawal": "السحب",
-        "deposit": "الإيداع",
-        "bonus": "المكافأة الإضافية"
-      },
-      "status": {
-        "completed": "مكتمل",
-        "pending": "معلق",
-        "failed": "فشل"
-      },
-      "modal": {
-        "title": "تفاصيل المعاملة",
-        "transactionInfo": "معلومات المعاملة",
-        "userInfo": "معلومات المستخدم",
-        "description": "الوصف",
-        "timestamp": "الطابع الزمني",
-        "close": "إغلاق"
-      },
-      "noTransactions": "لم يتم العثور على معاملات",
-      "loading": "جاري تحميل المعاملات...",
-      "viewDetails": "عرض التفاصيل"
-    },
+
     "dashboard": {
       "title": "لوحة تحكم المشرف",
       "subtitle": "إدارة المستخدمين والتحقق من الهوية والمدفوعات",
@@ -1591,40 +1588,10 @@
       },
       "noUsers": "لم يتم العثور على مستخدمين"
     },
-    "transaction": {
+    "transactions": {
       "title": "إدارة المعاملات",
-      "description": "مراقبة وإدارة جميع معاملات المنصة",
-      "searchPlaceholder": "البحث عن المعاملات...",
-      "filters": {
-        "all": "الكل",
-        "completed": "مكتملة",
-        "pending": "معلقة",
-        "failed": "فاشلة"
-      },
-      "table": {
-        "id": "رقم المعاملة",
-        "user": "المستخدم",
-        "type": "النوع",
-        "amount": "المبلغ",
-        "description": "الوصف",
-        "timestamp": "التاريخ والوقت",
-        "status": "الحالة"
-      },
-      "types": {
-        "stake": "ستيك",
-        "reward": "مكافأة",
-        "referral": "إحالة",
-        "withdrawal": "سحب",
-        "mining": "تعدين"
-      },
-      "status": {
-        "completed": "مكتملة",
-        "pending": "معلقة",
-        "failed": "فاشلة"
-      },
-      "noTransactions": "لم يتم العثور على معاملات",
-      "loading": "جاري تحميل المعاملات...",
-      "viewDetails": "عرض التفاصيل"
+      "noTransactions": "لا توجد بيانات معاملات",
+      "description": "ستتم عرض بيانات المعاملات هنا عند توفرها."
     },
     "content": {
       "title": "إدارة المحتوى",
@@ -1724,6 +1691,7 @@
       "planId": "معرّف الخطة (مثال: economy, business)",
       "durationDays": "المدة (بالأيام)",
       "days": "أيام",
+      "dailyMiningReward": "مكافأة التعدين اليومية (FSN)",
       "createdAt": "تاريخ الإنشاء",
       "featurePlaceholder": "اكتب ميزة ثم اضغط إضافة",
       "addFeature": "إضافة ميزة",
@@ -2007,6 +1975,7 @@
     }
   },
   "common": {
+    "loading": "جاري التحميل...",
     "cancel": "إلغاء",
     "delete": "حذف",
     "confirm": "تأكيد",

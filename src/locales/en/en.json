@@ -973,7 +973,11 @@
       "first-6": "First Class (6 Months)",
       "first-lifetime": "First Class (Lifetime)"
     },
-    "miningHistory": "Mining History"
+    "miningHistory": "Mining History",
+    "loading": "Loading...",
+    "loadingPlanData": "Loading plan data...",
+    "planNotFound": "Plan Not Found",
+    "planNotFoundDesc": "Unable to load plan information. Please try again later."
   },
   "subscribeToPlan": "Subscribe to Plan",
   "selectedPlan": "Selected Plan",
@@ -1257,12 +1261,45 @@
       "description": "Create and manage reward programs",
       "createNew": "Create New Reward",
       "searchPlaceholder": "Search rewards...",
-    "stats": {
-      "totalRewards": "Total Rewards",
-      "activeRewards": "Active Rewards",
-      "totalValue": "Total Value",
-      "totalClaims": "Total Claims"
-    },
+      "staking": {
+        "title": "Staking",
+        "description": "Configure staking durations and rewards",
+        "duration": "Duration",
+        "reward": "Reward",
+        "status": "Status",
+        "addDuration": "Add Duration",
+        "units": {
+          "days": "Days",
+          "weeks": "Weeks",
+          "months": "Months",
+          "years": "Years"
+        }
+      },
+      "referrals": {
+        "title": "Referrals",
+        "description": "Manage referral tiers and rewards",
+        "tier": "Tier",
+        "referralRange": "Referral Range",
+        "referrals": "Referrals",
+        "reward": "Reward",
+        "status": "Status",
+        "addTier": "Add Tier"
+      },
+      "watchAds": {
+        "title": "Watch Ads",
+        "description": "Configure ad watching rewards",
+        "adsCount": "Ads Count",
+        "ads": "Ads",
+        "reward": "Reward",
+        "status": "Status",
+        "addReward": "Add Reward"
+      },
+      "stats": {
+        "totalRewards": "Total Rewards",
+        "activeRewards": "Active Rewards",
+        "totalValue": "Total Value",
+        "totalClaims": "Total Claims"
+      },
       "filters": {
         "allTypes": "All Types",
         "allStatus": "All Status",
@@ -1307,12 +1344,22 @@
         "delete": "Delete",
         "activate": "Activate",
         "deactivate": "Deactivate",
-        "viewDetails": "View Details"
+        "viewDetails": "View Details",
+        "view": "View",
+        "actions": "Actions"
       },
       "status": {
         "active": "Active",
         "inactive": "Inactive"
       },
+      "noData": "No {{section}} data yet",
+      "startAdding": "Start adding your first {{section}} configuration",
+      "clickToExpand": "Click to expand",
+      "clickToCollapse": "Click to collapse",
+      "quickActions": "Quick Actions",
+      "quickActions.addStaking": "Add Staking Duration",
+      "quickActions.addReferral": "Add Referral Tier",
+      "quickActions.addWatchAd": "Add Watch Ad Reward",
       "noRewards": "No rewards found",
       "loading": "Loading rewards...",
       "rewardTypes": {
@@ -1385,56 +1432,7 @@
         "completeAllChallenges": "Complete all challenges"
       }
     },
-    "transaction": {
-      "title": "Transaction Management",
-      "description": "Monitor and manage all platform transactions",
-      "searchPlaceholder": "Search transactions...",
-      "filters": {
-        "all": "All Status",
-        "completed": "Completed",
-        "pending": "Pending",
-        "failed": "Failed"
-      },
-      "stats": {
-        "totalTransactions": "Total Transactions",
-        "totalVolume": "Total Volume",
-        "completed": "Completed",
-        "pending": "Pending"
-      },
-      "table": {
-        "transaction": "Transaction",
-        "user": "User",
-        "amount": "Amount",
-        "date": "Date",
-        "status": "Status",
-        "actions": "Actions"
-      },
-      "types": {
-        "stake": "Stake",
-        "reward": "Reward",
-        "referral": "Referral",
-        "mining": "Mining",
-        "withdrawal": "Withdrawal",
-        "deposit": "Deposit",
-        "bonus": "Bonus"
-      },
-      "status": {
-        "completed": "Completed",
-        "pending": "Pending",
-        "failed": "Failed"
-      },
-      "modal": {
-        "title": "Transaction Details",
-        "transactionInfo": "Transaction Information",
-        "userInfo": "User Information",
-        "description": "Description",
-        "timestamp": "Timestamp",
-        "close": "Close"
-      },
-      "noTransactions": "No transactions found",
-      "loading": "Loading transactions...",
-      "viewDetails": "View Details"
-    },
+
     "dashboard": {
       "title": "Admin Dashboard",
       "subtitle": "Manage users, KYC, and payments",
@@ -1448,7 +1446,8 @@
       "totalBalance": "Total Balance",
       "totalFSN": "Total FSN",
       "businessPlans": "Business Plans",
-      "firstClassPlans": "First Class Plans"
+      "firstClassPlans": "First Class Plans",
+      "pendingKYC": "Pending KYC"
     },
     "tabs": {
       "dashboard": "Dashboard",
@@ -1475,20 +1474,45 @@
     },
     "kyc": {
       "title": "KYC Verification",
-      "description": "Review and manage user identity verification requests",
+      "description": "Review and verify user identity documents for Know Your Customer compliance",
       "pendingRequests": "Pending Requests",
       "approvedToday": "Approved Today",
       "rejectedToday": "Rejected Today",
       "pendingKycRequests": "Pending KYC Requests",
-      "reviewDocuments": "Review user verification documents",
+      "reviewDocuments": "Review submitted documents",
       "loading": "Loading KYC requests...",
       "noPendingRequests": "No Pending Requests",
-      "allProcessed": "All KYC verification requests have been processed",
-      "verificationInfo": "KYC verification information",
+      "allProcessed": "All KYC requests have been processed",
+      "verificationInfo": "Verification Information",
       "documents": "KYC Documents",
-      "noDocuments": "No KYC documents uploaded",
-      "approve": "Approve KYC",
-      "reject": "Reject KYC"
+      "noDocuments": "No documents uploaded",
+      "approve": "Approve",
+      "reject": "Reject",
+      "viewDetails": "View Details",
+      "unknownUser": "Unknown User",
+      "noEmail": "No email",
+      "userDetails": "User Details",
+      "fullName": "Full Name",
+      "email": "Email",
+      "userId": "User ID",
+      "registrationDate": "Registration Date",
+      "notProvided": "Not provided",
+      "unknown": "Unknown",
+      "documentUploaded": "Document uploaded",
+      "viewDocument": "View Document",
+      "totalKYC": "Total KYC",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "all": "All",
+      "noKYCUsers": "No KYC Users",
+      "noApprovedUsers": "No Approved Users",
+      "noRejectedUsers": "No Rejected Users",
+      "noKYCUsersDesc": "No users have submitted KYC documents yet",
+      "noApprovedUsersDesc": "No users have been approved yet",
+      "noRejectedUsersDesc": "No users have been rejected yet",
+      "refresh": "Refresh",
+      "refreshing": "Refreshing..."
     },
     "users": {
       "title": "Users Management",
@@ -1501,10 +1525,12 @@
       "deleteWarningDescription": "Deleting this user will permanently remove their account, balance, and all associated data from the system.",
       "userToDelete": "User to Delete",
       "updatePlan": "Update User Plan",
+      "selectNewPlan": "Select New Plan",
       "selectPlan": "Select Plan",
       "planUpdated": "Plan updated successfully",
       "pleaseSelectPlan": "Please select a new plan!",
       "kycVerified": "KYC verified successfully",
+      "userInformation": "User Information",
       "table": {
         "user": "User",
         "name": "Name",
@@ -1541,38 +1567,8 @@
     },
     "transactions": {
       "title": "Transaction Management",
-      "description": "Monitor and manage all platform transactions",
-      "searchPlaceholder": "Search transactions...",
-      "filters": {
-        "all": "All",
-        "completed": "Completed",
-        "pending": "Pending",
-        "failed": "Failed"
-      },
-      "table": {
-        "id": "Transaction ID",
-        "user": "User",
-        "type": "Type",
-        "amount": "Amount",
-        "description": "Description",
-        "timestamp": "Date & Time",
-        "status": "Status"
-      },
-      "types": {
-        "stake": "Stake",
-        "reward": "Reward",
-        "referral": "Referral",
-        "withdrawal": "Withdrawal",
-        "mining": "Mining"
-      },
-      "status": {
-        "completed": "Completed",
-        "pending": "Pending",
-        "failed": "Failed"
-      },
-      "noTransactions": "No transactions found",
-      "loading": "Loading transactions...",
-      "viewDetails": "View Details"
+      "noTransactions": "No transaction data",
+      "description": "Transaction data will be displayed here when available."
     },
     "content": {
       "title": "Content Management",
@@ -1772,6 +1768,7 @@
       "planId": "Plan ID (e.g., economy, business)",
       "durationDays": "Duration (days)",
       "days": "days",
+      "dailyMiningReward": "Daily Mining Reward (FSN)",
       "createdAt": "Created At",
       "featurePlaceholder": "Type a feature and press Add",
       "addFeature": "Add Feature",
@@ -2082,6 +2079,7 @@
     }
   },
   "common": {
+    "loading": "Loading...",
     "cancel": "Cancel",
     "delete": "Delete",
     "confirm": "Confirm",

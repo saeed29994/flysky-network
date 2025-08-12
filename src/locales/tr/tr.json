@@ -120,9 +120,10 @@
     "firstLifetime": "Maksimum getiri ile ömür boyu plan."
   },
   "planNames": {
-    "economy": "Ekonomi Sınıfı:",
+    "economy": "Ekonomi Sınıfı",
     "business": "İş Sınıfı",
     "first": "Birinci Sınıf",
+    "first-6": "Birinci Sınıf (6 Ay)",
     "first-lifetime": "Birinci Sınıf (Ömür Boyu)"
   },
   "planFeatures": {
@@ -929,7 +930,11 @@
       "first-6": "Birinci Sınıf (6 Ay)",
       "first-lifetime": "Birinci Sınıf (Ömür Boyu)"
     },
-    "miningHistory": "Madencilik Geçmişi"
+    "miningHistory": "Madencilik Geçmişi",
+    "loading": "Yükleniyor...",
+    "loadingPlanData": "Plan verileri yükleniyor...",
+    "planNotFound": "Plan Bulunamadı",
+    "planNotFoundDesc": "Plan bilgileri yüklenemedi. Lütfen daha sonra tekrar deneyin."
   },
   "subscribeToPlan": "Plana Abone Ol",
   "selectedPlan": "Seçilen Plan",
@@ -1215,6 +1220,39 @@
     "rewards": {
       "title": "Ödül Yönetimi",
       "description": "Ödül programları oluşturun ve yönetin",
+      "staking": {
+        "title": "Staking",
+        "description": "Staking süreleri ve ödüllerini yapılandırın",
+        "duration": "Süre",
+        "reward": "Ödül",
+        "status": "Durum",
+        "addDuration": "Süre Ekle",
+        "units": {
+          "days": "Gün",
+          "weeks": "Hafta",
+          "months": "Ay",
+          "years": "Yıl"
+        }
+      },
+      "referrals": {
+        "title": "Referanslar",
+        "description": "Referans seviyelerini ve ödüllerini yönetin",
+        "tier": "Seviye",
+        "referralRange": "Referans Aralığı",
+        "referrals": "Referans",
+        "reward": "Ödül",
+        "status": "Durum",
+        "addTier": "Seviye Ekle"
+      },
+      "watchAds": {
+        "title": "Reklam İzle",
+        "description": "Reklam izleme ödüllerini yapılandırın",
+        "adsCount": "Reklam Sayısı",
+        "ads": "Reklam",
+        "reward": "Ödül",
+        "status": "Durum",
+        "addReward": "Ödül Ekle"
+      },
       "stats": {
         "totalRewards": "Toplam Ödüller",
         "activeRewards": "Aktif Ödüller",
@@ -1287,6 +1325,14 @@
         "active": "Aktif",
         "inactive": "Pasif"
       },
+      "noData": "Henüz {{section}} verisi yok",
+      "startAdding": "İlk {{section}} yapılandırmanızı eklemeye başlayın",
+      "clickToExpand": "Genişletmek için tıklayın",
+      "clickToCollapse": "Daraltmak için tıklayın",
+      "quickActions": "Hızlı İşlemler",
+      "quickActions.addStaking": "Staking Süresi Ekle",
+      "quickActions.addReferral": "Referans Seviyesi Ekle",
+      "quickActions.addWatchAd": "Reklam İzleme Ödülü Ekle",
       "details": {
         "title": "Ödül Detayları",
         "basicInformation": "Temel Bilgiler",
@@ -1350,56 +1396,7 @@
       "noRewards": "Ödül bulunamadı",
       "loading": "Ödüller yükleniyor..."
     },
-    "transaction": {
-      "title": "İşlem Yönetimi",
-      "description": "Platform işlemlerini izleyin ve yönetin",
-      "searchPlaceholder": "İşlem ara...",
-      "filters": {
-        "all": "Tüm Durumlar",
-        "completed": "Tamamlandı",
-        "pending": "Beklemede",
-        "failed": "Başarısız"
-      },
-      "stats": {
-        "totalTransactions": "Toplam İşlemler",
-        "totalVolume": "Toplam Hacim",
-        "completed": "Tamamlandı",
-        "pending": "Beklemede"
-      },
-      "table": {
-        "transaction": "İşlem",
-        "user": "Kullanıcı",
-        "amount": "Miktar",
-        "date": "Tarih",
-        "status": "Durum",
-        "actions": "İşlemler"
-      },
-      "types": {
-        "stake": "Stake",
-        "reward": "Ödül",
-        "referral": "Referans",
-        "mining": "Madencilik",
-        "withdrawal": "Çekme",
-        "deposit": "Yatırma",
-        "bonus": "Bonus"
-      },
-      "status": {
-        "completed": "Tamamlandı",
-        "pending": "Beklemede",
-        "failed": "Başarısız"
-      },
-      "modal": {
-        "title": "İşlem Detayları",
-        "transactionInfo": "İşlem Bilgileri",
-        "userInfo": "Kullanıcı Bilgileri",
-        "description": "Açıklama",
-        "timestamp": "Zaman Damgası",
-        "close": "Kapat"
-      },
-      "noTransactions": "İşlem bulunamadı",
-      "loading": "İşlemler yükleniyor...",
-      "viewDetails": "Detayları Görüntüle"
-    },
+
     "dashboard": {
       "title": "Yönetici Paneli",
       "subtitle": "Kullanıcıları, KYC ve ödemeleri yönetin",
@@ -1537,38 +1534,8 @@
     },
     "transactions": {
       "title": "İşlem Yönetimi",
-      "description": "Tüm platform işlemlerini izleyin ve yönetin",
-      "searchPlaceholder": "İşlem ara...",
-      "filters": {
-        "all": "Tümü",
-        "completed": "Tamamlandı",
-        "pending": "Beklemede",
-        "failed": "Başarısız"
-      },
-      "table": {
-        "id": "İşlem ID",
-        "user": "Kullanıcı",
-        "type": "Tür",
-        "amount": "Miktar",
-        "description": "Açıklama",
-        "timestamp": "Tarih & Saat",
-        "status": "Durum"
-      },
-      "types": {
-        "stake": "Stake",
-        "reward": "Ödül",
-        "referral": "Referans",
-        "withdrawal": "Çekim",
-        "mining": "Madencilik"
-      },
-      "status": {
-        "completed": "Tamamlandı",
-        "pending": "Beklemede",
-        "failed": "Başarısız"
-      },
-      "noTransactions": "İşlem bulunamadı",
-      "loading": "İşlemler yükleniyor...",
-      "viewDetails": "Detayları Görüntüle"
+      "noTransactions": "İşlem verisi yok",
+      "description": "İşlem verileri mevcut olduğunda burada gösterilecektir."
     },
     "content": {
       "title": "İçerik Yönetimi",
@@ -1768,6 +1735,7 @@
       "planId": "Plan ID (örn: economy, business)",
       "durationDays": "Süre (gün)",
       "days": "gün",
+      "dailyMiningReward": "Günlük Madencilik Ödülü (FSN)",
       "createdAt": "Oluşturulma",
       "featurePlaceholder": "Bir özellik yazın ve Ekle'ye tıklayın",
       "addFeature": "Özellik Ekle",
@@ -1963,6 +1931,7 @@
     "p2": "Kullanıcıların keyifli etkileşimlerle kazanç sağlayıp varlıklarını büyütebilecekleri canlı bir ekosistem inşa etmeye kararlıyız."
   },
   "common": {
+    "loading": "Yükleniyor...",
     "cancel": "İptal",
     "delete": "Sil",
     "confirm": "Onayla",

@@ -25,6 +25,7 @@ interface MembershipPlan {
   name: string;
   price: number;
   durationDays: number;
+  dailyMiningReward: number;
   features: string[];
   createdAt?: any;
 }
@@ -60,6 +61,7 @@ const MembershipsTab = () => {
     name: '',
     price: 0,
     durationDays: 30,
+    dailyMiningReward: 0,
     features: []
   });
   const [newFeature, setNewFeature] = useState<string>('');
@@ -111,6 +113,7 @@ const MembershipsTab = () => {
         name: String(newPlan.name).trim(),
         price: Number(newPlan.price),
         durationDays: Number(newPlan.durationDays),
+        dailyMiningReward: Number(newPlan.dailyMiningReward || 0),
         features: Array.isArray(newPlan.features) ? newPlan.features : [],
         createdAt: serverTimestamp()
       };
@@ -137,6 +140,7 @@ const MembershipsTab = () => {
         name: '',
         price: 0,
         durationDays: 30,
+        dailyMiningReward: 0,
         features: []
       });
       setNewFeature('');
@@ -270,10 +274,14 @@ const MembershipsTab = () => {
               ))}
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="bg-white/5 rounded-lg p-3">
                 <p className="text-gray-400 text-xs">{t('admin.memberships.duration')}</p>
                 <p className="text-white font-bold">{plan.durationDays} {t('admin.memberships.days')}</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-gray-400 text-xs">{t('admin.memberships.dailyMiningReward')}</p>
+                <p className="text-white font-bold">{plan.dailyMiningReward || 0} FSN</p>
               </div>
               <div className="bg-white/5 rounded-lg p-3">
                 <p className="text-gray-400 text-xs">{t('admin.memberships.createdAt')}</p>
@@ -390,6 +398,17 @@ const MembershipsTab = () => {
               </div>
 
               <div>
+                <label className="block text-sm text-gray-300 mb-1">{t('admin.memberships.dailyMiningReward')}</label>
+                <input
+                  type="number"
+                  placeholder={t('admin.memberships.dailyMiningReward')}
+                  value={newPlan.dailyMiningReward}
+                  onChange={(e) => setNewPlan(prev => ({ ...prev, dailyMiningReward: Number(e.target.value) }))}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
                 <label className="block text-sm text-gray-300 mb-1">{t('admin.memberships.features')}</label>
                 <div className="flex gap-2">
                   <input
@@ -465,6 +484,7 @@ const MembershipsTab = () => {
                   <p><span className="text-gray-400">{t('admin.memberships.name')}:</span> <span className="text-white">{showViewModal.name}</span></p>
                   <p><span className="text-gray-400">{t('admin.memberships.price')}:</span> <span className="text-white">${showViewModal.price}</span></p>
                   <p><span className="text-gray-400">{t('admin.memberships.duration')}:</span> <span className="text-white">{showViewModal.durationDays} {t('admin.memberships.days')}</span></p>
+                  <p><span className="text-gray-400">{t('admin.memberships.dailyMiningReward')}:</span> <span className="text-white">{showViewModal.dailyMiningReward || 0} FSN</span></p>
                   <p><span className="text-gray-400">{t('admin.memberships.createdAt')}:</span> <span className="text-white">{formatTimestamp(showViewModal.createdAt)}</span></p>
                 </div>
               </div>
@@ -536,6 +556,17 @@ const MembershipsTab = () => {
                   placeholder={t('admin.memberships.durationDays')}
                   value={editingPlan.durationDays}
                   onChange={(e) => setEditingPlan(prev => prev ? { ...prev, durationDays: Number(e.target.value) } : null)}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">{t('admin.memberships.dailyMiningReward')}</label>
+                <input
+                  type="number"
+                  placeholder={t('admin.memberships.dailyMiningReward')}
+                  value={editingPlan.dailyMiningReward}
+                  onChange={(e) => setEditingPlan(prev => prev ? { ...prev, dailyMiningReward: Number(e.target.value) } : null)}
                   className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>

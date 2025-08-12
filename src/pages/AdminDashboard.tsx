@@ -34,6 +34,7 @@ import TransactionsTab from '../components/admin/TransactionsTab';
 import RewardsTab from '../components/admin/RewardsTab';
 import ContentTab from '../components/admin/ContentTab';
 import NotificationsTab from '../components/admin/NotificationsTab';
+import KycVerificationTab from '../components/admin/KycVerificationTab';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -80,7 +81,7 @@ const AdminDashboard = () => {
   const [manualPayments, setManualPayments] = useState<ManualPayment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [kycSearchQuery, setKycSearchQuery] = useState('');
+  // const [kycSearchQuery, setKycSearchQuery] = useState('');
   const [newPlan, setNewPlan] = useState('');
   const [selectedTab, setSelectedTab] = useState(0);
   
@@ -138,6 +139,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchUsers();
     fetchManualPayments();
+
     const interval = setInterval(() => {
       fetchUsers();
       fetchManualPayments();
@@ -192,13 +194,13 @@ const AdminDashboard = () => {
     setDeletingUser(null);
   };
 
-  const handleKycVerification = async (userId: string) => {
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, { kycStatus: 'Verified' });
-    setUsers((prev) =>
-      prev.map((u) => (u.id === userId ? { ...u, kycStatus: 'Verified' } : u))
-    );
-  };
+  // const handleKycVerification = async (userId: string) => {
+  //   const userRef = doc(db, 'users', userId);
+  //   await updateDoc(userRef, { kycStatus: 'Verified' });
+  //   setUsers((prev) =>
+  //     prev.map((u) => (u.id === userId ? { ...u, kycStatus: 'Verified' } : u))
+  //   );
+  // };
 
   const filteredUsers = users.filter(
     (user) =>
@@ -207,12 +209,12 @@ const AdminDashboard = () => {
       user.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredKycUsers = users.filter(
-    (user) =>
-      user.fullName.toLowerCase().includes(kycSearchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(kycSearchQuery.toLowerCase()) ||
-      user.id.toLowerCase().includes(kycSearchQuery.toLowerCase())
-  );
+  // const filteredKycUsers = users.filter(
+  //   (user) =>
+  //     user.fullName.toLowerCase().includes(kycSearchQuery.toLowerCase()) ||
+  //     user.email.toLowerCase().includes(kycSearchQuery.toLowerCase()) ||
+  //     user.id.toLowerCase().includes(kycSearchQuery.toLowerCase())
+  // );
 
   // Calculate statistics
   const totalUsers = users.length;
@@ -556,146 +558,7 @@ const AdminDashboard = () => {
 
             {/* KYC Verification Tab */}
             <Tab.Panel>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="space-y-6"
-              >
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl">
-                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-                      <FaIdCard className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.kyc.title')}</h2>
-                      <p className="text-gray-400 text-xs sm:text-sm">{t('admin.kyc.description')}</p>
-                    </div>
-                  </div>
-
-                  {/* Search Bar */}
-                  <div className="relative mb-4 sm:mb-6">
-                    <FaSearch className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input
-                      type="text"
-                      placeholder={t('admin.users.searchPlaceholder')}
-                      value={kycSearchQuery}
-                      onChange={(e) => setKycSearchQuery(e.target.value)}
-                      className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent backdrop-blur-sm text-sm sm:text-base"
-                    />
-                  </div>
-
-                  {loading ? (
-                    <div className="flex items-center justify-center py-8 sm:py-12">
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      <span className="ml-3 text-gray-400 text-sm sm:text-base">{t('admin.users.loading')}</span>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {/* Mobile Card View */}
-                      <div className="lg:hidden space-y-4">
-                        {filteredKycUsers.map((user, index) => (
-                          <motion.div
-                            key={user.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, delay: index * 0.05 }}
-                            className="bg-white/5 rounded-xl p-4 border border-white/10"
-                          >
-                            <div className="space-y-3">
-                              <div>
-                                <p className="text-white font-medium text-sm">{user.fullName}</p>
-                                <p className="text-gray-400 text-xs">{user.email}</p>
-                                <p className="text-gray-400 text-xs mt-1">{t('admin.users.table.id')}: {user.id.substring(0, 8)}...</p>
-                              </div>
-
-                              <div className="flex items-center justify-between">
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.kycStatus === 'Verified'
-                                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                                    : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                                  }`}>
-                                  {user.kycStatus}
-                                </span>
-
-                                {user.kycStatus !== 'Verified' ? (
-                                  <button
-                                    onClick={() => handleKycVerification(user.id)}
-                                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-xs"
-                                  >
-                                    <FaCheck className="w-3 h-3" />
-                                    {t('admin.users.actions.verifyKYC')}
-                                  </button>
-                                ) : (
-                                  <span className="text-green-400 font-semibold flex items-center gap-2 text-xs">
-                                    <FaUserCheck className="w-3 h-3" />
-                                    {t('admin.users.actions.verified')}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-
-                      {/* Desktop Table View */}
-                      <div className="hidden lg:block overflow-x-auto">
-                        <div className="bg-white/5 rounded-xl overflow-hidden">
-                          <table className="w-full">
-                            <thead>
-                              <tr className="bg-white/10 border-b border-white/10">
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.id')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.name')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.email')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.kycStatus')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.common.actions')}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {filteredKycUsers.map((user, index) => (
-                                <motion.tr
-                                  key={user.id}
-                                  initial={{ opacity: 0, y: 20 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                                  className="border-b border-white/5 hover:bg-white/5 transition-colors"
-                                >
-                                  <td className="py-4 px-4 text-xs text-gray-400 break-all">{user.id}</td>
-                                  <td className="py-4 px-4 text-white font-medium">{user.fullName}</td>
-                                  <td className="py-4 px-4 text-gray-300">{user.email}</td>
-                                  <td className="py-4 px-4">
-                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.kycStatus === 'Verified'
-                                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                                        : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                                      }`}>
-                                      {user.kycStatus}
-                                    </span>
-                                  </td>
-                                  <td className="py-4 px-4">
-                                    {user.kycStatus !== 'Verified' ? (
-                                      <button
-                                        onClick={() => handleKycVerification(user.id)}
-                                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
-                                      >
-                                        <FaCheck className="w-4 h-4" />
-                                        {t('admin.users.actions.verifyKYC')}
-                                      </button>
-                                    ) : (
-                                      <span className="text-green-400 font-semibold flex items-center gap-2">
-                                        <FaUserCheck className="w-4 h-4" />
-                                        {t('admin.users.actions.verified')}
-                                      </span>
-                                    )}
-                                  </td>
-                                </motion.tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+              <KycVerificationTab />
             </Tab.Panel>
 
             {/* Manual Payments Tab */}

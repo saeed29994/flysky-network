@@ -14,7 +14,8 @@ import {
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaCoins, FaClock, FaChartLine, FaPlay, FaUnlock, FaCheckCircle, FaWallet } from 'react-icons/fa';
-import { PLAN_LIMITS, MINING_CYCLE_SECONDS, getPlanConfig, getMiningRate } from '../utils/planConstants';
+import { MINING_CYCLE_SECONDS } from '../utils/planConstants';
+import { fetchPlansFromFirebase, FirebasePlan } from '../utils/plansService';
 import PlanComparisonCard from './PlanComparisonCard';
 import { useUserPlan } from '../contexts/UserPlanContext';
 
@@ -40,13 +41,41 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
   const [history, setHistory] = useState<number[]>([]);
   const [showUnlock, setShowUnlock] = useState(false);
   const [initialized, setInitialized] = useState(false);
+  const [currentPlanData, setCurrentPlanData] = useState<FirebasePlan | null>(null);
+  const [dailyLimit, setDailyLimit] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Map legacy 'first' to 'first-lifetime' for compatibility
   const normalizedPlan = (plan === 'first' ? 'first-lifetime' : plan) as 'economy' | 'business' | 'first-6' | 'first-lifetime';
-  
-  const miningRate = getMiningRate(normalizedPlan);
-  const planConfig = getPlanConfig(t);
-  const currentPlan = planConfig[normalizedPlan] || planConfig.economy;
+
+  // Fetch plans data from Firebase
+  useEffect(() => {
+    const loadPlansData = async () => {
+      try {
+        setIsLoading(true);
+        const plans = await fetchPlansFromFirebase();
+        
+        // Get current plan data
+        if (plans[normalizedPlan]) {
+          setCurrentPlanData(plans[normalizedPlan]);
+          setDailyLimit(plans[normalizedPlan].dailyMiningReward);
+        } else {
+          console.error(`Plan ${normalizedPlan} not found in Firebase`);
+          setDailyLimit(0);
+        }
+      } catch (error) {
+        console.error('Error loading plans data:', error);
+        setDailyLimit(0);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPlansData();
+  }, [normalizedPlan]);
+
+  // Calculate mining rate based on daily limit from Firebase
+  const miningRate = dailyLimit > 0 ? dailyLimit / MINING_CYCLE_SECONDS : 0;
 
   const fetchUserData = async () => {
     const user = auth.currentUser;
@@ -120,17 +149,17 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
 
   // Handle mining timer and progress
   useEffect(() => {
-    if (!startTime || claimReady || isMaxed || firstTime) return;
+    if (!startTime || claimReady || isMaxed || firstTime || dailyLimit === 0) return;
     
     const interval = setInterval(() => {
       const now = new Date();
       const elapsed = Math.floor((now.getTime() - startTime.getTime()) / 1000);
       const rawMined = elapsed * miningRate;
-      const currentMined = Math.min(PLAN_LIMITS[normalizedPlan], isNaN(rawMined) ? 0 : rawMined);
+      const currentMined = Math.min(dailyLimit, isNaN(rawMined) ? 0 : rawMined);
       
       setMined(currentMined);
 
-      if ((elapsed >= MINING_CYCLE_SECONDS || currentMined >= PLAN_LIMITS[normalizedPlan]) && !claimReady) {
+      if ((elapsed >= MINING_CYCLE_SECONDS || currentMined >= dailyLimit) && !claimReady) {
         setClaimReady(true);
         setIsMaxed(true);
         setRemainingTime(0);
@@ -151,7 +180,7 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
     }, 1000);
     
     return () => clearInterval(interval);
-  }, [startTime, plan, claimReady, isMaxed, miningRate, normalizedPlan, firstTime]);
+  }, [startTime, plan, claimReady, isMaxed, miningRate, dailyLimit, firstTime]);
 
   useEffect(() => {
     if (claimReady) {
@@ -224,6 +253,46 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
     }
   };
 
+  // Show loading state while fetching plan data
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex justify-center items-center px-4">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-2xl w-full max-w-md text-center border border-white/20"
+        >
+          <div className="w-16 h-16 bg-gradient-to-r from-gray-500 to-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg animate-pulse">
+            <FaCoins className="w-8 h-8 text-white" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-4">{t('miningPage.loading')}</h2>
+          <p className="text-gray-400 mb-6">{t('miningPage.loadingPlanData')}</p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Show error state if no plan data is available
+  if (!currentPlanData || dailyLimit === 0) {
+    return (
+      <div className="w-full min-h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex justify-center items-center px-4">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-2xl w-full max-w-md text-center border border-white/20"
+        >
+          <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <FaCoins className="w-8 h-8 text-white" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-4">{t('miningPage.planNotFound')}</h2>
+          <p className="text-gray-400 mb-6">{t('miningPage.planNotFoundDesc')}</p>
+        </motion.div>
+      </div>
+    );
+  }
+
   if (firstTime) {
     return (
       <div className="w-full min-h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex justify-center items-center px-4">
@@ -233,7 +302,7 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
           transition={{ duration: 0.5 }}
           className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-2xl w-full max-w-md text-center border border-white/20"
         >
-          <div className={`w-16 h-16 bg-gradient-to-r ${currentPlan.color} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
+          <div className={`w-16 h-16 bg-gradient-to-r ${currentPlanData.color} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
             <FaCoins className="w-8 h-8 text-white" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">{t('miningPage.readyToMine')}</h2>
@@ -333,16 +402,16 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
               {/* Plan Info Card - Compact */}
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 shadow-xl">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className={`w-10 h-10 bg-gradient-to-r ${currentPlan.color} rounded-xl flex items-center justify-center shadow-lg`}>
+                  <div className={`w-10 h-10 bg-gradient-to-r ${currentPlanData.color} rounded-xl flex items-center justify-center shadow-lg`}>
                     <FaCoins className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white">{currentPlan.name}</h3>
+                    <h3 className="text-sm font-bold text-white">{currentPlanData.name}</h3>
                     <p className="text-xs text-gray-400">{t('miningPage.currentPlan')}</p>
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-bold text-white">{PLAN_LIMITS[normalizedPlan]}</div>
+                  <div className="text-lg font-bold text-white">{dailyLimit}</div>
                   <div className="text-xs text-amber-400 font-semibold">{t('miningPage.dailyLimit')}</div>
                 </div>
               </div>
@@ -361,7 +430,7 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                 <div className="text-center">
                   <div className="text-lg font-bold text-white">{Math.floor(mined)}</div>
                   <div className="text-xs text-yellow-400 font-semibold">
-                    {Math.round((mined / PLAN_LIMITS[normalizedPlan]) * 100)}% {t('miningPage.complete')}
+                    {Math.round((mined / dailyLimit) * 100)}% {t('miningPage.complete')}
                   </div>
                 </div>
               </div>
@@ -385,13 +454,13 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                   <motion.div 
                     className="h-full bg-gradient-to-r from-yellow-500 to-orange-500"
                     initial={{ width: 0 }}
-                    animate={{ width: `${(mined / PLAN_LIMITS[normalizedPlan]) * 100}%` }}
+                    animate={{ width: `${(mined / dailyLimit) * 100}%` }}
                     transition={{ duration: 1, ease: "easeOut" }}
                   />
         </div>
                 
                 <div className="text-sm text-gray-400">
-                  {Math.floor(mined)} / {PLAN_LIMITS[normalizedPlan]} {t('miningPage.fsn')}
+                  {Math.floor(mined)} / {dailyLimit} {t('miningPage.fsn')}
                 </div>
               </div>
 
@@ -489,12 +558,12 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
               {/* Plan Details Card */}
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className={`w-14 h-14 bg-gradient-to-r ${currentPlan.color} rounded-2xl flex items-center justify-center shadow-lg`}>
+                  <div className={`w-14 h-14 bg-gradient-to-r ${currentPlanData.color} rounded-2xl flex items-center justify-center shadow-lg`}>
                     <FaCoins className="w-7 h-7 text-white" />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-white">{t('miningPage.fsnDailyMining')}</h2>
-                    <p className="text-gray-400">{currentPlan.name}</p>
+                    <p className="text-gray-400">{currentPlanData.name}</p>
                   </div>
                 </div>
 
@@ -549,11 +618,11 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400 text-sm">{t('miningPage.dailyLimit')}</span>
-                    <span className="text-white font-semibold">{PLAN_LIMITS[normalizedPlan]} FSN</span>
+                    <span className="text-white font-semibold">{dailyLimit} FSN</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400 text-sm">{t('miningPage.progress')}</span>
-                    <span className="text-green-400 font-semibold">{Math.round((mined / PLAN_LIMITS[normalizedPlan]) * 100)}%</span>
+                    <span className="text-green-400 font-semibold">{Math.round((mined / dailyLimit) * 100)}%</span>
                   </div>
                 </div>
               </div>
