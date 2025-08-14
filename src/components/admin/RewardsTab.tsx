@@ -2,13 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaCoins, FaPlus, FaLock, FaUsers, FaPlay, FaEdit, FaTrash, FaEye, FaRedo } from 'react-icons/fa';
+import { FaCoins, FaPlus, FaLock, FaUsers, FaPlay, FaEdit, FaTrash, FaRedo } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { 
   fetchRewardsFromFirebase, 
   clearRewardsCache,
   type FirebaseRewards,
 } from '../../utils/rewardsService';
+import { db } from '../../firebase';
+import { addDoc, collection, deleteDoc, doc, updateDoc, setDoc } from 'firebase/firestore';
 
 const RewardsTab: React.FC = () => {
   const { t } = useTranslation();
@@ -23,6 +25,12 @@ const RewardsTab: React.FC = () => {
   // Loading states
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<null | 'staking' | 'referrals' | 'watchAds'>(null);
+  const [editingItem, setEditingItem] = useState<any | null>(null);
+  const [formValues, setFormValues] = useState<any>({});
 
   const rewardSections = [
     {
@@ -88,6 +96,100 @@ const RewardsTab: React.FC = () => {
     fetchRewards();
   }, []);
 
+  // Modal helpers
+  const openCreateModal = (section: 'staking' | 'referrals' | 'watchAds') => {
+    setActiveSection(section);
+    setEditingItem(null);
+    if (section === 'staking') {
+      setFormValues({ duration: 1, reward: 5 });
+    } else if (section === 'referrals') {
+      setFormValues({ name: 'Tier 1', min: 1, max: 10, reward: 100 });
+    } else {
+      // Enforce single record for watchAds: if exists, open edit instead of creating a new one
+      if (rewards.watchAds.length > 0) {
+        const first = rewards.watchAds[0];
+        setEditingItem(first);
+        setFormValues({ dailyLimit: first.adsCount, collectBonus: first.reward });
+      } else {
+        setFormValues({ dailyLimit: 5, collectBonus: 200 });
+      }
+    }
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (section: 'staking' | 'referrals' | 'watchAds', item: any) => {
+    setActiveSection(section);
+    setEditingItem(item);
+    if (section === 'staking') {
+      setFormValues({ duration: item.duration, reward: item.reward });
+    } else if (section === 'referrals') {
+      setFormValues({ name: item.name || `Tier ${item.tier}`, min: item.referralRange?.min || 0, max: item.referralRange?.max || 0, reward: item.reward });
+    } else {
+      setFormValues({ dailyLimit: item.adsCount, collectBonus: item.reward });
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setActiveSection(null);
+    setEditingItem(null);
+    setFormValues({});
+  };
+
+  const handleDelete = async (section: 'staking' | 'referrals' | 'watchAds', id: string) => {
+    try {
+      if (section === 'watchAds') {
+        // Single-config document deletion
+        await deleteDoc(doc(db, 'rewards', 'watchAds'));
+      } else {
+        await deleteDoc(doc(db, 'rewards', section, 'items', id));
+      }
+      clearRewardsCache();
+      await fetchRewards();
+    } catch (e) {
+      console.error('Error deleting reward:', e);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!activeSection) return;
+    try {
+      let data: any = {};
+      if (activeSection === 'staking') {
+        data = { duration: Number(formValues.duration) || 0, durationUnit: 'months', reward: Number(formValues.reward) || 0 };
+      } else if (activeSection === 'referrals') {
+        const tierMatch = /([0-9]+)/.exec(String(formValues.name || ''));
+        const tier = tierMatch ? Number(tierMatch[1]) : 1;
+        data = { name: formValues.name, tier, referralRange: { min: Number(formValues.min) || 0, max: Number(formValues.max) || 0 }, referrals: 0, reward: Number(formValues.reward) || 0 };
+      } else {
+        // watchAds single-record config saved at `rewards/watchAds`
+        const cfg = { dailyLimit: Number(formValues.dailyLimit) || 0, collectBonus: Number(formValues.collectBonus) || 0 };
+        await setDoc(doc(db, 'rewards', 'watchAds'), cfg, { merge: true });
+        clearRewardsCache();
+        await fetchRewards();
+        closeModal();
+        return;
+      }
+
+      // For staking and referrals we still use subcollections
+      if (activeSection === 'staking' || activeSection === 'referrals') {
+        const colRef = collection(db, 'rewards', activeSection, 'items');
+        if (editingItem?.id) {
+          await updateDoc(doc(db, 'rewards', activeSection, 'items', editingItem.id), data);
+        } else {
+          await addDoc(colRef, data);
+        }
+      }
+
+      clearRewardsCache();
+      await fetchRewards();
+      closeModal();
+    } catch (e) {
+      console.error('Error saving reward:', e);
+    }
+  };
+
   const renderEmptyState = (sectionId: string) => (
     <div className="text-center py-12">
       <div className={`w-16 h-16 mx-auto mb-4 rounded-full ${rewardSections.find(s => s.id === sectionId)?.bgColor} flex items-center justify-center`}>
@@ -101,12 +203,13 @@ const RewardsTab: React.FC = () => {
       <p className="text-gray-400 mb-6">
         {t('admin.rewards.startAdding', { section: rewardSections.find(s => s.id === sectionId)?.title })}
       </p>
-      <button className={`bg-gradient-to-r ${rewardSections.find(s => s.id === sectionId)?.color} text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2 mx-auto`}>
-        <FaPlus className="w-4 h-4" />
-        {sectionId === 'staking' && t('admin.rewards.staking.addDuration')}
-        {sectionId === 'referrals' && t('admin.rewards.referrals.addTier')}
-        {sectionId === 'watchAds' && t('admin.rewards.watchAds.addReward')}
-      </button>
+      {sectionId !== 'watchAds' && (
+        <button className={`bg-gradient-to-r ${rewardSections.find(s => s.id === sectionId)?.color} text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2 mx-auto`}>
+          <FaPlus className="w-4 h-4" />
+          {sectionId === 'staking' && t('admin.rewards.staking.addDuration')}
+          {sectionId === 'referrals' && t('admin.rewards.referrals.addTier')}
+        </button>
+      )}
     </div>
   );
 
@@ -121,8 +224,7 @@ const RewardsTab: React.FC = () => {
           <thead className="text-xs text-gray-400 uppercase bg-white/5">
             <tr>
               <th className="px-4 py-3">{t('admin.rewards.staking.duration')}</th>
-              <th className="px-4 py-3">{t('admin.rewards.staking.reward')}</th>
-              <th className="px-4 py-3">{t('admin.rewards.staking.status')}</th>
+              <th className="px-4 py-3">% APY</th>
               <th className="px-4 py-3">{t('admin.rewards.actions.actions')}</th>
             </tr>
           </thead>
@@ -132,25 +234,14 @@ const RewardsTab: React.FC = () => {
                 <td className="px-4 py-3">
                   {reward.duration} {t(`admin.rewards.staking.units.${reward.durationUnit}`)}
                 </td>
-                <td className="px-4 py-3 font-medium">{reward.reward} FSN</td>
-                <td className="px-4 py-3">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    reward.status === 'active' 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-red-500/20 text-red-400'
-                  }`}>
-                    {t(`admin.rewards.status.${reward.status}`)}
-                  </span>
-                </td>
+                <td className="px-4 py-3 font-medium">{reward.reward}%</td>
+                
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
-                    <button className="p-1 text-blue-400 hover:text-blue-300 transition-colors">
-                      <FaEye className="w-4 h-4" />
-                    </button>
-                    <button className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
+                     <button onClick={() => openEditModal('staking', reward)} className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
                       <FaEdit className="w-4 h-4" />
                     </button>
-                    <button className="p-1 text-red-400 hover:text-red-300 transition-colors">
+                     <button onClick={() => handleDelete('staking', reward.id)} className="p-1 text-red-400 hover:text-red-300 transition-colors">
                       <FaTrash className="w-4 h-4" />
                     </button>
                   </div>
@@ -171,43 +262,28 @@ const RewardsTab: React.FC = () => {
     return (
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-300">
-          <thead className="text-xs text-gray-400 uppercase bg-white/5">
+           <thead className="text-xs text-gray-400 uppercase bg-white/5">
             <tr>
-              <th className="px-4 py-3">{t('admin.rewards.referrals.tier')}</th>
-              <th className="px-4 py-3">{t('admin.rewards.referrals.referralRange')}</th>
-              <th className="px-4 py-3">{t('admin.rewards.referrals.referrals')}</th>
-              <th className="px-4 py-3">{t('admin.rewards.referrals.reward')}</th>
-              <th className="px-4 py-3">{t('admin.rewards.referrals.status')}</th>
+              <th className="px-4 py-3">Name</th>
+              <th className="px-4 py-3">Range</th>
+              <th className="px-4 py-3">Bonus</th>
               <th className="px-4 py-3">{t('admin.rewards.actions.actions')}</th>
             </tr>
           </thead>
           <tbody>
             {rewards.referrals.map((reward) => (
               <tr key={reward.id} className="border-b border-white/10 hover:bg-white/5">
-                <td className="px-4 py-3 font-medium">Tier {reward.tier}</td>
+                <td className="px-4 py-3 font-medium">{reward.name || `Tier ${reward.tier}`}</td>
                 <td className="px-4 py-3">
                   {reward.referralRange.min} - {reward.referralRange.max}
                 </td>
-                <td className="px-4 py-3">{reward.referrals}</td>
                 <td className="px-4 py-3 font-medium">{reward.reward} FSN</td>
                 <td className="px-4 py-3">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    reward.status === 'active' 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-red-500/20 text-red-400'
-                  }`}>
-                    {t(`admin.rewards.status.${reward.status}`)}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
                   <div className="flex gap-2">
-                    <button className="p-1 text-blue-400 hover:text-blue-300 transition-colors">
-                      <FaEye className="w-4 h-4" />
-                    </button>
-                    <button className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
+                    <button onClick={() => openEditModal('referrals', reward)} className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
                       <FaEdit className="w-4 h-4" />
                     </button>
-                    <button className="p-1 text-red-400 hover:text-red-300 transition-colors">
+                    <button onClick={() => handleDelete('referrals', reward.id)} className="p-1 text-red-400 hover:text-red-300 transition-colors">
                       <FaTrash className="w-4 h-4" />
                     </button>
                   </div>
@@ -228,39 +304,25 @@ const RewardsTab: React.FC = () => {
     return (
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-300">
-          <thead className="text-xs text-gray-400 uppercase bg-white/5">
+           <thead className="text-xs text-gray-400 uppercase bg-white/5">
             <tr>
-              <th className="px-4 py-3">{t('admin.rewards.watchAds.adsCount')}</th>
-              <th className="px-4 py-3">{t('admin.rewards.watchAds.reward')}</th>
-              <th className="px-4 py-3">{t('admin.rewards.watchAds.status')}</th>
+              <th className="px-4 py-3">Daily Limit</th>
+              <th className="px-4 py-3">Collect Bonus</th>
               <th className="px-4 py-3">{t('admin.rewards.actions.actions')}</th>
             </tr>
           </thead>
           <tbody>
-            {rewards.watchAds.map((reward) => (
-              <tr key={reward.id} className="border-b border-white/10 hover:bg-white/5">
-                <td className="px-4 py-3 font-medium">{reward.adsCount} {t('admin.rewards.watchAds.ads')}</td>
-                <td className="px-4 py-3 font-medium">{reward.reward} FSN</td>
-                <td className="px-4 py-3">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    reward.status === 'active' 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-red-500/20 text-red-400'
-                  }`}>
-                    {t(`admin.rewards.status.${reward.status}`)}
-                  </span>
-                </td>
+            {[rewards.watchAds[0]].filter(Boolean).map((reward) => (
+              <tr key={(reward as any).id || 'watchAds'} className="border-b border-white/10 hover:bg-white/5">
+                <td className="px-4 py-3 font-medium">{(reward as any).adsCount}</td>
+                <td className="px-4 py-3 font-medium">{(reward as any).reward} FSN</td>
+                
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
-                    <button className="p-1 text-blue-400 hover:text-blue-300 transition-colors">
-                      <FaEye className="w-4 h-4" />
-                    </button>
-                    <button className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
+                    <button onClick={() => openEditModal('watchAds', reward as any)} className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
                       <FaEdit className="w-4 h-4" />
                     </button>
-                    <button className="p-1 text-red-400 hover:text-red-300 transition-colors">
-                      <FaTrash className="w-4 h-4" />
-                    </button>
+                    {/* Delete disabled for watchAds */}
                   </div>
                 </td>
               </tr>
@@ -275,7 +337,7 @@ const RewardsTab: React.FC = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold text-white">{t('admin.rewards.staking.title')}</h3>
-        <button className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 text-sm">
+        <button onClick={() => openCreateModal('staking')} className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 text-sm">
           <FaPlus className="w-4 h-4" />
           {t('admin.rewards.staking.addDuration')}
         </button>
@@ -288,7 +350,7 @@ const RewardsTab: React.FC = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold text-white">{t('admin.rewards.referrals.title')}</h3>
-        <button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 text-sm">
+        <button onClick={() => openCreateModal('referrals')} className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 text-sm">
           <FaPlus className="w-4 h-4" />
           {t('admin.rewards.referrals.addTier')}
         </button>
@@ -301,10 +363,7 @@ const RewardsTab: React.FC = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold text-white">{t('admin.rewards.watchAds.title')}</h3>
-        <button className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 text-sm">
-          <FaPlus className="w-4 h-4" />
-          {t('admin.rewards.watchAds.addReward')}
-        </button>
+        {/* Creation disabled for watchAds: view and edit only */}
       </div>
       {renderWatchAdsTable()}
     </div>
@@ -371,6 +430,92 @@ const RewardsTab: React.FC = () => {
           {renderWatchAdsSection()}
         </motion.div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && activeSection && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-white/10 rounded-xl w-full max-w-md p-6 text-white">
+            <h3 className="text-xl font-semibold mb-4">
+              {editingItem ? 'Edit' : 'Create'} {activeSection === 'staking' ? 'Staking' : activeSection === 'referrals' ? 'Referral' : 'Watch Ads'}
+            </h3>
+
+            {/* Form Fields */}
+            <div className="space-y-4">
+              {activeSection === 'staking' && (
+                <>
+                  <div>
+                    <label className="block text-sm mb-1">Months</label>
+                    <input type="number" value={formValues.duration}
+                      onChange={(e) => setFormValues({ ...formValues, duration: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1">% APY</label>
+                    <input type="number" value={formValues.reward}
+                      onChange={(e) => setFormValues({ ...formValues, reward: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
+                  </div>
+                </>
+              )}
+
+              {activeSection === 'referrals' && (
+                <>
+                  <div>
+                    <label className="block text-sm mb-1">Name</label>
+                    <input type="text" value={formValues.name}
+                      onChange={(e) => setFormValues({ ...formValues, name: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm mb-1">Range Min</label>
+                      <input type="number" value={formValues.min}
+                        onChange={(e) => setFormValues({ ...formValues, min: e.target.value })}
+                        className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
+                    </div>
+                    <div>
+                      <label className="block text-sm mb-1">Range Max</label>
+                      <input type="number" value={formValues.max}
+                        onChange={(e) => setFormValues({ ...formValues, max: e.target.value })}
+                        className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1">Bonus (FSN)</label>
+                    <input type="number" value={formValues.reward}
+                      onChange={(e) => setFormValues({ ...formValues, reward: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
+                  </div>
+                </>
+              )}
+
+              {activeSection === 'watchAds' && (
+                <>
+                  <div>
+                    <label className="block text-sm mb-1">Daily Limit</label>
+                    <input type="number" value={formValues.dailyLimit}
+                      onChange={(e) => setFormValues({ ...formValues, dailyLimit: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1">Collect Bonus (FSN)</label>
+                    <input type="number" value={formValues.collectBonus}
+                      onChange={(e) => setFormValues({ ...formValues, collectBonus: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
+                  </div>
+                </>
+              )}
+
+              {/* Status control removed for staking and watchAds */}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button onClick={closeModal} className="px-4 py-2 rounded-md bg-white/10 hover:bg-white/20">Cancel</button>
+              <button onClick={handleSubmit} className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-500">Save</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

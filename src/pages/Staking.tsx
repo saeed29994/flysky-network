@@ -7,6 +7,7 @@ import {
   updateDoc,
   onSnapshot,
   query,
+  getDoc,
   Timestamp,
 } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -61,12 +62,15 @@ const StakingPage = () => {
   const [loading, setLoading] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
   const [showActive, setShowActive] = useState(true);
+  const [customApy, setCustomApy] = useState<number[] | null>(null);
 
-  const returnRate =
+  const defaultReturnRate =
     plan === 'first-lifetime' ? [0.05, 0.2, 0.45, 1.0] :
     plan === 'first-6' ? [0.03, 0.15, 0.35, 0.8] :
     plan === 'business' ? [0, 0.10, 0.25, 0.6] :
     [0, 0, 0.15, 0.4];
+
+  const returnRate = customApy || defaultReturnRate;
 
   const durationIndex =
     duration === '1' ? 0 :
@@ -81,6 +85,38 @@ const StakingPage = () => {
       }
     });
     return () => unsubscribe();
+  }, []);
+
+  // Load APY config from Firestore -> rewards/staking
+  useEffect(() => {
+    const loadStakingConfig = async () => {
+      try {
+        const cfgRef = doc(db, 'rewards', 'staking');
+        const snap = await getDoc(cfgRef);
+        if (snap.exists()) {
+          const data: any = snap.data();
+          const durations: any[] = Array.isArray(data?.durations) ? data.durations : [];
+          if (durations.length > 0) {
+            // Map months -> apy decimal
+            const byMonth: Record<number, number> = {};
+            durations.forEach((d) => {
+              const months = Number(d.months || d.duration);
+              let apy = Number(d.apy);
+              if (!isFinite(apy)) apy = 0;
+              // If value looks like percent (e.g., 15), convert to decimal 0.15
+              const decimal = apy > 1 ? apy / 100 : apy;
+              byMonth[months] = decimal;
+            });
+            const mapped = [1, 3, 6, 12].map((m) => byMonth[m] ?? defaultReturnRate[[1,3,6,12].indexOf(m)]);
+            setCustomApy(mapped);
+          }
+        }
+      } catch (e) {
+        // Keep defaults silently
+      }
+    };
+    loadStakingConfig();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

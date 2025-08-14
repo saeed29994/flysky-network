@@ -21,6 +21,7 @@ export interface StakingReward {
 export interface ReferralReward {
   id: string;
   tier: number;
+  name?: string;
   referralRange: {
     min: number;
     max: number;
@@ -58,36 +59,26 @@ export const fetchRewardsFromFirebase = async (): Promise<FirebaseRewards> => {
     return rewardsCache;
   }
 
-  try {
-    console.log('🔍 Fetching rewards from Firebase...');
-    
-    // Method 1: Try to fetch from a single 'rewards' document first
-    const rewardsRef = doc(db, 'rewards', 'rewards');
-    const rewardsSnap = await getDoc(rewardsRef);
-    
-    if (rewardsSnap.exists()) {
-      const data = rewardsSnap.data();
-      const rewardsData: FirebaseRewards = {
-        staking: data.staking || [],
-        referrals: data.referrals || [],
-        watchAds: data.watchAds || []
-      };
+    try {
+      console.log('🔍 Fetching rewards from Firebase...');
+      
+      // Optional aggregate doc – used only as a fallback, never authoritative
+      let docStaking: StakingReward[] = [];
+      let docReferrals: ReferralReward[] = [];
+      try {
+        const rewardsRef = doc(db, 'rewards', 'rewards');
+        const rewardsSnap = await getDoc(rewardsRef);
+        if (rewardsSnap.exists()) {
+          const data = rewardsSnap.data() as any;
+          docStaking = Array.isArray(data.staking) ? data.staking : [];
+          docReferrals = Array.isArray(data.referrals) ? data.referrals : [];
+        }
+      } catch {
+        // ignore aggregate doc errors
+      }
 
-      // Update cache
-      rewardsCache = rewardsData;
-      lastFetchTime = now;
-      
-      console.log(`✅ Successfully fetched rewards from Firebase document:`, {
-        staking: rewardsData.staking.length,
-        referrals: rewardsData.referrals.length,
-        watchAds: rewardsData.watchAds.length
-      });
-      
-      return rewardsData;
-    } 
-    
-    // Method 2: If document doesn't exist, try to fetch from subcollections
-    console.log('📝 No rewards document found, trying subcollections...');
+    // Method 2: Try to fetch from subcollections
+    console.log('🔎 Fetching from subcollections...');
     
     // Fetch staking rewards
     const stakingQuery = query(collection(db, 'rewards', 'staking', 'items'), orderBy('duration', 'asc'));
@@ -100,24 +91,116 @@ export const fetchRewardsFromFirebase = async (): Promise<FirebaseRewards> => {
     // Fetch referral rewards
     const referralsQuery = query(collection(db, 'rewards', 'referrals', 'items'), orderBy('tier', 'asc'));
     const referralsSnap = await getDocs(referralsQuery);
-    const referralRewards: ReferralReward[] = referralsSnap.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data() as Omit<ReferralReward, 'id'>
-    }));
+    const referralRewards: ReferralReward[] = referralsSnap.docs.map(snap => {
+      const raw = snap.data() as any;
+      // Normalize legacy/variant shapes into ReferralReward
+      const name: string | undefined = raw.name;
+      const tierFromNameMatch = /([0-9]+)/.exec(String(name || ''));
+      const tier: number = typeof raw.tier === 'number' ? raw.tier : (tierFromNameMatch ? Number(tierFromNameMatch[1]) : 1);
+      let min = 0;
+      let max = 0;
+      if (raw.referralRange && typeof raw.referralRange.min === 'number' && typeof raw.referralRange.max === 'number') {
+        min = raw.referralRange.min;
+        max = raw.referralRange.max;
+      } else if (typeof raw.min === 'number' || typeof raw.max === 'number') {
+        min = Number(raw.min) || 0;
+        max = Number(raw.max) || 0;
+      } else if (typeof raw.range === 'string') {
+        const [minStr, maxStr] = raw.range.split('-').map((s: string) => s.trim());
+        min = Number(minStr) || 0;
+        max = Number(maxStr) || 0;
+      }
+      const reward = typeof raw.reward === 'number' ? raw.reward : (typeof raw.referralBonus === 'number' ? raw.referralBonus : 0);
+      const status: 'active' | 'inactive' = raw.status === 'inactive' ? 'inactive' : 'active';
+      return {
+        id: snap.id,
+        name,
+        tier,
+        referralRange: { min, max },
+        referrals: typeof raw.referrals === 'number' ? raw.referrals : 0,
+        reward,
+        status
+      } as ReferralReward;
+    });
     
-    // Fetch watch ads rewards
-    const watchAdsQuery = query(collection(db, 'rewards', 'watchAds', 'items'), orderBy('adsCount', 'asc'));
-    const watchAdsSnap = await getDocs(watchAdsQuery);
-    const watchAdRewards: WatchAdReward[] = watchAdsSnap.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data() as Omit<WatchAdReward, 'id'>
-    }));
+    // Do NOT fetch watch ads from subcollection anymore; rely on single config doc only
+    const watchAdRewards: WatchAdReward[] = [];
     
-    const rewardsData: FirebaseRewards = {
-      staking: stakingRewards,
-      referrals: referralRewards,
+    let rewardsData: FirebaseRewards = {
+      staking: stakingRewards.length ? stakingRewards : docStaking,
+      referrals: referralRewards.length ? referralRewards : docReferrals,
       watchAds: watchAdRewards
     };
+
+    // Method 3: Fallback – only if no subcollection items exist
+    // referrals => { name: string, range: "min - max", referralBonus: number }
+    if (rewardsData.referrals.length === 0) {
+      try {
+        const referralsDoc = await getDoc(doc(db, 'rewards', 'referrals'));
+        if (referralsDoc.exists()) {
+          const r = referralsDoc.data() as any;
+          const [minStr, maxStr] = (r.range || '').toString().split('-').map((s: string) => s.trim());
+          const min = Number(minStr) || 0;
+          const max = Number(maxStr) || 0;
+          const tierMatch = /([0-9]+)/.exec((r.name || '').toString());
+          const tier = tierMatch ? Number(tierMatch[1]) : 1;
+          rewardsData.referrals = [
+            {
+              id: 'referrals',
+              tier,
+              referralRange: { min, max },
+              referrals: 0,
+              reward: Number(r.referralBonus) || 0,
+              status: 'active'
+            }
+          ];
+        }
+      } catch (e) {
+        // noop – keep previously resolved structure
+      }
+    }
+
+    try {
+      const watchAdsDoc = await getDoc(doc(db, 'rewards', 'watchAds'));
+      if (watchAdsDoc.exists()) {
+        const w = watchAdsDoc.data() as any;
+        rewardsData.watchAds = [
+          {
+            id: 'watchAds',
+            adsCount: Number(w.dailyLimit) || 0,
+            reward: Number(w.collectBonus) || 0,
+            status: (typeof w.status === 'string' ? w.status : 'active') as 'active' | 'inactive'
+          }
+        ];
+      } else {
+        // No config doc present; ensure watchAds remains empty
+        rewardsData.watchAds = [];
+      }
+    } catch (e) {
+      // On error reading config, do not fabricate defaults
+      rewardsData.watchAds = [];
+    }
+
+    try {
+      const stakingDoc = await getDoc(doc(db, 'rewards', 'staking'));
+      if (stakingDoc.exists()) {
+        const s = stakingDoc.data() as any;
+        // Support either { durations: [{ months: 1, apy: 5 }, ...] } or direct fields
+        const durations: any[] = Array.isArray(s?.durations) ? s.durations : [];
+        if (durations.length > 0) {
+          rewardsData.staking = durations.map((d, idx) => ({
+            id: d.id || `m${d.months || d.duration || idx}`,
+            duration: Number(d.months || d.duration) || 0,
+            durationUnit: 'months',
+            // Store APY value in `reward` to reuse existing table rendering
+            reward: typeof d.apy === 'number' ? (d.apy >= 1 ? d.apy : d.apy * 100) : 0,
+            status: d.status === 'inactive' ? 'inactive' : 'active'
+          }));
+        }
+      }
+    } catch (e) {
+      // noop
+    }
     
     // Update cache
     rewardsCache = rewardsData;

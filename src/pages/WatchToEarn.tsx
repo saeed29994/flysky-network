@@ -2,14 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
-import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, serverTimestamp, runTransaction } from 'firebase/firestore';
 import toast, { Toaster } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Eye, Clock, Coins, Play, CheckCircle, X, AlertCircle, Video} from 'lucide-react';
-
-const REQUIRED_ADS = 5;
-const REWARD_FOR_ALL = 200;
 
 const WatchToEarn = () => {
   const { t } = useTranslation();
@@ -21,12 +18,28 @@ const WatchToEarn = () => {
   const [timerFinished, setTimerFinished] = useState(false);
   const [adStarted, setAdStarted] = useState(false);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
+  // Config values fetched from Firestore; no static defaults
+  const [requiredAds, setRequiredAds] = useState<number>(0);
+  const [rewardForAll, setRewardForAll] = useState<number>(0);
 
   console.log(currentAdIndex,"")
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchConfigAndUserData = async () => {
       const user = auth.currentUser;
       if (!user) return;
+
+      // Load watchAds config from rewards/watchAds (single document)
+      try {
+        const cfgRef = doc(db, 'rewards', 'watchAds');
+        const cfgSnap = await getDoc(cfgRef);
+        if (cfgSnap.exists()) {
+          const cfg = cfgSnap.data() as any;
+          setRequiredAds(typeof cfg.dailyLimit === 'number' ? cfg.dailyLimit : 0);
+          setRewardForAll(typeof cfg.collectBonus === 'number' ? cfg.collectBonus : 0);
+        }
+      } catch (e) {
+        // Do not apply static defaults; keep 0s
+      }
 
       const userRef = doc(db, 'users', user.uid);
       const snap = await getDoc(userRef);
@@ -56,7 +69,7 @@ const WatchToEarn = () => {
       }
     };
 
-    fetchUserData();
+    fetchConfigAndUserData();
   }, []);
 
   useEffect(() => {
@@ -92,6 +105,14 @@ const WatchToEarn = () => {
   };
 
   const handleWatchAd = () => {
+    if (requiredAds <= 0) {
+      toast.error('Watch Ads is currently unavailable');
+      return;
+    }
+    if (adsWatched >= requiredAds) {
+      toast.error('Daily ad limit reached');
+      return;
+    }
     setShowModal(true);
     setAdTimer(20);
     setTimerFinished(false);
@@ -99,6 +120,9 @@ const WatchToEarn = () => {
   };
 
   const handleStartVideoAd = () => {
+    if (requiredAds <= 0 || adsWatched >= requiredAds) {
+      return;
+    }
     setAdStarted(true);
     setTimerFinished(false); // Reset timer finished state
   };
@@ -108,25 +132,50 @@ const WatchToEarn = () => {
     if (!user) return;
 
     const userRef = doc(db, 'users', user.uid);
-    const userSnap = await getDoc(userRef);
+    const cfgRef = doc(db, 'rewards', 'watchAds');
 
-    if (!userSnap.exists()) return;
+    let txNewWatched = 0;
+    let txNextIndex = 0;
 
-    const currentIndex = userSnap.data()?.adIndex || 0;
-    const currentWatched = userSnap.data()?.watchedAdsToday || 0;
-    const nextIndex = (currentIndex + 1) % REQUIRED_ADS;
-    const newWatched = currentWatched + 1;
+    try {
+      await runTransaction(db, async (tx) => {
+        const [userSnapTx, cfgSnap] = await Promise.all([tx.get(userRef), tx.get(cfgRef)]);
+        if (!cfgSnap.exists()) throw new Error('CFG_MISSING');
+        const cfg = cfgSnap.data() as any;
+        const limit = typeof cfg.dailyLimit === 'number' ? cfg.dailyLimit : 0;
+        if (typeof cfg.status === 'string' && cfg.status === 'inactive') throw new Error('CFG_INACTIVE');
+        if (limit <= 0) throw new Error('CFG_DISABLED');
 
-    await updateDoc(userRef, {
-      adIndex: nextIndex,
-      watchedAdsToday: newWatched,
-      adsLastWatched: serverTimestamp(),
-    });
+        const usr = userSnapTx.data() || {};
+        const currentIndex = usr.adIndex || 0;
+        const currentWatched = usr.watchedAdsToday || 0;
+        if (currentWatched >= limit) throw new Error('LIMIT');
 
-    setAdsWatched(newWatched);
-    setCurrentAdIndex(nextIndex);
-    toast.success(t("watchToEarn.adWatched"));
-    closeModal();
+        txNextIndex = (currentIndex + 1) % limit;
+        txNewWatched = Math.min(currentWatched + 1, limit);
+
+        tx.update(userRef, {
+          adIndex: txNextIndex,
+          watchedAdsToday: txNewWatched,
+          adsLastWatched: serverTimestamp(),
+        });
+      });
+
+      setAdsWatched(txNewWatched);
+      setCurrentAdIndex(txNextIndex);
+      toast.success(t('watchToEarn.adWatched'));
+      closeModal();
+    } catch (e: any) {
+      const code = e?.message || '';
+      if (code === 'CFG_MISSING' || code === 'CFG_DISABLED' || code === 'CFG_INACTIVE') {
+        toast.error('Watch Ads is currently unavailable');
+      } else if (code === 'LIMIT') {
+        toast.error('Daily ad limit reached');
+      } else {
+        toast.error('Failed to record ad watch');
+      }
+      closeModal();
+    }
   };
 
   const handleClaimReward = async () => {
@@ -134,21 +183,52 @@ const WatchToEarn = () => {
     if (!user) return;
 
     const userRef = doc(db, 'users', user.uid);
-    const newBalance = balance + REWARD_FOR_ALL;
+    const cfgRef = doc(db, 'rewards', 'watchAds');
 
-    await updateDoc(userRef, {
-      balance: newBalance,
-      watchedAdsToday: 0,
-      adIndex: 0,
-      adsLastWatched: serverTimestamp(),
-    });
+    let txNewBalance = balance;
+    let txReward = 0;
 
-    setBalance(newBalance);
-    setAdsWatched(0);
-    setCurrentAdIndex(0);
-    setCountdown(24 * 3600);
+    try {
+      await runTransaction(db, async (tx) => {
+        const [userSnapTx, cfgSnap] = await Promise.all([tx.get(userRef), tx.get(cfgRef)]);
+        if (!cfgSnap.exists()) throw new Error('CFG_MISSING');
+        const cfg = cfgSnap.data() as any;
+        const limit = typeof cfg.dailyLimit === 'number' ? cfg.dailyLimit : 0;
+        const reward = typeof cfg.collectBonus === 'number' ? cfg.collectBonus : 0;
+        if (typeof cfg.status === 'string' && cfg.status === 'inactive') throw new Error('CFG_INACTIVE');
+        if (limit <= 0 || reward <= 0) throw new Error('CFG_DISABLED');
 
-    toast.success(t("watchToEarn.rewardClaimed", { amount: REWARD_FOR_ALL }));
+        const usr = userSnapTx.data() || {};
+        const currentWatched = usr.watchedAdsToday || 0;
+        const currentBalance = usr.balance || 0;
+        if (currentWatched < limit) throw new Error('NOT_ELIGIBLE');
+
+        txNewBalance = currentBalance + reward;
+        txReward = reward;
+
+        tx.update(userRef, {
+          balance: txNewBalance,
+          watchedAdsToday: 0,
+          adIndex: 0,
+          adsLastWatched: serverTimestamp(),
+        });
+      });
+
+      setBalance(txNewBalance);
+      setAdsWatched(0);
+      setCurrentAdIndex(0);
+      setCountdown(24 * 3600);
+      toast.success(t('watchToEarn.rewardClaimed', { amount: txReward }));
+    } catch (e: any) {
+      const code = e?.message || '';
+      if (code === 'NOT_ELIGIBLE') {
+        toast.error('You have not reached today\'s ad limit yet');
+      } else if (code === 'CFG_MISSING' || code === 'CFG_DISABLED' || code === 'CFG_INACTIVE') {
+        toast.error('Watch Ads is currently unavailable');
+      } else {
+        toast.error('Failed to claim reward');
+      }
+    }
   };
 
   const closeModal = () => {
@@ -158,8 +238,8 @@ const WatchToEarn = () => {
     setAdStarted(false);
   };
 
-  const progressPercent = (adsWatched / REQUIRED_ADS) * 100;
-  const canClaim = adsWatched >= REQUIRED_ADS;
+  const progressPercent = requiredAds > 0 ? (adsWatched / requiredAds) * 100 : 0;
+  const canClaim = requiredAds > 0 && adsWatched >= requiredAds;
 
   return (
     <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -201,7 +281,7 @@ const WatchToEarn = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-gray-300 text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
               >
-                {t("watchToEarn.description", { count: REQUIRED_ADS, reward: REWARD_FOR_ALL })}
+                {t("watchToEarn.description", { count: requiredAds, reward: rewardForAll })}
               </motion.p>
             </div>
           </div>
@@ -266,7 +346,7 @@ const WatchToEarn = () => {
                 <div className="mb-6">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-white font-medium">{t('watchToEarn.progress')}</span>
-                    <span className="text-blue-400 font-bold">{adsWatched}/{REQUIRED_ADS}</span>
+                    <span className="text-blue-400 font-bold">{adsWatched}/{requiredAds}</span>
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
                     <motion.div 
@@ -320,7 +400,7 @@ const WatchToEarn = () => {
                     className="w-full py-4 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3 animate-pulse"
                   >
                     <CheckCircle className="w-5 h-5" />
-                    {t("watchToEarn.claimRewards")} ({REWARD_FOR_ALL} FSN)
+                    {t("watchToEarn.claimRewards")} ({rewardForAll} FSN)
                   </button>
                 )}
               </div>
@@ -354,7 +434,7 @@ const WatchToEarn = () => {
                     </div>
                     <div>
                       <h4 className="text-white font-medium text-sm">{t('watchToEarn.watchVideoAds')}</h4>
-                      <p className="text-gray-400 text-xs">{t('watchToEarn.watchAdsDaily', { count: REQUIRED_ADS })}</p>
+                      <p className="text-gray-400 text-xs">{t('watchToEarn.watchAdsDaily', { count: requiredAds })}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -372,7 +452,7 @@ const WatchToEarn = () => {
                     </div>
                     <div>
                       <h4 className="text-white font-medium text-sm">{t('watchToEarn.claimRewards')}</h4>
-                      <p className="text-gray-400 text-xs">{t('watchToEarn.earnFSNTokens', { amount: REWARD_FOR_ALL })}</p>
+                      <p className="text-gray-400 text-xs">{t('watchToEarn.earnFSNTokens', { amount: rewardForAll })}</p>
                     </div>
                   </div>
                 </div>
@@ -394,15 +474,15 @@ const WatchToEarn = () => {
                   <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 border border-blue-500/30">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-white font-semibold text-sm">{t('watchToEarn.dailyLimit')}</span>
-                      <span className="text-blue-400 font-bold text-sm">{REQUIRED_ADS} {t('watchToEarn.videoAds')}</span>
+                      <span className="text-blue-400 font-bold text-sm">{requiredAds} {t('watchToEarn.videoAds')}</span>
                     </div>
-                    <p className="text-xs text-gray-300">{t('watchToEarn.watchAdsPerDay', { count: REQUIRED_ADS })}</p>
+                     <p className="text-xs text-gray-300">{t('watchToEarn.watchAdsPerDay', { count: requiredAds })}</p>
                   </div>
 
                   <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-4 border border-green-500/30">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-white font-semibold text-sm">{t('watchToEarn.dailyReward')}</span>
-                      <span className="text-green-400 font-bold text-sm">{REWARD_FOR_ALL} FSN</span>
+                      <span className="text-green-400 font-bold text-sm">{rewardForAll} FSN</span>
                     </div>
                     <p className="text-xs text-gray-300">{t('watchToEarn.completeAllAdsToClaim')}</p>
                   </div>

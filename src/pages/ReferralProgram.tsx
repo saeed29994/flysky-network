@@ -7,6 +7,7 @@ import QRCode from 'react-qr-code';
 import { toPng } from 'html-to-image';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { fetchRewardTypeFromFirebase, type ReferralReward } from '../utils/rewardsService';
 import ReferralBonusButton from '../components/ReferralBonusButton';
 
 interface Referral {
@@ -28,6 +29,7 @@ const ReferralProgram = () => {
   const [pendingCount, setPendingCount] = useState(0);
   const [rejectedCount, setRejectedCount] = useState(0);
   const qrRef = useRef<HTMLDivElement>(null);
+  const [bonusTiers, setBonusTiers] = useState<ReferralReward[]>([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -104,6 +106,21 @@ const ReferralProgram = () => {
     });
 
     return () => unsubscribe();
+  }, []);
+
+  // Load Referral Bonus Tiers from Firebase
+  useEffect(() => {
+    const loadBonusTiers = async () => {
+      try {
+        const tiers = (await fetchRewardTypeFromFirebase('referrals')) as ReferralReward[];
+        // Sort by tier ascending for consistent order
+        const sorted = [...tiers].sort((a, b) => (a.tier || 0) - (b.tier || 0));
+        setBonusTiers(sorted);
+      } catch (e) {
+        setBonusTiers([]);
+      }
+    };
+    loadBonusTiers();
   }, []);
 
   const handleCopy = () => {
@@ -515,29 +532,31 @@ const ReferralProgram = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-4 border border-green-500/30">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold">{t('referralPage.tier1')}</span>
-                      <span className="text-green-400 font-bold">100 FSN</span>
+                  {bonusTiers.length === 0 ? (
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                      <p className="text-sm text-gray-300">No referral bonus tiers configured.</p>
                     </div>
-                    <p className="text-sm text-gray-300">{t('referralPage.tier1Description')}</p>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 border border-blue-500/30">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold">{t('referralPage.tier2')}</span>
-                      <span className="text-blue-400 font-bold">200 FSN</span>
-                    </div>
-                    <p className="text-sm text-gray-300">{t('referralPage.tier2Description')}</p>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-4 border border-purple-500/30">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold">{t('referralPage.tier3')}</span>
-                      <span className="text-purple-400 font-bold">300 FSN</span>
-                    </div>
-                    <p className="text-sm text-gray-300">{t('referralPage.tier3Description')}</p>
-                  </div>
+                  ) : (
+                    bonusTiers.map((tier, idx) => {
+                      const colorSets = [
+                        { bg: 'from-green-500/20 to-emerald-500/20', border: 'border-green-500/30', text: 'text-green-400' },
+                        { bg: 'from-blue-500/20 to-cyan-500/20', border: 'border-blue-500/30', text: 'text-blue-400' },
+                        { bg: 'from-purple-500/20 to-pink-500/20', border: 'border-purple-500/30', text: 'text-purple-400' },
+                      ];
+                      const colors = colorSets[idx % colorSets.length];
+                      return (
+                        <div key={tier.id} className={`bg-gradient-to-r ${colors.bg} rounded-xl p-4 border ${colors.border}`}>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-white font-semibold">{tier.name || `Tier ${tier.tier}`}</span>
+                            <span className={`${colors.text} font-bold`}>{tier.reward} FSN</span>
+                          </div>
+                          <p className="text-sm text-gray-300">
+                            {tier.referralRange?.min ?? 0} - {tier.referralRange?.max ?? 0} verified referrals
+                          </p>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </div>
 
