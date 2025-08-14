@@ -1462,6 +1462,7 @@
       "deleteWarning": "Uyarı: Bu işlem geri alınamaz",
       "deleteWarningDescription": "Bu kullanıcıyı silmek, hesabını, bakiyesini ve tüm ilişkili verilerini sistemden kalıcı olarak kaldıracaktır.",
       "userToDelete": "Silinecek Kullanıcı",
+      "updatePlan": "Kullanıcı Planını Güncelle",
       "userInformation": "Kullanıcı Bilgileri",
       "detailedInformation": "Ayrıntılı kullanıcı bilgileri ve istatistikler",
       "location": "Konum",

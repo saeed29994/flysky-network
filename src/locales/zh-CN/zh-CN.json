@@ -1447,6 +1447,7 @@
       "deleteWarning": "警告：此操作无法撤销",
       "deleteWarningDescription": "删除此用户将永久从系统中移除其账户、余额和所有相关数据。",
       "userToDelete": "要删除的用户",
+      "updatePlan": "更新用户计划",
       "userInformation": "用户信息",
       "detailedInformation": "详细的用户信息和统计",
       "location": "位置",

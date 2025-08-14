@@ -15,12 +15,15 @@ import {
   type FirebaseUser
 } from '../../utils/userService';
 import { formatDate } from '../../utils/formatDate';
+import { db } from '../../firebase';
+import { doc, updateDoc, deleteDoc, collection, getDocs, query, where, limit, getDoc } from 'firebase/firestore';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from '../ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
@@ -37,6 +40,48 @@ const UsersManagementTab = () => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [selectedUser, setSelectedUser] = useState<FirebaseUser | null>(null);
   const [showUserDetailModal, setShowUserDetailModal] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<FirebaseUser | null>(null);
+  const [newPlan, setNewPlan] = useState('');
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deletingUser, setDeletingUser] = useState<FirebaseUser | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
+
+  // Cache for referrer names by referral code
+  const [referrerNames, setReferrerNames] = useState<Record<string, string>>({});
+
+  // Resolve and cache referrer names so we can display a friendly name instead of a code
+  const resolveReferrerName = async (refCodeOrUid: string) => {
+    if (!refCodeOrUid || referrerNames[refCodeOrUid]) return;
+    try {
+      // Try finding user by referralCode
+      const q = query(collection(db, 'users'), where('referralCode', '==', refCodeOrUid), limit(1));
+      const snap = await getDocs(q);
+      let name: string | null = null;
+      if (!snap.empty) {
+        const data = snap.docs[0].data() as any;
+        name = data.fullName || data.email || null;
+      } else {
+        // Fallback: treat referredBy as a UID
+        const userDocSnap = await getDoc(doc(db, 'users', refCodeOrUid));
+        if (userDocSnap.exists()) {
+          const data = userDocSnap.data() as any;
+          name = data.fullName || data.email || null;
+        }
+      }
+      if (name) {
+        setReferrerNames(prev => ({ ...prev, [refCodeOrUid]: name as string }));
+      }
+    } catch (e) {
+      console.warn('Could not resolve referrer name for', refCodeOrUid, e);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedUser?.referredBy) {
+      resolveReferrerName(selectedUser.referredBy);
+    }
+  }, [selectedUser?.referredBy]);
 
   // Fetch users data
   const fetchUsers = async () => {
@@ -149,6 +194,20 @@ const UsersManagementTab = () => {
       default:
         return <FaCoins className="text-gray-400" />;
     }
+  };
+
+  // Map any stored plan variant to one of our select option values
+  const mapPlanForSelect = (plan?: string): string => {
+    if (!plan) return '';
+    const p = String(plan).toLowerCase();
+    if (p.includes('first') && (p.includes('lifetime') || p.includes('life'))) return 'first-lifetime';
+    if (p.includes('first') && (p.includes('6') || p.includes('six'))) return 'first-6';
+    if (p.includes('business')) return 'business';
+    if (p.includes('economy')) return 'economy';
+    // Handle exact dashed values too
+    if (p === 'first-6') return 'first-6';
+    if (p === 'first-lifetime') return 'first-lifetime';
+    return 'economy';
   };
 
   // Get KYC status badge
@@ -339,7 +398,7 @@ const UsersManagementTab = () => {
                       {selectedUser.referredBy && (
                         <div className="flex items-center gap-2">
                           <span className="text-gray-400">{t('admin.users.referredBy')}:</span>
-                          <span>{selectedUser.referredBy}</span>
+                          <span>{referrerNames[selectedUser.referredBy] || selectedUser.referredBy}</span>
                         </div>
                       )}
                     </div>
@@ -599,10 +658,24 @@ const UsersManagementTab = () => {
                             >
                               <FaEye className="w-4 h-4" />
                             </button>
-                            <button className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
+                            <button 
+                              onClick={() => {
+                                setEditingUser(user);
+                                const currentPlan = user.membership?.planName || user.plan;
+                                setNewPlan(mapPlanForSelect(currentPlan));
+                                setIsEditDialogOpen(true);
+                              }}
+                              className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors"
+                            >
                               <FaEdit className="w-4 h-4" />
                             </button>
-                            <button className="p-1 text-red-400 hover:text-red-300 transition-colors">
+                            <button 
+                              onClick={() => {
+                                setDeletingUser(user);
+                                setIsDeleteDialogOpen(true);
+                              }}
+                              className="p-1 text-red-400 hover:text-red-300 transition-colors"
+                            >
                               <FaTrash className="w-4 h-4" />
                             </button>
                           </div>
@@ -619,6 +692,146 @@ const UsersManagementTab = () => {
 
       {/* User Detail Modal */}
       {renderUserDetailModal()}
+
+      {/* Edit User Plan Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="bg-white/10 backdrop-blur-sm border border-white/20 shadow-xl max-w-lg w-[95vw] sm:w-full text-white">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FaEdit className="text-yellow-400" />
+              {t('admin.users.updatePlan')}
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              {t('admin.users.selectNewPlan')}
+            </DialogDescription>
+          </DialogHeader>
+          {editingUser && (
+            <div className="space-y-4">
+              <div>
+                <div className="text-sm text-gray-400 mb-1">{t('admin.users.table.user')}</div>
+                <div className="font-medium">{editingUser.fullName} <span className="text-gray-400">({editingUser.email})</span></div>
+              </div>
+              <div>
+                <label className="block text-sm mb-2">{t('admin.users.selectNewPlan')}</label>
+                <select
+                  value={newPlan}
+                  onChange={(e) => setNewPlan(e.target.value)}
+                  className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                >
+                  <option value="">{t('admin.users.selectPlan')}</option>
+                  <option value="economy">Economy</option>
+                  <option value="business">Business</option>
+                  <option value="first-6">First-6</option>
+                  <option value="first-lifetime">First-Lifetime</option>
+                </select>
+              </div>
+            </div>
+          )}
+          <DialogFooter className="flex flex-col gap-2 pt-4">
+            <button
+              onClick={async () => {
+                if (!editingUser || !newPlan) return;
+                try {
+                  setActionLoading(true);
+                  const userRef = doc(db, 'users', editingUser.id);
+                  await updateDoc(userRef, {
+                    'membership.plan': newPlan,
+                    'membership.planName': newPlan,
+                    plan: newPlan,
+                  });
+                  // Also try to update nested membership object if it exists as a whole
+                  // without removing other fields
+                  // Note: updateDoc above already sets the two paths; the code below
+                  // simply ensures local state mirrors both locations
+                  // Update local state
+                  setUsers(prev => prev.map(u => u.id === editingUser.id 
+                    ? { 
+                        ...u, 
+                        plan: newPlan,
+                        membership: u.membership ? { ...u.membership, planName: newPlan } : u.membership
+                      }
+                    : u
+                  ));
+                  clearUsersCache();
+                  setIsEditDialogOpen(false);
+                  setEditingUser(null);
+                  setNewPlan('');
+                } catch (e) {
+                  console.error('Error updating plan:', e);
+                } finally {
+                  setActionLoading(false);
+                }
+              }}
+              disabled={!newPlan || actionLoading}
+              className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-50 rounded-lg"
+            >
+              <span className="inline-flex items-center gap-2 justify-center">
+                <FaCheck className="w-4 h-4" />
+                {t('admin.users.updatePlan')}
+              </span>
+            </button>
+            <button
+              onClick={() => {
+                setIsEditDialogOpen(false);
+                setEditingUser(null);
+                setNewPlan('');
+              }}
+              className="w-full px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg border border-white/20"
+            >
+              {t('admin.common.cancel')}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete User Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="bg-white/10 backdrop-blur-sm border border-white/20 shadow-xl max-w-lg w-[95vw] sm:w-full text-white">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FaTrash className="text-red-400" />
+              {t('admin.users.deleteUser')}
+            </DialogTitle>
+          </DialogHeader>
+          {deletingUser && (
+            <div className="space-y-2">
+              <div className="text-sm text-gray-300">{deletingUser.fullName}</div>
+              <div className="text-xs text-gray-400">{deletingUser.email}</div>
+            </div>
+          )}
+          <DialogFooter className="flex flex-col gap-2 pt-4">
+            <button
+              onClick={async () => {
+                if (!deletingUser) return;
+                try {
+                  setActionLoading(true);
+                  await deleteDoc(doc(db, 'users', deletingUser.id));
+                  setUsers(prev => prev.filter(u => u.id !== deletingUser.id));
+                  clearUsersCache();
+                  setIsDeleteDialogOpen(false);
+                  setDeletingUser(null);
+                } catch (e) {
+                  console.error('Error deleting user:', e);
+                } finally {
+                  setActionLoading(false);
+                }
+              }}
+              className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg"
+            >
+              {t('admin.users.confirmDelete')}
+            </button>
+            <button
+              onClick={() => {
+                setIsDeleteDialogOpen(false);
+                setDeletingUser(null);
+              }}
+              className="w-full px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg border border-white/20"
+            >
+              {t('admin.common.cancel')}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };

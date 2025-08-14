@@ -802,6 +802,7 @@
       "deleteWarning": "Attention : Cette action ne peut pas être annulée",
       "deleteWarningDescription": "Supprimer cet utilisateur supprimera définitivement son compte, son solde et toutes les données associées du système.",
       "userToDelete": "Utilisateur à supprimer",
+      "updatePlan": "Mettre à jour le plan utilisateur",
       "userInformation": "Informations utilisateur",
       "detailedInformation": "Informations détaillées et statistiques de l'utilisateur",
       "location": "Localisation",
