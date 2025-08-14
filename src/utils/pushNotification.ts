@@ -1,28 +1,36 @@
 import { getToken, onMessage, deleteToken } from 'firebase/messaging';
 import { db, messaging } from '../firebase';
-import { doc, updateDoc, arrayUnion, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, serverTimestamp, setDoc, getDoc } from 'firebase/firestore';
 
 // Standardize token storage across the app
 export const requestPermissionAndToken = async (uid: string) => {
   try {
     const permission = await Notification.requestPermission();
     
-    // Update user preferences based on permission
+    // Reference to user document
     const userRef = doc(db, 'users', uid);
+    
+    // Check if user document exists first
+    const userDoc = await getDoc(userRef);
     
     if (permission !== 'granted') {
       console.warn('🔒 تم رفض إذن الإشعارات');
-      // Update user preferences to disable push notifications
-      await updateDoc(userRef, {
-        'notifications.push': false
-      });
+      
+      // Only update if document exists
+      if (userDoc.exists()) {
+        await updateDoc(userRef, {
+          'notifications.push': false
+        });
+      }
       return;
     }
 
     // If permission was granted, update user preferences
-    await updateDoc(userRef, {
-      'notifications.push': true
-    });
+    if (userDoc.exists()) {
+      await updateDoc(userRef, {
+        'notifications.push': true
+      });
+    }
 
     const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
     const token = await getToken(messaging, { vapidKey });
@@ -35,14 +43,17 @@ export const requestPermissionAndToken = async (uid: string) => {
 
     if (token) {
       // Store token in both places to ensure backward compatibility
-      // 1. Update in users/{uid} document as array
-      await updateDoc(userRef, {
-        fcmTokens: arrayUnion(token),
-        lastTokenUpdate: serverTimestamp(),
-        lastUserAgent: navigator.userAgent,
-      });
+      // Only update user document if it exists
+      if (userDoc.exists()) {
+        await updateDoc(userRef, {
+          fcmTokens: arrayUnion(token),
+          lastTokenUpdate: serverTimestamp(),
+          lastUserAgent: navigator.userAgent,
+        });
+      }
       
-      // 2. Store in userTokens collection (used by backend functions)
+      // Always store in userTokens collection (used by backend functions)
+      // This uses setDoc which creates the document if it doesn't exist
       await setDoc(doc(db, 'userTokens', uid), {
         token: token, // Single token format expected by backend
         updatedAt: serverTimestamp(),
@@ -74,16 +85,23 @@ export const deleteCurrentToken = async (uid: string) => {
       await deleteToken(messaging);
       
       // Remove from Firestore if user is logged in
-      if (uid) {        
-        // Remove from userTokens collection
-        await setDoc(doc(db, 'userTokens', uid), { 
-          token: null,
-          updatedAt: serverTimestamp(),
-          status: 'deleted'
-        });
+      if (uid) {
+        try {
+          // Reference to userTokens document
+          const tokenDocRef = doc(db, 'userTokens', uid);
+          
+          // Remove from userTokens collection
+          await setDoc(tokenDocRef, { 
+            token: null,
+            updatedAt: serverTimestamp(),
+            status: 'deleted'
+          });
+          
+          console.log('🗑️ تم حذف التوكن من المتصفح وقاعدة البيانات');
+        } catch (tokenError) {
+          console.error('❌ خطأ أثناء حذف التوكن من قاعدة البيانات:', tokenError);
+        }
       }
-      
-      console.log('🗑️ تم حذف التوكن من المتصفح وقاعدة البيانات');
     }
   } catch (error) {
     console.error('❌ خطأ أثناء حذف التوكن:', error);

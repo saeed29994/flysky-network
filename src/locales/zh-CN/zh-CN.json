@@ -814,6 +814,8 @@
     "chooseAmountDuration": "选择金额和期限开始赚取收益",
     "amountToStake": "质押金额",
     "stakingDuration": "质押期限",
+    "selectDuration": "选择期限",
+    "enterAmount": "输入金额",
     "stakedAmount": "质押金额",
     "totalProfit": "总利润",
     "trackPerformance": "跟踪您的质押表现和历史",
@@ -1242,12 +1244,14 @@
         "reward": "奖励",
         "status": "状态",
         "addDuration": "添加期限",
+        "plan": "计划",
         "units": {
           "days": "天",
           "weeks": "周",
           "months": "月",
           "years": "年"
-        }
+        },
+        "apy": "APY"
       },
       "referrals": {
         "title": "推荐",
@@ -1257,7 +1261,10 @@
         "referrals": "推荐",
         "reward": "奖励",
         "status": "状态",
-        "addTier": "添加等级"
+        "addTier": "添加等级",
+        "name": "名称",
+        "range": "范围",
+        "bonus": "奖金"
       },
       "watchAds": {
         "title": "观看广告",
@@ -1266,7 +1273,9 @@
         "ads": "广告",
         "reward": "奖励",
         "status": "状态",
-        "addReward": "添加奖励"
+        "addReward": "添加奖励",
+        "dailyLimit": "每日限制",
+        "collectBonus": "收集奖金"
       },
       "stats": {
         "totalRewards": "总奖励数",
@@ -1304,6 +1313,7 @@
       },
       "noData": "暂无{{section}}数据",
       "startAdding": "开始添加您的第一个{{section}}配置",
+      "loading": "正在加载奖励...",
       "clickToExpand": "点击展开",
       "clickToCollapse": "点击收起",
       "quickActions": "快速操作",
@@ -1315,7 +1325,8 @@
         "cancel": "取消",
         "view": "查看",
         "edit": "编辑",
-        "close": "关闭"
+        "close": "关闭",
+        "actions": "操作"
       },
       "details": {
         "title": "奖励详情",

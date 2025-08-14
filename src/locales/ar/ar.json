@@ -863,6 +863,8 @@
     "chooseAmountDuration": "اختر المبلغ والمدة لبدء الربح",
     "amountToStake": "المبلغ للتخزين",
     "stakingDuration": "مدة التخزين",
+    "selectDuration": "اختر المدة",
+    "enterAmount": "أدخل المبلغ",
     "stakedAmount": "المبلغ المُخزن",
     "totalProfit": "إجمالي الربح",
     "trackPerformance": "تتبع أداء التخزين والتاريخ",
@@ -1292,12 +1294,14 @@
         "reward": "المكافأة",
         "status": "الحالة",
         "addDuration": "إضافة مدة",
+        "plan": "الخطة",
         "units": {
           "days": "أيام",
           "weeks": "أسابيع",
           "months": "أشهر",
           "years": "سنوات"
-        }
+        },
+        "apy": "APY"
       },
       "referrals": {
         "title": "الإحالات",
@@ -1307,7 +1311,10 @@
         "referrals": "الإحالات",
         "reward": "المكافأة",
         "status": "الحالة",
-        "addTier": "إضافة مستوى"
+        "addTier": "إضافة مستوى",
+        "name": "الاسم",
+        "range": "النطاق",
+        "bonus": "المكافأة الإضافية"
       },
       "watchAds": {
         "title": "مشاهدة الإعلانات",
@@ -1316,7 +1323,9 @@
         "ads": "إعلانات",
         "reward": "المكافأة",
         "status": "الحالة",
-        "addReward": "إضافة مكافأة"
+        "addReward": "إضافة مكافأة",
+        "dailyLimit": "الحد اليومي",
+        "collectBonus": "مكافأة الجمع"
       },
       "stats": {
         "totalRewards": "إجمالي المكافآت",
@@ -1366,7 +1375,8 @@
         "activate": "تفعيل",
         "deactivate": "إلغاء التفعيل",
         "viewDetails": "عرض التفاصيل",
-        "view": "عرض"
+        "view": "عرض",
+        "actions": "الإجراءات"
       },
       "status": {
         "active": "نشطة",

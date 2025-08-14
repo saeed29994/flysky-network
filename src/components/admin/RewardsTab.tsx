@@ -1,6 +1,6 @@
 // 📁 src/components/admin/RewardsTab.tsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FaCoins, FaPlus, FaLock, FaUsers, FaPlay, FaEdit, FaTrash, FaRedo } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
@@ -10,12 +10,12 @@ import {
   type FirebaseRewards,
 } from '../../utils/rewardsService';
 import { db } from '../../firebase';
-import { addDoc, collection, deleteDoc, doc, updateDoc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, updateDoc, setDoc, getDocs, getDoc, serverTimestamp } from 'firebase/firestore';
 
 const RewardsTab: React.FC = () => {
   const { t } = useTranslation();
   
-  // State for rewards data
+  // State for rewards data (referrals, watchAds via rewardsService; staking handled separately per-plan)
   const [rewards, setRewards] = useState<FirebaseRewards>({
     staking: [],
     referrals: [],
@@ -32,6 +32,17 @@ const RewardsTab: React.FC = () => {
   const [editingItem, setEditingItem] = useState<any | null>(null);
   const [formValues, setFormValues] = useState<any>({});
 
+  // Plans and staking APY config (per-plan)
+  type MembershipPlanLite = { id: string; name: string };
+  type StakingPlanApy = { months: number; apy: number };
+  const [plans, setPlans] = useState<MembershipPlanLite[]>([]);
+  const [selectedPlan, setSelectedPlan] = useState<string>('');
+  const [stakingPlansMap, setStakingPlansMap] = useState<Record<string, StakingPlanApy[]>>({});
+
+  const selectedPlanDurations = useMemo<StakingPlanApy[]>(() => {
+    return stakingPlansMap[selectedPlan] || [];
+  }, [stakingPlansMap, selectedPlan]);
+
   const rewardSections = [
     {
       id: 'staking',
@@ -42,7 +53,7 @@ const RewardsTab: React.FC = () => {
       bgColor: 'bg-green-500/10',
       borderColor: 'border-green-500/20',
       iconColor: 'text-green-500',
-      count: rewards.staking.length
+      count: selectedPlanDurations.length
     },
     {
       id: 'referrals',
@@ -68,17 +79,62 @@ const RewardsTab: React.FC = () => {
     }
   ];
 
-  // Fetch rewards data
+  // Fetch rewards data (excluding staking per-plan which we fetch separately)
   const fetchRewards = async () => {
     try {
       setIsLoading(true);
       const rewardsData = await fetchRewardsFromFirebase();
-      setRewards(rewardsData);
+      setRewards({ ...rewardsData, staking: [] });
       console.log('Rewards data loaded:', rewardsData);
     } catch (error) {
       console.error('Error fetching rewards:', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Fetch plans from Firebase
+  const fetchPlans = async () => {
+    try {
+      const snap = await getDocs(collection(db, 'plans'));
+      const data = snap.docs.map(d => ({ id: d.id, name: (d.data() as any).name || d.id })) as MembershipPlanLite[];
+      // Sort by name for consistency
+      data.sort((a, b) => a.name.localeCompare(b.name));
+      setPlans(data);
+      if (!selectedPlan && data.length > 0) {
+        const defaultPlan = data.find(p => p.id === 'economy')?.id || data[0].id;
+        setSelectedPlan(defaultPlan);
+      }
+    } catch (e) {
+      console.error('Error fetching plans:', e);
+    }
+  };
+
+  // Fetch staking APY config (plan-specific) from rewards/staking
+  const fetchStakingPlans = async () => {
+    try {
+      const cfgRef = doc(db, 'rewards', 'staking');
+      const snap = await getDoc(cfgRef);
+      if (snap.exists()) {
+        const data: any = snap.data();
+        const plansMap: Record<string, StakingPlanApy[]> = {};
+        const rawPlans = data?.plans || {};
+        Object.keys(rawPlans).forEach((pid) => {
+          const arr = Array.isArray(rawPlans[pid]) ? rawPlans[pid] : [];
+          plansMap[pid] = arr
+            .map((d: any) => ({
+              months: Number(d.months || d.duration) || 0,
+              apy: typeof d.apy === 'number' ? (d.apy > 1 ? d.apy / 100 : d.apy) : 0,
+            }))
+            .filter((d: StakingPlanApy) => d.months > 0)
+            .sort((a: StakingPlanApy, b: StakingPlanApy) => a.months - b.months);
+        });
+        setStakingPlansMap(plansMap);
+      } else {
+        setStakingPlansMap({});
+      }
+    } catch (e) {
+      console.error('Error fetching staking plans config:', e);
     }
   };
 
@@ -94,6 +150,8 @@ const RewardsTab: React.FC = () => {
   // Initial data fetch
   useEffect(() => {
     fetchRewards();
+    fetchPlans();
+    fetchStakingPlans();
   }, []);
 
   // Modal helpers
@@ -101,7 +159,7 @@ const RewardsTab: React.FC = () => {
     setActiveSection(section);
     setEditingItem(null);
     if (section === 'staking') {
-      setFormValues({ duration: 1, reward: 5 });
+      setFormValues({ months: 1, apy: 5 });
     } else if (section === 'referrals') {
       setFormValues({ name: 'Tier 1', min: 1, max: 10, reward: 100 });
     } else {
@@ -121,7 +179,8 @@ const RewardsTab: React.FC = () => {
     setActiveSection(section);
     setEditingItem(item);
     if (section === 'staking') {
-      setFormValues({ duration: item.duration, reward: item.reward });
+      // For staking, item is a StakingPlanApy with months and apy (decimal)
+      setFormValues({ months: item.months, apy: (item.apy > 1 ? item.apy : item.apy * 100) });
     } else if (section === 'referrals') {
       setFormValues({ name: item.name || `Tier ${item.tier}`, min: item.referralRange?.min || 0, max: item.referralRange?.max || 0, reward: item.reward });
     } else {
@@ -142,8 +201,24 @@ const RewardsTab: React.FC = () => {
       if (section === 'watchAds') {
         // Single-config document deletion
         await deleteDoc(doc(db, 'rewards', 'watchAds'));
-      } else {
+      } else if (section === 'referrals') {
         await deleteDoc(doc(db, 'rewards', section, 'items', id));
+      } else if (section === 'staking') {
+        // For staking, id is the months value as string
+        const monthsToDelete = Number(id);
+        const cfgRef = doc(db, 'rewards', 'staking');
+        const snap = await getDoc(cfgRef);
+        let nextMap: Record<string, StakingPlanApy[]> = { ...stakingPlansMap };
+        const current = nextMap[selectedPlan] || [];
+        nextMap[selectedPlan] = current.filter((d) => d.months !== monthsToDelete);
+        // Persist
+        const payloadPlans: any = {};
+        Object.keys(nextMap).forEach((pid) => {
+          payloadPlans[pid] = (nextMap[pid] || []).map((d) => ({ months: d.months, apy: d.apy }));
+        });
+        const baseData = snap.exists() ? snap.data() : {};
+        await setDoc(cfgRef, { ...baseData, plans: payloadPlans, updatedAt: serverTimestamp() }, { merge: true });
+        setStakingPlansMap(nextMap);
       }
       clearRewardsCache();
       await fetchRewards();
@@ -157,7 +232,30 @@ const RewardsTab: React.FC = () => {
     try {
       let data: any = {};
       if (activeSection === 'staking') {
-        data = { duration: Number(formValues.duration) || 0, durationUnit: 'months', reward: Number(formValues.reward) || 0 };
+        const months = Number(formValues.months) || 0;
+        const apyPercent = Number(formValues.apy) || 0; // entered as percent
+        const apyDecimal = apyPercent > 1 ? apyPercent / 100 : apyPercent;
+        if (!selectedPlan) {
+          throw new Error('No plan selected');
+        }
+        // Update local map
+        const nextMap: Record<string, StakingPlanApy[]> = { ...stakingPlansMap };
+        const list = [...(nextMap[selectedPlan] || [])];
+        const idx = list.findIndex((d) => d.months === months);
+        if (idx >= 0) {
+          list[idx] = { months, apy: apyDecimal };
+        } else {
+          list.push({ months, apy: apyDecimal });
+        }
+        nextMap[selectedPlan] = list.sort((a, b) => a.months - b.months);
+        // Persist to Firestore under rewards/staking.plans[plan]
+        const cfgRef = doc(db, 'rewards', 'staking');
+        const snap = await getDoc(cfgRef);
+        const baseData = snap.exists() ? snap.data() : {};
+        const payloadPlans: any = baseData?.plans ? { ...baseData.plans } : {};
+        payloadPlans[selectedPlan] = nextMap[selectedPlan].map((d) => ({ months: d.months, apy: d.apy }));
+        await setDoc(cfgRef, { ...baseData, plans: payloadPlans, updatedAt: serverTimestamp() }, { merge: true });
+        setStakingPlansMap(nextMap);
       } else if (activeSection === 'referrals') {
         const tierMatch = /([0-9]+)/.exec(String(formValues.name || ''));
         const tier = tierMatch ? Number(tierMatch[1]) : 1;
@@ -172,8 +270,8 @@ const RewardsTab: React.FC = () => {
         return;
       }
 
-      // For staking and referrals we still use subcollections
-      if (activeSection === 'staking' || activeSection === 'referrals') {
+      // For referrals we still use subcollections
+      if (activeSection === 'referrals') {
         const colRef = collection(db, 'rewards', activeSection, 'items');
         if (editingItem?.id) {
           await updateDoc(doc(db, 'rewards', activeSection, 'items', editingItem.id), data);
@@ -214,7 +312,7 @@ const RewardsTab: React.FC = () => {
   );
 
   const renderStakingTable = () => {
-    if (rewards.staking.length === 0) {
+    if (!selectedPlan || selectedPlanDurations.length === 0) {
       return renderEmptyState('staking');
     }
 
@@ -224,24 +322,21 @@ const RewardsTab: React.FC = () => {
           <thead className="text-xs text-gray-400 uppercase bg-white/5">
             <tr>
               <th className="px-4 py-3">{t('admin.rewards.staking.duration')}</th>
-              <th className="px-4 py-3">% APY</th>
+              <th className="px-4 py-3">% {t('admin.rewards.staking.apy')}</th>
               <th className="px-4 py-3">{t('admin.rewards.actions.actions')}</th>
             </tr>
           </thead>
           <tbody>
-            {rewards.staking.map((reward) => (
-              <tr key={reward.id} className="border-b border-white/10 hover:bg-white/5">
-                <td className="px-4 py-3">
-                  {reward.duration} {t(`admin.rewards.staking.units.${reward.durationUnit}`)}
-                </td>
-                <td className="px-4 py-3 font-medium">{reward.reward}%</td>
-                
+            {selectedPlanDurations.map((entry) => (
+              <tr key={`${selectedPlan}-${entry.months}`} className="border-b border-white/10 hover:bg-white/5">
+                <td className="px-4 py-3">{entry.months} {entry.months === 1 ? t('admin.rewards.staking.units.months') : t('admin.rewards.staking.units.months')}</td>
+                <td className="px-4 py-3 font-medium">{(entry.apy * 100).toFixed(2)}%</td>
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
-                     <button onClick={() => openEditModal('staking', reward)} className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
+                    <button onClick={() => openEditModal('staking', entry)} className="p-1 text-yellow-400 hover:text-yellow-300 transition-colors">
                       <FaEdit className="w-4 h-4" />
                     </button>
-                     <button onClick={() => handleDelete('staking', reward.id)} className="p-1 text-red-400 hover:text-red-300 transition-colors">
+                    <button onClick={() => handleDelete('staking', String(entry.months))} className="p-1 text-red-400 hover:text-red-300 transition-colors">
                       <FaTrash className="w-4 h-4" />
                     </button>
                   </div>
@@ -264,9 +359,9 @@ const RewardsTab: React.FC = () => {
         <table className="w-full text-sm text-left text-gray-300">
            <thead className="text-xs text-gray-400 uppercase bg-white/5">
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Range</th>
-              <th className="px-4 py-3">Bonus</th>
+              <th className="px-4 py-3">{t('admin.rewards.referrals.name')}</th>
+              <th className="px-4 py-3">{t('admin.rewards.referrals.range')}</th>
+              <th className="px-4 py-3">{t('admin.rewards.referrals.bonus')}</th>
               <th className="px-4 py-3">{t('admin.rewards.actions.actions')}</th>
             </tr>
           </thead>
@@ -304,10 +399,10 @@ const RewardsTab: React.FC = () => {
     return (
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-300">
-           <thead className="text-xs text-gray-400 uppercase bg-white/5">
+           <thead className="text-xs text-gray-300 uppercase bg-white/5">
             <tr>
-              <th className="px-4 py-3">Daily Limit</th>
-              <th className="px-4 py-3">Collect Bonus</th>
+              <th className="px-4 py-3">{t('admin.rewards.watchAds.dailyLimit')}</th>
+              <th className="px-4 py-3">{t('admin.rewards.watchAds.collectBonus')}</th>
               <th className="px-4 py-3">{t('admin.rewards.actions.actions')}</th>
             </tr>
           </thead>
@@ -335,12 +430,26 @@ const RewardsTab: React.FC = () => {
 
   const renderStakingSection = () => (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <h3 className="text-lg font-semibold text-white">{t('admin.rewards.staking.title')}</h3>
-        <button onClick={() => openCreateModal('staking')} className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 text-sm">
-          <FaPlus className="w-4 h-4" />
-          {t('admin.rewards.staking.addDuration')}
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <label className="text-sm text-gray-300">{t('admin.rewards.staking.plan')}</label>
+            <select
+              value={selectedPlan}
+              onChange={(e) => setSelectedPlan(e.target.value)}
+              className="bg-white/5 border border-white/10 rounded-md p-2 text-white"
+            >
+              {plans.map((p) => (
+                <option key={p.id} value={p.id} className="bg-slate-900 text-white">{p.name}</option>
+              ))}
+            </select>
+          </div>
+          <button onClick={() => openCreateModal('staking')} className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 text-sm">
+            <FaPlus className="w-4 h-4" />
+            {t('admin.rewards.staking.addDuration')}
+          </button>
+        </div>
       </div>
       {renderStakingTable()}
     </div>
@@ -445,14 +554,14 @@ const RewardsTab: React.FC = () => {
                 <>
                   <div>
                     <label className="block text-sm mb-1">Months</label>
-                    <input type="number" value={formValues.duration}
-                      onChange={(e) => setFormValues({ ...formValues, duration: e.target.value })}
+                    <input type="number" value={formValues.months}
+                      onChange={(e) => setFormValues({ ...formValues, months: e.target.value })}
                       className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
                   </div>
                   <div>
                     <label className="block text-sm mb-1">% APY</label>
-                    <input type="number" value={formValues.reward}
-                      onChange={(e) => setFormValues({ ...formValues, reward: e.target.value })}
+                    <input type="number" value={formValues.apy}
+                      onChange={(e) => setFormValues({ ...formValues, apy: e.target.value })}
                       className="w-full bg-white/5 border border-white/10 rounded-md p-2" />
                   </div>
                 </>

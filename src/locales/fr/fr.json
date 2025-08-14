@@ -576,12 +576,14 @@
         "reward": "Récompense",
         "status": "Statut",
         "addDuration": "Ajouter une durée",
+        "plan": "Plan",
         "units": {
           "days": "Jours",
           "weeks": "Semaines",
           "months": "Mois",
           "years": "Années"
-        }
+        },
+        "apy": "APY"
       },
       "referrals": {
         "title": "Parrainages",
@@ -591,7 +593,10 @@
         "referrals": "Parrainages",
         "reward": "Récompense",
         "status": "Statut",
-        "addTier": "Ajouter un niveau"
+        "addTier": "Ajouter un niveau",
+        "name": "Nom",
+        "range": "Plage",
+        "bonus": "Bonus"
       },
       "watchAds": {
         "title": "Regarder des publicités",
@@ -600,7 +605,9 @@
         "ads": "Publicités",
         "reward": "Récompense",
         "status": "Statut",
-        "addReward": "Ajouter une récompense"
+        "addReward": "Ajouter une récompense",
+        "dailyLimit": "Limite quotidienne",
+        "collectBonus": "Bonus de collecte"
       },
       "stats": {
         "totalRewards": "Total des récompenses",
@@ -650,7 +657,8 @@
         "activate": "Activer",
         "deactivate": "Désactiver",
         "viewDetails": "Voir les détails",
-        "view": "Voir"
+        "view": "Voir",
+        "actions": "Actions"
       },
       "status": {
         "active": "Actif",
@@ -1400,6 +1408,33 @@
       "planNotFound": "Plan Non Trouvé",
       "planNotFoundDesc": "Impossible de charger les informations du plan. Veuillez réessayer plus tard."
     }
+  },
+  "stakingPage": {
+    "description": "Sécurisez votre avenir avec notre plateforme de staking avancée. Gagnez un revenu passif avec des conditions flexibles et des rendements compétitifs.",
+    "currentPlan": "Plan Actuel",
+    "startNewStaking": "Commencer un Nouveau Staking",
+    "chooseAmountDuration": "Choisissez votre montant et votre durée pour commencer à gagner",
+    "amountToStake": "Montant à Staker",
+    "stakingDuration": "Durée de Staking",
+    "selectDuration": "Sélectionner la durée",
+    "enterAmount": "Entrez le montant",
+    "stakedAmount": "Montant Staké",
+    "totalProfit": "Profit Total",
+    "trackPerformance": "Suivez vos performances de staking et votre historique",
+    "activePositions": "Positions Actives",
+    "completedPositions": "positions terminées",
+    "endDate": "Date de Fin",
+    "progress": "Progression",
+    "returned": "Retourné",
+    "completeFirstStaking": "Terminez votre premier staking pour voir l'historique",
+    "availableBalance": "Solde Disponible",
+    "lockedAmount": "Montant Verrouillé",
+    "stakingStats": "Statistiques de Staking",
+    "performanceOverview": "Aperçu des Performances",
+    "completed": "Terminé",
+    "expectedReturn": "Rendement Attendu",
+    "startStakingToSee": "Commencez le staking pour voir vos positions actives",
+    "fsn": "FSN"
   },
   "common": {
     "loading": "Chargement...",

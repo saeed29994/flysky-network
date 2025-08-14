@@ -841,6 +841,8 @@
     "chooseAmountDuration": "Choose your amount and duration to begin earning",
     "amountToStake": "Amount to Stake",
     "stakingDuration": "Staking Duration",
+    "selectDuration": "Select duration",
+    "enterAmount": "Enter amount",
     "stakedAmount": "Staked Amount",
     "totalProfit": "Total Profit",
     "trackPerformance": "Track your staking performance and history",
@@ -1265,12 +1267,14 @@
         "reward": "Reward",
         "status": "Status",
         "addDuration": "Add Duration",
+        "plan": "Plan",
         "units": {
           "days": "Days",
           "weeks": "Weeks",
           "months": "Months",
           "years": "Years"
-        }
+        },
+        "apy": "APY"
       },
       "referrals": {
         "title": "Referrals",
@@ -1280,7 +1284,10 @@
         "referrals": "Referrals",
         "reward": "Reward",
         "status": "Status",
-        "addTier": "Add Tier"
+        "addTier": "Add Tier",
+        "name": "Name",
+        "range": "Range",
+        "bonus": "Bonus"
       },
       "watchAds": {
         "title": "Watch Ads",
@@ -1289,7 +1296,9 @@
         "ads": "Ads",
         "reward": "Reward",
         "status": "Status",
-        "addReward": "Add Reward"
+        "addReward": "Add Reward",
+        "dailyLimit": "Daily Limit",
+        "collectBonus": "Collect Bonus"
       },
       "stats": {
         "totalRewards": "Total Rewards",

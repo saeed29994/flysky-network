@@ -798,6 +798,8 @@
     "chooseAmountDuration": "Kazanmaya başlamak için miktarınızı ve sürenizi seçin",
     "amountToStake": "Stake Edilecek Miktar",
     "stakingDuration": "Staking Süresi",
+    "selectDuration": "Süre Seçin",
+    "enterAmount": "Miktar girin",
     "stakedAmount": "Stake Edilen Miktar",
     "totalProfit": "Toplam Kar",
     "trackPerformance": "Staking performansınızı ve geçmişini takip edin",
@@ -1227,12 +1229,14 @@
         "reward": "Ödül",
         "status": "Durum",
         "addDuration": "Süre Ekle",
+        "plan": "Plan",
         "units": {
           "days": "Gün",
           "weeks": "Hafta",
           "months": "Ay",
           "years": "Yıl"
-        }
+        },
+        "apy": "APY"
       },
       "referrals": {
         "title": "Referanslar",
@@ -1242,7 +1246,10 @@
         "referrals": "Referans",
         "reward": "Ödül",
         "status": "Durum",
-        "addTier": "Seviye Ekle"
+        "addTier": "Seviye Ekle",
+        "name": "Ad",
+        "range": "Aralık",
+        "bonus": "Bonus"
       },
       "watchAds": {
         "title": "Reklam İzle",
@@ -1251,7 +1258,9 @@
         "ads": "Reklam",
         "reward": "Ödül",
         "status": "Durum",
-        "addReward": "Ödül Ekle"
+        "addReward": "Ödül Ekle",
+        "dailyLimit": "Günlük Limit",
+        "collectBonus": "Bonus Topla"
       },
       "stats": {
         "totalRewards": "Toplam Ödüller",
@@ -1319,7 +1328,8 @@
         "viewDetails": "Detayları Görüntüle",
         "create": "Oluştur",
         "cancel": "İptal",
-        "close": "Kapat"
+        "close": "Kapat",
+        "actions": "İşlemler"
       },
       "status": {
         "active": "Aktif",
@@ -1327,6 +1337,7 @@
       },
       "noData": "Henüz {{section}} verisi yok",
       "startAdding": "İlk {{section}} yapılandırmanızı eklemeye başlayın",
+      "loading": "Ödüller yükleniyor...",
       "clickToExpand": "Genişletmek için tıklayın",
       "clickToCollapse": "Daraltmak için tıklayın",
       "quickActions": "Hızlı İşlemler",

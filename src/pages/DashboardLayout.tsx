@@ -1,7 +1,6 @@
-
 // 📁 DashboardLayout.tsx
 
-import { useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect, ReactNode, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
@@ -39,8 +38,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   console.log(userEmail,kycStatus, subscriptionEnd)
+  // Store all active listeners in a ref so we can detach them during logout
+  const firestoreListeners = useRef<(() => void)[]>([]);
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // Clear any existing listeners when auth state changes
+      firestoreListeners.current.forEach(unsub => unsub());
+      firestoreListeners.current = [];
+      
       if (!user) {
         navigate('/login');
         return;
@@ -70,15 +76,22 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
         setIsLoading(false);
       });
+      
+      // Store the listener
+      firestoreListeners.current.push(unsubscribeSnapshot);
 
       const inboxQuery = query(collection(db, 'users', user.uid, 'inbox'), where('read', '==', false));
       const unsubscribeInbox = onSnapshot(inboxQuery, (snapshot) => {
         setHasUnreadMessages(!snapshot.empty);
       });
+      
+      // Store the listener
+      firestoreListeners.current.push(unsubscribeInbox);
 
       return () => {
         unsubscribeSnapshot();
         unsubscribeInbox();
+        firestoreListeners.current = [];
       };
     });
 
@@ -96,8 +109,20 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const handleLogout = async () => {
     try {
       const user = auth.currentUser;
-      await deleteCurrentToken(user?.uid || '');
-      await signOut(auth);
+      
+      // First detach all Firestore listeners to prevent permission errors
+      firestoreListeners.current.forEach(unsubscribe => unsubscribe());
+      firestoreListeners.current = [];
+      
+      if (user) {
+        // Delete the token from Firestore while still authenticated
+        await deleteCurrentToken(user.uid);
+        // Then sign out
+        await signOut(auth);
+      } else {
+        // If no user, just sign out
+        await signOut(auth);
+      }
       navigate('/login');
     } catch (error) {
       console.error('❌ Logout failed:', error);

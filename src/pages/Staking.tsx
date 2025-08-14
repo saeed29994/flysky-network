@@ -8,6 +8,7 @@ import {
   onSnapshot,
   query,
   getDoc,
+  getDocs,
   Timestamp,
 } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -55,6 +56,10 @@ const StakingPage = () => {
   const [user, setUser] = useState<any>(null);
   const [balance, setBalance] = useState(0);
   const [plan, setPlan] = useState('economy');
+  const [userDocData, setUserDocData] = useState<any>(null);
+  const [planNameToId, setPlanNameToId] = useState<Record<string, string>>({});
+  const [planIds, setPlanIds] = useState<Set<string>>(new Set());
+  const [planSlugToId, setPlanSlugToId] = useState<Record<string, string>>({});
   const [amount, setAmount] = useState('');
   const [duration, setDuration] = useState('1');
   const [stakingList, setStakingList] = useState<StakingEntry[]>([]);
@@ -62,21 +67,10 @@ const StakingPage = () => {
   const [loading, setLoading] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
   const [showActive, setShowActive] = useState(true);
-  const [customApy, setCustomApy] = useState<number[] | null>(null);
+  const [planDurations, setPlanDurations] = useState<Array<{ months: number; apy: number }>>([]);
 
-  const defaultReturnRate =
-    plan === 'first-lifetime' ? [0.05, 0.2, 0.45, 1.0] :
-    plan === 'first-6' ? [0.03, 0.15, 0.35, 0.8] :
-    plan === 'business' ? [0, 0.10, 0.25, 0.6] :
-    [0, 0, 0.15, 0.4];
-
-  const returnRate = customApy || defaultReturnRate;
-
-  const durationIndex =
-    duration === '1' ? 0 :
-    duration === '3' ? 1 :
-    duration === '6' ? 2 :
-    3;
+  const selectedMonths = parseInt(duration);
+  const selectedApy = planDurations.find(d => d.months === selectedMonths)?.apy ?? 0;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -87,7 +81,37 @@ const StakingPage = () => {
     return () => unsubscribe();
   }, []);
 
-  // Load APY config from Firestore -> rewards/staking
+  // Fetch plans for name → id normalization
+  useEffect(() => {
+    const loadPlans = async () => {
+      try {
+        const snap = await getDocs(collection(db, 'plans'));
+        const mapping: Record<string, string> = {};
+        const ids: Set<string> = new Set();
+        const slugMap: Record<string, string> = {};
+        const slugify = (s: string) => String(s || '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        snap.forEach((d) => {
+          const data: any = d.data();
+          ids.add(d.id);
+          if (data?.name) mapping[String(data.name)] = d.id;
+          // Build slug mapping for both id and name
+          slugMap[slugify(d.id)] = d.id;
+          if (data?.name) slugMap[slugify(String(data.name))] = d.id;
+        });
+        setPlanNameToId(mapping);
+        setPlanIds(ids);
+        setPlanSlugToId(slugMap);
+      } catch (_) {
+        // ignore
+      }
+    };
+    loadPlans();
+  }, []);
+
+  // Load APY config from Firestore -> rewards/staking (per-plan aware)
   useEffect(() => {
     const loadStakingConfig = async () => {
       try {
@@ -95,29 +119,63 @@ const StakingPage = () => {
         const snap = await getDoc(cfgRef);
         if (snap.exists()) {
           const data: any = snap.data();
-          const durations: any[] = Array.isArray(data?.durations) ? data.durations : [];
-          if (durations.length > 0) {
-            // Map months -> apy decimal
-            const byMonth: Record<number, number> = {};
-            durations.forEach((d) => {
+          const plansMap: Record<string, any[]> = data?.plans || {};
+          const keys = Object.keys(plansMap);
+          const slugify = (s: string) => String(s || '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+          // Try to resolve the correct key in rewards config for the current plan
+          let resolvedKey: string | null = null;
+          if (keys.includes(plan)) {
+            resolvedKey = plan;
+          } else {
+            const planLower = plan.toLowerCase();
+            const planSlug = slugify(plan);
+            // progressively relaxed matching
+            resolvedKey = keys.find(k => k.toLowerCase() === planLower) ||
+                          keys.find(k => slugify(k) === planSlug) ||
+                          keys.find(k => planLower.includes(k.toLowerCase())) ||
+                          keys.find(k => k.toLowerCase().includes(planLower)) ||
+                          null;
+          }
+
+          const planArr: any[] = resolvedKey && Array.isArray(plansMap[resolvedKey]) ? plansMap[resolvedKey] : [];
+          const durations: any[] = planArr.length > 0 ? planArr : (Array.isArray(data?.durations) ? data.durations : []);
+          const parsed: Array<{ months: number; apy: number }> = durations
+            .map((d) => {
               const months = Number(d.months || d.duration);
               let apy = Number(d.apy);
               if (!isFinite(apy)) apy = 0;
-              // If value looks like percent (e.g., 15), convert to decimal 0.15
               const decimal = apy > 1 ? apy / 100 : apy;
-              byMonth[months] = decimal;
-            });
-            const mapped = [1, 3, 6, 12].map((m) => byMonth[m] ?? defaultReturnRate[[1,3,6,12].indexOf(m)]);
-            setCustomApy(mapped);
+              return { months, apy: decimal };
+            })
+            .filter((d) => d.months > 0)
+            .sort((a, b) => a.months - b.months);
+          setPlanDurations(parsed);
+          if (parsed.length > 0) {
+            if (!parsed.some(d => String(d.months) === duration)) {
+              setDuration(String(parsed[0].months));
+            }
+          } else {
+            // No durations configured for this plan; clear selection
+            setDuration('');
           }
+        } else {
+          // No rewards config; clear durations
+          setPlanDurations([]);
+          setDuration('');
         }
       } catch (e) {
-        // Keep defaults silently
+        // On error, clear durations
+        setPlanDurations([]);
+        setDuration('');
       }
     };
     loadStakingConfig();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [plan]);
 
   useEffect(() => {
     if (!user) return;
@@ -127,9 +185,7 @@ const StakingPage = () => {
       const data = docSnap.data();
       if (data) {
         setBalance(data.balance || 0);
-        const fallbackPlan = data.plan || 'economy';
-        const finalPlan = data.membership?.planName || fallbackPlan;
-        setPlan(finalPlan);
+        setUserDocData(data);
       }
     });
 
@@ -149,6 +205,30 @@ const StakingPage = () => {
     };
   }, [user]);
 
+  // Normalize plan from user doc whenever userDocData or planNameToId changes
+  useEffect(() => {
+    if (!userDocData) return;
+    const candidates: string[] = [];
+    if (userDocData.membership?.planName) candidates.push(String(userDocData.membership.planName));
+    if (userDocData.plan) candidates.push(String(userDocData.plan));
+    candidates.push('economy');
+
+    let resolved: string | null = null;
+    for (const c of candidates) {
+      const val = String(c).trim();
+      if (!val) continue;
+      // exact id match
+      if (planIds.has(val)) { resolved = val; break; }
+      // name -> id
+      if (planNameToId[val]) { resolved = planNameToId[val]; break; }
+      // slug match against id or name
+      const slug = val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      if (planSlugToId[slug]) { resolved = planSlugToId[slug]; break; }
+    }
+
+    setPlan(resolved || 'economy');
+  }, [userDocData, planNameToId, planIds, planSlugToId]);
+
   const handleStake = async (e: FormEvent) => {
     e.preventDefault();
     if (!user) return toast.error(t('error.userNotLoaded'));
@@ -166,7 +246,7 @@ const StakingPage = () => {
       return;
     }
 
-    const expectedReturn = amountNum * (1 + returnRate[durationIndex]);
+    const expectedReturn = amountNum * (1 + selectedApy);
     const startDate = Timestamp.now();
     const endDate = Timestamp.fromDate(new Date(Date.now() + durationNum * 30 * 24 * 60 * 60 * 1000));
 
@@ -379,7 +459,7 @@ const StakingPage = () => {
                         <div className="relative">
                           <input
                             type="number"
-                            placeholder="Enter amount"
+                            placeholder={t('stakingPage.enterAmount')}
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             className="w-full p-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-all duration-300 text-lg"
@@ -395,21 +475,14 @@ const StakingPage = () => {
                         <label className="block text-sm font-semibold text-gray-300 mb-3">{t('stakingPage.stakingDuration')}</label>
                         <Select value={duration} onValueChange={setDuration}>
                           <SelectTrigger className="w-full p-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-amber-500 focus:outline-none transition-all duration-300 h-auto data-[state=open]:border-amber-500 text-lg">
-                            <SelectValue placeholder="Select duration" />
+                            <SelectValue placeholder={t('stakingPage.selectDuration')} />
                           </SelectTrigger>
                           <SelectContent className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-xl border border-white/20 text-white shadow-2xl">
-                            <SelectItem value="1" className="hover:bg-white/10 focus:bg-white/10 text-white">
-                              1 {t('duration.month')} – {returnRate[0] * 100}% APY
-                            </SelectItem>
-                            <SelectItem value="3" className="hover:bg-white/10 focus:bg-white/10 text-white">
-                              3 {t('duration.months')} – {returnRate[1] * 100}% APY
-                            </SelectItem>
-                            <SelectItem value="6" className="hover:bg-white/10 focus:bg-white/10 text-white">
-                              6 {t('duration.months')} – {returnRate[2] * 100}% APY
-                            </SelectItem>
-                            <SelectItem value="12" className="hover:bg-white/10 focus:bg-white/10 text-white">
-                              12 {t('duration.months')} – {returnRate[3] * 100}% APY
-                            </SelectItem>
+                            {planDurations.map((d) => (
+                              <SelectItem key={d.months} value={String(d.months)} className="hover:bg-white/10 focus:bg-white/10 text-white">
+                                {d.months} {d.months === 1 ? 'Month' : 'Months'} - {(d.apy * 100).toFixed(0)}% APY
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
@@ -428,15 +501,15 @@ const StakingPage = () => {
                           </div>
                           <div className="text-center">
                             <p className="text-gray-400 text-sm mb-1">{t('stakingPage.expectedReturn')}</p>
-                            <p className="text-amber-400 font-bold text-lg">
-                              {(parseFloat(amount) * (1 + returnRate[durationIndex])).toFixed(2)} FSN
-                            </p>
+                              <p className="text-amber-400 font-bold text-lg">
+                                {(parseFloat(amount) * (1 + selectedApy)).toFixed(2)} FSN
+                              </p>
                           </div>
                           <div className="text-center">
                             <p className="text-gray-400 text-sm mb-1">{t('stakingPage.totalProfit')}</p>
-                            <p className="text-green-400 font-bold text-lg">
-                              +{(parseFloat(amount) * returnRate[durationIndex]).toFixed(2)} FSN
-                            </p>
+                              <p className="text-green-400 font-bold text-lg">
+                                +{(parseFloat(amount) * selectedApy).toFixed(2)} FSN
+                              </p>
                           </div>
                         </div>
                       </motion.div>
