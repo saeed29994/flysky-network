@@ -802,6 +802,40 @@
       "deleteWarning": "Attention : Cette action ne peut pas être annulée",
       "deleteWarningDescription": "Supprimer cet utilisateur supprimera définitivement son compte, son solde et toutes les données associées du système.",
       "userToDelete": "Utilisateur à supprimer",
+      "userInformation": "Informations utilisateur",
+      "detailedInformation": "Informations détaillées et statistiques de l'utilisateur",
+      "location": "Localisation",
+      "referrals": "Parrainages",
+      "lastDevice": "Dernier appareil",
+      "membership": "Abonnement et plan",
+      "planStartDate": "Date de début du plan",
+      "planEndDate": "Date de fin du plan",
+      "paymentMethod": "Méthode de paiement",
+      "paymentMethods": {
+        "credit_card": "Carte bancaire",
+        "bank_transfer": "Virement bancaire",
+        "crypto": "Cryptomonnaie",
+        "paypal": "PayPal",
+        "stripe": "Stripe",
+        "other": "Autre"
+      },
+      "referralCode": "Code de parrainage",
+      "referredBy": "Parrainé par",
+      "financialInformation": "Informations financières",
+      "totalRewardsClaimed": "Total des récompenses réclamées",
+      "totalDeposits": "Dépôts totaux",
+      "totalWithdrawals": "Retraits totaux",
+      "tabs": {
+        "basicInfo": "Informations de base",
+        "accountInfo": "Compte",
+        "financialInfo": "Financier"
+      },
+      "plans": {
+        "economy": "Économie",
+        "business": "Business",
+        "first6": "Première-6",
+        "firstLifetime": "Première-Vie"
+      },
       "stats": {
         "activeUsers": "Utilisateurs actifs",
         "premiumPlans": "Plans premium",
@@ -866,9 +900,11 @@
       "status": {
         "active": "Actif",
         "inactive": "Inactif",
+        "suspended": "Suspendu",
         "verified": "Vérifié",
         "pending": "En attente",
-        "rejected": "Rejeté"
+        "rejected": "Rejeté",
+        "notActivated": "Non activé"
       },
       "noUsers": "Aucun utilisateur trouvé"
     },

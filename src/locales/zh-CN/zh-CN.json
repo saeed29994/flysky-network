@@ -1447,6 +1447,34 @@
       "deleteWarning": "警告：此操作无法撤销",
       "deleteWarningDescription": "删除此用户将永久从系统中移除其账户、余额和所有相关数据。",
       "userToDelete": "要删除的用户",
+      "userInformation": "用户信息",
+      "detailedInformation": "详细的用户信息和统计",
+      "location": "位置",
+      "referrals": "推荐人数",
+      "lastDevice": "最后设备",
+      "membership": "会员与计划",
+      "planStartDate": "计划开始日期",
+      "planEndDate": "计划结束日期",
+      "paymentMethod": "支付方式",
+      "paymentMethods": {
+        "credit_card": "信用卡",
+        "bank_transfer": "银行转账",
+        "crypto": "加密货币",
+        "paypal": "PayPal",
+        "stripe": "Stripe",
+        "other": "其他"
+      },
+      "referralCode": "推荐码",
+      "referredBy": "推荐人",
+      "financialInformation": "财务信息",
+      "totalRewardsClaimed": "已领取总奖励",
+      "totalDeposits": "总存入",
+      "totalWithdrawals": "总取出",
+      "tabs": {
+        "basicInfo": "基本信息",
+        "accountInfo": "账户",
+        "financialInfo": "财务"
+      },
       "stats": {
         "activeUsers": "活跃用户",
         "premiumPlans": "高级计划",
@@ -1511,9 +1539,11 @@
       "status": {
         "active": "活跃",
         "inactive": "非活跃",
+        "suspended": "已停用",
         "verified": "已验证",
         "pending": "待处理",
-        "rejected": "已拒绝"
+        "rejected": "已拒绝",
+        "notActivated": "未激活"
       },
       "noUsers": "未找到用户"
     },

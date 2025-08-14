@@ -13,7 +13,7 @@ import {
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import {
-  FaUsers, FaIdCard, FaCreditCard, FaChartLine, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes,
+  FaUsers, FaIdCard, FaCreditCard, FaChartLine, FaEdit, FaTrash, FaCheck, FaTimes,
   FaCrown, FaStar, FaGem, FaCoins, FaUserCheck, FaEye, FaDownload,
   FaGift, FaImage, FaChartBar, FaExclamationTriangle
 } from 'react-icons/fa';
@@ -35,6 +35,7 @@ import RewardsTab from '../components/admin/RewardsTab';
 import ContentTab from '../components/admin/ContentTab';
 import NotificationsTab from '../components/admin/NotificationsTab';
 import KycVerificationTab from '../components/admin/KycVerificationTab';
+import UsersManagementTab from '../components/admin/UsersManagementTab';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -79,8 +80,6 @@ const AdminDashboard = () => {
 
   const [users, setUsers] = useState<User[]>([]);
   const [manualPayments, setManualPayments] = useState<ManualPayment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   // const [kycSearchQuery, setKycSearchQuery] = useState('');
   const [newPlan, setNewPlan] = useState('');
   const [selectedTab, setSelectedTab] = useState(0);
@@ -124,7 +123,6 @@ const AdminDashboard = () => {
       };
     });
     setUsers(data);
-    setLoading(false);
   };
 
   const fetchManualPayments = async () => {
@@ -172,21 +170,10 @@ const AdminDashboard = () => {
     setNewPlan('');
   };
 
-  const openEditDialog = (user: User) => {
-    setEditingUser(user);
-    setNewPlan(user.plan);
-    setIsEditDialogOpen(true);
-  };
-
   const closeEditDialog = () => {
     setIsEditDialogOpen(false);
     setEditingUser(null);
     setNewPlan('');
-  };
-
-  const openDeleteDialog = (user: User) => {
-    setDeletingUser(user);
-    setIsDeleteDialogOpen(true);
   };
 
   const closeDeleteDialog = () => {
@@ -201,13 +188,6 @@ const AdminDashboard = () => {
   //     prev.map((u) => (u.id === userId ? { ...u, kycStatus: 'Verified' } : u))
   //   );
   // };
-
-  const filteredUsers = users.filter(
-    (user) =>
-      user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.id.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   // const filteredKycUsers = users.filter(
   //   (user) =>
@@ -399,161 +379,7 @@ const AdminDashboard = () => {
 
             {/* Users Management Tab */}
             <Tab.Panel>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="space-y-6"
-              >
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl">
-                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                      <FaUsers className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.users.title')}</h2>
-                      <p className="text-gray-400 text-xs sm:text-sm">{t('admin.users.description')}</p>
-                    </div>
-                  </div>
-
-                  {/* Search Bar */}
-                  <div className="relative mb-4 sm:mb-6">
-                    <FaSearch className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input
-                      type="text"
-                      placeholder={t('admin.users.searchPlaceholder')}
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent backdrop-blur-sm text-sm sm:text-base"
-                    />
-                  </div>
-
-                  {loading ? (
-                    <div className="flex items-center justify-center py-8 sm:py-12">
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      <span className="ml-3 text-gray-400 text-sm sm:text-base">Loading users...</span>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {/* Mobile Card View */}
-                      <div className="lg:hidden space-y-4">
-                        {filteredUsers.map((user, index) => (
-                          <motion.div
-                            key={user.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, delay: index * 0.05 }}
-                            className="bg-white/5 rounded-xl p-4 border border-white/10"
-                          >
-                            <div className="space-y-3">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                  <div className={`w-6 h-6 bg-gradient-to-r ${getPlanColor(user.plan)} rounded-lg flex items-center justify-center`}>
-                                    {getPlanIcon(user.plan)}
-                                  </div>
-                                  <span className="text-white font-medium text-sm capitalize">{user.plan}</span>
-                                </div>
-                                <span className="text-yellow-400 font-bold text-sm">{user.balance.toLocaleString()} FSN</span>
-                              </div>
-
-                              <div>
-                                <p className="text-white font-medium text-sm">{user.fullName}</p>
-                                <p className="text-gray-400 text-xs">{user.email}</p>
-                                <p className="text-gray-400 text-xs mt-1">{t('admin.users.table.id')}: {user.id.substring(0, 8)}...</p>
-                              </div>
-
-                              <div className="text-gray-300 text-xs">
-                                <p className="truncate">{user.stakingStatus}</p>
-                              </div>
-
-                              <div className="flex gap-2 pt-2">
-                                <button
-                                  onClick={() => openEditDialog(user)}
-                                  className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
-                                >
-                                  <FaEdit className="w-3 h-3" />
-                                  {t('admin.common.edit')}
-                                </button>
-                                <button
-                                  onClick={() => openDeleteDialog(user)}
-                                  className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
-                                >
-                                  <FaTrash className="w-3 h-3" />
-                                  {t('admin.common.delete')}
-                                </button>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-
-                      {/* Desktop Table View */}
-                      <div className="hidden lg:block overflow-x-auto">
-                        <div className="bg-white/5 rounded-xl overflow-hidden">
-                          <table className="w-full">
-                            <thead>
-                              <tr className="bg-white/10 border-b border-white/10">
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.id')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.name')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.email')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.plan')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.balance')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.users.table.staking')}</th>
-                                <th className="py-4 px-4 text-left text-gray-300 font-medium">{t('admin.common.actions')}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {filteredUsers.map((user, index) => (
-                                <motion.tr
-                                  key={user.id}
-                                  initial={{ opacity: 0, y: 20 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                                  className="border-b border-white/5 hover:bg-white/5 transition-colors"
-                                >
-                                  <td className="py-4 px-4 text-xs text-gray-400 break-all">{user.id}</td>
-                                  <td className="py-4 px-4 text-white font-medium">{user.fullName}</td>
-                                  <td className="py-4 px-4 text-gray-300">{user.email}</td>
-                                  <td className="py-4 px-4">
-                                    <div className="flex items-center gap-2">
-                                      <div className={`w-6 h-6 bg-gradient-to-r ${getPlanColor(user.plan)} rounded-lg flex items-center justify-center`}>
-                                        {getPlanIcon(user.plan)}
-                                      </div>
-                                      <span className="text-white capitalize">{user.plan}</span>
-                                    </div>
-                                  </td>
-                                  <td className="py-4 px-4 text-white font-medium">{user.balance.toLocaleString()} FSN</td>
-                                  <td className="py-4 px-4 text-gray-300 text-sm max-w-[200px] truncate">{user.stakingStatus}</td>
-                                  <td className="py-4 px-4">
-                                    <div className="flex items-center gap-2">
-                                      <button
-                                        onClick={() => openEditDialog(user)}
-                                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
-                                      >
-                                        <FaEdit className="w-3 h-3" />
-                                        {t('admin.common.edit')}
-                                      </button>
-                                      <button
-                                        onClick={() => openDeleteDialog(user)}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
-                                      >
-                                        <FaTrash className="w-3 h-3" />
-                                        {t('admin.common.delete')}
-                                      </button>
-                                    </div>
-                                  </td>
-                                </motion.tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-
-                </div>
-              </motion.div>
+              <UsersManagementTab />
             </Tab.Panel>
 
             {/* KYC Verification Tab */}
@@ -642,7 +468,7 @@ const AdminDashboard = () => {
                                       await updateDoc(doc(db, 'manualPayments', p.id), { status: 'approved' });
                                       fetchManualPayments();
                                     }}
-                                    className="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
+                                    className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-1 text-xs"
                                   >
                                     <FaCheck className="w-3 h-3" />
                                     {t('admin.payments.actions.approve')}
@@ -652,7 +478,7 @@ const AdminDashboard = () => {
                                       await updateDoc(doc(db, 'manualPayments', p.id), { status: 'rejected' });
                                       fetchManualPayments();
                                     }}
-                                    className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 text-xs"
+                                    className="flex-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-1 text-xs"
                                   >
                                     <FaTimes className="w-3 h-3" />
                                     {t('admin.payments.actions.reject')}

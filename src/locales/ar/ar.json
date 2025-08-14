@@ -1518,6 +1518,40 @@
       "deleteWarning": "تحذير: لا يمكن التراجع عن هذا الإجراء",
       "deleteWarningDescription": "حذف هذا المستخدم سيؤدي إلى إزالة حسابه ورصيده وجميع البيانات المرتبطة به من النظام بشكل دائم.",
       "userToDelete": "المستخدم المراد حذفه",
+      "userInformation": "معلومات المستخدم",
+      "detailedInformation": "معلومات مفصلة وإحصائيات المستخدم",
+      "location": "الموقع",
+      "referrals": "الإحالات",
+      "lastDevice": "آخر جهاز",
+      "membership": "الاشتراك والخطة",
+      "planStartDate": "تاريخ بدء الخطة",
+      "planEndDate": "تاريخ انتهاء الخطة",
+      "paymentMethod": "طريقة الدفع",
+      "paymentMethods": {
+        "credit_card": "بطاقة ائتمان",
+        "bank_transfer": "تحويل بنكي",
+        "crypto": "عملات رقمية",
+        "paypal": "باي بال",
+        "stripe": "سترايب",
+        "other": "أخرى"
+      },
+      "referralCode": "رمز الإحالة",
+      "referredBy": "أحاله",
+      "financialInformation": "المعلومات المالية",
+      "totalRewardsClaimed": "إجمالي المكافآت المسحوبة",
+      "totalDeposits": "إجمالي الإيداعات",
+      "totalWithdrawals": "إجمالي السحوبات",
+      "tabs": {
+        "basicInfo": "معلومات أساسية",
+        "accountInfo": "الحساب",
+        "financialInfo": "المالية"
+      },
+      "plans": {
+        "economy": "اقتصادية",
+        "business": "تجارية",
+        "first6": "الدرجة الأولى-6",
+        "firstLifetime": "الدرجة الأولى-مدى الحياة"
+      },
       "stats": {
         "activeUsers": "المستخدمون النشطون",
         "premiumPlans": "الخطط المميزة",
@@ -1582,9 +1616,11 @@
       "status": {
         "active": "نشط",
         "inactive": "غير نشط",
+        "suspended": "موقوف",
         "verified": "مُتحقق",
         "pending": "معلق",
-        "rejected": "مرفوض"
+        "rejected": "مرفوض",
+        "notActivated": "غير مفعل"
       },
       "noUsers": "لم يتم العثور على مستخدمين"
     },

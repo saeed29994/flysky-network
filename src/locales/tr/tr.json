@@ -1462,6 +1462,40 @@
       "deleteWarning": "Uyarı: Bu işlem geri alınamaz",
       "deleteWarningDescription": "Bu kullanıcıyı silmek, hesabını, bakiyesini ve tüm ilişkili verilerini sistemden kalıcı olarak kaldıracaktır.",
       "userToDelete": "Silinecek Kullanıcı",
+      "userInformation": "Kullanıcı Bilgileri",
+      "detailedInformation": "Ayrıntılı kullanıcı bilgileri ve istatistikler",
+      "location": "Konum",
+      "referrals": "Yönlendirmeler",
+      "lastDevice": "Son Cihaz",
+      "membership": "Üyelik ve Plan",
+      "planStartDate": "Plan Başlangıç Tarihi",
+      "planEndDate": "Plan Bitiş Tarihi",
+      "paymentMethod": "Ödeme Yöntemi",
+      "paymentMethods": {
+        "credit_card": "Kredi Kartı",
+        "bank_transfer": "Banka Havalesi",
+        "crypto": "Kripto",
+        "paypal": "PayPal",
+        "stripe": "Stripe",
+        "other": "Diğer"
+      },
+      "referralCode": "Yönlendirme Kodu",
+      "referredBy": "Yönlendiren",
+      "financialInformation": "Finansal Bilgiler",
+      "totalRewardsClaimed": "Toplam Talep Edilen Ödüller",
+      "totalDeposits": "Toplam Yatırılan",
+      "totalWithdrawals": "Toplam Çekilen",
+      "tabs": {
+        "basicInfo": "Temel Bilgiler",
+        "accountInfo": "Hesap",
+        "financialInfo": "Finans"
+      },
+      "plans": {
+        "economy": "Ekonomi",
+        "business": "İş",
+        "first6": "Birinci Sınıf-6",
+        "firstLifetime": "Birinci Sınıf-Yaşam Boyu"
+      },
       "stats": {
         "activeUsers": "Aktif Kullanıcılar",
         "premiumPlans": "Premium Planlar",
@@ -1526,9 +1560,11 @@
       "status": {
         "active": "Aktif",
         "inactive": "Pasif",
+        "suspended": "Askıya Alındı",
         "verified": "Doğrulanmış",
         "pending": "Beklemede",
-        "rejected": "Reddedildi"
+        "rejected": "Reddedildi",
+        "notActivated": "Aktif Değil"
       },
       "noUsers": "Kullanıcı bulunamadı"
     },

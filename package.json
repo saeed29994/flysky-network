@@ -29,6 +29,7 @@
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.5",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@reown/appkit": "^1.7.4",
     "@reown/appkit-adapter-wagmi": "^1.7.4",
     "@sentry/react": "^9.38.0",

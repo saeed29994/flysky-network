@@ -985,6 +985,15 @@
   "bonus": "Bonus",
   "planFeaturesTitle": "Plan Features",
   "paymentMethod": "Payment Method",
+  "paymentMethods": {
+    "credit_card": "Credit Card",
+    "bank_transfer": "Bank Transfer",
+    "crypto": "Cryptocurrency",
+    "paypal": "PayPal",
+    "stripe": "Stripe",
+    "in_app_purchase": "In-App Purchase",
+    "other": "Other"
+  },
   "inAppPurchase": "In-App Purchase",
   "securePayment": "Secure Payment",
   "importantNotice": "Important Notice",
@@ -1108,23 +1117,11 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "edit": "Edit",
-      "view": "View",
       "close": "Close",
-      "confirm": "Confirm",
-      "loading": "Loading...",
-      "search": "Search",
-      "filter": "Filter",
-      "sort": "Sort",
-      "actions": "Actions",
-      "status": "Status",
-      "date": "Date",
-      "amount": "Amount",
-      "details": "Details",
-      "noResults": "No results found",
-      "selectAll": "Select All",
-      "bulkActions": "Bulk Actions",
-      "exportData": "Export Data",
-      "refresh": "Refresh"
+      "refresh": "Refresh",
+      "refreshing": "Refreshing...",
+      "view": "View",
+      "search": "Search"
     },
     "route": {
       "checking": "Checking admin permissions..."
@@ -1531,6 +1528,44 @@
       "pleaseSelectPlan": "Please select a new plan!",
       "kycVerified": "KYC verified successfully",
       "userInformation": "User Information",
+      "detailedInformation": "Detailed user information and statistics",
+      "location": "Location",
+      "referrals": "Referrals",
+      "lastDevice": "Last Device",
+      "membership": "Membership & Plan",
+      "planStartDate": "Plan Start Date",
+      "planEndDate": "Plan End Date",
+      "paymentMethod": "Payment Method",
+      "paymentMethods": {
+        "credit_card": "Credit Card",
+        "bank_transfer": "Bank Transfer",
+        "crypto": "Cryptocurrency",
+        "paypal": "PayPal",
+        "stripe": "Stripe",
+        "in_app_purchase": "In-App Purchase",
+        "other": "Other"
+      },
+      "referralCode": "Referral Code",
+      "referredBy": "Referred By",
+      "financialInformation": "Financial Information",
+      "totalRewardsClaimed": "Total Rewards Claimed",
+      "totalDeposits": "Total Deposits",
+      "totalWithdrawals": "Total Withdrawals",
+      "tabs": {
+        "basicInfo": "Basic Info",
+        "accountInfo": "Account",
+        "financialInfo": "Financial"
+      },
+      "filters": {
+        "allStatus": "All Status",
+        "allPlans": "All Plans"
+      },
+      "plans": {
+        "economy": "Economy",
+        "business": "Business",
+        "first6": "First 6",
+        "firstLifetime": "First Lifetime"
+      },
       "table": {
         "user": "User",
         "name": "Name",
@@ -1559,9 +1594,11 @@
       "status": {
         "active": "Active",
         "inactive": "Inactive",
+        "suspended": "Suspended",
         "verified": "Verified",
         "pending": "Pending",
-        "rejected": "Rejected"
+        "rejected": "Rejected",
+        "notActivated": "Not Activated"
       },
       "noUsers": "No users found"
     },
