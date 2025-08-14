@@ -286,48 +286,90 @@ export const useNotifications = (): UseNotificationsReturn => {
       setError(null);
       const { title, body, targetAudience = 'all', platforms = ['mobile', 'web'], scheduledFor = null } = payload;
 
-      // Use the Cloud Function for sending notifications
-      const sendManualNotification = httpsCallable(functions, 'sendManualNotification');
-      
       // If scheduled for later, store in Firestore
       if (scheduledFor) {
-        // Create notification document with scheduled status
-        const notificationData: Record<string, any> = {
-          title,
-          message: body,
-          type: 'info',
-          status: 'scheduled',
-          targetAudience,
-          platforms,
-          scheduledFor: Timestamp.fromDate(scheduledFor),
-          recipients: 0,
-          opened: 0,
-          clicked: 0,
-          createdAt: Timestamp.fromDate(new Date()),
-          createdBy: 'Admin',
-        };
-        
-        // Store in Firestore
-        await addDoc(collection(db, 'notifications'), notificationData);
-        
-        // Refresh notifications to show the new scheduled one
-        await fetchNotifications();
-        return true;
+        try {
+          // Create notification document with scheduled status
+          const notificationData: Record<string, any> = {
+            title,
+            message: body,
+            type: 'info',
+            status: 'scheduled',
+            targetAudience,
+            platforms,
+            scheduledFor: Timestamp.fromDate(scheduledFor),
+            recipients: 0,
+            opened: 0,
+            clicked: 0,
+            createdAt: Timestamp.fromDate(new Date()),
+            createdBy: 'Admin',
+          };
+          
+          // Store in Firestore
+          await addDoc(collection(db, 'notifications'), notificationData);
+          
+          // Refresh notifications to show the new scheduled one
+          await fetchNotifications();
+          return true;
+        } catch (err) {
+          console.error('Error scheduling notification:', err);
+          setError(`Failed to schedule notification: ${(err as Error).message}`);
+          return false;
+        }
       } else {
-        // Send immediately via Cloud Function
-        await sendManualNotification({
-          title,
-          message: body,
-          targetAudience,
-          platforms,
-          type: 'info'
-        });
-        
-        // Refresh notifications to show the new one
-        await fetchNotifications();
-        await fetchNotificationLogs();
-        
-        return true;
+        try {
+          // Use the Cloud Function for sending notifications
+          const sendManualNotification = httpsCallable(functions, 'sendManualNotification');
+          
+          // For development environment, use direct Firestore approach if Cloud Function fails
+          try {
+            // Send immediately via Cloud Function
+            await sendManualNotification({
+              title,
+              message: body,
+              targetAudience,
+              platforms,
+              type: 'info'
+            });
+          } catch (callError) {
+            // If in development and we get a CORS error, fall back to direct Firestore method
+            if (import.meta.env.DEV) {
+              console.warn('Cloud Function call failed, using fallback method for development:', callError);
+              
+              // Create notification document with sent status
+              const notificationData: Record<string, any> = {
+                title,
+                message: body,
+                type: 'info',
+                status: 'sent',
+                targetAudience,
+                platforms,
+                sentAt: Timestamp.fromDate(new Date()),
+                recipients: 0,
+                opened: 0,
+                clicked: 0,
+                createdAt: Timestamp.fromDate(new Date()),
+                createdBy: 'Admin',
+              };
+              
+              // Store in Firestore
+              await addDoc(collection(db, 'notifications'), notificationData);
+            } else {
+              // In production, propagate the error
+              throw callError;
+            }
+          }
+          
+          // Refresh notifications to show the new one
+          await fetchNotifications();
+          await fetchNotificationLogs();
+          
+          return true;
+        } catch (err) {
+          console.error('Error sending notification:', err);
+          setError(`Failed to send notification: ${(err as Error).message}`);
+          return false;
+        }
       }
     } catch (err) {
       console.error('Error sending advanced notification:', err);

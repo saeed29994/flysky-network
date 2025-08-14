@@ -27,7 +27,10 @@ const functions = getFunctions(app, 'us-central1');
 if (import.meta.env.DEV) {
   try {
     // Uncomment the next line when running Firebase emulator
+    // import { connectFunctionsEmulator } from 'firebase/functions';
     // connectFunctionsEmulator(functions, 'localhost', 5001);
+    console.log('Development environment detected. CORS issues with Cloud Functions may occur.');
+    console.log('To use local emulator, uncomment the connectFunctionsEmulator line.');
   } catch (error) {
     console.error('Failed to connect to functions emulator:', error);
   }

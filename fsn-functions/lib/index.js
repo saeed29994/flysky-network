@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.sendManualNotification = exports.processScheduledNotifications = exports.sendPushNotification = exports.translateFunction = void 0;
+exports.getNotificationAnalytics = exports.trackNotificationClick = exports.trackNotificationOpen = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.sendManualNotification = exports.processScheduledNotifications = exports.sendPushNotification = exports.translateFunction = void 0;
 const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
 const translate_1 = require("@google-cloud/translate");
@@ -47,6 +47,10 @@ const notifyReferralBonus_1 = require("./notifications/notifyReferralBonus");
 Object.defineProperty(exports, "notifyReferralBonus", { enumerable: true, get: function () { return notifyReferralBonus_1.notifyReferralBonus; } });
 const sendPeriodicReminders_1 = require("./notifications/sendPeriodicReminders");
 Object.defineProperty(exports, "sendDailyReminders", { enumerable: true, get: function () { return sendPeriodicReminders_1.sendDailyReminders; } });
+const trackNotificationEvents_1 = require("./notifications/trackNotificationEvents");
+Object.defineProperty(exports, "trackNotificationOpen", { enumerable: true, get: function () { return trackNotificationEvents_1.trackNotificationOpen; } });
+Object.defineProperty(exports, "trackNotificationClick", { enumerable: true, get: function () { return trackNotificationEvents_1.trackNotificationClick; } });
+Object.defineProperty(exports, "getNotificationAnalytics", { enumerable: true, get: function () { return trackNotificationEvents_1.getNotificationAnalytics; } });
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + "/../flysky-site-3daa1e4343c4.json";
 if (!admin.apps.length) {
     admin.initializeApp();
@@ -54,6 +58,7 @@ if (!admin.apps.length) {
 const translate = new translate_1.v2.Translate();
 const allowedOrigins = [
     "http://localhost:5173", // Local development server
+    "http://localhost:5174", // Another local development port
     "http://localhost:3000", // Another common local port
     "https://fsncrew.io",
     "https://www.fsncrew.io"

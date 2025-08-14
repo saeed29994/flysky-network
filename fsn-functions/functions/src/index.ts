@@ -8,6 +8,11 @@ import { notifyMiningComplete } from "./notifications/notifyMiningComplete";
 import { notifyNewMessage } from "./notifications/notifyNewMessage";
 import { notifyReferralBonus } from "./notifications/notifyReferralBonus";
 import { sendDailyReminders } from "./notifications/sendPeriodicReminders";
+import { 
+  trackNotificationOpen, 
+  trackNotificationClick, 
+  getNotificationAnalytics 
+} from "./notifications/trackNotificationEvents";
 
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + "/../flysky-site-3daa1e4343c4.json";
 
@@ -19,6 +24,7 @@ const translate = new v2.Translate();
 
 const allowedOrigins = [
   "http://localhost:5173", // Local development server
+  "http://localhost:5174", // Another local development port
   "http://localhost:3000", // Another common local port
   "https://fsncrew.io",
   "https://www.fsncrew.io"
@@ -643,5 +649,8 @@ export {
   notifyMiningComplete, 
   notifyNewMessage, 
   notifyReferralBonus, 
-  sendDailyReminders
+  sendDailyReminders,
+  trackNotificationOpen,
+  trackNotificationClick,
+  getNotificationAnalytics
 };
