@@ -33,11 +33,9 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNotificationAnalytics = exports.trackNotificationClick = exports.trackNotificationOpen = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.sendManualNotification = exports.processScheduledNotifications = exports.sendPushNotification = exports.translateFunction = void 0;
+exports.getNotificationAnalytics = exports.trackNotificationClick = exports.trackNotificationOpen = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.sendManualNotification = exports.processScheduledNotifications = void 0;
 const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
-const translate_1 = require("@google-cloud/translate");
-const translateText_1 = require("./utils/translateText");
 // Import notification functions
 const notifyMiningComplete_1 = require("./notifications/notifyMiningComplete");
 Object.defineProperty(exports, "notifyMiningComplete", { enumerable: true, get: function () { return notifyMiningComplete_1.notifyMiningComplete; } });
@@ -55,96 +53,8 @@ Object.defineProperty(exports, "getNotificationAnalytics", { enumerable: true, g
 if (!admin.apps.length) {
     admin.initializeApp();
 }
-const translate = new translate_1.v2.Translate();
-const allowedOrigins = [
-    "http://localhost:5173", // Local development server
-    "http://localhost:5174", // Another local development port
-    "http://localhost:3000", // Another common local port
-    "https://fsncrew.io",
-    "https://www.fsncrew.io"
-];
-// Export existing functions
-exports.translateFunction = functions.https.onRequest(async (req, res) => {
-    const origin = req.headers.origin;
-    if (origin && allowedOrigins.includes(origin)) {
-        res.set("Access-Control-Allow-Origin", origin);
-        res.set("Access-Control-Allow-Credentials", "true");
-    }
-    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.set("Access-Control-Allow-Headers", "Content-Type");
-    if (req.method === "OPTIONS") {
-        res.status(204).send("");
-        return;
-    }
-    try {
-        const { text, targetLang } = req.body;
-        if (!text || !targetLang) {
-            res.status(400).json({ error: "Missing text or targetLang" });
-            return;
-        }
-        const translated = await (0, translateText_1.translateText)(text, targetLang);
-        res.status(200).json({ translation: translated });
-    }
-    catch (error) {
-        console.error("🔥 Translation Error:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
-exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
-    const origin = req.headers.origin;
-    if (origin && allowedOrigins.includes(origin)) {
-        res.set("Access-Control-Allow-Origin", origin);
-        res.set("Access-Control-Allow-Credentials", "true");
-    }
-    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.set("Access-Control-Allow-Headers", "Content-Type");
-    if (req.method === "OPTIONS") {
-        res.status(204).send("");
-        return;
-    }
-    const { userId, title, body } = req.body;
-    if (!userId || !title || !body) {
-        res.status(400).json({ success: false, message: "Missing required fields." });
-        return;
-    }
-    try {
-        const userDoc = await admin.firestore().collection("users").doc(userId).get();
-        const lang = userDoc.exists && userDoc.data()?.language ? userDoc.data().language : "ar";
-        const tokenDoc = await admin.firestore().collection("userTokens").doc(userId).get();
-        if (!tokenDoc.exists || !tokenDoc.data()?.token) {
-            res.status(404).json({ success: false, message: "FCM token not found for user." });
-            return;
-        }
-        const token = tokenDoc.data().token;
-        let translatedTitle = title;
-        let translatedBody = body;
-        try {
-            [translatedTitle] = await translate.translate(title, lang);
-            [translatedBody] = await translate.translate(body, lang);
-        }
-        catch (translationError) {
-            console.warn("⚠️ Failed to translate:", translationError.message);
-        }
-        const message = {
-            notification: {
-                title: translatedTitle,
-                body: translatedBody,
-            },
-            token: token,
-        };
-        const response = await admin.messaging().send(message);
-        console.log("✅ Notification sent:", response);
-        res.status(200).json({ success: true, message: "Notification sent successfully" });
-    }
-    catch (error) {
-        console.error("❌ Error sending notification:", error);
-        if (error.errorInfo?.code === 'messaging/registration-token-not-registered') {
-            await admin.firestore().collection("userTokens").doc(userId).delete();
-            console.log("🚫 تم حذف التوكن غير الصالح.");
-        }
-        res.status(500).json({ success: false, message: "Internal server error", error: error.message });
-    }
-});
+// Note: translateFunction and sendPushNotification are defined in their respective files
+// to avoid duplicate function definitions
 // Add the scheduled function to process scheduled notifications
 exports.processScheduledNotifications = functions.pubsub
     .schedule('every 5 minutes')
