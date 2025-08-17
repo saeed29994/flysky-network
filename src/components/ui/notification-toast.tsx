@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, memo } from 'react';
 import { X, Bell, Info, Gift, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,7 @@ interface NotificationToastProps {
   autoCloseTime?: number;
 }
 
-export const NotificationToast: React.FC<NotificationToastProps> = ({
+export const NotificationToast: React.FC<NotificationToastProps> = memo(({
   notification,
   onClose,
   onRead,
@@ -46,7 +46,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
         clearTimeout(timerRef.current);
       }
       if (progressTimerRef.current) {
-        clearTimeout(progressTimerRef.current);
+        clearInterval(progressTimerRef.current);
       }
       
       // Reset flags
@@ -76,9 +76,11 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
+        timerRef.current = null;
       }
       if (progressTimerRef.current) {
         clearInterval(progressTimerRef.current);
+        progressTimerRef.current = null;
       }
     };
   }, [notification?.id, autoCloseTime]); // Only depend on notification ID, not the entire object
@@ -87,6 +89,15 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
   useEffect(() => {
     if (!notification) {
       hasStartedRef.current = false;
+      // Clear timers when notification is null
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      if (progressTimerRef.current) {
+        clearInterval(progressTimerRef.current);
+        progressTimerRef.current = null;
+      }
     }
   }, [notification]);
 
@@ -208,4 +219,4 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
       </AnimatePresence>
     </div>
   );
-}; 
+}); 

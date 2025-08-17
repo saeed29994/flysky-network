@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
+import { auth, db } from '../firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 interface LanguageSwitcherProps {
   variant?: 'desktop' | 'mobile';
@@ -16,16 +18,28 @@ const LanguageSwitcher = ({ variant = 'desktop' }: LanguageSwitcherProps) => {
   const languages = [
     { code: 'en', name: 'English', flag: '🇬🇧' },
     { code: 'ar', name: 'العربية', flag: '🇸🇦' },
-    { code: 'zh', name: '中文', flag: '🇨🇳' },
+    { code: 'zh-CN', name: '中文', flag: '🇨🇳' },
     { code: 'tr', name: 'Türkçe', flag: '🇹🇷' }
   ];
 
   const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
   const isRTL = i18n.language === 'ar';
 
-  const handleLanguageChange = (languageCode: string) => {
+  const handleLanguageChange = async (languageCode: string) => {
+    // Change the language in i18n
     i18n.changeLanguage(languageCode);
     setIsOpen(false);
+
+    // Update the user's language preference in Firestore
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        await updateDoc(userRef, { language: languageCode });
+      }
+    } catch (error) {
+      console.error('Error updating user language preference:', error);
+    }
   };
 
   // Close dropdown when clicking outside

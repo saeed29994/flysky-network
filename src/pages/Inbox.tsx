@@ -30,16 +30,20 @@ interface InboxMessage {
   id: string;
   title: string;
   message: string;
-  timestamp: Timestamp | number;
+  timestamp?: Timestamp | number; // Legacy field used by some notification functions
+  createdAt?: Timestamp | number; // New field used by admin notifications
   amount?: number;
   type?: string;
   read?: boolean;
   claimed?: boolean;
   archived?: boolean;
   deleted?: boolean;
+  kycRejectionReason?: string;
   i18nParams?: {
     rewards?: number[];
   };
+  // Add any other fields that might exist
+  [key: string]: any;
 }
 
 const Inbox = () => {
@@ -69,10 +73,30 @@ const Inbox = () => {
 
     const inboxRef = collection(db, `users/${user.uid}/inbox`);
     const inboxSnap = await getDocs(inboxRef);
-    const allMessages: InboxMessage[] = inboxSnap.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as InboxMessage[];
+    const allMessages: InboxMessage[] = inboxSnap.docs.map(doc => {
+      const data = doc.data();
+      console.log('=== Raw Inbox Message Data ===');
+      console.log('Document ID:', doc.id);
+      console.log('Complete data:', data);
+      console.log('Data keys:', Object.keys(data));
+      console.log('Timestamp field:', data.timestamp);
+      console.log('CreatedAt field:', data.createdAt);
+      console.log('Timestamp type:', typeof data.timestamp);
+      console.log('CreatedAt type:', typeof data.createdAt);
+      if (data.timestamp) {
+        console.log('Timestamp constructor:', data.timestamp.constructor?.name);
+        console.log('Has toDate method:', typeof data.timestamp.toDate === 'function');
+      }
+      if (data.createdAt) {
+        console.log('CreatedAt constructor:', data.createdAt.constructor?.name);
+        console.log('Has toDate method:', typeof data.createdAt.toDate === 'function');
+      }
+      console.log('=============================');
+      return {
+        id: doc.id,
+        ...data,
+      };
+    }) as InboxMessage[];
 
     const filtered = allMessages.filter((msg) => {
       if (activeTab === 'inbox') return !msg.archived && !msg.deleted;
@@ -83,12 +107,47 @@ const Inbox = () => {
 
       // Sort messages by timestamp (newest first)
       const sorted = filtered.sort((a, b) => {
-        const timeA = (a.timestamp as Timestamp)?.seconds 
-          ? (a.timestamp as Timestamp).seconds * 1000 
-          : (a.timestamp as number);
-        const timeB = (b.timestamp as Timestamp)?.seconds 
-          ? (b.timestamp as Timestamp).seconds * 1000 
-          : (b.timestamp as number);
+        const getTimestamp = (msg: InboxMessage) => {
+          const timestamp = msg.createdAt || msg.timestamp;
+          if (!timestamp) return 0;
+          
+          // Handle Firestore Timestamp (v9)
+          if (timestamp && typeof timestamp === 'object' && 'toDate' in timestamp && typeof timestamp.toDate === 'function') {
+            try {
+              return timestamp.toDate().getTime();
+            } catch (error) {
+              console.error('Error converting v9 timestamp:', error);
+              return 0;
+            }
+          }
+          
+          // Handle Firestore Timestamp (v8) - might have seconds/nanoseconds
+          if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
+            try {
+              const seconds = timestamp.seconds;
+              const nanoseconds = timestamp.nanoseconds || 0;
+              return new Date(seconds * 1000 + nanoseconds / 1000000).getTime();
+            } catch (error) {
+              console.error('Error converting v8 timestamp:', error);
+              return 0;
+            }
+          }
+          
+          // Handle regular timestamp (number)
+          try {
+            return new Date(timestamp as number).getTime();
+          } catch (error) {
+            console.error('Error converting number timestamp:', error);
+            return 0;
+          }
+        };
+        
+        const timeA = getTimestamp(a);
+        const timeB = getTimestamp(b);
+        
+        // If either timestamp is invalid, put it at the end
+        if (!timeA || !timeB) return 0;
+        
         return timeB - timeA;
       });
 
@@ -116,8 +175,6 @@ const Inbox = () => {
 
     setSelectedMessage({ ...msg, read: true });
   };
-  console.log(selectedMessage);
-  debugger
   const handleClaim = async () => {
     const user = auth.currentUser;
     if (!user || !selectedMessage || selectedMessage.claimed) return;
@@ -163,6 +220,9 @@ const Inbox = () => {
     if (msg.type === 'referral_bonus' || msg.type === 'welcome_bonus') {
       return <Gift className="w-5 h-5 text-yellow-400" />;
     }
+    if (msg.type === 'kyc_rejection') {
+      return <XCircle className="w-5 h-5 text-red-400" />;
+    }
     return msg.read ? <Mail className="w-5 h-5 text-gray-400" /> : <Mail className="w-5 h-5 text-blue-400" />;
   };
 
@@ -171,16 +231,86 @@ const Inbox = () => {
     if (msg.type === 'referral_bonus' || msg.type === 'welcome_bonus') {
       return <Gift className="w-4 h-4 text-yellow-400" />;
     }
+    if (msg.type === 'kyc_rejection') {
+      return <XCircle className="w-4 h-4 text-red-400" />;
+    }
     return null;
   };
 
-  const formatTimestamp = (timestamp: Timestamp | number) => {
-    const date = new Date(
-      (timestamp as Timestamp)?.seconds
-        ? (timestamp as Timestamp).seconds * 1000
-        : (timestamp as number)
-    );
-    return date.toLocaleString();
+  // Robust timestamp formatting function that handles various edge cases
+  const formatTimestamp = (message: InboxMessage) => {
+    // Try createdAt first (new admin notifications), then timestamp (legacy)
+    const timestamp = message.createdAt || message.timestamp;
+    
+    // Debug: Log the message and timestamp to see what we're getting
+    console.log('=== Message Debug ===');
+    console.log('Message ID:', message.id);
+    console.log('Message type:', message.type);
+    console.log('CreatedAt field:', message.createdAt);
+    console.log('Timestamp field:', message.timestamp);
+    console.log('Selected timestamp for processing:', timestamp);
+    console.log('Timestamp type:', typeof timestamp);
+    console.log('Timestamp constructor:', timestamp?.constructor?.name);
+    console.log('Is Firestore Timestamp:', timestamp && typeof timestamp === 'object' && 'toDate' in timestamp);
+    console.log('===================');
+    
+    if (!timestamp) {
+      console.log('No timestamp found in message');
+      return 'N/A';
+    }
+    
+    // Handle Firestore Timestamp (v9)
+    if (timestamp && typeof timestamp === 'object' && 'toDate' in timestamp && typeof timestamp.toDate === 'function') {
+      console.log('Processing as Firestore Timestamp (v9)');
+      try {
+        const date = timestamp.toDate();
+        console.log('Converted date:', date);
+        console.log('Date validity:', !isNaN(date.getTime()));
+        if (isNaN(date.getTime())) {
+          console.log('Invalid date from Firestore timestamp');
+          return 'Invalid Date';
+        }
+        return date.toLocaleString();
+      } catch (error) {
+        console.error('Error converting Firestore timestamp:', error);
+        return 'Invalid Date';
+      }
+    }
+    
+    // Handle Firestore Timestamp (v8) - might have seconds/nanoseconds
+    if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
+      console.log('Processing as Firestore Timestamp (v8)');
+      try {
+        const seconds = timestamp.seconds;
+        const nanoseconds = timestamp.nanoseconds || 0;
+        const date = new Date(seconds * 1000 + nanoseconds / 1000000);
+        console.log('Converted date from seconds:', date);
+        console.log('Date validity:', !isNaN(date.getTime()));
+        if (isNaN(date.getTime())) {
+          console.log('Invalid date from seconds timestamp');
+          return 'Invalid Date';
+        }
+        return date.toLocaleString();
+      } catch (error) {
+        console.error('Error converting seconds timestamp:', error);
+        return 'Invalid Date';
+      }
+    }
+    
+    // Handle regular timestamp (number or Date)
+    try {
+      const date = new Date(timestamp as number);
+      console.log('Converted date from number:', date);
+      console.log('Date validity:', !isNaN(date.getTime()));
+      if (isNaN(date.getTime())) {
+        console.log('Invalid date from number timestamp');
+        return 'Invalid Date';
+      }
+      return date.toLocaleString();
+    } catch (error) {
+      console.error('Error converting number timestamp:', error);
+      return 'Invalid Date';
+    }
   };
 
   const getTabStats = () => {
@@ -389,7 +519,9 @@ const Inbox = () => {
                                 ? t('referralBonus.verifiedTitle') 
                                 : msg.type === 'welcome_bonus' 
                                   ? t('welcomeBonus.title') 
-                                  : msg.title}
+                                  : msg.type === 'kyc_rejection'
+                                    ? t('kyc.rejectionTitle', 'KYC Application Rejected')
+                                    : msg.title}
                             </h3>
                             {getMessageStatus(msg)}
                           </div>
@@ -402,12 +534,14 @@ const Inbox = () => {
                                 })
                               : msg.type === 'welcome_bonus'
                                 ? t('welcomeBonus.body', { amount: msg.amount || 0 })
-                                : msg.message}
+                                : msg.type === 'kyc_rejection'
+                                  ? t('kyc.rejectionBody', 'Your KYC application has been rejected. Please review the reason and resubmit.')
+                                  : msg.message}
                           </p>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 text-gray-500 text-sm">
                               <Clock className="w-4 h-4" />
-                              {formatTimestamp(msg.timestamp)}
+                              {formatTimestamp(msg)}
                             </div>
                             <div className="flex items-center gap-2">
                               {!msg.read && (
@@ -480,11 +614,13 @@ const Inbox = () => {
                           ? t('referralBonus.verifiedTitle')
                           : selectedMessage.type === 'welcome_bonus'
                             ? t('welcomeBonus.title')
-                            : selectedMessage.title}
+                            : selectedMessage.type === 'kyc_rejection'
+                              ? t('kyc.rejectionTitle', 'KYC Application Rejected')
+                              : selectedMessage.title}
                       </h2>
                       <p className="text-gray-300 text-sm flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5" />
-                        {formatTimestamp(selectedMessage.timestamp)}
+                        {formatTimestamp(selectedMessage)}
                       </p>
                     </div>
                     <button
@@ -507,7 +643,19 @@ const Inbox = () => {
                         })
                       : selectedMessage.type === 'welcome_bonus'
                         ? t('welcomeBonus.body', { amount: selectedMessage.amount || 0 })
-                        : selectedMessage.message}
+                        : selectedMessage.type === 'kyc_rejection'
+                          ? (
+                            <div>
+                              <p className="mb-4">{t('kyc.rejectionBody', 'Your KYC application has been rejected. Please review the reason and resubmit.')}</p>
+                              {selectedMessage.kycRejectionReason && (
+                                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
+                                  <h4 className="text-red-400 font-medium mb-2">{t('kyc.rejectionReason', 'Rejection Reason')}:</h4>
+                                  <p className="text-gray-300">{selectedMessage.kycRejectionReason}</p>
+                                </div>
+                              )}
+                            </div>
+                          )
+                          : selectedMessage.message}
                   </p>
 
                   {!selectedMessage.claimed &&

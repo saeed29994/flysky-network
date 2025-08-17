@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendInternationalizedAdminNotification = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.sendManualNotification = exports.processScheduledNotifications = void 0;
+exports.sendInternationalizedAdminNotification = exports.notifyKycRejection = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.sendManualNotification = exports.processScheduledNotifications = void 0;
 const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
 // Import notification functions
@@ -45,6 +45,8 @@ const notifyReferralBonus_1 = require("./notifications/notifyReferralBonus");
 Object.defineProperty(exports, "notifyReferralBonus", { enumerable: true, get: function () { return notifyReferralBonus_1.notifyReferralBonus; } });
 const sendPeriodicReminders_1 = require("./notifications/sendPeriodicReminders");
 Object.defineProperty(exports, "sendDailyReminders", { enumerable: true, get: function () { return sendPeriodicReminders_1.sendDailyReminders; } });
+const notifyKycRejection_1 = require("./notifications/notifyKycRejection");
+Object.defineProperty(exports, "notifyKycRejection", { enumerable: true, get: function () { return notifyKycRejection_1.notifyKycRejection; } });
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + "/../flysky-site-3daa1e4343c4.json";
 if (!admin.apps.length) {
     admin.initializeApp();

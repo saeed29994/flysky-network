@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { auth, db, storage } from "../firebase";
 import {
   doc,
-  getDoc,
   updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import {
   EmailAuthProvider,
@@ -87,14 +87,14 @@ const Settings = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+    const user = auth.currentUser;
+    if (!user) return;
 
-      setEmail(user.email || "");
+    setEmail(user.email || "");
 
-      const userDoc = doc(db, "users", user.uid);
-      const snap = await getDoc(userDoc);
+    // Set up real-time listener for user data
+    const userDoc = doc(db, "users", user.uid);
+    const unsubscribe = onSnapshot(userDoc, (snap) => {
       if (snap.exists()) {
         const data = snap.data();
         setFullName(data.fullName || "");
@@ -114,9 +114,20 @@ const Settings = () => {
           }));
         }
       }
-    };
-    fetchUserData();
+    }, (error) => {
+      console.error("Error listening to user data:", error);
+    });
+
+    // Cleanup listener on unmount
+    return () => unsubscribe();
   }, []);
+
+  // Sync i18n language with user's language preference
+  useEffect(() => {
+    if (language && language !== i18n.language) {
+      i18n.changeLanguage(language);
+    }
+  }, [language, i18n]);
 
   useEffect(() => {
     if (!selectedFile) {
@@ -234,13 +245,22 @@ const Settings = () => {
 
   const handleLanguageChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLang = e.target.value;
-    setLanguage(newLang);
+    
+    // Change the i18n language immediately for better UX
     i18n.changeLanguage(newLang);
 
+    // Update the user's language preference in Firestore
     const user = auth.currentUser;
     if (user) {
-      const docRef = doc(db, "users", user.uid);
-      await updateDoc(docRef, { language: newLang });
+      try {
+        const docRef = doc(db, "users", user.uid);
+        await updateDoc(docRef, { language: newLang });
+        // Note: The real-time listener will automatically update the language state
+      } catch (error) {
+        console.error('Error updating language preference:', error);
+        // Revert i18n language if update fails
+        i18n.changeLanguage(language);
+      }
     }
   };
 
@@ -694,7 +714,8 @@ const Settings = () => {
                   >
                     <option value="en">🇺🇸 English</option>
                     <option value="ar">🇸🇦 العربية</option>
-                    <option value="zh">🇨🇳 中文</option>
+                    <option value="zh-CN">🇨🇳 中文</option>
+                    <option value="tr">🇹🇷 Türkçe</option>
                   </select>
                 </div>
               </div>

@@ -233,7 +233,24 @@ export const useUserNotifications = (): UseUserNotificationsReturn => {
         fetchedNotifications.push(notification);
       });
 
-      setNotifications(fetchedNotifications);
+      // Only update state if the notifications have actually changed
+      setNotifications(prevNotifications => {
+        // Check if notifications are actually different
+        if (prevNotifications.length !== fetchedNotifications.length) {
+          return fetchedNotifications;
+        }
+        
+        // Deep comparison of notification arrays
+        const hasChanged = prevNotifications.some((prev, index) => {
+          const current = fetchedNotifications[index];
+          return prev.id !== current.id || 
+                 prev.read !== current.read || 
+                 prev.timestamp !== current.timestamp;
+        });
+        
+        return hasChanged ? fetchedNotifications : prevNotifications;
+      });
+      
       setLoading(false);
     }, (error) => {
       console.error('Error listening to notifications:', error);

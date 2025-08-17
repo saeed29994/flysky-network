@@ -13,7 +13,8 @@ import {
   AlertCircle,
   Eye,
   Users,
-  BadgeCheck
+  BadgeCheck,
+  MessageSquare
 } from 'lucide-react';
 
 const KycVerificationTab = () => {
@@ -22,7 +23,30 @@ const KycVerificationTab = () => {
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showRejectionModal, setShowRejectionModal] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState('');
+  const [userToReject, setUserToReject] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
+
+  // Helper function to determine if a user should be included in KYC list
+  const shouldIncludeUser = (data: any): boolean => {
+    // Must have a KYC status
+    if (!data.kycStatus) return false;
+    
+    // Always include pending users
+    if (data.kycStatus === 'Pending') return true;
+    
+    // Include verified/approved users
+    if (data.kycStatus === 'Verified' || data.kycStatus === 'Approved') return true;
+    
+    // Include rejected users if they have rejection details
+    if (data.kycStatus === 'Not activated' || data.kycStatus === 'Not Actived' || data.kycStatus === 'Rejected') {
+      return !!(data.kycRejectionReason || data.kycActionTaken);
+    }
+    
+    // Include other users if they have KYC documents or have been processed
+    return !!(data.kycDocuments || data.kycActionTaken || data.kycRejectionReason);
+  };
 
   // Helper function to check if a date is today
   // const isToday = (date: Date) => {
@@ -41,8 +65,9 @@ const KycVerificationTab = () => {
         
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
-          // Only include users who have submitted KYC (have kycStatus field)
-          if (data.kycStatus && data.kycStatus !== 'Not activated' && data.kycStatus !== 'Not Actived') {
+          
+          // Use helper function to determine if user should be included
+          if (shouldIncludeUser(data)) {
             kycUsers.push({ 
               id: docSnap.id, 
               ...data,
@@ -52,8 +77,7 @@ const KycVerificationTab = () => {
           }
         });
         
-        console.log('Fetched KYC users:', kycUsers);
-        console.log('KYC statuses found:', kycUsers.map(u => ({ id: u.id, status: u.kycStatus, name: u.fullName })));
+
         
         setAllKycUsers(kycUsers);
       } catch (error) {
@@ -71,6 +95,14 @@ const KycVerificationTab = () => {
       const userRef = doc(db, 'users', userId);
       const newStatus = action === 'approve' ? 'Verified' : 'Not activated';
       const now = new Date();
+      
+      if (action === 'reject') {
+        // For rejection, we need to show the rejection reason modal
+        const user = allKycUsers.find(u => u.id === userId);
+        setUserToReject(user);
+        setShowRejectionModal(true);
+        return;
+      }
       
       await updateDoc(userRef, { 
         kycStatus: newStatus,
@@ -93,9 +125,57 @@ const KycVerificationTab = () => {
     }
   };
 
+  const handleKycRejection = async () => {
+    if (!userToReject || !rejectionReason.trim()) {
+      alert(t('admin.kyc.rejectionReasonRequired', 'Please provide a rejection reason'));
+      return;
+    }
+
+    try {
+      const userRef = doc(db, 'users', userToReject.id);
+      const now = new Date();
+      
+      await updateDoc(userRef, { 
+        kycStatus: 'Not activated',
+        kycStatusUpdatedAt: now,
+        kycActionTaken: 'reject',
+        kycActionDate: now,
+        kycRejectionReason: rejectionReason.trim(),
+        kycRejectionDate: now
+      });
+      
+      // Update local state
+      setAllKycUsers(prev => prev.map(user => 
+        user.id === userToReject.id 
+          ? { 
+              ...user, 
+              kycStatus: 'Not activated', 
+              kycStatusUpdatedAt: now,
+              kycRejectionReason: rejectionReason.trim(),
+              kycRejectionDate: now
+            }
+          : user
+      ));
+      
+      // Close modals and reset state
+      setShowRejectionModal(false);
+      setShowModal(false);
+      setSelectedUser(null);
+      setUserToReject(null);
+      setRejectionReason('');
+    } catch (error) {
+      console.error('Error rejecting KYC:', error);
+    }
+  };
+
   const openUserDetails = (user: any) => {
     setSelectedUser(user);
     setShowModal(true);
+  };
+
+  const openRejectionModal = (user: any) => {
+    setUserToReject(user);
+    setShowRejectionModal(true);
   };
 
   // Function to refresh KYC data
@@ -105,18 +185,21 @@ const KycVerificationTab = () => {
       const querySnapshot = await getDocs(collection(db, 'users'));
       const kycUsers: any[] = [];
       
-      querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        // Only include users who have submitted KYC (have kycStatus field)
-        if (data.kycStatus && data.kycStatus !== 'Not activated' && data.kycStatus !== 'Not Actived') {
-          kycUsers.push({ 
-            id: docSnap.id, 
-            ...data,
-            // Add timestamp if not exists (for backward compatibility)
-            kycStatusUpdatedAt: data.kycStatusUpdatedAt || data.createdAt || null
-          });
-        }
-      });
+              querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          
+          // Use helper function to determine if user should be included
+          if (shouldIncludeUser(data)) {
+            kycUsers.push({ 
+              id: docSnap.id, 
+              ...data,
+              // Add timestamp if not exists (for backward compatibility)
+              kycStatusUpdatedAt: data.kycStatusUpdatedAt || data.createdAt || null
+            });
+          }
+        });
+      
+
       
       setAllKycUsers(kycUsers);
     } catch (error) {
@@ -140,14 +223,14 @@ const KycVerificationTab = () => {
           );
         case 'rejected':
           return allKycUsers.filter(user => 
-            user.kycStatus === 'Not activated' || user.kycStatus === 'Not Actived'
+            user.kycStatus === 'Not activated' || user.kycStatus === 'Not Actived' || user.kycStatus === 'Rejected'
           );
         default:
           return allKycUsers;
       }
     })();
     
-    console.log(`Filtered users for tab '${activeTab}':`, filtered);
+
     return filtered;
   };
 
@@ -160,11 +243,10 @@ const KycVerificationTab = () => {
       user.kycStatus === 'Verified' || user.kycStatus === 'Approved'
     ).length;
     const rejected = allKycUsers.filter(user => 
-      user.kycStatus === 'Not activated' || user.kycStatus === 'Not Actived'
+      user.kycStatus === 'Not activated' || user.kycStatus === 'Not Actived' || user.kycStatus === 'Rejected'
     ).length;
     
     const counts = { all: allKycUsers.length, pending, approved, rejected };
-    console.log('KYC counts:', counts);
     return counts;
   };
 
@@ -337,7 +419,7 @@ const KycVerificationTab = () => {
                           <Mail className="w-3 h-3" />
                           {user.email || t('admin.kyc.noEmail', 'No email')}
                         </div>
-                                                 <div className="mt-2">
+                                                 <div className="mt-2 space-y-2">
                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                              user.kycStatus === 'Verified' || user.kycStatus === 'Approved'
                                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
@@ -347,6 +429,13 @@ const KycVerificationTab = () => {
                            }`}>
                              {user.kycStatus}
                            </span>
+                           
+                           {user.kycRejectionReason && (
+                             <div className="text-xs text-red-400 bg-red-500/10 rounded-lg p-2 border border-red-500/20">
+                               <div className="font-medium mb-1">{t('admin.kyc.rejectionReason', 'Rejection Reason')}:</div>
+                               <div className="text-red-300">{user.kycRejectionReason}</div>
+                             </div>
+                           )}
                          </div>
                       </div>
                     </div>
@@ -371,7 +460,7 @@ const KycVerificationTab = () => {
                             </button>
                             
                             <button
-                              onClick={() => handleKycAction(user.id, 'reject')}
+                              onClick={() => openRejectionModal(user)}
                               className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-2 rounded-lg font-medium hover:from-red-600 hover:to-pink-600 transition-colors flex items-center justify-center gap-2 text-sm"
                             >
                               <XCircle className="w-4 h-4" />
@@ -398,15 +487,24 @@ const KycVerificationTab = () => {
                     </div>
                     
                     <div className="flex items-center gap-3">
-                                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                         user.kycStatus === 'Verified' || user.kycStatus === 'Approved'
-                           ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                           : user.kycStatus === 'Not activated' || user.kycStatus === 'Not Actived'
-                             ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                             : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                       }`}>
-                         {user.kycStatus}
-                       </span>
+                      <div className="flex flex-col items-end gap-2">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          user.kycStatus === 'Verified' || user.kycStatus === 'Approved'
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                            : user.kycStatus === 'Not activated' || user.kycStatus === 'Not Actived'
+                              ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                              : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                        }`}>
+                          {user.kycStatus}
+                        </span>
+                        
+                        {user.kycRejectionReason && (
+                          <div className="text-xs text-red-400 bg-red-500/10 rounded-lg p-2 border border-red-500/20 max-w-xs">
+                            <div className="font-medium mb-1">{t('admin.kyc.rejectionReason', 'Rejection Reason')}:</div>
+                            <div className="text-red-300 truncate">{user.kycRejectionReason}</div>
+                          </div>
+                        )}
+                      </div>
                       
                       <button
                         onClick={() => openUserDetails(user)}
@@ -427,7 +525,7 @@ const KycVerificationTab = () => {
                           </button>
                           
                           <button
-                            onClick={() => handleKycAction(user.id, 'reject')}
+                            onClick={() => openRejectionModal(user)}
                             className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-lg font-medium hover:from-red-600 hover:to-pink-600 transition-colors flex items-center gap-2"
                           >
                             <XCircle className="w-4 h-4" />
@@ -551,21 +649,112 @@ const KycVerificationTab = () => {
                 </div>
               </div>
 
+              {/* Rejection Reason Display */}
+              {selectedUser.kycRejectionReason && (
+                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
+                  <h4 className="text-red-400 font-medium mb-2 flex items-center gap-2">
+                    <XCircle className="w-4 h-4" />
+                    {t('admin.kyc.rejectionReason', 'Rejection Reason')}
+                  </h4>
+                  <p className="text-gray-300 text-sm">{selectedUser.kycRejectionReason}</p>
+                  {selectedUser.kycRejectionDate && (
+                    <p className="text-gray-400 text-xs mt-2">
+                      {t('admin.kyc.rejectedOn', 'Rejected on')}: {new Date(selectedUser.kycRejectionDate.toDate()).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              )}
+
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 pt-4 border-t border-white/10">
-                <button
-                  onClick={() => handleKycAction(selectedUser.id, 'approve')}
-                  className="w-full sm:flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-medium hover:from-green-600 hover:to-emerald-600 transition-colors flex items-center justify-center gap-2"
-                >
-                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-                  {t('admin.kyc.approve', 'Approve')}
-                </button>
+                {selectedUser.kycStatus === 'Pending' && (
+                  <>
+                    <button
+                      onClick={() => handleKycAction(selectedUser.id, 'approve')}
+                      className="w-full sm:flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-medium hover:from-green-600 hover:to-emerald-600 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                      {t('admin.kyc.approve', 'Approve')}
+                    </button>
+                    
+                    <button
+                      onClick={() => openRejectionModal(selectedUser)}
+                      className="w-full sm:flex-1 bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-xl font-medium hover:from-red-600 hover:to-pink-600 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <XCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                      {t('admin.kyc.reject', 'Reject')}
+                    </button>
+                  </>
+                )}
                 
+                {selectedUser.kycStatus !== 'Pending' && (
+                  <div className="w-full text-center text-gray-400 text-sm">
+                    {selectedUser.kycStatus === 'Verified' || selectedUser.kycStatus === 'Approved'
+                      ? t('admin.kyc.alreadyApproved', 'This KYC has already been approved')
+                      : t('admin.kyc.alreadyRejected', 'This KYC has already been rejected')}
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Rejection Reason Modal */}
+      {showRejectionModal && userToReject && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={() => setShowRejectionModal(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 sm:p-6 border-b border-white/10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-bold text-white">{t('admin.kyc.rejectReason', 'Rejection Reason')}</h2>
+                    <p className="text-gray-400 text-sm sm:text-base">{t('admin.kyc.provideReason', 'Please provide a reason for rejecting this KYC application.')}</p>
+                  </div>
+                </div>
                 <button
-                  onClick={() => handleKycAction(selectedUser.id, 'reject')}
-                  className="w-full sm:flex-1 bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-xl font-medium hover:from-red-600 hover:to-pink-600 transition-colors flex items-center justify-center gap-2"
+                  onClick={() => setShowRejectionModal(false)}
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
-                  <XCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <XCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <textarea
+                className="w-full bg-white/5 rounded-lg border border-white/10 p-3 sm:p-4 text-white text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                rows={4}
+                placeholder={t('admin.kyc.rejectionReasonPlaceholder', 'Enter rejection reason...')}
+                value={rejectionReason}
+                onChange={(e) => setRejectionReason(e.target.value)}
+              />
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setShowRejectionModal(false)}
+                  className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                >
+                  {t('admin.kyc.cancel', 'Cancel')}
+                </button>
+                <button
+                  onClick={handleKycRejection}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                >
                   {t('admin.kyc.reject', 'Reject')}
                 </button>
               </div>

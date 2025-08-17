@@ -3,7 +3,6 @@ import DashboardLayout from './DashboardLayout';
 import { useUserNotifications } from '../hooks/useUserNotifications';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
 import { 
   Bell, 
   Gift, 
@@ -133,60 +132,84 @@ const NotificationsPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="w-full min-h-screen py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl p-6 mb-6"
-          >
+      <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        {/* Professional Header Section */}
+        <div className="relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-blue-500/5"></div>
+          <div className="absolute inset-0 opacity-30" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
+
+          <div className="relative px-4 py-8 lg:py-12">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-8 lg:mb-12">
+                <div className="w-20 h-20 lg:w-24 lg:h-24 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                  <Bell className="w-10 h-10 lg:w-12 lg:h-12 text-white" />
+                </div>
+                <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4 tracking-tight">
+                  🔔 {t('mainNotifications.title')}
+                </h1>
+                <p className="text-gray-300 text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed">
+                  {unreadCount > 0 
+                    ? `${unreadCount} ${t('mainNotifications.unreadNotifications')}`
+                    : t('mainNotifications.youHaveNoNotifications')
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 pb-12">
+          {/* Header Actions */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl p-4 mb-8">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-3 rounded-xl shadow-lg">
-                  <Bell className="w-7 h-7 text-white" />
+                  <Bell className="w-6 h-6 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-white">{t('mainNotifications.title')}</h1>
-                  <p className="text-gray-300">
-                    {unreadCount} {t('mainNotifications.unreadNotifications')}
+                <div className="text-center sm:text-left">
+                  <h2 className="text-xl font-semibold text-white">{t('mainNotifications.title')}</h2>
+                  <p className="text-gray-300 text-sm">
+                    {unreadCount > 0 
+                      ? `${unreadCount} ${t('mainNotifications.unreadNotifications')}`
+                      : t('mainNotifications.youHaveNoNotifications')
+                    }
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllAsRead}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-all duration-200 w-full sm:w-auto justify-center hover:scale-105"
                   >
                     <CheckCircle className="w-4 h-4" />
-                    <span>{t('mainNotifications.markAllAsRead')}</span>
+                    <span className="hidden sm:inline">{t('mainNotifications.markAllAsRead')}</span>
+                    <span className="sm:hidden">{t('mainNotifications.markAllAsRead')}</span>
                   </button>
                 )}
                 <button
                   onClick={() => navigate('/dashboard')}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all duration-200 w-full sm:w-auto justify-center hover:scale-105"
                 >
                   <CheckCircle className="w-4 h-4" />
-                  <span>{t('mainNotifications.viewAll')}</span>
+                  <span className="hidden sm:inline">{t('mainNotifications.viewAll')}</span>
+                  <span className="sm:hidden">{t('mainNotifications.viewAll')}</span>
                 </button>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Filters */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl p-4 mb-6"
-          >
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl p-4 mb-8">
             <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
               <div className="flex items-center gap-2 text-gray-300 shrink-0">
                 <Filter className="w-4 h-4" />
-                <span>{t('mainNotifications.filter')}:</span>
+                <span className="hidden sm:inline">{t('mainNotifications.filter')}:</span>
+                <span className="sm:hidden">{t('mainNotifications.filter')}</span>
               </div>
               
               <button
@@ -194,14 +217,15 @@ const NotificationsPage: React.FC = () => {
                   setFilter('all');
                   setCurrentPage(1);
                 }}
-                className={`px-3 py-1.5 rounded-lg whitespace-nowrap flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg whitespace-nowrap flex items-center gap-1.5 transition-all duration-200 ${
                   filter === 'all' 
                     ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' 
-                    : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80'
-                } transition-all duration-200`}
+                    : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 hover:scale-105'
+                }`}
               >
                 <Bell className="w-4 h-4" />
-                {t('mainNotifications.all')}
+                <span className="hidden sm:inline">{t('mainNotifications.all')}</span>
+                <span className="sm:hidden">{t('mainNotifications.all')}</span>
               </button>
               
               {(['claim_reward', 'inbox_message', 'referral_bonus', 'mining_reminder', 'staking_reminder'] as const).map((type) => {
@@ -224,34 +248,30 @@ const NotificationsPage: React.FC = () => {
                       setFilter(type);
                       setCurrentPage(1);
                     }}
-                    className={`px-3 py-1.5 rounded-lg whitespace-nowrap flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 rounded-lg whitespace-nowrap flex items-center gap-1.5 transition-all duration-200 ${
                       filter === type 
                         ? `bg-gradient-to-r ${color} text-white shadow-lg` 
-                        : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80'
-                    } transition-all duration-200`}
+                        : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 hover:scale-105'
+                    }`}
                   >
                     {icon}
-                    {t(getTranslationKey(type))}
+                    <span className="hidden sm:inline">{t(getTranslationKey(type))}</span>
+                    <span className="sm:hidden">{t(getTranslationKey(type))}</span>
                   </button>
                 );
               })}
             </div>
-          </motion.div>
+          </div>
 
           {/* Notifications List */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-4"
-          >
+          <div className="space-y-4">
             {loading ? (
-              <div className="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl p-16 text-center">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl p-16 text-center">
                 <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto mb-6"></div>
                 <p className="text-white">{t('mainNotifications.loading')}</p>
               </div>
             ) : filteredNotifications.length === 0 ? (
-              <div className="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl p-12 text-center">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl p-12 text-center">
                 <Bell className="w-16 h-16 text-gray-500 mx-auto mb-4" />
                 <p className="text-white text-lg font-medium mb-2">{t('mainNotifications.noNotifications')}</p>
                 <p className="text-gray-400">
@@ -262,43 +282,40 @@ const NotificationsPage: React.FC = () => {
               </div>
             ) : (
               <>
-                {paginatedNotifications.map((notification, index) => (
-                  <motion.div
+                {paginatedNotifications.map((notification) => (
+                  <div
                     key={notification.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className={`bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl overflow-hidden ${
+                    className={`bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl overflow-hidden transition-all duration-200 hover:bg-white/15 hover:shadow-2xl hover:scale-[1.02] ${
                       !notification.read ? 'ring-2 ring-blue-400/50' : ''
                     }`}
                   >
-                    <div className="p-6">
-                      <div className="flex items-start gap-4">
+                    <div className="p-4 sm:p-6">
+                      <div className="flex items-start gap-3 sm:gap-4">
                         <div className="flex-shrink-0">
                           {getNotificationIcon(notification.type)}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-semibold text-white truncate">
+                            <h3 className="text-base sm:text-lg font-semibold text-white truncate">
                               {notification.title}
                             </h3>
                             {!notification.read && (
-                              <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+                              <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse flex-shrink-0"></span>
                             )}
                           </div>
-                          <p className="text-gray-400 text-sm mb-3 line-clamp-2">
+                          <p className="text-gray-400 text-sm mb-3 line-clamp-2 leading-relaxed">
                             {notification.body}
                           </p>
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div className="flex items-center gap-2 text-gray-500 text-sm">
-                              <Clock className="w-4 h-4" />
-                              {formatTime(notification.timestamp)}
+                              <Clock className="w-4 h-4 flex-shrink-0" />
+                              <span className="truncate">{formatTime(notification.timestamp)}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               {!notification.read && (
                                 <button
                                   onClick={() => handleMarkAsRead(notification.id)}
-                                  className="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors"
+                                  className="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-all duration-200 hover:scale-110"
                                   title={t('mainNotifications.markAsRead')}
                                 >
                                   <Check className="w-4 h-4" />
@@ -306,7 +323,7 @@ const NotificationsPage: React.FC = () => {
                               )}
                               <button
                                 onClick={() => handleDelete(notification.id)}
-                                className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors"
+                                className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-all duration-200 hover:scale-110"
                                 title="Delete notification"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -316,7 +333,7 @@ const NotificationsPage: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
 
                 {/* Pagination */}
@@ -325,17 +342,19 @@ const NotificationsPage: React.FC = () => {
                     <button
                       onClick={handlePrevPage}
                       disabled={currentPage === 1}
-                      className="p-2 rounded-lg bg-white/10 border border-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
+                      className="p-2 rounded-lg bg-white/10 border border-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 hover:scale-105 transition-all duration-200"
+                      title="Previous page"
                     >
                       <ArrowLeft className="w-5 h-5" />
                     </button>
-                    <span className="text-white px-4">
+                    <span className="text-white px-4 text-sm sm:text-base font-medium">
                       {currentPage} / {totalPages}
                     </span>
                     <button
                       onClick={handleNextPage}
                       disabled={currentPage === totalPages}
-                      className="p-2 rounded-lg bg-white/10 border border-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
+                      className="p-2 rounded-lg bg-white/10 border border-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 hover:scale-105 transition-all duration-200"
+                      title="Next page"
                     >
                       <ArrowRight className="w-5 h-5" />
                     </button>
@@ -343,7 +362,7 @@ const NotificationsPage: React.FC = () => {
                 )}
               </>
             )}
-          </motion.div>
+          </div>
         </div>
       </div>
     </DashboardLayout>

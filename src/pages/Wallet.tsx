@@ -7,9 +7,11 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Wallet as WalletIcon, Coins, Lock, Gift, TrendingUp, Clock, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { useUserPlan } from '../contexts/UserPlanContext';
 
 const Wallet = () => {
   const { t } = useTranslation();
+  const { verifiedReferrals } = useUserPlan();
   const [balance, setBalance] = useState(0);
   const [lockedInStaking, setLockedInStaking] = useState(0);
   const [referralRewards, setReferralRewards] = useState(0);
@@ -31,6 +33,8 @@ const Wallet = () => {
         setBalance(data.balance || 0);
         setReferralRewards(data.referralReward || 0);
         setTransactions(data.transactions || []);
+        
+
       }
 
       // جلب الرصيد المجمد من عمليات الستايكنج
@@ -386,7 +390,11 @@ const Wallet = () => {
                     <span className="text-orange-400 font-semibold">{lockedInStaking.toLocaleString()} {t('wallet.fsn')}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">{t('wallet.referrals')}</span>
+                    <span className="text-gray-400 text-sm">{t('wallet.verifiedReferrals')}</span>
+                    <span className="text-purple-400 font-semibold">{verifiedReferrals}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">{t('wallet.referralRewards')}</span>
                     <span className="text-purple-400 font-semibold">{referralRewards.toLocaleString()} {t('wallet.fsn')}</span>
                   </div>
                   <div className="pt-3 border-t border-white/10">

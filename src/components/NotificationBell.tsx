@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
 export const NotificationBell: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -17,6 +17,9 @@ export const NotificationBell: React.FC = () => {
     markAllAsRead,
     unreadCount,
   } = useUserNotifications();
+
+  // Check if current language is RTL (Arabic)
+  const isRTL = i18n.language === 'ar';
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -90,7 +93,9 @@ export const NotificationBell: React.FC = () => {
       >
         <Bell className="w-6 h-6 text-white" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-semibold shadow-lg animate-pulse">
+          <span className={`absolute -top-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-semibold shadow-lg animate-pulse ${
+            isRTL ? '-left-1' : '-right-1'
+          }`}>
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -104,12 +109,18 @@ export const NotificationBell: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed z-50 top-16 right-0 left-0 mx-2 md:left-auto md:right-8 md:top-16 md:mx-0 md:w-[450px] max-h-[calc(100vh-6rem)] md:max-h-[600px] bg-gray-900/95 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl overflow-hidden flex flex-col"
-            style={{ transformOrigin: 'top right' }}
+            className={`fixed z-50 top-16 right-0 left-0 mx-2 md:left-auto md:top-16 md:mx-0 md:w-[400px] lg:w-[450px] xl:w-[500px] max-h-[calc(100vh-6rem)] md:max-h-[600px] bg-gray-900/95 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl overflow-hidden flex flex-col ${
+              isRTL 
+                ? 'md:right-auto md:left-8 lg:left-6 xl:left-8' 
+                : 'md:right-8 lg:right-6 xl:right-8'
+            }`}
+            style={{ transformOrigin: isRTL ? 'top left' : 'top right' }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10 sticky top-0 bg-gray-900/90 backdrop-blur-xl z-10">
-              <h3 className="text-white font-medium flex items-center gap-2">
+            <div className={`flex items-center justify-between p-4 border-b border-white/10 sticky top-0 bg-gray-900/90 backdrop-blur-xl z-10 ${
+              isRTL ? 'flex-row-reverse' : ''
+            }`}>
+              <h3 className={`text-white font-medium flex items-center gap-2 ${isRTL ? 'text-right' : ''}`}>
                 <Bell className="w-4 h-4" /> 
                 {t('mainNotifications.title')}
                 {unreadCount > 0 && (
@@ -118,14 +129,14 @@ export const NotificationBell: React.FC = () => {
                   </span>
                 )}
               </h3>
-              <div className="flex items-center gap-2">
+              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllAsRead}
                     className="text-xs text-blue-400 hover:text-blue-300 px-2 py-1 rounded-lg hover:bg-blue-500/10 transition-colors flex items-center gap-1"
                     title={t('mainNotifications.markAllAsRead')}
                   >
-                    <CheckCheck className="w-3 h-3" />
+                    <CheckCheck className="w-3.5 h-3.5" />
                     {t('mainNotifications.markAllAsRead')}
                   </button>
                 )}
@@ -141,12 +152,12 @@ export const NotificationBell: React.FC = () => {
             {/* Notification List */}
             <div className="overflow-y-auto flex-1 overscroll-contain">
               {loading ? (
-                <div className="p-8 text-center">
+                <div className={`p-8 text-center ${isRTL ? 'text-right' : ''}`}>
                   <div className="w-8 h-8 border-2 border-t-blue-500 border-blue-500/30 rounded-full animate-spin mx-auto mb-3"></div>
                   <p className="text-gray-300 text-sm">{t('mainNotifications.loading')}</p>
                 </div>
               ) : notifications.length === 0 ? (
-                <div className="p-12 text-center">
+                <div className={`p-12 text-center ${isRTL ? 'text-right' : ''}`}>
                   <Bell className="w-12 h-12 text-gray-500 mx-auto mb-3" />
                   <p className="text-gray-300 text-sm">{t('mainNotifications.noNotifications')}</p>
                 </div>
@@ -161,7 +172,9 @@ export const NotificationBell: React.FC = () => {
                       onClick={() => handleNotificationClick(notification)}
                     >
                       {/* Read/Unread indicator */}
-                      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className={`absolute top-3 opacity-0 group-hover:opacity-100 transition-opacity ${
+                        isRTL ? 'left-3' : 'right-3'
+                      }`}>
                         {!notification.read ? (
                           <button
                             onClick={(e) => {
@@ -180,7 +193,9 @@ export const NotificationBell: React.FC = () => {
                         )}
                       </div>
 
-                      <div className="flex gap-3 pr-12">
+                      <div className={`flex gap-3 ${
+                        isRTL ? 'pl-12' : 'pr-12'
+                      }`}>
                         {/* Notification icon based on type */}
                         <div className="flex-shrink-0 mt-1">
                           <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -205,7 +220,7 @@ export const NotificationBell: React.FC = () => {
                         <div className="flex-1 min-w-0">
                           <h4 className={`text-sm font-medium flex items-center gap-2 ${
                             !notification.read ? 'text-white' : 'text-gray-300'
-                          }`}>
+                          } ${isRTL ? 'text-right' : ''}`}>
                             {notification.title}
                             {!notification.read && (
                               <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
@@ -213,10 +228,10 @@ export const NotificationBell: React.FC = () => {
                           </h4>
                           <p className={`text-sm mt-1 line-clamp-2 ${
                             !notification.read ? 'text-gray-200' : 'text-gray-400'
-                          }`}>
+                          } ${isRTL ? 'text-right' : ''}`}>
                             {notification.body}
                           </p>
-                          <div className="flex justify-between items-center mt-2">
+                          <div className={`flex items-center mt-2 ${isRTL ? 'flex-row-reverse justify-between' : 'justify-between'}`}>
                             <span className="text-xs text-gray-500">
                               {formatTime(notification.timestamp)}
                             </span>
@@ -247,7 +262,9 @@ export const NotificationBell: React.FC = () => {
                     navigate('/notifications');
                     setIsOpen(false);
                   }}
-                  className="text-sm text-blue-400 hover:text-blue-300 flex items-center justify-center gap-2 w-full py-2 rounded-lg hover:bg-white/5 transition-colors"
+                  className={`text-sm text-blue-400 hover:text-blue-300 flex items-center justify-center gap-2 w-full py-2 rounded-lg hover:bg-white/5 transition-colors ${
+                    isRTL ? 'flex-row-reverse' : ''
+                  }`}
                 >
                   <span>{t('mainNotifications.viewAll')}</span>
                 </button>

@@ -16,11 +16,11 @@ i18n
       en: { translation: en },
       fr: { translation: fr },
       ar: { translation: ar },
-      zh: { translation: zh },
+      'zh-CN': { translation: zh },
       tr: { translation: tr },
     },
     fallbackLng: 'en',
-    supportedLngs: ['en', 'fr', 'ar', 'zh', 'tr'],
+    supportedLngs: ['en', 'fr', 'ar', 'zh-CN', 'tr'],
     interpolation: {
       escapeValue: false,
     },

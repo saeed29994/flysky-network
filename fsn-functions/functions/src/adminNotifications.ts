@@ -279,24 +279,47 @@ export const sendInternationalizedAdminNotification = functions.https.onRequest(
       const inboxBatch = admin.firestore().batch();
       
       for (const userId of userIds) {
-        const inboxRef = admin.firestore()
-          .collection('users')
-          .doc(userId)
-          .collection('inbox')
-          .doc();
-        
-        const inboxData: Record<string, any> = {
-          title: cleanData.title,
-          message: cleanData.message,
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
-          read: false,
-          type: cleanData.type,
-          data: cleanData.data,
-          notificationId: notificationRef.id,
-          internationalized: true
-        };
+        try {
+          // Get user's language preference
+          const userDoc = await admin.firestore().collection('users').doc(userId).get();
+          const userData = userDoc.data();
+          const userLanguage = userData?.language || 'en';
+          
+          // Import translation function
+          const { translateNotificationText } = await import('./utils/internationalizedNotifications');
+          
+          // Translate notification content for inbox
+          const translatedTitle = await translateNotificationText(cleanData.title, userLanguage, cleanData.title);
+          const translatedMessage = await translateNotificationText(cleanData.message, userLanguage, cleanData.message);
+          
+          const inboxRef = admin.firestore()
+            .collection('users')
+            .doc(userId)
+            .collection('inbox')
+            .doc();
+          
+          const inboxData: Record<string, any> = {
+            title: translatedTitle, // Store TRANSLATED title
+            message: translatedMessage, // Store TRANSLATED message
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            read: false,
+            type: cleanData.type,
+            data: {
+              ...cleanData.data,
+              originalTitle: cleanData.title, // Store original English for reference
+              originalMessage: cleanData.message, // Store original English for reference
+              userLanguage, // Store user's language
+              translated: 'true' // Mark as translated
+            },
+            notificationId: notificationRef.id,
+            internationalized: true
+          };
 
-        inboxBatch.set(inboxRef, inboxData);
+          inboxBatch.set(inboxRef, inboxData);
+        } catch (error) {
+          console.error(`❌ Error processing inbox notification for user ${userId}:`, error);
+          // Continue with other users even if one fails
+        }
       }
       
       await inboxBatch.commit();

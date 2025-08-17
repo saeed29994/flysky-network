@@ -16,17 +16,16 @@ import { doc, getDoc } from 'firebase/firestore';
 const Dashboard = () => {
   const { t } = useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
-  const { currentPlan } = useUserPlan();
+  const { currentPlan, referrals, balance: contextBalance, referralReward, lockedInStaking: contextLockedInStaking, loading: contextLoading } = useUserPlan();
+  
+
   
   const [showContactForm, setShowContactForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(0);
-  const [lockedInStaking, setLockedInStaking] = useState(0);
-  const [referralRewards, setReferralRewards] = useState(0);
-  const [referralsCount, setReferralsCount] = useState(0);
   
   // Calculate total balance (same formula as Wallet page)
-  const totalBalance = balance + lockedInStaking + referralRewards;
+  const totalBalance = contextBalance + contextLockedInStaking + referralReward;
   
   // Get mining level based on plan
   const getMiningLevel = () => {
@@ -62,9 +61,6 @@ const Dashboard = () => {
         if (userSnap.exists()) {
           const userData = userSnap.data();
           setBalance(userData.balance || 0);
-          setLockedInStaking(userData.lockedInStaking || 0);
-          setReferralRewards(userData.referralRewards || 0);
-          setReferralsCount(userData.referralsCount || 0);
         }
       } catch (error) {
         console.error('Error fetching wallet data:', error);
@@ -237,7 +233,13 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
                 <p className="text-gray-400 text-xs sm:text-sm font-medium truncate">{t('dashboard.stats.referrals')}</p>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{referralsCount}</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">
+                  {contextLoading ? (
+                    <span className="inline-block w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                  ) : (
+                    referrals
+                  )}
+                </p>
               </div>
               <div className="p-2 sm:p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg sm:rounded-xl ml-2 sm:ml-3 flex-shrink-0">
                 <FaUsers className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />

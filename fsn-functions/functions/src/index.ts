@@ -6,6 +6,7 @@ import { notifyMiningComplete } from "./notifications/notifyMiningComplete";
 import { notifyNewMessage } from "./notifications/notifyNewMessage";
 import { notifyReferralBonus } from "./notifications/notifyReferralBonus";
 import { sendDailyReminders } from "./notifications/sendPeriodicReminders";
+import { notifyKycRejection } from "./notifications/notifyKycRejection";
 
 
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + "/../flysky-site-3daa1e4343c4.json";
@@ -750,7 +751,8 @@ export {
   notifyMiningComplete, 
   notifyNewMessage, 
   notifyReferralBonus, 
-  sendDailyReminders
+  sendDailyReminders,
+  notifyKycRejection
 };
 
 // Export internationalized admin notification function

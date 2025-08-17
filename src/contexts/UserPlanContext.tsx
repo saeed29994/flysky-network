@@ -13,6 +13,7 @@ interface UserPlanContextProps {
   loading: boolean;
   balance: number;
   referrals: number;
+  verifiedReferrals: number;
   referralReward: number;
   dailyMined: number;
   stakingEarnings: number;
@@ -27,6 +28,7 @@ const UserPlanContext = createContext<UserPlanContextProps>({
   loading: true,
   balance: 0,
   referrals: 0,
+  verifiedReferrals: 0,
   referralReward: 0,
   dailyMined: 0,
   stakingEarnings: 0,
@@ -43,6 +45,7 @@ export const UserPlanProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(0);
   const [referrals, setReferrals] = useState(0);
+  const [verifiedReferrals, setVerifiedReferrals] = useState(0);
   const [referralReward, setReferralReward] = useState(0);
   const [dailyMined, setDailyMined] = useState(0);
   const [stakingEarnings, setStakingEarnings] = useState(0);
@@ -94,6 +97,12 @@ export const UserPlanProvider = ({ children }: { children: ReactNode }) => {
           // Set user data
           setBalance(data.balance || 0);
           setReferrals(data.referrals || 0);
+          
+          // Count verified referrals from referralList
+          const referralList = data.referralList || [];
+          const verifiedCount = referralList.filter((ref: any) => ref.status === 'Verified').length;
+          setVerifiedReferrals(verifiedCount);
+          
           setReferralReward(data.referralReward || 0);
           setDailyMined(data.dailyMined || 0);
           setStakingEarnings(data.stakingEarnings || 0);
@@ -191,6 +200,7 @@ export const UserPlanProvider = ({ children }: { children: ReactNode }) => {
       loading,
       balance,
       referrals,
+      verifiedReferrals,
       referralReward,
       dailyMined,
       stakingEarnings,

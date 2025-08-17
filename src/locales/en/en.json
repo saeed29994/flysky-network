@@ -499,6 +499,8 @@
     "available": "Available",
     "staked": "Staked",
     "referrals": "Referrals",
+    "verifiedReferrals": "Verified Referrals",
+    "referralRewards": "Referral Rewards",
     "total": "Total"
   },
   "menu": {
@@ -1109,6 +1111,9 @@
   "notVerified": "Not Verified",
   "membership": "Membership",
   "kycStatus": "KYC Status",
+  "rejectionTitle": "KYC Application Rejected",
+  "rejectionBody": "Your KYC application has been rejected. Please review the reason and resubmit.",
+  "rejectionReason": "Rejection Reason",
   "expiresOn": "Expires On",
   "upgrade": "Upgrade",
   "notifications": {
@@ -2105,7 +2110,16 @@
       "noApprovedUsersDesc": "No users have been approved yet",
       "noRejectedUsersDesc": "No users have been rejected yet",
       "refresh": "Refresh",
-      "refreshing": "Refreshing..."
+      "refreshing": "Refreshing...",
+      "rejectionReason": "Rejection Reason",
+      "rejectReason": "Rejection Reason",
+      "provideReason": "Please provide a reason for rejecting this KYC application.",
+      "rejectionReasonPlaceholder": "Enter rejection reason...",
+      "rejectionReasonRequired": "Please provide a rejection reason",
+      "cancel": "Cancel",
+      "rejectedOn": "Rejected on",
+      "alreadyApproved": "This KYC has already been approved",
+      "alreadyRejected": "This KYC has already been rejected"
     },
     "users": {
       "title": "Users Management",

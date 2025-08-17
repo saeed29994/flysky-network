@@ -87,26 +87,39 @@ export async function sendInternationalizedNotification(
   userId: string,
   title: string,
   body: string,
-  data?: Record<string, string>
+  data?: Record<string, string>,
+  skipUserCollection: boolean = false
 ): Promise<boolean> {
   try {
     // Get user's language preference
     const userLanguage = await getUserLanguage(userId);
     
-    // Add in-app notification to user's collection
-    try {
-      await admin.firestore().collection("users").doc(userId).collection("notifications").add({
-        type: data?.type || 'system',
-        title: title,
-        body: body,
-        read: false,
-        timestamp: admin.firestore.FieldValue.serverTimestamp(),
-        link: data?.link,
-        data: data
-      });
-      console.log(`✅ Added in-app notification to user ${userId}'s collection`);
-    } catch (error) {
-      console.error(`❌ Failed to add in-app notification for user ${userId}:`, error);
+    // Translate notification content first
+    const translatedTitle = await translateNotificationText(title, userLanguage, title);
+    const translatedBody = await translateNotificationText(body, userLanguage, body);
+    
+    // Add in-app notification to user's collection with TRANSLATED text (unless skipped)
+    if (!skipUserCollection) {
+      try {
+        await admin.firestore().collection("users").doc(userId).collection("notifications").add({
+          type: data?.type || 'system',
+          title: translatedTitle, // Store TRANSLATED title
+          body: translatedBody,   // Store TRANSLATED body
+          read: false,
+          timestamp: admin.firestore.FieldValue.serverTimestamp(),
+          link: data?.link,
+          data: {
+            ...data,
+            originalTitle: title, // Store original English for reference
+            originalBody: body,   // Store original English for reference
+            userLanguage,         // Store user's language
+            translated: 'true'    // Mark as translated
+          }
+        });
+        console.log(`✅ Added translated in-app notification to user ${userId}'s collection in ${userLanguage}`);
+      } catch (error) {
+        console.error(`❌ Failed to add in-app notification for user ${userId}:`, error);
+      }
     }
     
     // Get user's FCM token
@@ -119,11 +132,7 @@ export async function sendInternationalizedNotification(
     
     const token = tokenDoc.data()!.token;
     
-    // Translate notification content
-    const translatedTitle = await translateNotificationText(title, userLanguage, title);
-    const translatedBody = await translateNotificationText(body, userLanguage, body);
-    
-    // Prepare notification message
+    // Prepare notification message with translated content
     const message = {
       notification: {
         title: translatedTitle,
@@ -180,24 +189,34 @@ export async function sendInternationalizedNotificationsToUsers(
       try {
         const userLanguage = await getUserLanguage(userId);
         
-        // Add in-app notification to user's collection
+        // Translate notification content first
+        const translatedTitle = await translateNotificationText(title, userLanguage, title);
+        const translatedBody = await translateNotificationText(body, userLanguage, body);
+        
+        // Add in-app notification to user's collection with TRANSLATED text
         try {
           await admin.firestore().collection("users").doc(userId).collection("notifications").add({
             type: data?.type || 'system',
-            title: title,
-            body: body,
+            title: translatedTitle, // Store TRANSLATED title
+            body: translatedBody,   // Store TRANSLATED body
             read: false,
             timestamp: admin.firestore.FieldValue.serverTimestamp(),
             link: data?.link,
-            data: data
+            data: {
+              ...data,
+              originalTitle: title, // Store original English for reference
+              originalBody: body,   // Store original English for reference
+              userLanguage,         // Store user's language
+              translated: 'true'    // Mark as translated
+            }
           });
-          console.log(`✅ Added in-app notification to user ${userId}'s collection`);
+          console.log(`✅ Added translated in-app notification to user ${userId}'s collection in ${userLanguage}`);
         } catch (error) {
           console.error(`❌ Failed to add in-app notification for user ${userId}:`, error);
         }
         
-        // Send push notification
-        const success = await sendInternationalizedNotification(userId, title, body, data);
+        // Send push notification (this will also add to notifications, but we've already done it above)
+        const success = await sendInternationalizedNotification(userId, title, body, data, true); // Skip user collection to avoid duplicates
         
         results.push({ userId, success, language: userLanguage });
         
