@@ -653,50 +653,50 @@
         "templates": {
           "welcome": {
             "name": "Message de Bienvenue",
-            "title": "Bienvenue sur FlySky Network !",
-            "description": "Accueillir les nouveaux utilisateurs sur la plateforme",
+            "title": "🎉 Bienvenue sur le réseau FlySky !",
+            "message": "Nous sommes ravis de vous accueillir. Commencez votre voyage dès aujourd'hui avec le mining, le staking et les parrainages pour gagner des récompenses FSN.",
             "category": "welcome"
           },
           "dailyMiningReminder": {
             "name": "Rappel de Mining Quotidien",
-            "title": "⛏️ Rappel de Mining Quotidien",
-            "description": "Rappeler aux utilisateurs de miner quotidiennement pour des récompenses",
+            "title": "⛏️ N'oubliez pas votre mining quotidien !",
+            "message": "Minez aujourd'hui et réclamez vos récompenses FSN quotidiennes avant la fin de la journée !",
             "category": "reminders"
           },
           "stakingOpportunity": {
             "name": "Opportunité de Staking",
-            "title": "💰 Opportunité de Staking Disponible",
-            "description": "Notifier les utilisateurs des opportunités de staking",
+            "title": "💰 Boostez vos gains avec le staking",
+            "message": "Stakez vos tokens FSN dès aujourd'hui et profitez de récompenses allant jusqu'à 100% APY.",
             "category": "rewards"
           },
           "referralProgram": {
             "name": "Programme de Parrainage",
-            "title": "👥 Bonus du Programme de Parrainage",
-            "description": "Promouvoir le programme de parrainage auprès des utilisateurs",
+            "title": "👥 Gagnez plus avec les parrainages",
+            "message": "Partagez votre lien de parrainage avec vos amis et gagnez des tokens FSN quand ils rejoignent et vérifient leurs comptes.",
             "category": "promotional"
           },
           "newFeature": {
             "name": "Annonce de Nouvelle Fonctionnalité",
-            "title": "🚀 Nouvelle Fonctionnalité Disponible !",
-            "description": "Annoncer les nouvelles fonctionnalités de la plateforme",
+            "title": "🚀 Nouvelle fonctionnalité disponible !",
+            "message": "Découvrez les dernières fonctionnalités ajoutées au réseau FlySky et testez-les dès aujourd'hui.",
             "category": "system"
           },
           "premiumExclusive": {
             "name": "Offre Exclusive Premium",
-            "title": "💎 Offre Exclusive Premium",
-            "description": "Offres exclusives pour les utilisateurs premium",
+            "title": "💎 Offre exclusive premium",
+            "message": "Profitez d'offres spéciales disponibles uniquement pour les membres Premium.",
             "category": "promotional"
           },
           "inactiveReminder": {
             "name": "Rappel Utilisateur Inactif",
-            "title": "🔔 Vous Nous Manquez !",
-            "description": "Rappeler aux utilisateurs inactifs de revenir",
+            "title": "🔔 Vous nous manquez !",
+            "message": "Revenez sur FlySky aujourd'hui et ne manquez pas vos récompenses quotidiennes et opportunités de gains.",
             "category": "reminders"
           },
           "maintenance": {
             "name": "Maintenance Programmée",
-            "title": "🔧 Maintenance Programmée",
-            "description": "Notifier les utilisateurs de la maintenance système",
+            "title": "🛠️ Maintenance programmée",
+            "message": "La maintenance du système aura lieu le [insérer date/heure]. Certaines interruptions peuvent survenir.",
             "category": "system"
           }
         },
@@ -1484,36 +1484,36 @@
   "notifications": {
     "templates": {
       "welcome": {
-        "title": "Bienvenue sur FlySky Network !",
-        "body": "Merci d'avoir rejoint notre communauté. Commencez à miner aujourd'hui pour gagner vos premiers jetons FSN !"
+        "title": "🎉 Bienvenue sur le réseau FlySky !",
+        "message": "Nous sommes ravis de vous accueillir. Commencez votre voyage dès aujourd'hui avec le mining, le staking et les parrainages pour gagner des récompenses FSN."
       },
       "dailyMiningReminder": {
-        "title": "⛏️ Rappel de Mining Quotidien",
-        "body": "N'oubliez pas de miner aujourd'hui ! Votre session de mining quotidienne est prête. Commencez à miner maintenant pour gagner des jetons FSN."
+        "title": "⛏️ N'oubliez pas votre mining quotidien !",
+        "message": "Minez aujourd'hui et réclamez vos récompenses FSN quotidiennes avant la fin de la journée !"
       },
       "stakingOpportunity": {
-        "title": "💰 Opportunité de Staking Disponible",
-        "body": "Verrouillez vos jetons FSN en staking pour gagner un revenu passif. Récompenses plus élevées pour des périodes de verrouillage plus longues !"
+        "title": "💰 Boostez vos gains avec le staking",
+        "message": "Stakez vos tokens FSN dès aujourd'hui et profitez de récompenses allant jusqu'à 100% APY."
       },
       "referralProgram": {
-        "title": "👥 Bonus du Programme de Parrainage",
-        "body": "Invitez des amis et gagnez des jetons FSN bonus ! Partagez votre lien de parrainage et obtenez des récompenses pour chaque parrainage réussi."
+        "title": "👥 Gagnez plus avec les parrainages",
+        "message": "Partagez votre lien de parrainage avec vos amis et gagnez des tokens FSN quand ils rejoignent et vérifient leurs comptes."
       },
       "newFeature": {
-        "title": "🚀 Nouvelle Fonctionnalité Disponible !",
-        "body": "Nous venons de lancer une nouvelle fonctionnalité passionnante. Découvrez-la maintenant et trouvez de nouvelles façons de gagner !"
+        "title": "🚀 Nouvelle fonctionnalité disponible !",
+        "message": "Découvrez les dernières fonctionnalités ajoutées au réseau FlySky et testez-les dès aujourd'hui."
       },
       "premiumExclusive": {
-        "title": "💎 Offre Exclusive Premium",
-        "body": "En tant que membre premium, vous avez accès à des fonctionnalités exclusives et des récompenses plus élevées. Améliorez maintenant pour débloquer plus d'avantages !"
+        "title": "💎 Offre exclusive premium",
+        "message": "Profitez d'offres spéciales disponibles uniquement pour les membres Premium."
       },
       "inactiveReminder": {
-        "title": "🔔 Vous Nous Manquez !",
-        "body": "Cela fait un moment depuis votre dernière activité. Revenez et continuez à gagner des jetons FSN avec votre mining quotidien !"
+        "title": "🔔 Vous nous manquez !",
+        "message": "Revenez sur FlySky aujourd'hui et ne manquez pas vos récompenses quotidiennes et opportunités de gains."
       },
       "maintenance": {
-        "title": "🔧 Maintenance Programmée",
-        "body": "Nous effectuerons une maintenance programmée. Certains services peuvent être temporairement indisponibles. Nous serons de retour bientôt !"
+        "title": "🛠️ Maintenance programmée",
+        "message": "La maintenance du système aura lieu le [insérer date/heure]. Certaines interruptions peuvent survenir."
       }
     }
   },

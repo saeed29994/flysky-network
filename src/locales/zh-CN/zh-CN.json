@@ -1100,36 +1100,36 @@
     },
     "templates": {
       "welcome": {
-        "title": "欢迎加入 FlySky Network！",
-        "body": "感谢您加入我们的社区。立即开始挖矿，赚取您的第一批 FSN 代币！"
+        "title": "🎉 欢迎来到 FlySky Network！",
+        "message": "我们很高兴您加入我们。今天就开始您的挖矿、质押和推荐之旅，赚取 FSN 奖励。"
       },
       "dailyMiningReminder": {
-        "title": "⛏️ 每日挖矿提醒",
-        "body": "别忘了今天挖矿！您的每日挖矿会话已准备就绪。立即开始挖矿，赚取 FSN 代币。"
+        "title": "⛏️ 别忘了每日挖矿！",
+        "message": "今天挖矿并在一天结束前领取您的每日 FSN 奖励！"
       },
       "stakingOpportunity": {
-        "title": "💰 质押机会可用",
-        "body": "将您的 FSN 代币锁定在质押中以赚取被动收入。锁定时间越长，奖励越高！"
+        "title": "💰 通过质押提升您的收益",
+        "message": "今天质押您的 FSN 代币，享受高达 100% APY 的奖励。"
       },
       "referralProgram": {
-        "title": "👥 推荐计划奖励",
-        "body": "邀请朋友并赚取奖励 FSN 代币！分享您的推荐链接，为每个成功的推荐获得奖励。"
+        "title": "👥 通过推荐赚取更多",
+        "message": "与朋友分享您的推荐链接，当他们加入并验证账户时赚取 FSN 代币。"
       },
       "newFeature": {
         "title": "🚀 新功能可用！",
-        "body": "我们刚刚推出了一个令人兴奋的新功能。立即查看并发现新的赚钱方式！"
+        "message": "探索添加到 FlySky Network 的最新功能，今天就试试吧。"
       },
       "premiumExclusive": {
-        "title": "💎 高级会员专享优惠",
-        "body": "作为高级会员，您可以访问专享功能和更高奖励。立即升级以解锁更多福利！"
+        "title": "💎 专属高级优惠",
+        "message": "享受仅限高级会员的特殊优惠和机会。"
       },
       "inactiveReminder": {
         "title": "🔔 我们想念您！",
-        "body": "距离您上次活动已经有一段时间了。回来继续通过每日挖矿赚取 FSN 代币！"
+        "message": "今天就回到 FlySky，不要错过您的每日奖励和赚钱机会。"
       },
       "maintenance": {
-        "title": "🔧 计划维护",
-        "body": "我们将进行计划维护。某些服务可能暂时不可用。我们很快就会回来！"
+        "title": "🛠️ 计划维护",
+        "message": "系统维护将在 [插入日期/时间] 进行。可能会出现一些停机时间。"
       }
     }
   },
@@ -1388,50 +1388,50 @@
         "templates": {
           "welcome": {
             "name": "欢迎消息",
-            "title": "欢迎来到FlySky Network！",
-            "description": "欢迎新用户加入平台",
+            "title": "🎉 欢迎来到 FlySky Network！",
+            "description": "我们很高兴您加入我们。今天就开始您的挖矿、质押和推荐之旅，赚取 FSN 奖励。",
             "category": "welcome"
           },
           "dailyMiningReminder": {
             "name": "每日挖矿提醒",
-            "title": "⛏️ 每日挖矿提醒",
-            "description": "提醒用户每日挖矿获得奖励",
+            "title": "⛏️ 别忘了您的每日挖矿！",
+            "description": "今天挖矿并在一天结束前领取您的每日 FSN 奖励！",
             "category": "reminders"
           },
           "stakingOpportunity": {
             "name": "质押机会",
-            "title": "💰 质押机会可用",
-            "description": "通知用户质押机会",
+            "title": "💰 通过质押提升您的收益",
+            "description": "今天质押您的 FSN 代币，享受高达 100% 年化收益的奖励。",
             "category": "rewards"
           },
           "referralProgram": {
             "name": "推荐计划",
-            "title": "👥 推荐计划奖金",
-            "description": "向用户推广推荐计划",
+            "title": "👥 通过推荐赚取更多",
+            "description": "与朋友分享您的推荐链接，当他们加入并验证账户时赚取 FSN 代币。",
             "category": "promotional"
           },
           "newFeature": {
             "name": "新功能公告",
             "title": "🚀 新功能可用！",
-            "description": "公告平台新功能",
+            "description": "探索添加到 FlySky Network 的最新功能，今天就试试吧。",
             "category": "system"
           },
           "premiumExclusive": {
             "name": "高级专属优惠",
-            "title": "💎 高级专属优惠",
-            "description": "高级用户专属优惠",
+            "title": "💎 专属高级优惠",
+            "description": "享受仅限高级会员的特殊优惠和机会。",
             "category": "promotional"
           },
           "inactiveReminder": {
             "name": "非活跃用户提醒",
             "title": "🔔 我们想念您！",
-            "description": "提醒非活跃用户返回",
+            "description": "今天就回到 FlySky，不要错过您的每日奖励和赚钱机会。",
             "category": "reminders"
           },
           "maintenance": {
             "name": "计划维护",
-            "title": "🔧 计划维护",
-            "description": "通知用户系统维护",
+            "title": "🛠️ 计划维护",
+            "description": "系统维护将在 [插入日期/时间] 进行。可能会出现一些停机时间。",
             "category": "system"
           }
         },

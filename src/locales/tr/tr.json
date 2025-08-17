@@ -1082,36 +1082,36 @@
     },
     "templates": {
       "welcome": {
-        "title": "FlySky Network'e Hoş Geldiniz!",
-        "body": "Topluluğumuza katıldığınız için teşekkürler. İlk FSN tokenlerinizi kazanmak için bugün madenciliğe başlayın!"
+        "title": "🎉 FlySky Network'e Hoş Geldiniz!",
+        "message": "Sizi aramızda görmekten heyecan duyuyoruz. Bugün madencilik, staking ve referanslarla FSN ödüllerini kazanmaya başlayın."
       },
       "dailyMiningReminder": {
-        "title": "⛏️ Günlük Madencilik Hatırlatıcısı",
-        "body": "Bugün madenciliği unutmayın! Günlük madencilik oturumunuz hazır. FSN tokenleri kazanmak için şimdi madenciliğe başlayın."
+        "title": "⛏️ Günlük madenciliğinizi unutmayın!",
+        "message": "Bugün madencilik yapın ve günlük FSN ödüllerinizi gün bitmeden talep edin!"
       },
       "stakingOpportunity": {
-        "title": "💰 Staking Fırsatı Mevcut",
-        "body": "Pasif gelir kazanmak için FSN tokenlerinizi staking'de kilitleyin. Daha uzun kilit süreleri için daha yüksek ödüller!"
+        "title": "💰 Staking ile Kazançlarınızı Artırın",
+        "message": "FSN tokenlarınızı bugün stake edin ve %100'e kadar APY ödüllerinden yararlanın."
       },
       "referralProgram": {
-        "title": "👥 Referans Programı Bonusu",
-        "body": "Arkadaşlarınızı davet edin ve bonus FSN tokenleri kazanın! Referans linkinizi paylaşın ve her başarılı referans için ödül alın."
+        "title": "👥 Referanslarla Daha Fazla Kazanın",
+        "message": "Referans linkinizi arkadaşlarınızla paylaşın ve katıldıklarında hesaplarını doğruladıklarında FSN tokenları kazanın."
       },
       "newFeature": {
         "title": "🚀 Yeni Özellik Mevcut!",
-        "body": "Yeni heyecan verici bir özellik yayınladık. Şimdi kontrol edin ve kazanmanın yeni yollarını keşfedin!"
+        "message": "FlySky Network'e eklenen en son özellikleri keşfedin ve bugün deneyin."
       },
       "premiumExclusive": {
-        "title": "💎 Premium Özel Teklif",
-        "body": "Premium üye olarak, özel özelliklere ve daha yüksek ödüllere erişiminiz var. Daha fazla fayda açmak için şimdi yükseltin!"
+        "title": "💎 Özel Premium Teklif",
+        "message": "Sadece Premium üyeler için mevcut olan özel tekliflerden ve fırsatlardan yararlanın."
       },
       "inactiveReminder": {
         "title": "🔔 Sizi Özledik!",
-        "body": "Son aktivitenizden bu yana uzun zaman geçti. Geri gelin ve günlük madenciliğinizle FSN tokenleri kazanmaya devam edin!"
+        "message": "Bugün FlySky'e geri dönün ve günlük ödüllerinizi ve kazanç fırsatlarınızı kaçırmayın."
       },
       "maintenance": {
-        "title": "🔧 Planlı Bakım",
-        "body": "Planlı bakım yapacağız. Bazı hizmetler geçici olarak kullanılamayabilir. Yakında geri döneceğiz!"
+        "title": "🛠️ Planlı Bakım",
+        "message": "Sistem bakımı [tarih/saat ekleyin] tarihinde gerçekleşecektir. Bazı kesintiler olabilir."
       }
     }
   },
@@ -1366,51 +1366,51 @@
         },
         "templates": {
           "welcome": {
-            "name": "Hoş Geldiniz Mesajı",
-            "title": "FlySky Network'e Hoş Geldiniz!",
-            "description": "Platforma yeni kullanıcıları karşılayın",
+            "name": "Hoş Geldin Mesajı",
+            "title": "🎉 FlySky Network'e Hoş Geldiniz!",
+            "description": "Sizi aramızda görmekten heyecan duyuyoruz. Bugün madencilik, staking ve referanslarla FSN ödüllerini kazanmaya başlayın.",
             "category": "welcome"
           },
           "dailyMiningReminder": {
-            "name": "Günlük Mining Hatırlatıcısı",
-            "title": "⛏️ Günlük Mining Hatırlatıcısı",
-            "description": "Kullanıcıları ödüller için günlük mining yapmaya hatırlatın",
+            "name": "Günlük Madencilik Hatırlatması",
+            "title": "⛏️ Günlük madenciliğinizi unutmayın!",
+            "description": "Bugün madencilik yapın ve günlük FSN ödüllerinizi gün bitmeden talep edin!",
             "category": "reminders"
           },
           "stakingOpportunity": {
             "name": "Staking Fırsatı",
-            "title": "💰 Staking Fırsatı Mevcut",
-            "description": "Kullanıcıları staking fırsatları hakkında bilgilendirin",
+            "title": "💰 Staking ile Kazançlarınızı Artırın",
+            "description": "FSN tokenlarınızı bugün stake edin ve %100'e kadar APY ödüllerinden yararlanın.",
             "category": "rewards"
           },
           "referralProgram": {
             "name": "Referans Programı",
-            "title": "👥 Referans Programı Bonusu",
-            "description": "Referans programını kullanıcılara tanıtın",
+            "title": "👥 Referanslarla Daha Fazla Kazanın",
+            "description": "Referans linkinizi arkadaşlarınızla paylaşın ve katıldıklarında hesaplarını doğruladıklarında FSN tokenları kazanın.",
             "category": "promotional"
           },
           "newFeature": {
             "name": "Yeni Özellik Duyurusu",
             "title": "🚀 Yeni Özellik Mevcut!",
-            "description": "Platformdaki yeni özellikleri duyurun",
+            "description": "FlySky Network'e eklenen en son özellikleri keşfedin ve bugün deneyin.",
             "category": "system"
           },
           "premiumExclusive": {
             "name": "Premium Özel Teklif",
-            "title": "💎 Premium Özel Teklif",
-            "description": "Premium kullanıcılar için özel teklifler",
+            "title": "💎 Özel Premium Teklif",
+            "description": "Sadece Premium üyeler için mevcut olan özel tekliflerden ve fırsatlardan yararlanın.",
             "category": "promotional"
           },
           "inactiveReminder": {
-            "name": "Pasif Kullanıcı Hatırlatıcısı",
+            "name": "Pasif Kullanıcı Hatırlatması",
             "title": "🔔 Sizi Özledik!",
-            "description": "Pasif kullanıcıları geri dönmeye hatırlatın",
+            "description": "Bugün FlySky'e geri dönün ve günlük ödüllerinizi ve kazanç fırsatlarınızı kaçırmayın.",
             "category": "reminders"
           },
           "maintenance": {
             "name": "Planlı Bakım",
-            "title": "🔧 Planlı Bakım",
-            "description": "Kullanıcıları sistem bakımı hakkında bilgilendirin",
+            "title": "🛠️ Planlı Bakım",
+            "description": "Sistem bakımı [tarih/saat ekleyin] tarihinde gerçekleşecektir. Bazı kesintiler olabilir.",
             "category": "system"
           }
         },

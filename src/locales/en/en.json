@@ -1152,36 +1152,36 @@
     },
     "templates": {
       "welcome": {
-        "title": "Welcome to FlySky Network!",
-        "body": "Thank you for joining our community. Start mining today to earn your first FSN tokens!"
+        "title": "🎉 Welcome to FlySky Network!",
+        "message": "We're excited to have you on board. Start your journey today with mining, staking, and referrals to earn FSN rewards."
       },
       "dailyMiningReminder": {
-        "title": "⛏️ Daily Mining Reminder",
-        "body": "Don't forget to mine today! Your daily mining session is ready. Start mining now to earn FSN tokens."
+        "title": "⛏️ Don't forget your daily mining!",
+        "message": "Mine today and claim your daily FSN rewards before the day ends!"
       },
       "stakingOpportunity": {
-        "title": "💰 Staking Opportunity Available",
-        "body": "Lock your FSN tokens in staking to earn passive income. Higher rewards for longer lock periods!"
+        "title": "💰 Boost Your Earnings with Staking",
+        "message": "Stake your FSN tokens today and enjoy rewards of up to 100% APY."
       },
       "referralProgram": {
-        "title": "👥 Referral Program Bonus",
-        "body": "Invite friends and earn bonus FSN tokens! Share your referral link and get rewards for every successful referral."
+        "title": "👥 Earn More with Referrals",
+        "message": "Share your referral link with friends and earn FSN tokens when they join and verify their accounts."
       },
       "newFeature": {
         "title": "🚀 New Feature Available!",
-        "body": "We've just launched an exciting new feature. Check it out now and discover new ways to earn!"
+        "message": "Explore the latest features added to FlySky Network and try them out today."
       },
       "premiumExclusive": {
-        "title": "💎 Premium Exclusive Offer",
-        "body": "As a premium member, you have access to exclusive features and higher rewards. Upgrade now to unlock more benefits!"
+        "title": "💎 Exclusive Premium Offer",
+        "message": "Enjoy special deals and offers available only for Premium members."
       },
       "inactiveReminder": {
         "title": "🔔 We Miss You!",
-        "body": "It's been a while since your last activity. Come back and continue earning FSN tokens with your daily mining!"
+        "message": "Come back to FlySky today and don't miss your daily rewards and earning opportunities."
       },
       "maintenance": {
-        "title": "🔧 Scheduled Maintenance",
-        "body": "We'll be performing scheduled maintenance. Some services may be temporarily unavailable. We'll be back soon!"
+        "title": "🛠️ Scheduled Maintenance",
+        "message": "System maintenance will take place on [insert date/time]. Some downtime may occur."
       }
     },   
     "admin": {
@@ -1348,115 +1348,6 @@
         "noNotificationsToClear": "No notifications to clear",
         "noTokensFound": "No tokens found. No users registered for notifications.",
         "serverError": "Failed to send notifications. Server says: {error}"
-      },
-      "templates": {
-        "title": "Notification Templates",
-        "description": "Use pre-defined templates for common notification types",
-        "modalTitle": "Select Template",
-        "modalDescription": "Choose a template to quickly populate your notification",
-        "noTemplates": "No templates available",
-        "noTemplatesDescription": "Templates will be available here for common notification types",
-        "useTemplate": "Use Template",
-        "previewTemplate": "Preview Template",
-        "templateCategories": {
-          "welcome": "Welcome & Onboarding",
-          "reminders": "Reminders & Alerts",
-          "promotional": "Promotional & Marketing",
-          "system": "System & Maintenance",
-          "rewards": "Rewards & Bonuses"
-        },
-        "templates": {
-          "welcome": {
-            "name": "Welcome Message",
-            "title": "Welcome to FlySky Network!",
-            "description": "Welcome new users to the platform",
-            "category": "welcome"
-          },
-          "dailyMiningReminder": {
-            "name": "Daily Mining Reminder",
-            "title": "⛏️ Daily Mining Reminder",
-            "description": "Remind users to mine daily for rewards",
-            "category": "reminders"
-          },
-          "stakingOpportunity": {
-            "name": "Staking Opportunity",
-            "title": "💰 Staking Opportunity Available",
-            "description": "Notify users about staking opportunities",
-            "category": "rewards"
-          },
-          "referralProgram": {
-            "name": "Referral Program",
-            "title": "👥 Referral Program Bonus",
-            "description": "Promote the referral program to users",
-            "category": "promotional"
-          },
-          "newFeature": {
-            "name": "New Feature Announcement",
-            "title": "🚀 New Feature Available!",
-            "description": "Announce new platform features",
-            "category": "system"
-          },
-          "premiumExclusive": {
-            "name": "Premium Exclusive Offer",
-            "title": "💎 Premium Exclusive Offer",
-            "description": "Exclusive offers for premium users",
-            "category": "promotional"
-          },
-          "inactiveReminder": {
-            "name": "Inactive User Reminder",
-            "title": "🔔 We Miss You!",
-            "description": "Remind inactive users to return",
-            "category": "reminders"
-          },
-          "maintenance": {
-            "name": "Scheduled Maintenance",
-            "title": "🔧 Scheduled Maintenance",
-            "description": "Notify users about system maintenance",
-            "category": "system"
-          }
-        },
-        "actions": {
-          "select": "Select",
-          "preview": "Preview",
-          "close": "Close",
-          "search": "Search templates...",
-          "filterByCategory": "Filter by category",
-          "allCategories": "All Categories"
-        },
-        "preview": {
-          "title": "Template Preview",
-          "templateName": "Template Name",
-          "category": "Category",
-          "description": "Description",
-          "content": "Content Preview",
-          "useThisTemplate": "Use This Template"
-        },
-        "createNew": {
-          "title": "Create New Template",
-          "description": "Create a custom notification template",
-          "templateName": "Template Name",
-          "templateNamePlaceholder": "Enter template name",
-          "notificationTitle": "Notification Title",
-          "notificationTitlePlaceholder": "Enter notification title",
-          "notificationMessage": "Notification Message",
-          "notificationMessagePlaceholder": "Enter notification message",
-          "category": "Category",
-          "targetAudience": "Target Audience",
-          "platforms": "Platforms",
-          "mobile": "Mobile",
-          "web": "Web",
-          "inbox": "Inbox",
-          "cancel": "Cancel",
-          "createTemplate": "Create Template",
-          "allUsers": "All Users",
-          "premiumUsers": "Premium Users",
-          "newUsers": "New Users",
-          "inactiveUsers": "Inactive Users",
-          "marketing": "Marketing",
-          "system": "System",
-          "announcement": "Announcement",
-          "custom": "Custom"
-        }
       }
     }
   },
@@ -1482,7 +1373,7 @@
     "route": {
       "checking": "Checking admin permissions..."
     },
-"notifications": {
+    "notifications": {
       "title": "Notifications",
       "description": "Send and manage notifications to users",
       "header": {
@@ -1682,50 +1573,50 @@
         "templates": {
           "welcome": {
             "name": "Welcome Message",
-            "title": "Welcome to Fly Sky Network!",
-            "description": "Welcome new users to the platform",
+            "title": "🎉 Welcome to FlySky Network!",
+            "description": "We're excited to have you on board. Start your journey today with mining, staking, and referrals to earn FSN rewards.",
             "category": "welcome"
           },
           "dailyMiningReminder": {
             "name": "Daily Mining Reminder",
-            "title": "⛏️ Daily Mining Reminder",
-            "description": "Remind users to perform daily mining for rewards",
+            "title": "⛏️ Don't forget your daily mining!",
+            "description": "Mine today and claim your daily FSN rewards before the day ends!",
             "category": "reminders"
           },
           "stakingOpportunity": {
             "name": "Staking Opportunity",
-            "title": "💰 Staking Opportunity Available",
-            "description": "Notify users about staking opportunities",
+            "title": "💰 Boost Your Earnings with Staking",
+            "description": "Stake your FSN tokens today and enjoy rewards of up to 100% APY.",
             "category": "rewards"
           },
           "referralProgram": {
             "name": "Referral Program",
-            "title": "👥 Referral Program Reward",
-            "description": "Promote referral program to users",
+            "title": "👥 Earn More with Referrals",
+            "description": "Share your referral link with friends and earn FSN tokens when they join and verify their accounts.",
             "category": "promotional"
           },
           "newFeature": {
             "name": "New Feature Announcement",
             "title": "🚀 New Feature Available!",
-            "description": "Announce new features in the platform",
+            "description": "Explore the latest features added to FlySky Network and try them out today.",
             "category": "system"
           },
           "premiumExclusive": {
             "name": "Premium Exclusive Offer",
             "title": "💎 Exclusive Premium Offer",
-            "description": "Exclusive offers for premium users",
+            "description": "Enjoy special deals and offers available only for Premium members.",
             "category": "promotional"
           },
           "inactiveReminder": {
             "name": "Inactive User Reminder",
             "title": "🔔 We Miss You!",
-            "description": "Remind inactive users to return",
+            "description": "Come back to FlySky today and don't miss your daily rewards and earning opportunities.",
             "category": "reminders"
           },
           "maintenance": {
             "name": "Scheduled Maintenance",
-            "title": "🔧 Scheduled Maintenance",
-            "description": "Notify users about system maintenance",
+            "title": "🛠️ Scheduled Maintenance",
+            "description": "System maintenance will take place on [insert date/time]. Some downtime may occur.",
             "category": "system"
           }
         },
