@@ -95,9 +95,9 @@ const NotificationsPage: React.FC = () => {
                   <Bell className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-white">{t('notifications.title')}</h1>
+                  <h1 className="text-2xl font-bold text-white">{t('mainNotifications.title')}</h1>
                   <p className="text-gray-300">
-                    {notifications.length} {t('notifications.unreadNotifications')}
+                    {notifications.length} {t('mainNotifications.unreadNotifications')}
                   </p>
                 </div>
               </div>
@@ -108,7 +108,7 @@ const NotificationsPage: React.FC = () => {
                   className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
                 >
                   <CheckCircle className="w-4 h-4" />
-                  <span>{t('notifications.viewAll')}</span>
+                  <span>{t('mainNotifications.viewAll')}</span>
                 </button>
               </div>
             </div>
@@ -124,7 +124,7 @@ const NotificationsPage: React.FC = () => {
             <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
               <div className="flex items-center gap-2 text-gray-300 shrink-0">
                 <Filter className="w-4 h-4" />
-                <span>{t('notifications.filter')}:</span>
+                <span>{t('mainNotifications.filter')}:</span>
               </div>
               
               <button
@@ -139,19 +139,19 @@ const NotificationsPage: React.FC = () => {
                 } transition-all duration-200`}
               >
                 <Bell className="w-4 h-4" />
-                {t('notifications.all')}
+                {t('mainNotifications.all')}
               </button>
               
               {(['claim_reward', 'inbox_message', 'referral_bonus', 'mining_reminder', 'staking_reminder'] as const).map((type) => {
                 const { icon, color } = getFilterIconAndColor(type);
                 const getTranslationKey = (notificationType: NotificationType) => {
                   switch(notificationType) {
-                    case 'claim_reward': return 'notifications.rewards';
-                    case 'inbox_message': return 'notifications.messages';
-                    case 'referral_bonus': return 'notifications.referrals';
-                    case 'mining_reminder': return 'notifications.mining';
-                    case 'staking_reminder': return 'notifications.staking';
-                    default: return 'notifications.all';
+                    case 'claim_reward': return 'mainNotifications.rewards';
+                    case 'inbox_message': return 'mainNotifications.messages';
+                    case 'referral_bonus': return 'mainNotifications.referrals';
+                    case 'mining_reminder': return 'mainNotifications.mining';
+                    case 'staking_reminder': return 'mainNotifications.staking';
+                    default: return 'mainNotifications.all';
                   }
                 };
                 
@@ -181,16 +181,16 @@ const NotificationsPage: React.FC = () => {
             {loading ? (
               <div className="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl p-12 flex flex-col items-center justify-center">
                 <div className="w-10 h-10 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mb-4"></div>
-                <p className="text-white">{t('notifications.loading')}</p>
+                <p className="text-white">{t('mainNotifications.loading')}</p>
               </div>
             ) : paginatedNotifications.length === 0 ? (
               <div className="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl p-12 text-center">
                 <Bell className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                <p className="text-white text-lg font-medium mb-2">{t('notifications.noNotifications')}</p>
+                <p className="text-white text-lg font-medium mb-2">{t('mainNotifications.noNotifications')}</p>
                 <p className="text-gray-400">
                   {filter === 'all' 
-                    ? t('notifications.youHaveNoNotifications') 
-                    : t('notifications.noFilteredNotifications')}
+                    ? t('mainNotifications.youHaveNoNotifications')
+                    : t('mainNotifications.noFilteredNotifications')}
                 </p>
               </div>
             ) : (

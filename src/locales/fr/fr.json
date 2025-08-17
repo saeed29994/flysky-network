@@ -436,15 +436,312 @@
       "checking": "Vérification des permissions administrateur..."
     },
     "notifications": {
-      "title": "Gestion des notifications",
-      "description": "Gérer et suivre toutes les notifications de la plateforme",
+      "title": "Notifications",
+      "description": "Gérer et envoyer des notifications aux utilisateurs",
+      "header": {
+        "title": "Notifications",
+        "subtitle": "Gérer et envoyer des notifications aux utilisateurs"
+      },
+      "actions": {
+        "sendNotification": "Envoyer une notification",
+        "editResend": "Modifier et renvoyer la notification",
+        "refresh": "Actualiser",
+        "clearAll": "Tout effacer",
+        "useTemplate": "Utiliser un modèle",
+        "close": "Fermer",
+        "cancel": "Annuler",
+        "send": "Envoyer",
+        "schedule": "Programmer",
+        "sendNow": "Envoyer maintenant",
+        "resend": "Renvoyer",
+        "delete": "Supprimer",
+        "view": "Voir",
+        "edit": "Modifier",
+        "refreshNotifications": "Actualiser les notifications",
+        "viewNotification": "Voir la notification",
+        "editNotification": "Modifier la notification",
+        "deleteNotification": "Supprimer la notification",
+        "dismissError": "Fermer l'erreur"
+      },
+      "form": {
+        "title": "Titre",
+        "titlePlaceholder": "Entrez le titre de la notification",
+        "message": "Message",
+        "messagePlaceholder": "Entrez le message de la notification",
+        "targetAudience": "Audience cible",
+        "platforms": "Plateformes",
+        "schedule": "Programmation (optionnel)",
+        "schedulePlaceholder": "Laissez vide pour envoyer immédiatement"
+      },
+      "targetAudience": {
+        "all": "Tous les utilisateurs",
+        "new": "Nouveaux utilisateurs (7 derniers jours)",
+        "inactive": "Utilisateurs inactifs (30+ jours)",
+        "plans": "Plans d'abonnement",
+        "custom": "Utilisateurs personnalisés",
+        "selectPlans": "Sélectionner les plans d'abonnement",
+        "customUserSelection": "Sélection d'utilisateurs personnalisés",
+        "searchUsers": "Rechercher des utilisateurs par email...",
+        "searchUsersPlaceholder": "Rechercher des utilisateurs par email ou nom...",
+        "selectedUsers": "Utilisateurs sélectionnés",
+        "usersFound": "utilisateurs trouvés",
+        "targetUsers": "Utilisateurs cibles",
+        "selectPlansToSeeCount": "Sélectionnez des plans pour voir le nombre d'utilisateurs",
+        "customUserSearch": "Recherche d'utilisateurs personnalisés",
+        "customUserSearchPlaceholder": "Rechercher des utilisateurs par email ou nom...",
+        "customUserSelectionPlaceholder": "Sélectionner des utilisateurs spécifiques à cibler",
+        "customUserCount": "Nombre d'utilisateurs personnalisés",
+        "customUserCountDescription": "Nombre d'utilisateurs sélectionnés pour le ciblage personnalisé"
+      },
+      "platforms": {
+        "mobile": "Mobile",
+        "web": "Web",
+        "inbox": "Boîte de réception",
+        "email": "Email"
+      },
       "stats": {
         "totalSent": "Total envoyé",
+        "scheduled": "Programmées",
+        "draft": "Brouillons",
+        "failed": "Échouées",
+        "loading": "Chargement des notifications...",
+        "noNotifications": "Aucune notification pour le moment",
+        "noNotificationsSubtitle": "Envoyez votre première notification pour commencer",
         "avgOpenRate": "Taux d'ouverture moyen",
         "avgClickRate": "Taux de clic moyen",
-        "scheduled": "Programmées",
         "fromLastWeek": "de la semaine dernière",
         "nextScheduled": "Suivante : 25 déc, 2h00"
+      },
+      "table": {
+        "notification": "Notification",
+        "title": "Titre",
+        "message": "Message",
+        "type": "Type",
+        "status": "Statut",
+        "audience": "Audience",
+        "sent": "Envoyé",
+        "recipients": "Destinataires",
+        "platforms": "Plateformes",
+        "performance": "Performance",
+        "created": "Créé",
+        "actions": "Actions",
+        "opened": "ouvert",
+        "clicked": "cliqué",
+        "openRate": "taux d'ouverture",
+        "clickRate": "taux de clic",
+        "viewDetails": "Voir les détails",
+        "editResend": "Modifier et renvoyer",
+        "delete": "Supprimer"
+      },
+      "status": {
+        "sent": "Envoyé",
+        "scheduled": "Programmé",
+        "draft": "Brouillon",
+        "failed": "Échoué",
+        "processing": "en cours de traitement"
+      },
+      "deliveryStatus": {
+        "delivered": "livré",
+        "partial_success": "succès partiel",
+        "failed": "échoué",
+        "pending": "en attente"
+      },
+      "audience": {
+        "premium": "Premium",
+        "new": "Nouveau",
+        "inactive": "Inactif",
+        "all": "Tous",
+        "allUsers": "Tous les utilisateurs",
+        "newUsers": "Nouveaux utilisateurs"
+      },
+      "types": {
+        "info": "Info",
+        "success": "Succès",
+        "warning": "Avertissement",
+        "error": "Erreur"
+      },
+      "messages": {
+        "sentSuccessfully": "Notification envoyée avec succès !",
+        "failedToSend": "Échec de l'envoi de la notification",
+        "deletedSuccessfully": "Notification supprimée avec succès !",
+        "failedToDelete": "Échec de la suppression de la notification",
+        "resentSuccessfully": "Notification renvoyée avec succès !",
+        "failedToResend": "Échec du renvoi de la notification",
+        "clearedSuccessfully": "Toutes les notifications ont été effacées avec succès !",
+        "failedToClear": "Échec de l'effacement de toutes les notifications",
+        "pleaseEnterBoth": "Veuillez saisir le titre et le contenu.",
+        "unexpectedError": "Une erreur inattendue s'est produite lors de l'envoi de la notification",
+        "errorDeleting": "Une erreur inattendue s'est produite lors de la suppression de la notification",
+        "errorResending": "Une erreur inattendue s'est produite lors du renvoi de la notification",
+        "notificationSent": "Notification envoyée avec succès !"
+      },
+      "modals": {
+        "sendNotification": "Envoyer une notification",
+        "notificationDetails": "Détails de la notification",
+        "editResendNotification": "Modifier et renvoyer la notification",
+        "deleteNotification": "Supprimer la notification",
+        "clearAllNotifications": "Effacer toutes les notifications"
+      },
+      "deleteConfirm": {
+        "title": "Supprimer la notification",
+        "message": "Êtes-vous sûr de vouloir supprimer \"{title}\" ?",
+        "subtitle": "Cette action ne peut pas être annulée et supprimera définitivement la notification et toutes les données associées, y compris les journaux et les entrées de la boîte de réception.",
+        "genericMessage": "Êtes-vous sûr de vouloir supprimer cette notification ? Cette action ne peut pas être annulée."
+      },
+      "clearAllConfirm": {
+        "title": "Effacer toutes les notifications",
+        "message": "Êtes-vous absolument sûr de vouloir effacer TOUTES les notifications ?",
+        "warning": "⚠️ Cette action supprimera définitivement :",
+        "items": [
+          "Tous les {count} enregistrements de notification",
+          "Tous les journaux et analyses de notification",
+          "Toutes les notifications de la boîte de réception des utilisateurs",
+          "Toutes les données et métadonnées associées"
+        ],
+        "cannotUndone": "Cette action ne peut pas être annulée ! Assurez-vous d'avoir une sauvegarde si nécessaire."
+      },
+      "details": {
+        "status": "Statut",
+        "targetAudience": "Audience cible",
+        "sentAt": "Envoyé le",
+        "createdAt": "Créé le",
+        "recipients": "Destinataires",
+        "platforms": "Plateformes",
+        "opened": "Ouvert",
+        "clicked": "Cliqué",
+        "errorDetails": "Détails de l'erreur :",
+        "deliveryInformation": "Informations de livraison :",
+        "totalRecipients": "Total des destinataires",
+        "successful": "Réussi",
+        "failed": "Échoué",
+        "errorMessage": "Message d'erreur"
+      },
+      "loading": {
+        "sending": "Envoi en cours...",
+        "deleting": "Suppression en cours...",
+        "clearing": "Effacement en cours...",
+        "refreshing": "Actualisation en cours...",
+        "loadingPlans": "Chargement des plans disponibles...",
+        "loadingUsers": "Chargement des utilisateurs..."
+      },
+      "errors": {
+        "noNotificationsToClear": "Aucune notification à effacer",
+        "noTokensFound": "Aucun jeton trouvé. Aucun utilisateur enregistré pour les notifications.",
+        "serverError": "Échec de l'envoi des notifications. Le serveur dit : {error}",
+        "failedToLoad": "Échec du chargement des notifications",
+        "failedToSend": "Échec de l'envoi de la notification",
+        "failedToDelete": "Échec de la suppression de la notification",
+        "failedToUpdate": "Échec de la mise à jour de la notification",
+        "errorSending": "Erreur lors de l'envoi de la notification."
+      },
+      "templates": {
+        "title": "Modèles de Notifications",
+        "description": "Utilisez des modèles prédéfinis pour les types de notifications courants",
+        "modalTitle": "Sélectionner un Modèle",
+        "modalDescription": "Choisissez un modèle pour remplir rapidement votre notification",
+        "noTemplates": "Aucun modèle disponible",
+        "noTemplatesDescription": "Les modèles seront disponibles ici pour les types de notifications courants",
+        "useTemplate": "Utiliser le Modèle",
+        "previewTemplate": "Aperçu du Modèle",
+        "templateCategories": {
+          "welcome": "Accueil et Intégration",
+          "reminders": "Rappels et Alertes",
+          "promotional": "Promotionnel et Marketing",
+          "system": "Système et Maintenance",
+          "rewards": "Récompenses et Bonus"
+        },
+        "templates": {
+          "welcome": {
+            "name": "Message de Bienvenue",
+            "title": "Bienvenue sur FlySky Network !",
+            "description": "Accueillir les nouveaux utilisateurs sur la plateforme",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "Rappel de Mining Quotidien",
+            "title": "⛏️ Rappel de Mining Quotidien",
+            "description": "Rappeler aux utilisateurs de miner quotidiennement pour des récompenses",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "Opportunité de Staking",
+            "title": "💰 Opportunité de Staking Disponible",
+            "description": "Notifier les utilisateurs des opportunités de staking",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "Programme de Parrainage",
+            "title": "👥 Bonus du Programme de Parrainage",
+            "description": "Promouvoir le programme de parrainage auprès des utilisateurs",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "Annonce de Nouvelle Fonctionnalité",
+            "title": "🚀 Nouvelle Fonctionnalité Disponible !",
+            "description": "Annoncer les nouvelles fonctionnalités de la plateforme",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "Offre Exclusive Premium",
+            "title": "💎 Offre Exclusive Premium",
+            "description": "Offres exclusives pour les utilisateurs premium",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "Rappel Utilisateur Inactif",
+            "title": "🔔 Vous Nous Manquez !",
+            "description": "Rappeler aux utilisateurs inactifs de revenir",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "Maintenance Programmée",
+            "title": "🔧 Maintenance Programmée",
+            "description": "Notifier les utilisateurs de la maintenance système",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "Sélectionner",
+          "preview": "Aperçu",
+          "close": "Fermer",
+          "search": "Rechercher des modèles...",
+          "filterByCategory": "Filtrer par catégorie",
+          "allCategories": "Toutes les Catégories"
+        },
+        "preview": {
+          "title": "Aperçu du Modèle",
+          "templateName": "Nom du Modèle",
+          "category": "Catégorie",
+          "description": "Description",
+          "content": "Aperçu du Contenu",
+          "useThisTemplate": "Utiliser ce Modèle"
+        },
+        "createNew": {
+          "title": "Créer un Nouveau Modèle",
+          "description": "Créer un modèle de notification personnalisé",
+          "templateName": "Nom du Modèle",
+          "templateNamePlaceholder": "Entrez le nom du modèle",
+          "notificationTitle": "Titre de la Notification",
+          "notificationTitlePlaceholder": "Entrez le titre de la notification",
+          "notificationMessage": "Message de la Notification",
+          "notificationMessagePlaceholder": "Entrez le message de la notification",
+          "category": "Catégorie",
+          "targetAudience": "Audience Cible",
+          "platforms": "Plateformes",
+          "mobile": "Mobile",
+          "web": "Web",
+          "inbox": "Boîte de réception",
+          "cancel": "Annuler",
+          "createTemplate": "Créer le Modèle",
+          "allUsers": "Tous les Utilisateurs",
+          "premiumUsers": "Utilisateurs Premium",
+          "newUsers": "Nouveaux Utilisateurs",
+          "inactiveUsers": "Utilisateurs Inactifs",
+          "marketing": "Marketing",
+          "system": "Système",
+          "announcement": "Annonce",
+          "custom": "Personnalisé"
+        }
       },
       "filters": {
         "searchPlaceholder": "Rechercher des notifications...",
@@ -479,23 +776,6 @@
         "delete": "Supprimer",
         "confirmDelete": "Êtes-vous sûr de vouloir supprimer {{count}} notification(s) ?"
       },
-      "table": {
-        "notification": "Notification",
-        "type": "Type",
-        "status": "Statut",
-        "audience": "Audience",
-        "platforms": "Plateformes",
-        "performance": "Performance",
-        "created": "Créé",
-        "actions": "Actions",
-        "title": "Titre",
-        "message": "Message",
-        "recipients": "destinataires",
-        "opened": "ouvert",
-        "clicked": "cliqué",
-        "openRate": "taux d'ouverture",
-        "clickRate": "taux de clic"
-      },
       "mobile": {
         "notifications": "Notifications",
         "sent": "envoyé",
@@ -517,39 +797,6 @@
         "failedToSend": "Échec de l'envoi des notifications. Le serveur dit : {{error}}",
         "errorSending": "Erreur lors de l'envoi de la notification."
       },
-      "actions": {
-        "sendNotification": "Envoyer une notification",
-        "send": "Envoyer",
-        "refresh": "Actualiser les notifications",
-        "view": "Voir la notification",
-        "edit": "Modifier la notification",
-        "delete": "Supprimer la notification",
-        "dismissError": "Fermer l'erreur",
-        "close": "Fermer"
-      },
-      "status": {
-        "sent": "Envoyé",
-        "scheduled": "Programmé",
-        "draft": "Brouillon",
-        "failed": "Échoué"
-      },
-      "types": {
-        "info": "Info",
-        "success": "Succès",
-        "warning": "Avertissement",
-        "error": "Erreur"
-      },
-      "audience": {
-        "all": "Tous",
-        "premium": "Premium",
-        "new": "Nouveau",
-        "inactive": "Inactif"
-      },
-      "platforms": {
-        "mobile": "Mobile",
-        "web": "Web",
-        "email": "Email"
-      },
       "pagination": {
         "showing": "Affichage de {{current}} sur {{total}} notifications",
         "previous": "Précédent",
@@ -558,12 +805,6 @@
       "empty": {
         "noNotifications": "Aucune notification trouvée",
         "loading": "Chargement des notifications..."
-      },
-      "error": {
-        "failedToLoad": "Échec du chargement des notifications",
-        "failedToSend": "Échec de l'envoi de la notification",
-        "failedToDelete": "Échec de la suppression de la notification",
-        "failedToUpdate": "Échec de la mise à jour de la notification"
       }
     },
     "rewards": {
@@ -1175,6 +1416,70 @@
     "fcmTitle": "🎁 Bonus de bienvenue",
     "fcmBody": "Vous avez reçu un bonus de bienvenue de {{amount}} FSN !"
   },
+  "mainNotifications": {
+    "title": "Notifications",
+    "unread": "Non lu",
+    "markAllAsRead": "Marquer tout comme lu",
+    "noNotifications": "Aucune notification",
+    "viewAll": "Voir toutes les notifications",
+    "empty": "Vous n'avez aucune notification",
+    "loading": "Chargement des notifications...",
+    "unreadNotifications": "notifications non lues",
+    "youHaveNoNotifications": "Vous n'avez pas encore de notifications",
+    "noFilteredNotifications": "Aucune notification ne correspond à ce filtre",
+    "markAllRead": "Marquer tout comme lu",
+    "filter": "Filtre",
+    "all": "Tout",
+    "rewards": "Récompenses",
+    "messages": "Messages",
+    "referrals": "Parrainages",
+    "mining": "Mining",
+    "staking": "Staking",
+    "types": {
+      "claim_reward": "Récompense prête",
+      "inbox_message": "Nouveau message",
+      "referral_bonus": "Bonus de parrainage",
+      "mining_reminder": "Rappel de mining",
+      "staking_reminder": "Rappel de staking"
+    }
+  },
+  "notifications": {
+    "templates": {
+      "welcome": {
+        "title": "Bienvenue sur FlySky Network !",
+        "body": "Merci d'avoir rejoint notre communauté. Commencez à miner aujourd'hui pour gagner vos premiers jetons FSN !"
+      },
+      "dailyMiningReminder": {
+        "title": "⛏️ Rappel de Mining Quotidien",
+        "body": "N'oubliez pas de miner aujourd'hui ! Votre session de mining quotidienne est prête. Commencez à miner maintenant pour gagner des jetons FSN."
+      },
+      "stakingOpportunity": {
+        "title": "💰 Opportunité de Staking Disponible",
+        "body": "Verrouillez vos jetons FSN en staking pour gagner un revenu passif. Récompenses plus élevées pour des périodes de verrouillage plus longues !"
+      },
+      "referralProgram": {
+        "title": "👥 Bonus du Programme de Parrainage",
+        "body": "Invitez des amis et gagnez des jetons FSN bonus ! Partagez votre lien de parrainage et obtenez des récompenses pour chaque parrainage réussi."
+      },
+      "newFeature": {
+        "title": "🚀 Nouvelle Fonctionnalité Disponible !",
+        "body": "Nous venons de lancer une nouvelle fonctionnalité passionnante. Découvrez-la maintenant et trouvez de nouvelles façons de gagner !"
+      },
+      "premiumExclusive": {
+        "title": "💎 Offre Exclusive Premium",
+        "body": "En tant que membre premium, vous avez accès à des fonctionnalités exclusives et des récompenses plus élevées. Améliorez maintenant pour débloquer plus d'avantages !"
+      },
+      "inactiveReminder": {
+        "title": "🔔 Vous Nous Manquez !",
+        "body": "Cela fait un moment depuis votre dernière activité. Revenez et continuez à gagner des jetons FSN avec votre mining quotidien !"
+      },
+      "maintenance": {
+        "title": "🔧 Maintenance Programmée",
+        "body": "Nous effectuerons une maintenance programmée. Certains services peuvent être temporairement indisponibles. Nous serons de retour bientôt !"
+      }
+    }
+  },
+
   "pwa": {
     "title": "Installer l'application FlySky Network",
     "subtitle": {

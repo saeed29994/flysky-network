@@ -20,7 +20,7 @@ import {
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { requestPermissionAndToken } from '../utils/pushNotification';
-import { sendNotification as sendFCMNotification } from '../utils/sendNotification';
+import { sendInternationalizedNotification } from '../utils/internationalizedNotificationService';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { Spinner } from '../components/ui/spinner';
@@ -71,9 +71,16 @@ const SignupPage = () => {
         type: 'welcome_bonus',
       });
 
-      await sendFCMNotification({
+      await sendInternationalizedNotification({
         title: t('welcomeBonus.fcmTitle'),
-        body: t('welcomeBonus.fcmBody', { amount: 500 }),
+        message: t('welcomeBonus.fcmBody', { amount: 500 }),
+        targetAudience: 'custom',
+        platforms: ['mobile', 'web'],
+        customUserIds: [uid], // Send only to this specific new user
+        data: {
+          type: 'welcome_bonus',
+          amount: '500' // Convert to string as required by the API
+        }
       });
     }
   };

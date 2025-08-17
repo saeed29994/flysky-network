@@ -18,7 +18,7 @@ export const translateText = async (text: string, targetLang: string): Promise<s
     if (!response.ok) throw new Error('Translation request failed');
 
     const data = await response.json();
-    return data.translatedText || text;
+    return data.translation || text; // Fixed: changed from translatedText to translation
   } catch (error) {
     console.error('❌ Translation API error:', error);
     return text;

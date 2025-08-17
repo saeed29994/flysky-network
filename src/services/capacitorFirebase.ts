@@ -1,50 +1,24 @@
 import { Capacitor } from '@capacitor/core';
 import { FirebaseMessaging } from '@capacitor-firebase/messaging';
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getFunctions } from 'firebase/functions';
-import { getStorage } from 'firebase/storage';
 import { doc, updateDoc, arrayUnion, serverTimestamp, setDoc } from 'firebase/firestore';
-
-let app: ReturnType<typeof initializeApp>;
-let auth: ReturnType<typeof getAuth>;
-let db: ReturnType<typeof getFirestore>;
-let functions: ReturnType<typeof getFunctions>;
-let storage: ReturnType<typeof getStorage>;
+import { auth, db } from '../firebase';
 
 /**
  * Initialize Firebase with platform-specific implementation
+ * Note: Firebase is already initialized in firebase.ts, so we just set up Capacitor plugins
  */
 export const initFirebase = async () => {
-  const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  };
-
-  // Initialize Firebase
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  functions = getFunctions(app, 'us-central1');
-  storage = getStorage(app);
-  
-  // For native platforms, initialize the Capacitor Firebase plugins
-  if (Capacitor.isNativePlatform()) {
-    try {
-      // No need to explicitly initialize @capacitor-firebase/app
-      // It's automatically initialized when using other Firebase plugins
+  try {
+    // For native platforms, initialize the Capacitor Firebase plugins
+    if (Capacitor.isNativePlatform()) {
       console.log('✅ Firebase ready for Capacitor');
-    } catch (error) {
-      console.error('Failed to initialize Capacitor Firebase', error);
     }
+    
+    return { auth, db };
+  } catch (error) {
+    console.error('Failed to initialize Capacitor Firebase', error);
+    throw error;
   }
-
-  return { app, auth, db, functions, storage };
 };
 
 /**
@@ -171,4 +145,4 @@ export const deletePushToken = async (uid: string) => {
   }
 };
 
-export { app, auth, db, functions, storage }; 
+ 

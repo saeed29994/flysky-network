@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { X, Bell, Info, Gift, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Notification, NotificationType } from '../../utils/notificationSystem';
+import { Notification } from '../../hooks/useNotifications';
 import { useTranslation } from 'react-i18next';
 
 interface NotificationToastProps {
@@ -62,7 +62,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
   };
 
   // Get appropriate icon for notification type
-  const getNotificationIcon = (type: NotificationType) => {
+  const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'claim_reward':
         return <Gift className="w-5 h-5 text-yellow-400" />;
@@ -79,8 +79,13 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
   };
   
   // Get translated type label
-  const getNotificationTypeLabel = (type: NotificationType) => {
-    return t(`notifications.types.${type}`);
+  const getNotificationTypeLabel = (type: string) => {
+    try {
+      return t(`mainNotifications.types.${type}`);
+    } catch (error) {
+      // Fallback to a default label if translation key doesn't exist
+      return t('mainNotifications.types.info') || 'Notification';
+    }
   };
 
   // Handle notification click
@@ -89,8 +94,8 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
       onRead(notification.id);
       
       // Navigate to the specified link if available
-      if (notification.link && onNavigate) {
-        onNavigate(notification.link);
+      if (onNavigate) {
+        onNavigate('/notifications');
       }
     }
   };
@@ -126,10 +131,10 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-white font-semibold text-sm line-clamp-1">
-                  {notification.title}
+                  {t(notification.title)}
                 </h3>
                 <p className="text-gray-200 text-xs mt-1 line-clamp-2">
-                  {notification.body}
+                  {t(notification.message)}
                 </p>
                 <p className="text-xs text-blue-400 mt-1">
                   {getNotificationTypeLabel(notification.type)}

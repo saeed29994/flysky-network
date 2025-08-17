@@ -97,9 +97,7 @@
     "exceedsBalance": "Staking amount exceeds your current balance.",
     "notAuthenticated": "You must be logged in to claim.",
     "alreadyClaimed": "This reward has already been claimed.",
-    "notEndedYet": "This staking period has not ended yet.",
-    "claimFailed": "Failed to claim the reward.",
-    "stakeFailed": "Failed to create staking entry."
+    "notEndedYet": "This staking period has not ended yet."
   },
   "success": {
     "stakeCreated": "Staking entry created successfully!",
@@ -420,6 +418,39 @@
     "fcmTitle": "🎁 Welcome Bonus",
     "fcmBody": "You received a {{amount}} FSN welcome reward!"
   },
+  "mainNotifications": {
+    "title": "Notifications",
+    "unread": "Unread",
+    "markAllAsRead": "Mark all as read",
+    "noNotifications": "No notifications",
+    "viewAll": "View all notifications",
+    "empty": "You have no notifications",
+    "loading": "Loading notifications...",
+    "unreadNotifications": "unread notifications",
+    "youHaveNoNotifications": "You don't have any notifications yet",
+    "noFilteredNotifications": "No notifications match this filter",
+    "markAllRead": "Mark all as read",
+    "filter": "Filter",
+    "all": "All",
+    "rewards": "Rewards",
+    "messages": "Messages",
+    "referrals": "Referrals",
+    "mining": "Mining",
+    "staking": "Staking",
+    "types": {
+      "claim_reward": "Reward Ready",
+      "inbox_message": "New Message",
+      "referral_bonus": "Referral Bonus",
+      "mining_reminder": "Mining Reminder",
+      "staking_reminder": "Staking Reminder",
+      "info": "Notification",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error",
+      "system": "System"
+    }
+  },
+
   "pwa": {
     "title": "Install FlySky Network",
     "subtitle": {
@@ -1091,19 +1122,336 @@
     "youHaveNoNotifications": "You don't have any notifications yet",
     "noFilteredNotifications": "No notifications match this filter",
     "markAllRead": "Mark all as read",
+    "claimFailed": "Failed to claim the reward.",
+    "stakeFailed": "Failed to create staking entry.",
+    "filter": {
     "filter": "Filter",
     "all": "All",
     "rewards": "Rewards",
     "messages": "Messages",
     "referrals": "Referrals",
     "mining": "Mining",
-    "staking": "Staking",
+      "staking": "Staking"
+    },
     "types": {
       "claim_reward": "Reward Ready",
       "inbox_message": "New Message",
       "referral_bonus": "Referral Bonus",
       "mining_reminder": "Mining Reminder",
-      "staking_reminder": "Staking Reminder"
+      "staking_reminder": "Staking Reminder",
+      "info": "Info",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error"
+    },
+    "templates": {
+      "welcome": {
+        "title": "Welcome to FlySky Network!",
+        "body": "Thank you for joining our community. Start mining today to earn your first FSN tokens!"
+      },
+      "dailyMiningReminder": {
+        "title": "⛏️ Daily Mining Reminder",
+        "body": "Don't forget to mine today! Your daily mining session is ready. Start mining now to earn FSN tokens."
+      },
+      "stakingOpportunity": {
+        "title": "💰 Staking Opportunity Available",
+        "body": "Lock your FSN tokens in staking to earn passive income. Higher rewards for longer lock periods!"
+      },
+      "referralProgram": {
+        "title": "👥 Referral Program Bonus",
+        "body": "Invite friends and earn bonus FSN tokens! Share your referral link and get rewards for every successful referral."
+      },
+      "newFeature": {
+        "title": "🚀 New Feature Available!",
+        "body": "We've just launched an exciting new feature. Check it out now and discover new ways to earn!"
+      },
+      "premiumExclusive": {
+        "title": "💎 Premium Exclusive Offer",
+        "body": "As a premium member, you have access to exclusive features and higher rewards. Upgrade now to unlock more benefits!"
+      },
+      "inactiveReminder": {
+        "title": "🔔 We Miss You!",
+        "body": "It's been a while since your last activity. Come back and continue earning FSN tokens with your daily mining!"
+      },
+      "maintenance": {
+        "title": "🔧 Scheduled Maintenance",
+        "body": "We'll be performing scheduled maintenance. Some services may be temporarily unavailable. We'll be back soon!"
+      }
+    },   
+    "admin": {
+      "title": "Notifications",
+      "description": "Manage and send notifications to your users",
+      "header": {
+        "title": "Notifications",
+        "subtitle": "Manage and send notifications to your users"
+      },
+      "actions": {
+      "sendNotification": "Send Notification",
+      "editResend": "Edit & Resend Notification",
+        "refresh": "Refresh",
+        "clearAll": "Clear All",
+        "useTemplate": "Use Template",
+        "close": "Close",
+        "cancel": "Cancel",
+        "send": "Send",
+        "schedule": "Schedule",
+        "sendNow": "Send Now",
+        "resend": "Resend",
+        "delete": "Delete",
+        "view": "View",
+        "edit": "Edit"
+      },
+      "form": {
+      "title": "Title",
+        "titlePlaceholder": "Enter notification title",
+      "message": "Message",
+        "messagePlaceholder": "Enter notification message",
+      "targetAudience": "Target Audience",
+      "platforms": "Platforms",
+      "schedule": "Schedule (Optional)",
+        "schedulePlaceholder": "Leave empty to send immediately"
+      },
+      "targetAudience": {
+        "all": "All Users",
+        "new": "New Users (Last 7 days)",
+        "inactive": "Inactive Users (30+ days)",
+        "plans": "Subscription Plans",
+        "custom": "Custom Users",
+      "selectPlans": "Select Subscription Plans",
+      "customUserSelection": "Custom User Selection",
+      "searchUsers": "Search users by email...",
+        "searchUsersPlaceholder": "Search users by email or name...",
+      "selectedUsers": "Selected Users",
+      "usersFound": "users found",
+        "targetUsers": "Target Users",
+        "selectPlansToSeeCount": "Select plans to see user count",
+        "customUserSearch": "Custom User Search",
+        "customUserSearchPlaceholder": "Search users by email or name...",
+        "customUserSelectionPlaceholder": "Select specific users to target",
+        "customUserCount": "Custom User Count",
+        "customUserCountDescription": "Number of users selected for custom targeting"
+      },
+      "platforms": {
+      "mobile": "Mobile",
+      "web": "Web",
+        "inbox": "Inbox"
+      },
+      "stats": {
+        "totalSent": "Total Sent",
+        "scheduled": "Scheduled",
+        "draft": "Draft",
+        "failed": "Failed",
+        "loading": "Loading notifications...",
+        "noNotifications": "No notifications yet",
+        "noNotificationsSubtitle": "Send your first notification to get started"
+      },
+      "table": {
+        "title": "Title",
+        "status": "Status",
+        "audience": "Audience",
+        "sent": "Sent",
+        "recipients": "Recipients",
+        "actions": "Actions",
+        "viewDetails": "View Details",
+        "editResend": "Edit & Resend",
+        "delete": "Delete"
+      },
+      "status": {
+        "sent": "sent",
+        "scheduled": "scheduled",
+        "draft": "draft",
+        "failed": "failed",
+        "processing": "processing"
+      },
+      "deliveryStatus": {
+        "delivered": "delivered",
+        "partial_success": "partial_success",
+        "failed": "failed",
+        "pending": "pending"
+      },
+      "audience": {
+        "premium": "premium",
+        "new": "new",
+        "inactive": "inactive",
+        "all": "all"
+      },
+      "messages": {
+        "sentSuccessfully": "Notification sent successfully!",
+        "failedToSend": "Failed to send notification",
+        "deletedSuccessfully": "Notification deleted successfully!",
+        "failedToDelete": "Failed to delete notification",
+        "resentSuccessfully": "Notification resent successfully!",
+        "failedToResend": "Failed to resend notification",
+        "clearedSuccessfully": "All notifications cleared successfully!",
+        "failedToClear": "Failed to clear all notifications",
+        "pleaseEnterBoth": "Please enter both title and body.",
+        "unexpectedError": "An unexpected error occurred while sending the notification",
+        "errorDeleting": "An unexpected error occurred while deleting the notification",
+        "errorResending": "An unexpected error occurred while resending the notification"
+      },
+      "modals": {
+        "sendNotification": "Send Notification",
+        "notificationDetails": "Notification Details",
+        "editResendNotification": "Edit & Resend Notification",
+        "deleteNotification": "Delete Notification",
+        "clearAllNotifications": "Clear All Notifications"
+      },
+      "deleteConfirm": {
+        "title": "Delete Notification",
+        "message": "Are you sure you want to delete \"{title}\"?",
+        "subtitle": "This action cannot be undone and will permanently remove the notification and all related data including logs and inbox entries.",
+        "genericMessage": "Are you sure you want to delete this notification? This action cannot be undone."
+      },
+      "clearAllConfirm": {
+        "title": "Clear All Notifications",
+        "message": "Are you absolutely sure you want to clear ALL notifications?",
+        "warning": "⚠️ This action will permanently delete:",
+        "items": [
+          "All {count} notification records",
+          "All notification logs and analytics",
+          "All user inbox notifications",
+          "All related data and metadata"
+        ],
+        "cannotUndone": "This action cannot be undone! Please make sure you have a backup if needed."
+      },
+      "details": {
+        "status": "Status",
+        "targetAudience": "Target Audience",
+        "sentAt": "Sent At",
+        "createdAt": "Created At",
+        "recipients": "Recipients",
+        "platforms": "Platforms",
+        "opened": "Opened",
+        "clicked": "Clicked",
+        "errorDetails": "Error Details:",
+        "deliveryInformation": "Delivery Information:",
+        "totalRecipients": "Total Recipients",
+        "successful": "Successful",
+        "failed": "Failed",
+        "errorMessage": "Error Message"
+      },
+      "loading": {
+        "sending": "Sending...",
+        "deleting": "Deleting...",
+        "clearing": "Clearing...",
+        "refreshing": "Refreshing...",
+        "loadingPlans": "Loading available plans...",
+        "loadingUsers": "Loading users..."
+      },
+      "errors": {
+        "noNotificationsToClear": "No notifications to clear",
+        "noTokensFound": "No tokens found. No users registered for notifications.",
+        "serverError": "Failed to send notifications. Server says: {error}"
+      },
+      "templates": {
+        "title": "Notification Templates",
+        "description": "Use pre-defined templates for common notification types",
+        "modalTitle": "Select Template",
+        "modalDescription": "Choose a template to quickly populate your notification",
+        "noTemplates": "No templates available",
+        "noTemplatesDescription": "Templates will be available here for common notification types",
+        "useTemplate": "Use Template",
+        "previewTemplate": "Preview Template",
+        "templateCategories": {
+          "welcome": "Welcome & Onboarding",
+          "reminders": "Reminders & Alerts",
+          "promotional": "Promotional & Marketing",
+          "system": "System & Maintenance",
+          "rewards": "Rewards & Bonuses"
+        },
+        "templates": {
+          "welcome": {
+            "name": "Welcome Message",
+            "title": "Welcome to FlySky Network!",
+            "description": "Welcome new users to the platform",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "Daily Mining Reminder",
+            "title": "⛏️ Daily Mining Reminder",
+            "description": "Remind users to mine daily for rewards",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "Staking Opportunity",
+            "title": "💰 Staking Opportunity Available",
+            "description": "Notify users about staking opportunities",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "Referral Program",
+            "title": "👥 Referral Program Bonus",
+            "description": "Promote the referral program to users",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "New Feature Announcement",
+            "title": "🚀 New Feature Available!",
+            "description": "Announce new platform features",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "Premium Exclusive Offer",
+            "title": "💎 Premium Exclusive Offer",
+            "description": "Exclusive offers for premium users",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "Inactive User Reminder",
+            "title": "🔔 We Miss You!",
+            "description": "Remind inactive users to return",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "Scheduled Maintenance",
+            "title": "🔧 Scheduled Maintenance",
+            "description": "Notify users about system maintenance",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "Select",
+          "preview": "Preview",
+          "close": "Close",
+          "search": "Search templates...",
+          "filterByCategory": "Filter by category",
+          "allCategories": "All Categories"
+        },
+        "preview": {
+          "title": "Template Preview",
+          "templateName": "Template Name",
+          "category": "Category",
+          "description": "Description",
+          "content": "Content Preview",
+          "useThisTemplate": "Use This Template"
+        },
+        "createNew": {
+          "title": "Create New Template",
+          "description": "Create a custom notification template",
+          "templateName": "Template Name",
+          "templateNamePlaceholder": "Enter template name",
+          "notificationTitle": "Notification Title",
+          "notificationTitlePlaceholder": "Enter notification title",
+          "notificationMessage": "Notification Message",
+          "notificationMessagePlaceholder": "Enter notification message",
+          "category": "Category",
+          "targetAudience": "Target Audience",
+          "platforms": "Platforms",
+          "mobile": "Mobile",
+          "web": "Web",
+          "inbox": "Inbox",
+          "cancel": "Cancel",
+          "createTemplate": "Create Template",
+          "allUsers": "All Users",
+          "premiumUsers": "Premium Users",
+          "newUsers": "New Users",
+          "inactiveUsers": "Inactive Users",
+          "marketing": "Marketing",
+          "system": "System",
+          "announcement": "Announcement",
+          "custom": "Custom"
+        }
+      }
     }
   },
   "pushNotifications": "Push Notifications",
@@ -1128,43 +1476,319 @@
     "route": {
       "checking": "Checking admin permissions..."
     },
-    "notifications": {
-      "title": "Notification Management",
+"notifications": {
+      "title": "Notifications",
       "description": "Send and manage notifications to users",
+      "header": {
+        "title": "Notifications",
+        "subtitle": "Send and manage notifications to users"
+      },
       "actions": {
         "sendNotification": "Send Notification",
+        "editResend": "Edit and Resend Notification",
+        "refresh": "Refresh",
+        "clearAll": "Clear All",
+        "useTemplate": "Use Template",
+        "close": "Close",
+        "cancel": "Cancel",
         "send": "Send",
-        "refresh": "Refresh Notifications",
+        "schedule": "Schedule",
+        "sendNow": "Send Now",
+        "resend": "Resend",
+        "delete": "Delete",
         "view": "View",
         "edit": "Edit",
-        "delete": "Delete",
-        "close": "Close"
+        "dismissError": "Dismiss Error"
+      },
+      "form": {
+        "title": "Title",
+        "titlePlaceholder": "Enter notification title",
+        "message": "Message",
+        "messagePlaceholder": "Enter notification message",
+        "targetAudience": "Target Audience",
+        "platforms": "Platforms",
+        "schedule": "Schedule (Optional)",
+        "schedulePlaceholder": "Leave empty for immediate send"
+      },
+      "targetAudience": {
+        "all": "All Users",
+        "new": "New Users (Last 7 days)",
+        "inactive": "Inactive Users (30+ days)",
+        "plans": "Subscription Plans",
+        "custom": "Custom Users",
+        "selectPlans": "Select Subscription Plans",
+        "customUserSelection": "Custom User Selection",
+        "searchUsers": "Search users by email...",
+        "searchUsersPlaceholder": "Search users by email or name...",
+        "selectedUsers": "Selected Users",
+        "usersFound": "users found",
+        "targetUsers": "Target Users",
+        "selectPlansToSeeCount": "Select plans to see user count",
+        "customUserSearch": "Custom User Search",
+        "customUserSearchPlaceholder": "Search users by email or name...",
+        "customUserSelectionPlaceholder": "Select specific users to target",
+        "customUserCount": "Custom User Count",
+        "customUserCountDescription": "Number of users selected for custom targeting"
+      },
+      "platforms": {
+        "mobile": "Mobile",
+        "web": "Web",
+        "inbox": "Inbox",
+        "email": "Email"
       },
       "stats": {
         "totalSent": "Total Sent",
+        "scheduled": "Scheduled",
+        "draft": "Draft",
+        "failed": "Failed",
+        "loading": "Loading notifications...",
+        "noNotifications": "No notifications yet",
+        "noNotificationsSubtitle": "Send your first notification to get started",
         "avgOpenRate": "Avg. Open Rate",
         "avgClickRate": "Avg. Click Rate",
-        "scheduled": "Scheduled",
         "fromLastWeek": "from last week",
-        "nextScheduled": "Next: Tomorrow 9:00 AM"
+        "nextScheduled": "Next: December 25, 2:00 AM"
       },
-      "filters": {
-        "searchPlaceholder": "Search notifications...",
-        "allTypes": "All Types",
-        "info": "Info",
-        "success": "Success",
-        "warning": "Warning",
-        "error": "Error",
-        "allStatus": "All Status",
+      "table": {
+        "title": "Title",
+        "status": "Status",
+        "audience": "Audience",
+        "sent": "Sent",
+        "recipients": "Recipients",
+        "actions": "Actions",
+        "viewDetails": "View Details",
+        "editResend": "Edit and Resend",
+        "delete": "Delete",
+        "notification": "Notification",
+        "type": "Type",
+        "platforms": "Platforms",
+        "performance": "Performance",
+        "created": "Created",
+        "message": "Message",
+        "opened": "Opened",
+        "clicked": "Clicked",
+        "openRate": "Open Rate",
+        "clickRate": "Click Rate"
+      },
+      "status": {
         "sent": "Sent",
         "scheduled": "Scheduled",
         "draft": "Draft",
         "failed": "Failed",
+        "processing": "Processing"
+      },
+      "deliveryStatus": {
+        "delivered": "Delivered",
+        "partial_success": "Partial Success",
+        "failed": "Failed",
+        "pending": "Pending"
+      },
+      "audience": {
+        "premium": "Premium",
+        "new": "New",
+        "inactive": "Inactive",
+        "all": "All"
+      },
+      "messages": {
+        "sentSuccessfully": "Notification sent successfully!",
+        "failedToSend": "Failed to send notification",
+        "deletedSuccessfully": "Notification deleted successfully!",
+        "failedToDelete": "Failed to delete notification",
+        "resentSuccessfully": "Notification resent successfully!",
+        "failedToResend": "Failed to resend notification",
+        "clearedSuccessfully": "All notifications cleared successfully!",
+        "failedToClear": "Failed to clear all notifications",
+        "pleaseEnterBoth": "Please enter both title and content.",
+        "unexpectedError": "An unexpected error occurred while sending the notification",
+        "errorDeleting": "An unexpected error occurred while deleting the notification",
+        "errorResending": "An unexpected error occurred while resending the notification"
+      },
+      "modals": {
+        "sendNotification": "Send Notification",
+        "notificationDetails": "Notification Details",
+        "editResendNotification": "Edit and Resend Notification",
+        "deleteNotification": "Delete Notification",
+        "clearAllNotifications": "Clear All Notifications"
+      },
+      "deleteConfirm": {
+        "title": "Delete Notification",
+        "message": "Are you sure you want to delete \"{title}\"?",
+        "subtitle": "This action cannot be undone and will permanently delete the notification and all associated data including logs and inbox entries.",
+        "genericMessage": "Are you sure you want to delete this notification? This action cannot be undone."
+      },
+      "clearAllConfirm": {
+        "title": "Clear All Notifications",
+        "message": "Are you absolutely sure you want to clear all notifications?",
+        "warning": "⚠️ This action will permanently delete the following:",
+        "items": [
+          "All {count} notification records",
+          "All notification logs and analytics",
+          "All user inbox notifications",
+          "All associated data and metadata"
+        ],
+        "cannotUndone": "This action cannot be undone! Please ensure you have backups if needed."
+      },
+      "details": {
+        "status": "Status",
+        "targetAudience": "Target Audience",
+        "sentAt": "Sent At",
+        "createdAt": "Created At",
+        "recipients": "Recipients",
+        "platforms": "Platforms",
+        "opened": "Opened",
+        "clicked": "Clicked",
+        "errorDetails": "Error Details:",
+        "deliveryInformation": "Delivery Information:",
+        "totalRecipients": "Total Recipients",
+        "successful": "Successful",
+        "failed": "Failed",
+        "errorMessage": "Error Message"
+      },
+      "loading": {
+        "sending": "Sending...",
+        "deleting": "Deleting...",
+        "clearing": "Clearing...",
+        "refreshing": "Refreshing...",
+        "loadingPlans": "Loading available plans...",
+        "loadingUsers": "Loading users..."
+      },
+      "errors": {
+        "noNotificationsToClear": "No notifications to clear",
+        "noTokensFound": "No tokens found. No users registered for notifications.",
+        "serverError": "Failed to send notifications. Server says: {error}"
+      },
+      "templates": {
+        "title": "Notification Templates",
+        "description": "Use pre-defined templates for common notification types",
+        "modalTitle": "Choose Template",
+        "modalDescription": "Select a template to quickly populate your notification",
+        "noTemplates": "No templates available",
+        "noTemplatesDescription": "Templates will be available here for common notification types",
+        "useTemplate": "Use Template",
+        "previewTemplate": "Preview Template",
+        "templateCategories": {
+          "welcome": "Welcome & Onboarding",
+          "reminders": "Reminders & Alerts",
+          "promotional": "Marketing & Promotional",
+          "system": "System & Maintenance",
+          "rewards": "Rewards & Incentives"
+        },
+        "templates": {
+          "welcome": {
+            "name": "Welcome Message",
+            "title": "Welcome to Fly Sky Network!",
+            "description": "Welcome new users to the platform",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "Daily Mining Reminder",
+            "title": "⛏️ Daily Mining Reminder",
+            "description": "Remind users to perform daily mining for rewards",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "Staking Opportunity",
+            "title": "💰 Staking Opportunity Available",
+            "description": "Notify users about staking opportunities",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "Referral Program",
+            "title": "👥 Referral Program Reward",
+            "description": "Promote referral program to users",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "New Feature Announcement",
+            "title": "🚀 New Feature Available!",
+            "description": "Announce new features in the platform",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "Premium Exclusive Offer",
+            "title": "💎 Exclusive Premium Offer",
+            "description": "Exclusive offers for premium users",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "Inactive User Reminder",
+            "title": "🔔 We Miss You!",
+            "description": "Remind inactive users to return",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "Scheduled Maintenance",
+            "title": "🔧 Scheduled Maintenance",
+            "description": "Notify users about system maintenance",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "Select",
+          "preview": "Preview",
+          "close": "Close",
+          "search": "Search templates...",
+          "filterByCategory": "Filter by category",
+          "allCategories": "All Categories"
+        },
+        "preview": {
+          "title": "Template Preview",
+          "templateName": "Template Name",
+          "category": "Category",
+          "description": "Description",
+          "content": "Content Preview",
+          "useThisTemplate": "Use This Template"
+        },
+        "createNew": {
+          "title": "Create New Template",
+          "description": "Create a custom notification template",
+          "templateName": "Template Name",
+          "templateNamePlaceholder": "Enter template name",
+          "notificationTitle": "Notification Title",
+          "notificationTitlePlaceholder": "Enter notification title",
+          "notificationMessage": "Notification Message",
+          "notificationMessagePlaceholder": "Enter notification message",
+          "category": "Category",
+          "targetAudience": "Target Audience",
+          "platforms": "Platforms",
+          "mobile": "Mobile",
+          "web": "Web",
+          "inbox": "Inbox",
+          "cancel": "Cancel",
+          "createTemplate": "Create Template",
+          "allUsers": "All Users",
+          "premiumUsers": "Premium Users",
+          "newUsers": "New Users",
+          "inactiveUsers": "Inactive Users",
+          "marketing": "Marketing",
+          "system": "System",
+          "announcement": "Announcement",
+          "custom": "Custom"
+        }
+      },
+      "types": {
+        "info": "Info",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error"
+      },
+      "filters": {
+        "searchPlaceholder": "Search notifications...",
+        "allTypes": "All Types",
+        "allStatus": "All Status",
         "allAudiences": "All Audiences",
+        "info": "Info",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error",
+        "sent": "Sent",
+        "scheduled": "Scheduled",
+        "draft": "Draft",
+        "failed": "Failed",
         "allUsers": "All Users",
-        "premium": "Premium Users",
+        "premium": "Premium",
         "newUsers": "New Users",
-        "inactive": "Inactive Users",
+        "inactive": "Inactive",
         "sortBy": {
           "newestFirst": "Newest First",
           "oldestFirst": "Oldest First",
@@ -1175,24 +1799,11 @@
         }
       },
       "bulkActions": {
-        "selectedNotifications": "{{count}} notifications selected",
+        "selectedNotifications": "{{count}} notification(s) selected",
         "resend": "Resend",
         "duplicate": "Duplicate",
         "delete": "Delete",
-        "confirmDelete": "Are you sure you want to delete {{count}} notifications?"
-      },
-      "table": {
-        "notification": "Notification",
-        "type": "Type",
-        "status": "Status",
-        "audience": "Audience",
-        "platforms": "Platforms",
-        "performance": "Performance",
-        "created": "Created",
-        "actions": "Actions",
-        "recipients": "recipients",
-        "openRate": "open rate",
-        "clickRate": "click rate"
+        "confirmDelete": "Are you sure you want to delete {{count}} notification(s)?"
       },
       "mobile": {
         "notifications": "Notifications",
@@ -1200,59 +1811,35 @@
         "open": "open",
         "click": "click"
       },
-      "types": {
-        "info": "Info",
-        "success": "Success",
-        "warning": "Warning",
-        "error": "Error"
-      },
-      "status": {
-        "sent": "Sent",
-        "scheduled": "Scheduled",
-        "draft": "Draft",
-        "failed": "Failed"
-      },
-      "audience": {
-        "all": "All Users",
-        "premium": "Premium",
-        "new": "New Users",
-        "inactive": "Inactive"
-      },
-      "platforms": {
-        "mobile": "Mobile App",
-        "web": "Web Browser",
-        "email": "Email",
-        "inbox": "App Inbox"
-      },
-      "empty": {
-        "noNotifications": "No notifications found"
-      },
-      "pagination": {
-        "showing": "Showing {{current}} of {{total}} notifications",
-        "previous": "Previous",
-        "next": "Next"
-      },
       "sendModal": {
         "title": "Send Notification",
         "notificationTitle": "Notification Title",
         "titlePlaceholder": "Enter notification title...",
         "notificationMessage": "Notification Message",
         "messagePlaceholder": "Enter notification message...",
-        "pleaseEnterBoth": "Please enter both title and message",
         "cancel": "Cancel",
         "send": "Send",
-        "sending": "Sending..."
+        "sending": "Sending...",
+        "pleaseEnterBoth": "Please enter both title and content.",
+        "noTokensFound": "No tokens found. No users registered for notifications.",
+        "notificationSent": "Notification sent successfully!",
+        "failedToSend": "Failed to send notifications. Server says: {{error}}",
+        "errorSending": "Error sending notification."
       },
-      "advancedModal": {
-        "title": "Advanced Notification",
-        "targetAudience": "Target Audience",
-        "platforms": "Delivery Channels",
-        "scheduleForLater": "Schedule for later",
-        "date": "Date",
-        "time": "Time",
-        "schedule": "Schedule",
-        "scheduling": "Scheduling...",
-        "futureTimeRequired": "Scheduled time must be in the future"
+      "pagination": {
+        "showing": "Showing {{current}} of {{total}} notifications",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "empty": {
+        "noNotifications": "No notifications found",
+        "loading": "Loading notifications..."
+      },
+      "error": {
+        "failedToLoad": "Failed to load notifications",
+        "failedToSend": "Failed to send notification",
+        "failedToDelete": "Failed to delete notification",
+        "failedToUpdate": "Failed to update notification"
       }
     },
     "rewards": {
@@ -1446,7 +2033,6 @@
       "detailedStatistics": "Detailed Statistics",
       "totalUsers": "Total Users",
       "totalAdmins": "Total Admins",
-      "pendingKYC": "Pending KYC",
       "verifiedKYC": "Verified KYC",
       "premiumPlans": "Premium Plans",
       "totalBalance": "Total Balance",

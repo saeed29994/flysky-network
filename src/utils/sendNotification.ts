@@ -1,10 +1,7 @@
 // 📁 src/utils/sendNotification.ts
 
-import { auth, db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-
-const functions = getFunctions();
+import { auth} from '../firebase';
+import { sendInternationalizedNotification } from './internationalizedNotificationService';
 
 interface NotificationPayload {
   title: string;
@@ -28,31 +25,22 @@ export const sendNotification = async ({
       return;
     }
 
-    const tokenRef = doc(db, 'userTokens', user.uid);
-    const tokenSnap = await getDoc(tokenRef);
-    if (!tokenSnap.exists()) {
-      console.warn('⚠️ No push token found for user.');
-      return;
-    }
-
-    const { token } = tokenSnap.data() as { token: string };
-    if (!token) {
-      console.warn('❌ Invalid token.');
-      return;
-    }
-
-    const sendPush = httpsCallable(functions, 'sendPushNotification');
-    const result = await sendPush({
+    // Use the new internationalized notification system
+    const result = await sendInternationalizedNotification({
       title,
-      body,
-      link,
-      imageUrl,
-      data,
-      tokens: [token], // ✅ التوكن كـ array
+      message: body,
+      targetAudience: 'custom',
+      platforms: ['mobile', 'web'],
+      customUserIds: [user.uid], // Send only to the current user
+      data: {
+        ...(link && { link }),
+        ...(imageUrl && { imageUrl }),
+        ...data
+      }
     });
 
-    console.log('✅ Notification sent:', result.data);
-    return result.data;
+    console.log('✅ Notification sent via internationalized system:', result);
+    return result;
   } catch (error) {
     console.error('❌ Failed to send notification:', error);
     return { success: false, error };

@@ -14,10 +14,10 @@ import './utils/notificationPolyfill';
 // Services
 import { 
   initFirebase, 
-  auth, 
   registerForPushNotifications, 
   requestPushPermissionAndToken 
 } from './services/capacitorFirebase';
+import { auth } from './firebase';
 
 // Pages
 import LandingPage from './pages/LandingPage';

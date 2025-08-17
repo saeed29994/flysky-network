@@ -437,6 +437,33 @@
     "fcmTitle": "🎁 欢迎奖励",
     "fcmBody": "您收到了 {{amount}} FSN 欢迎奖励！"
   },
+  "mainNotifications": {
+    "title": "通知",
+    "unread": "未读",
+    "markAllAsRead": "全部标记为已读",
+    "noNotifications": "没有通知",
+    "viewAll": "查看所有通知",
+    "empty": "您没有通知",
+    "loading": "正在加载通知...",
+    "unreadNotifications": "未读通知",
+    "youHaveNoNotifications": "您还没有任何通知",
+    "noFilteredNotifications": "没有通知匹配此筛选器",
+    "markAllRead": "全部标记为已读",
+    "filter": "筛选",
+    "all": "全部",
+    "rewards": "奖励",
+    "messages": "消息",
+    "referrals": "推荐",
+    "mining": "挖矿",
+    "staking": "质押",
+    "types": {
+      "claim_reward": "奖励就绪",
+      "inbox_message": "新消息",
+      "referral_bonus": "推荐奖励",
+      "mining_reminder": "挖矿提醒",
+      "staking_reminder": "质押提醒"
+    }
+  },
   "pwa": {
     "title": "安装 FlySky Network 应用",
     "subtitle": {
@@ -1067,6 +1094,40 @@
       "referral_bonus": "推荐奖励",
       "mining_reminder": "挖矿提醒",
       "staking_reminder": "质押提醒"
+    },
+    "templates": {
+      "welcome": {
+        "title": "欢迎加入 FlySky Network！",
+        "body": "感谢您加入我们的社区。立即开始挖矿，赚取您的第一批 FSN 代币！"
+      },
+      "dailyMiningReminder": {
+        "title": "⛏️ 每日挖矿提醒",
+        "body": "别忘了今天挖矿！您的每日挖矿会话已准备就绪。立即开始挖矿，赚取 FSN 代币。"
+      },
+      "stakingOpportunity": {
+        "title": "💰 质押机会可用",
+        "body": "将您的 FSN 代币锁定在质押中以赚取被动收入。锁定时间越长，奖励越高！"
+      },
+      "referralProgram": {
+        "title": "👥 推荐计划奖励",
+        "body": "邀请朋友并赚取奖励 FSN 代币！分享您的推荐链接，为每个成功的推荐获得奖励。"
+      },
+      "newFeature": {
+        "title": "🚀 新功能可用！",
+        "body": "我们刚刚推出了一个令人兴奋的新功能。立即查看并发现新的赚钱方式！"
+      },
+      "premiumExclusive": {
+        "title": "💎 高级会员专享优惠",
+        "body": "作为高级会员，您可以访问专享功能和更高奖励。立即升级以解锁更多福利！"
+      },
+      "inactiveReminder": {
+        "title": "🔔 我们想念您！",
+        "body": "距离您上次活动已经有一段时间了。回来继续通过每日挖矿赚取 FSN 代币！"
+      },
+      "maintenance": {
+        "title": "🔧 计划维护",
+        "body": "我们将进行计划维护。某些服务可能暂时不可用。我们很快就会回来！"
+      }
     }
   },
   "pushNotifications": "推送通知",
@@ -1104,15 +1165,315 @@
       "checking": "正在检查管理员权限..."
     },
     "notifications": {
-      "title": "通知管理",
-      "description": "管理和跟踪所有平台通知",
+      "title": "通知",
+      "description": "管理和发送通知给用户",
+      "header": {
+        "title": "通知",
+        "subtitle": "管理和发送通知给用户"
+      },
+      "actions": {
+        "sendNotification": "发送通知",
+        "editResend": "编辑并重新发送通知",
+        "refresh": "刷新",
+        "clearAll": "清除全部",
+        "useTemplate": "使用模板",
+        "close": "关闭",
+        "cancel": "取消",
+        "send": "发送",
+        "schedule": "安排",
+        "sendNow": "立即发送",
+        "resend": "重新发送",
+        "delete": "删除",
+        "view": "查看",
+        "edit": "编辑"
+      },
+      "form": {
+        "title": "标题",
+        "titlePlaceholder": "输入通知标题",
+        "message": "消息",
+        "messagePlaceholder": "输入通知消息",
+        "targetAudience": "目标受众",
+        "platforms": "平台",
+        "schedule": "安排（可选）",
+        "schedulePlaceholder": "留空以立即发送"
+      },
+      "targetAudience": {
+        "all": "所有用户",
+        "new": "新用户（最近7天）",
+        "inactive": "非活跃用户（30+天）",
+        "plans": "订阅计划",
+        "custom": "自定义用户",
+        "selectPlans": "选择订阅计划",
+        "customUserSelection": "自定义用户选择",
+        "searchUsers": "通过邮箱搜索用户...",
+        "searchUsersPlaceholder": "通过邮箱或姓名搜索用户...",
+        "selectedUsers": "已选用户",
+        "usersFound": "个用户",
+        "targetUsers": "目标用户",
+        "selectPlansToSeeCount": "选择计划以查看用户数量",
+        "customUserSearch": "自定义用户搜索",
+        "customUserSearchPlaceholder": "通过邮箱或姓名搜索用户...",
+        "customUserSelectionPlaceholder": "选择特定用户进行目标定位",
+        "customUserCount": "自定义用户数量",
+        "customUserCountDescription": "为自定义目标定位选择的用户数量"
+      },
+      "platforms": {
+        "mobile": "移动端",
+        "web": "网页",
+        "inbox": "收件箱",
+        "email": "邮件"
+      },
       "stats": {
         "totalSent": "总发送数",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败",
+        "loading": "正在加载通知...",
+        "noNotifications": "暂无通知",
+        "noNotificationsSubtitle": "发送您的第一个通知开始使用",
         "avgOpenRate": "平均打开率",
         "avgClickRate": "平均点击率",
-        "scheduled": "已安排",
         "fromLastWeek": "较上周",
         "nextScheduled": "下一个：12月25日 02:00"
+      },
+      "table": {
+        "notification": "通知",
+        "title": "标题",
+        "message": "消息",
+        "type": "类型",
+        "status": "状态",
+        "audience": "受众",
+        "sent": "已发送",
+        "recipients": "接收者",
+        "platforms": "平台",
+        "performance": "性能",
+        "created": "创建时间",
+        "actions": "操作",
+        "opened": "打开",
+        "clicked": "点击",
+        "openRate": "打开率",
+        "clickRate": "点击率",
+        "viewDetails": "查看详情",
+        "editResend": "编辑并重新发送",
+        "delete": "删除"
+      },
+      "status": {
+        "sent": "已发送",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败",
+        "processing": "处理中",
+        "sendNotification": "发送通知",
+        "send": "发送",
+        "refresh": "刷新通知",
+        "view": "查看通知",
+        "edit": "编辑通知",
+        "delete": "删除通知",
+        "dismissError": "关闭错误",
+        "close": "关闭"
+      },
+      "deliveryStatus": {
+        "delivered": "已送达",
+        "partial_success": "部分成功",
+        "failed": "失败",
+        "pending": "待处理"
+      },
+      "audience": {
+        "premium": "高级",
+        "new": "新",
+        "inactive": "非活跃",
+        "all": "全部",
+        "allUsers": "所有用户",
+        "newUsers": "新用户"
+      },
+      "types": {
+        "info": "信息",
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误"
+      },
+      "messages": {
+        "sentSuccessfully": "通知发送成功！",
+        "failedToSend": "通知发送失败",
+        "deletedSuccessfully": "通知删除成功！",
+        "failedToDelete": "通知删除失败",
+        "resentSuccessfully": "通知重新发送成功！",
+        "failedToResend": "通知重新发送失败",
+        "clearedSuccessfully": "所有通知清除成功！",
+        "failedToClear": "所有通知清除失败",
+        "pleaseEnterBoth": "请输入标题和内容。",
+        "unexpectedError": "发送通知时发生意外错误",
+        "errorDeleting": "删除通知时发生意外错误",
+        "errorResending": "重新发送通知时发生意外错误",
+        "notificationSent": "通知发送成功！"
+      },
+      "modals": {
+        "sendNotification": "发送通知",
+        "notificationDetails": "通知详情",
+        "editResendNotification": "编辑并重新发送通知",
+        "deleteNotification": "删除通知",
+        "clearAllNotifications": "清除所有通知"
+      },
+      "deleteConfirm": {
+        "title": "删除通知",
+        "message": "确定要删除\"{title}\"通知吗？",
+        "subtitle": "此操作无法撤销，将永久删除通知和所有相关数据，包括日志和收件箱条目。",
+        "genericMessage": "确定要删除此通知吗？此操作无法撤销。"
+      },
+      "clearAllConfirm": {
+        "title": "清除所有通知",
+        "message": "您确定要清除所有通知吗？",
+        "warning": "⚠️ 此操作将永久删除：",
+        "items": [
+          "所有{count}个通知记录",
+          "所有通知日志和分析",
+          "所有用户收件箱通知",
+          "所有相关数据和元数据"
+        ],
+        "cannotUndone": "此操作无法撤销！请确保在需要时有备份。"
+      },
+      "details": {
+        "status": "状态",
+        "targetAudience": "目标受众",
+        "sentAt": "发送时间",
+        "createdAt": "创建时间",
+        "recipients": "接收者",
+        "platforms": "平台",
+        "opened": "已打开",
+        "clicked": "已点击",
+        "errorDetails": "错误详情：",
+        "deliveryInformation": "发送信息：",
+        "totalRecipients": "总接收者",
+        "successful": "成功",
+        "failed": "失败",
+        "errorMessage": "错误消息"
+      },
+      "loading": {
+        "sending": "发送中...",
+        "deleting": "删除中...",
+        "clearing": "清除中...",
+        "refreshing": "刷新中...",
+        "loadingPlans": "正在加载可用计划...",
+        "loadingUsers": "正在加载用户..."
+      },
+      "errors": {
+        "noNotificationsToClear": "没有通知可清除",
+        "noTokensFound": "未找到令牌。没有用户注册通知。",
+        "serverError": "发送通知失败。服务器说：{error}",
+        "failedToLoad": "加载通知失败",
+        "failedToSend": "发送通知失败",
+        "failedToDelete": "删除通知失败",
+        "failedToUpdate": "更新通知失败",
+        "errorSending": "发送通知时出错。"
+      },
+      "templates": {
+        "title": "通知模板",
+        "description": "使用预定义模板处理常见通知类型",
+        "modalTitle": "选择模板",
+        "modalDescription": "选择一个模板来快速填充您的通知",
+        "noTemplates": "暂无可用模板",
+        "noTemplatesDescription": "常见通知类型的模板将在此处提供",
+        "useTemplate": "使用模板",
+        "previewTemplate": "预览模板",
+        "templateCategories": {
+          "welcome": "欢迎和入门",
+          "reminders": "提醒和警告",
+          "promotional": "促销和营销",
+          "system": "系统和维护",
+          "rewards": "奖励和奖金"
+        },
+        "templates": {
+          "welcome": {
+            "name": "欢迎消息",
+            "title": "欢迎来到FlySky Network！",
+            "description": "欢迎新用户加入平台",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "每日挖矿提醒",
+            "title": "⛏️ 每日挖矿提醒",
+            "description": "提醒用户每日挖矿获得奖励",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "质押机会",
+            "title": "💰 质押机会可用",
+            "description": "通知用户质押机会",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "推荐计划",
+            "title": "👥 推荐计划奖金",
+            "description": "向用户推广推荐计划",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "新功能公告",
+            "title": "🚀 新功能可用！",
+            "description": "公告平台新功能",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "高级专属优惠",
+            "title": "💎 高级专属优惠",
+            "description": "高级用户专属优惠",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "非活跃用户提醒",
+            "title": "🔔 我们想念您！",
+            "description": "提醒非活跃用户返回",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "计划维护",
+            "title": "🔧 计划维护",
+            "description": "通知用户系统维护",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "选择",
+          "preview": "预览",
+          "close": "关闭",
+          "search": "搜索模板...",
+          "filterByCategory": "按类别筛选",
+          "allCategories": "所有类别"
+        },
+        "preview": {
+          "title": "模板预览",
+          "templateName": "模板名称",
+          "category": "类别",
+          "description": "描述",
+          "content": "内容预览",
+          "useThisTemplate": "使用此模板"
+        },
+        "createNew": {
+          "title": "创建新模板",
+          "description": "创建自定义通知模板",
+          "templateName": "模板名称",
+          "templateNamePlaceholder": "输入模板名称",
+          "notificationTitle": "通知标题",
+          "notificationTitlePlaceholder": "输入通知标题",
+          "notificationMessage": "通知消息",
+          "notificationMessagePlaceholder": "输入通知消息",
+          "category": "类别",
+          "targetAudience": "目标受众",
+          "platforms": "平台",
+          "mobile": "移动端",
+          "web": "网页",
+          "inbox": "收件箱",
+          "cancel": "取消",
+          "createTemplate": "创建模板",
+          "allUsers": "所有用户",
+          "premiumUsers": "高级用户",
+          "newUsers": "新用户",
+          "inactiveUsers": "非活跃用户",
+          "marketing": "营销",
+          "system": "系统",
+          "announcement": "公告",
+          "custom": "自定义"
+        }
       },
       "filters": {
         "searchPlaceholder": "搜索通知...",
@@ -1147,23 +1508,6 @@
         "delete": "删除",
         "confirmDelete": "确定要删除{{count}}个通知吗？"
       },
-      "table": {
-        "notification": "通知",
-        "type": "类型",
-        "status": "状态",
-        "audience": "受众",
-        "platforms": "平台",
-        "performance": "性能",
-        "created": "创建时间",
-        "actions": "操作",
-        "title": "标题",
-        "message": "消息",
-        "recipients": "接收者",
-        "opened": "打开",
-        "clicked": "点击",
-        "openRate": "打开率",
-        "clickRate": "点击率"
-      },
       "mobile": {
         "notifications": "通知",
         "sent": "已发送",
@@ -1185,39 +1529,6 @@
         "failedToSend": "发送通知失败。服务器说：{{error}}",
         "errorSending": "发送通知时出错。"
       },
-      "actions": {
-        "sendNotification": "发送通知",
-        "send": "发送",
-        "refresh": "刷新通知",
-        "view": "查看通知",
-        "edit": "编辑通知",
-        "delete": "删除通知",
-        "dismissError": "关闭错误",
-        "close": "关闭"
-      },
-      "status": {
-        "sent": "已发送",
-        "scheduled": "已安排",
-        "draft": "草稿",
-        "failed": "失败"
-      },
-      "types": {
-        "info": "信息",
-        "success": "成功",
-        "warning": "警告",
-        "error": "错误"
-      },
-      "audience": {
-        "all": "全部",
-        "premium": "高级",
-        "new": "新",
-        "inactive": "非活跃"
-      },
-      "platforms": {
-        "mobile": "移动端",
-        "web": "网页",
-        "email": "邮件"
-      },
       "pagination": {
         "showing": "显示{{current}}/{{total}}个通知",
         "previous": "上一页",
@@ -1226,12 +1537,6 @@
       "empty": {
         "noNotifications": "未找到通知",
         "loading": "正在加载通知..."
-      },
-      "error": {
-        "failedToLoad": "加载通知失败",
-        "failedToSend": "发送通知失败",
-        "failedToDelete": "删除通知失败",
-        "failedToUpdate": "更新通知失败"
       }
     },
     "rewards": {

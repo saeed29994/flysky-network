@@ -163,21 +163,24 @@ export const createNotificationWithPush = async (
     // If push is enabled and allowed by preferences, send push notification
     if (shouldSendPush) {
       try {
-        // Import sendNotification dynamically to avoid circular dependencies
-        const { sendNotification } = await import('./sendNotification');
+        // Use the new internationalized notification system instead of the old sendNotification
+        // This prevents duplicate notifications by using the unified system
+        const { sendInternationalizedNotification } = await import('./internationalizedNotificationService');
 
-        await sendNotification({
+        await sendInternationalizedNotification({
           title: notification.title,
-          body: notification.body,
-          link: notification.link,
-          // Include additional data that might be useful
+          message: notification.body,
+          targetAudience: 'custom',
+          platforms: ['mobile', 'web'],
+          customUserIds: [userId], // Send only to this specific user
           data: {
             type: notification.type,
+            link: notification.link,
             ...notification.data
           }
         });
       } catch (error) {
-        console.error('Failed to send push notification:', error);
+        console.error('Failed to send push notification via internationalized system:', error);
         // Still return the notification ID since the in-app notification was created
       }
     }

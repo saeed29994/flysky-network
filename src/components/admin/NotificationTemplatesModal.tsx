@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaBookmark, FaSearch, FaPlus } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 // Define notification template types
 export interface NotificationTemplate {
   id: string;
   name: string;
-  title: string;
-  body: string;
-  category: 'marketing' | 'system' | 'announcement' | 'custom';
+  titleKey: string;
+  bodyKey: string;
+  title?: string; // Optional actual title text
+  body?: string; // Optional actual body text
+  category: 'welcome' | 'reminders' | 'promotional' | 'system' | 'rewards' | 'custom' | 'marketing' | 'announcement';
   targetAudience?: 'all' | 'premium' | 'new' | 'inactive';
   platforms?: string[];
 }
@@ -18,83 +21,100 @@ interface NotificationTemplatesModalProps {
   onClose: () => void;
 }
 
-// Predefined templates
+// Predefined templates with translation keys
 const predefinedTemplates: NotificationTemplate[] = [
   {
     id: 'welcome',
-    name: 'Welcome Message',
-    title: '👋 Welcome to Flysky Network!',
-    body: 'Thank you for joining our community. Start mining today to earn your first FSN tokens!',
-    category: 'system',
+    name: '', // Will be translated via t() function
+    titleKey: 'admin.notifications.templates.templates.welcome.title',
+    bodyKey: 'admin.notifications.templates.templates.welcome.description',
+    title: '', // Will be translated via t() function
+    body: '', // Will be translated via t() function
+    category: 'welcome',
     targetAudience: 'new',
-    platforms: ['mobile', 'web']
+    platforms: ['mobile', 'web', 'inbox']
   },
   {
-    id: 'mining-reminder',
-    name: 'Daily Mining Reminder',
-    title: '⛏️ Daily Mining Reminder',
-    body: 'Don\'t forget to mine today to earn your daily FSN rewards!',
+    id: 'dailyMiningReminder',
+    name: '', // Will be translated via t() function
+    titleKey: 'admin.notifications.templates.templates.dailyMiningReminder.title',
+    bodyKey: 'admin.notifications.templates.templates.dailyMiningReminder.description',
+    title: '', // Will be translated via t() function
+    body: '', // Will be translated via t() function
+    category: 'reminders',
+    targetAudience: 'all',
+    platforms: ['mobile', 'web', 'inbox']
+  },
+  {
+    id: 'stakingOpportunity',
+    name: '', // Will be translated via t() function
+    titleKey: 'admin.notifications.templates.templates.stakingOpportunity.title',
+    bodyKey: 'admin.notifications.templates.templates.stakingOpportunity.description',
+    title: '', // Will be translated via t() function
+    body: '', // Will be translated via t() function
+    category: 'rewards',
+    targetAudience: 'all',
+    platforms: ['mobile', 'web', 'inbox']
+  },
+  {
+    id: 'referralProgram',
+    name: '', // Will be translated via t() function
+    titleKey: 'admin.notifications.templates.templates.referralProgram.title',
+    bodyKey: 'admin.notifications.templates.templates.referralProgram.description',
+    title: '', // Will be translated via t() function
+    body: '', // Will be translated via t() function
+    category: 'promotional',
+    targetAudience: 'all',
+    platforms: ['mobile', 'web', 'inbox']
+  },
+  {
+    id: 'newFeature',
+    name: '', // Will be translated via t() function
+    titleKey: 'admin.notifications.templates.templates.newFeature.title',
+    bodyKey: 'admin.notifications.templates.templates.newFeature.description',
+    title: '', // Will be translated via t() function
+    body: '', // Will be translated via t() function
     category: 'system',
     targetAudience: 'all',
-    platforms: ['mobile', 'web']
+    platforms: ['mobile', 'web', 'inbox']
   },
   {
-    id: 'staking-reminder',
-    name: 'Staking Opportunity',
-    title: '💰 Boost Your Earnings with Staking',
-    body: 'Stake your FSN tokens today and earn up to 12% APY. Premium members get even higher rates!',
-    category: 'marketing',
-    targetAudience: 'all',
-    platforms: ['mobile', 'web']
-  },
-  {
-    id: 'referral-program',
-    name: 'Referral Program',
-    title: '🎁 Invite Friends, Earn Rewards',
-    body: 'Share your referral code and earn 10 FSN for each friend who joins!',
-    category: 'marketing',
-    targetAudience: 'all',
-    platforms: ['mobile', 'web']
-  },
-  {
-    id: 'new-feature',
-    name: 'New Feature Announcement',
-    title: '✨ New Feature: Staking Pools',
-    body: 'We\'ve just launched staking pools! Join with other members to earn higher rewards together.',
-    category: 'announcement',
-    targetAudience: 'all',
-    platforms: ['mobile', 'web']
-  },
-  {
-    id: 'premium-exclusive',
-    name: 'Premium Exclusive',
-    title: '👑 Exclusive for Premium Members',
-    body: 'As a premium member, you now have access to our new advanced mining tools. Check them out now!',
-    category: 'marketing',
+    id: 'premiumExclusive',
+    name: '', // Will be translated via t() function
+    titleKey: 'admin.notifications.templates.templates.premiumExclusive.title',
+    bodyKey: 'admin.notifications.templates.templates.premiumExclusive.description',
+    title: '', // Will be translated via t() function
+    body: '', // Will be translated via t() function
+    category: 'promotional',
     targetAudience: 'premium',
-    platforms: ['mobile', 'web']
+    platforms: ['mobile', 'web', 'inbox']
   },
   {
-    id: 'inactive-reminder',
-    name: 'Inactive User Reminder',
-    title: '👋 We Miss You!',
-    body: 'It\'s been a while since you last visited. Come back and see what\'s new in Flysky Network!',
-    category: 'marketing',
+    id: 'inactiveReminder',
+    name: '', // Will be translated via t() function
+    titleKey: 'admin.notifications.templates.templates.inactiveReminder.title',
+    bodyKey: 'admin.notifications.templates.templates.inactiveReminder.description',
+    title: '', // Will be translated via t() function
+    body: '', // Will be translated via t() function
+    category: 'reminders',
     targetAudience: 'inactive',
-    platforms: ['mobile', 'web']
+    platforms: ['mobile', 'web', 'inbox']
   },
   {
     id: 'maintenance',
-    name: 'Scheduled Maintenance',
-    title: '🔧 Scheduled Maintenance',
-    body: 'We\'ll be performing scheduled maintenance on [DATE] from [TIME] to [TIME]. Some services may be unavailable during this period.',
+    name: '', // Will be translated via t() function
+    titleKey: 'admin.notifications.templates.templates.maintenance.title',
+    bodyKey: 'admin.notifications.templates.templates.maintenance.description',
+    title: '', // Will be translated via t() function
+    body: '', // Will be translated via t() function
     category: 'system',
     targetAudience: 'all',
-    platforms: ['mobile', 'web']
+    platforms: ['mobile', 'web', 'inbox']
   }
 ];
 
 const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationTemplatesModalProps) => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showNewTemplateForm, setShowNewTemplateForm] = useState(false);
@@ -102,6 +122,8 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
     name: '',
     title: '',
     body: '',
+    titleKey: '',
+    bodyKey: '',
     category: 'custom',
     targetAudience: 'all',
     platforms: ['mobile', 'web']
@@ -111,8 +133,8 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
   const filteredTemplates = predefinedTemplates.filter(template => {
     const matchesSearch = 
       template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      template.body.toLowerCase().includes(searchQuery.toLowerCase());
+      (template.title && template.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (template.body && template.body.toLowerCase().includes(searchQuery.toLowerCase()));
     
     const matchesCategory = !selectedCategory || template.category === selectedCategory;
     
@@ -120,7 +142,14 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
   });
 
   const handleSelectTemplate = (template: NotificationTemplate) => {
-    onSelectTemplate(template);
+    // Convert translation keys to actual text for the admin panel
+    const translatedTemplate = {
+      ...template,
+      title: t(template.titleKey), // Use translated title
+      body: t(template.bodyKey), // Use translated body
+      name: t(`admin.notifications.templates.templates.${template.id}.name`) // Use translated name
+    };
+    onSelectTemplate(translatedTemplate);
     onClose();
   };
 
@@ -133,6 +162,8 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
     const template: NotificationTemplate = {
       id: `custom-${Date.now()}`,
       name: newTemplate.name || '',
+      titleKey: newTemplate.titleKey || `custom.${Date.now()}.title`,
+      bodyKey: newTemplate.bodyKey || `custom.${Date.now()}.body`,
       title: newTemplate.title || '',
       body: newTemplate.body || '',
       category: newTemplate.category as 'custom',
@@ -146,10 +177,14 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
 
   const getCategoryColor = (category: string) => {
     switch (category) {
+      case 'welcome': return 'bg-green-500';
+      case 'reminders': return 'bg-blue-500';
+      case 'promotional': return 'bg-yellow-500';
+      case 'system': return 'bg-purple-500';
+      case 'rewards': return 'bg-pink-500';
+      case 'custom': return 'bg-gray-500';
       case 'marketing': return 'bg-green-500';
-      case 'system': return 'bg-blue-500';
       case 'announcement': return 'bg-yellow-500';
-      case 'custom': return 'bg-purple-500';
       default: return 'bg-gray-500';
     }
   };
@@ -172,12 +207,12 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
             <FaBookmark className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
-            Notification Templates
+            {t('admin.notifications.templates.modalTitle')}
           </h3>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors"
-            aria-label="Close"
+            aria-label={t('admin.notifications.templates.actions.close')}
           >
             ×
           </button>
@@ -189,7 +224,7 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Search templates..."
+              placeholder={t('admin.notifications.templates.actions.search')}
               className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -201,31 +236,37 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
               onClick={() => setSelectedCategory(null)}
               className={`px-3 py-1 rounded-full text-xs font-medium ${!selectedCategory ? 'bg-purple-500' : 'bg-white/10'}`}
             >
-              All
+              {t('admin.notifications.templates.actions.allCategories')}
             </button>
             <button
-              onClick={() => setSelectedCategory('marketing')}
-              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'marketing' ? 'bg-green-500' : 'bg-white/10'}`}
+              onClick={() => setSelectedCategory('welcome')}
+              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'welcome' ? 'bg-green-500' : 'bg-white/10'}`}
             >
-              Marketing
+              {t('admin.notifications.templates.templateCategories.welcome')}
+            </button>
+            <button
+              onClick={() => setSelectedCategory('reminders')}
+              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'reminders' ? 'bg-blue-500' : 'bg-white/10'}`}
+            >
+              {t('admin.notifications.templates.templateCategories.reminders')}
+            </button>
+            <button
+              onClick={() => setSelectedCategory('promotional')}
+              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'promotional' ? 'bg-yellow-500' : 'bg-white/10'}`}
+            >
+              {t('admin.notifications.templates.templateCategories.promotional')}
             </button>
             <button
               onClick={() => setSelectedCategory('system')}
-              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'system' ? 'bg-blue-500' : 'bg-white/10'}`}
+              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'system' ? 'bg-purple-500' : 'bg-white/10'}`}
             >
-              System
+              {t('admin.notifications.templates.templateCategories.system')}
             </button>
             <button
-              onClick={() => setSelectedCategory('announcement')}
-              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'announcement' ? 'bg-yellow-500' : 'bg-white/10'}`}
+              onClick={() => setSelectedCategory('rewards')}
+              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'rewards' ? 'bg-pink-500' : 'bg-white/10'}`}
             >
-              Announcement
-            </button>
-            <button
-              onClick={() => setSelectedCategory('custom')}
-              className={`px-3 py-1 rounded-full text-xs font-medium ${selectedCategory === 'custom' ? 'bg-purple-500' : 'bg-white/10'}`}
-            >
-              Custom
+              {t('admin.notifications.templates.templateCategories.rewards')}
             </button>
           </div>
         </div>
@@ -240,13 +281,13 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
                 onClick={() => handleSelectTemplate(template)}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-white font-medium">{template.name}</h4>
+                  <h4 className="text-white font-medium">{t(`admin.notifications.templates.templates.${template.id}.name`)}</h4>
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getCategoryColor(template.category)}`}>
-                    {template.category}
+                    {t(`admin.notifications.templates.templateCategories.${template.category}`)}
                   </span>
                 </div>
-                <p className="text-white text-sm font-medium mb-1">{template.title}</p>
-                <p className="text-gray-300 text-sm">{template.body}</p>
+                <p className="text-white text-sm font-medium mb-1">{t(template.titleKey)}</p>
+                <p className="text-gray-300 text-sm">{t(template.bodyKey)}</p>
                 <div className="mt-2 flex items-center gap-2">
                   <span className="text-xs text-gray-400">
                     Target: <span className="text-white capitalize">{template.targetAudience}</span>
@@ -260,13 +301,13 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
             ))
           ) : (
             <div className="text-center py-8">
-              <p className="text-gray-400">No templates found</p>
+              <p className="text-gray-400">{t('admin.notifications.templates.noTemplates')}</p>
               <button
                 onClick={() => setShowNewTemplateForm(true)}
                 className="mt-4 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl transition-colors text-sm flex items-center justify-center gap-2 mx-auto"
               >
                 <FaPlus className="w-3 h-3" />
-                Create New Template
+                {t('admin.notifications.templates.createNew.title')}
               </button>
             </div>
           )}
@@ -280,7 +321,7 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
               className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl transition-colors text-sm flex items-center justify-center gap-2"
             >
               <FaPlus className="w-3 h-3" />
-              Create New Template
+              {t('admin.notifications.templates.createNew.title')}
             </button>
           </div>
         )}
@@ -292,16 +333,16 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
             animate={{ opacity: 1, y: 0 }}
             className="mt-6 bg-white/5 rounded-xl p-4 border border-white/10"
           >
-            <h4 className="text-white font-medium mb-4">Create New Template</h4>
+            <h4 className="text-white font-medium mb-4">{t('admin.notifications.templates.createNew.title')}</h4>
             <div className="space-y-4">
               <div>
                 <label className="block text-gray-300 text-sm font-medium mb-2">
-                  Template Name
+                  {t('admin.notifications.templates.createNew.templateName')}
                 </label>
                 <input
                   type="text"
                   className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Enter template name"
+                  placeholder={t('admin.notifications.templates.createNew.templateNamePlaceholder')}
                   value={newTemplate.name || ''}
                   onChange={(e) => setNewTemplate({...newTemplate, name: e.target.value})}
                 />
@@ -309,12 +350,12 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
               
               <div>
                 <label className="block text-gray-300 text-sm font-medium mb-2">
-                  Notification Title
+                  {t('admin.notifications.templates.createNew.notificationTitle')}
                 </label>
                 <input
                   type="text"
                   className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Enter notification title"
+                  placeholder={t('admin.notifications.templates.createNew.notificationTitlePlaceholder')}
                   value={newTemplate.title || ''}
                   onChange={(e) => setNewTemplate({...newTemplate, title: e.target.value})}
                 />
@@ -322,12 +363,12 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
               
               <div>
                 <label className="block text-gray-300 text-sm font-medium mb-2">
-                  Notification Message
+                  {t('admin.notifications.templates.createNew.notificationMessage')}
                 </label>
                 <textarea
                   rows={4}
                   className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
-                  placeholder="Enter notification message"
+                  placeholder={t('admin.notifications.templates.createNew.notificationMessagePlaceholder')}
                   value={newTemplate.body || ''}
                   onChange={(e) => setNewTemplate({...newTemplate, body: e.target.value})}
                 />
@@ -336,40 +377,40 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-gray-300 text-sm font-medium mb-2">
-                    Category
+                    {t('admin.notifications.templates.createNew.category')}
                   </label>
                   <select
                     className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                     value={newTemplate.category || 'custom'}
                     onChange={(e) => setNewTemplate({...newTemplate, category: e.target.value as any})}
                   >
-                    <option value="marketing">Marketing</option>
-                    <option value="system">System</option>
-                    <option value="announcement">Announcement</option>
-                    <option value="custom">Custom</option>
+                    <option value="marketing">{t('admin.notifications.templates.createNew.marketing')}</option>
+                    <option value="system">{t('admin.notifications.templates.createNew.system')}</option>
+                    <option value="announcement">{t('admin.notifications.templates.createNew.announcement')}</option>
+                    <option value="custom">{t('admin.notifications.templates.createNew.custom')}</option>
                   </select>
                 </div>
                 
                 <div>
                   <label className="block text-gray-300 text-sm font-medium mb-2">
-                    Target Audience
+                    {t('admin.notifications.templates.createNew.targetAudience')}
                   </label>
                   <select
                     className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                     value={newTemplate.targetAudience || 'all'}
                     onChange={(e) => setNewTemplate({...newTemplate, targetAudience: e.target.value as any})}
                   >
-                    <option value="all">All Users</option>
-                    <option value="premium">Premium Users</option>
-                    <option value="new">New Users</option>
-                    <option value="inactive">Inactive Users</option>
+                    <option value="all">{t('admin.notifications.templates.createNew.allUsers')}</option>
+                    <option value="premium">{t('admin.notifications.templates.createNew.premiumUsers')}</option>
+                    <option value="new">{t('admin.notifications.templates.createNew.newUsers')}</option>
+                    <option value="inactive">{t('admin.notifications.templates.createNew.inactiveUsers')}</option>
                   </select>
                 </div>
               </div>
               
               <div>
                 <label className="block text-gray-300 text-sm font-medium mb-2">
-                  Platforms
+                  {t('admin.notifications.templates.createNew.platforms')}
                 </label>
                 <div className="flex gap-4">
                   <label className="flex items-center gap-2 cursor-pointer">
@@ -388,7 +429,7 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
                       }}
                       className="rounded text-purple-500 focus:ring-purple-500 bg-white/10 border-white/20"
                     />
-                    <span className="text-white">Mobile</span>
+                    <span className="text-white">{t('admin.notifications.templates.createNew.mobile')}</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -406,7 +447,7 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
                       }}
                       className="rounded text-purple-500 focus:ring-purple-500 bg-white/10 border-white/20"
                     />
-                    <span className="text-white">Web</span>
+                    <span className="text-white">{t('admin.notifications.templates.createNew.web')}</span>
                   </label>
                 </div>
               </div>
@@ -416,13 +457,13 @@ const NotificationTemplatesModal = ({ onSelectTemplate, onClose }: NotificationT
                   onClick={() => setShowNewTemplateForm(false)}
                   className="flex-1 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-colors text-sm"
                 >
-                  Cancel
+                  {t('admin.notifications.templates.createNew.cancel')}
                 </button>
                 <button
                   onClick={handleCreateTemplate}
                   className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl transition-colors text-sm"
                 >
-                  Create Template
+                  {t('admin.notifications.templates.createNew.createTemplate')}
                 </button>
               </div>
             </div>

@@ -1,18 +1,20 @@
 // 📁 src/hooks/useNotifications.ts
 
 import { useState, useEffect, useCallback } from 'react';
-import { db, functions } from '../firebase';
-import { collection, getDocs, query, orderBy, limit, addDoc, Timestamp, where } from 'firebase/firestore';
-import { httpsCallable } from 'firebase/functions';
-import { apiService } from '../utils/apiService';
+import { db } from '../firebase';
+import { collection, getDocs, query, orderBy, limit, addDoc, Timestamp, where, doc, deleteDoc, writeBatch } from 'firebase/firestore';
+
+import { auth } from '../firebase';
 
 export interface Notification {
   id: string;
   title: string;
   message: string;
+  titleKey?: string; // Translation key for the title
+  bodyKey?: string;  // Translation key for the body
   type: 'info' | 'success' | 'warning' | 'error';
   status: 'sent' | 'scheduled' | 'draft' | 'failed' | 'processing';
-  targetAudience: 'all' | 'premium' | 'new' | 'inactive';
+  targetAudience: 'all' | 'premium' | 'new' | 'inactive' | 'custom' | 'plans';
   platforms: string[];
   sentAt?: Date;
   scheduledFor?: Date;
@@ -25,6 +27,21 @@ export interface Notification {
   successCount?: number;
   errorCount?: number;
   error?: string;
+  // Extended properties for dynamic targeting
+  selectedPlans?: string[];
+  selectedUsers?: Array<{id: string; email: string; plan?: string}>;
+  userSearch?: string;
+  filteredUsers?: Array<{id: string; email: string; plan?: string}>;
+  userCount?: number;
+  // Delivery status tracking
+  deliveryStatus?: 'pending' | 'delivered' | 'partial_success' | 'failed';
+  deliveryDetails?: {
+    totalRecipients: number;
+    successfulDeliveries: number;
+    failedDeliveries: number;
+    errorMessage?: string;
+    sentAt?: Date;
+  };
 }
 
 export interface NotificationLog {
@@ -48,9 +65,13 @@ export interface NotificationLog {
 export interface NotificationPayload {
   title: string;
   body: string;
-  targetAudience?: 'all' | 'premium' | 'new' | 'inactive';
+  titleKey?: string; // Translation key for the title
+  bodyKey?: string;  // Translation key for the body
+  targetAudience?: 'all' | 'premium' | 'new' | 'inactive' | 'custom' | 'plans';
   platforms?: string[];
   scheduledFor?: Date | null;
+  customUserIds?: string[];
+  selectedPlans?: string[];
 }
 
 interface UseNotificationsReturn {
@@ -59,11 +80,11 @@ interface UseNotificationsReturn {
   loading: boolean;
   logsLoading: boolean;
   error: string | null;
-  sendNotification: (title: string, body: string) => Promise<boolean>;
   sendAdvancedNotification: (payload: NotificationPayload) => Promise<boolean>;
   refreshNotifications: () => Promise<void>;
   refreshLogs: () => Promise<void>;
   deleteNotification: (id: string) => Promise<boolean>;
+  clearAllNotifications: () => Promise<boolean>;
   updateNotification: (id: string, updates: Partial<Notification>) => Promise<boolean>;
   getNotificationLogs: (notificationId: string) => Promise<NotificationLog[]>;
 }
@@ -207,80 +228,6 @@ export const useNotifications = (): UseNotificationsReturn => {
     }
   }, []);
 
-  const sendNotification = useCallback(async (title: string, body: string): Promise<boolean> => {
-    try {
-      setError(null);
-
-      // Fetch all tokens from Firestore
-      const tokensSnapshot = await getDocs(collection(db, 'userTokens'));
-      const tokens: string[] = [];
-      
-      tokensSnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        if (data.token) {
-          tokens.push(data.token);
-        }
-      });
-
-      if (tokens.length === 0) {
-        setError('No users registered for notifications');
-        return false;
-      }
-
-      // Send notification via API
-      const response = await apiService.sendNotification({
-        title,
-        body,
-        tokens,
-      });
-
-      if (!response.success) {
-        setError(response.error || 'Failed to send notification');
-        return false;
-      }
-
-      // Add to local notifications list
-      const newNotification: Notification = {
-        id: `notif${Date.now()}`,
-        title,
-        message: body,
-        type: 'info',
-        status: 'sent',
-        targetAudience: 'all',
-        platforms: ['mobile', 'web'],
-        sentAt: new Date(),
-        recipients: tokens.length,
-        opened: 0,
-        clicked: 0,
-        createdAt: new Date(),
-        createdBy: 'Admin',
-      };
-
-      // Store in Firestore
-      await addDoc(collection(db, 'notifications'), {
-        title: newNotification.title,
-        message: newNotification.message,
-        type: newNotification.type,
-        status: newNotification.status,
-        targetAudience: newNotification.targetAudience,
-        platforms: newNotification.platforms,
-        sentAt: Timestamp.fromDate(newNotification.sentAt || new Date()),
-        recipients: newNotification.recipients,
-        opened: newNotification.opened,
-        clicked: newNotification.clicked,
-        createdAt: Timestamp.fromDate(newNotification.createdAt),
-        createdBy: newNotification.createdBy,
-      });
-
-      setNotifications(prev => [newNotification, ...prev]);
-      return true;
-    } catch (err) {
-      console.error('Error sending notification:', err);
-      setError('Failed to send notification');
-      return false;
-    }
-  }, []);
-
   const sendAdvancedNotification = useCallback(async (payload: NotificationPayload): Promise<boolean> => {
     try {
       setError(null);
@@ -318,61 +265,127 @@ export const useNotifications = (): UseNotificationsReturn => {
         }
       } else {
         try {
-          // Use the Cloud Function for sending notifications
-          const sendManualNotification = httpsCallable(functions, 'sendManualNotification');
-          
-          // For development environment, use direct Firestore approach if Cloud Function fails
-          try {
-            // Send immediately via Cloud Function
-            await sendManualNotification({
-              title,
-              message: body,
-              targetAudience,
-              platforms,
-              type: 'info'
-            });
-          } catch (callError) {
-            // If in development and we get a CORS error, fall back to direct Firestore method
-            if (import.meta.env.DEV) {
-              console.warn('Cloud Function call failed, using fallback method for development:', callError);
-              
-              // Create notification document with sent status
-              const notificationData: Record<string, any> = {
-                title,
-                message: body,
-                type: 'info',
-                status: 'sent',
-                targetAudience,
-                platforms,
-                sentAt: Timestamp.fromDate(new Date()),
-                recipients: 0,
-                opened: 0,
-                clicked: 0,
-                createdAt: Timestamp.fromDate(new Date()),
-                createdBy: 'Admin',
-              };
-              
-              // Store in Firestore
-              await addDoc(collection(db, 'notifications'), notificationData);
-            } else {
-              // In production, propagate the error
-              throw callError;
-            }
+          // Get the current user's ID token for authentication
+          const currentUser = auth.currentUser;
+          if (!currentUser) {
+            throw new Error('No authenticated user found');
           }
           
-          // Refresh notifications to show the new one
+          const idToken = await currentUser.getIdToken();
+          
+          // Use HTTP request to the NEW INTERNATIONALIZED Cloud Function
+          const response = await fetch('https://us-central1-flysky-site.cloudfunctions.net/sendInternationalizedAdminNotification', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${idToken}`
+            },
+            body: JSON.stringify({
+              title,
+              message: body,
+              titleKey: payload.titleKey,
+              bodyKey: payload.bodyKey,
+              targetAudience,
+              platforms,
+              type: 'info',
+              selectedPlans: payload.selectedPlans,
+              customUserIds: payload.customUserIds
+            })
+          });
+          
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+          }
+          
+          const resultData = await response.json();
+          
+          // Check if the notification was actually sent successfully
+          if (resultData && resultData.successCount > 0) {
+            // Notification was delivered to at least some devices
+            if (resultData.errorCount > 0) {
+              // Partial success - some delivered, some failed
+              console.log(`⚠️ Partial success: ${resultData.successCount} delivered, ${resultData.errorCount} failed`);
+              setError(`Notification partially delivered: ${resultData.successCount} users received it, ${resultData.errorCount} failed`);
+            } else {
+              // Complete success
+              console.log(`✅ Internationalized notification sent successfully to ${resultData.successCount} devices`);
+              
+              // Log internationalization details
+              if (resultData.internationalized && resultData.languageDistribution) {
+                console.log(`🌍 Languages served: ${resultData.totalLanguages}`);
+                console.log('📊 Language distribution:', resultData.languageDistribution);
+              }
+            }
+            
+            // Cloud Function already created the notification record, just refresh to show it
+            await fetchNotifications();
+            await fetchNotificationLogs();
+            
+            return true;
+          } else {
+            // Complete failure - no notifications delivered
+            console.warn('❌ All notification attempts failed:', resultData);
+            
+            // Create notification document with failed status
+            const notificationData: Record<string, any> = {
+              title,
+              message: body,
+              type: 'info',
+              status: 'failed',
+              targetAudience,
+              platforms,
+              error: 'All notification attempts failed',
+              createdAt: Timestamp.fromDate(new Date()),
+              createdBy: 'Admin',
+              recipients: 0,
+              opened: 0,
+              clicked: 0
+            };
+            
+            // Store failed notification in Firestore
+            await addDoc(collection(db, 'notifications'), notificationData);
+            
+            // Refresh notifications to show the failed one
+            await fetchNotifications();
+            await fetchNotificationLogs();
+            
+            setError('All notification attempts failed. Check if users have valid FCM tokens.');
+            return false;
+          }
+          
+        } catch (err) {
+          console.error('❌ Error sending internationalized notification:', err);
+          
+          // Create notification document with failed status
+          const notificationData: Record<string, any> = {
+            title,
+            message: body,
+            type: 'info',
+            status: 'failed',
+            targetAudience,
+            platforms,
+            error: (err as Error).message || 'Unknown error',
+            createdAt: Timestamp.fromDate(new Date()),
+            createdBy: 'Admin',
+            recipients: 0,
+            opened: 0,
+            clicked: 0
+          };
+          
+          // Store failed notification in Firestore
+          await addDoc(collection(db, 'notifications'), notificationData);
+          
+          // Refresh notifications to show the failed one
           await fetchNotifications();
           await fetchNotificationLogs();
           
-          return true;
-        } catch (err) {
-          console.error('Error sending notification:', err);
           setError(`Failed to send notification: ${(err as Error).message}`);
           return false;
         }
       }
     } catch (err) {
-      console.error('Error sending advanced notification:', err);
+      console.error('❌ Error in sendAdvancedNotification:', err);
       setError(`Failed to send notification: ${(err as Error).message}`);
       return false;
     }
@@ -380,14 +393,66 @@ export const useNotifications = (): UseNotificationsReturn => {
 
   const deleteNotification = useCallback(async (id: string): Promise<boolean> => {
     try {
+      setError(null);
+      
+      // First, remove from local state immediately for better UX
       setNotifications(prev => prev.filter(n => n.id !== id));
+      
+      // Delete the notification document from Firestore
+      const notificationRef = doc(db, 'notifications', id);
+      await deleteDoc(notificationRef);
+      
+      // Also delete related logs for this notification
+      const logsRef = collection(db, 'notificationLogs');
+      const logsQuery = query(logsRef, where('notificationId', '==', id));
+      const logsSnapshot = await getDocs(logsQuery);
+      
+      if (!logsSnapshot.empty) {
+        const batch = writeBatch(db);
+        logsSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+        await batch.commit();
+      }
+      
+      // Clean up any user inbox notifications that reference this notification
+      // This handles cases where notifications were sent with 'inbox' platform
+      const usersRef = collection(db, 'users');
+      const usersSnapshot = await getDocs(usersRef);
+      
+      if (!usersSnapshot.empty) {
+        const inboxBatch = writeBatch(db);
+        let hasInboxNotifications = false;
+        
+        for (const userDoc of usersSnapshot.docs) {
+          const inboxRef = collection(db, `users/${userDoc.id}/inbox`);
+          const inboxQuery = query(inboxRef, where('notificationId', '==', id));
+          const inboxSnapshot = await getDocs(inboxQuery);
+          
+          if (!inboxSnapshot.empty) {
+            hasInboxNotifications = true;
+            inboxSnapshot.docs.forEach(doc => {
+              inboxBatch.delete(doc.ref);
+            });
+          }
+        }
+        
+        // Commit the batch if there are any inbox notifications to delete
+        if (hasInboxNotifications) {
+          await inboxBatch.commit();
+        }
+      }
+      
+      console.log(`✅ Successfully deleted notification ${id} and cleaned up related data`);
       return true;
+      
     } catch (err) {
-      console.error('Error deleting notification:', err);
-      setError('Failed to delete notification');
+      console.error('❌ Error deleting notification:', err);
+      
+      // Restore the notification to local state if deletion failed
+      await fetchNotifications();
+      setError(`Failed to delete notification: ${(err as Error).message}`);
       return false;
     }
-  }, []);
+  }, [fetchNotifications]);
 
   const updateNotification = useCallback(async (id: string, updates: Partial<Notification>): Promise<boolean> => {
     try {
@@ -410,6 +475,73 @@ export const useNotifications = (): UseNotificationsReturn => {
     await fetchNotificationLogs();
   }, [fetchNotificationLogs]);
 
+  const clearAllNotifications = useCallback(async (): Promise<boolean> => {
+    try {
+      setError(null);
+      
+      // Clear local state immediately for better UX
+      setNotifications([]);
+      
+      // Get all notification documents
+      const notificationsRef = collection(db, 'notifications');
+      const notificationsSnapshot = await getDocs(notificationsRef);
+      
+      if (notificationsSnapshot.empty) {
+        console.log('✅ No notifications to clear');
+        return true;
+      }
+      
+      // Delete all notifications in batches
+      const batch = writeBatch(db);
+      notificationsSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+      await batch.commit();
+      
+      // Clear all notification logs
+      const logsRef = collection(db, 'notificationLogs');
+      const logsSnapshot = await getDocs(logsRef);
+      
+      if (!logsSnapshot.empty) {
+        const logsBatch = writeBatch(db);
+        logsSnapshot.docs.forEach(doc => logsBatch.delete(doc.ref));
+        await logsBatch.commit();
+      }
+      
+      // Clear all user inbox notifications
+      const usersRef = collection(db, 'users');
+      const usersSnapshot = await getDocs(usersRef);
+      
+      if (!usersSnapshot.empty) {
+        const inboxBatch = writeBatch(db);
+        let hasInboxNotifications = false;
+        
+        for (const userDoc of usersSnapshot.docs) {
+          const inboxRef = collection(db, `users/${userDoc.id}/inbox`);
+          const inboxQuery = query(inboxRef, where('notificationId', '!=', ''));
+          const inboxSnapshot = await getDocs(inboxQuery);
+          
+          if (!inboxSnapshot.empty) {
+            hasInboxNotifications = true;
+            inboxSnapshot.docs.forEach(doc => inboxBatch.delete(doc.ref));
+          }
+        }
+        
+        if (hasInboxNotifications) {
+          await inboxBatch.commit();
+        }
+      }
+      
+      console.log('✅ All notifications cleared successfully');
+      return true;
+    } catch (err) {
+      console.error('❌ Error clearing all notifications:', err);
+      setError(`Failed to clear all notifications: ${(err as Error).message}`);
+      
+      // Refresh notifications to restore them if clearing failed
+      await fetchNotifications();
+      return false;
+    }
+  }, [fetchNotifications]);
+
   useEffect(() => {
     fetchNotifications();
     fetchNotificationLogs();
@@ -421,11 +553,11 @@ export const useNotifications = (): UseNotificationsReturn => {
     loading,
     logsLoading,
     error,
-    sendNotification,
     sendAdvancedNotification,
     refreshNotifications,
     refreshLogs,
     deleteNotification,
+    clearAllNotifications,
     updateNotification,
     getNotificationLogs,
   };

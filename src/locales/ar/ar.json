@@ -1098,10 +1098,10 @@
     "markAllAsRead": "تحديد الكل كمقروء",
     "noNotifications": "لا توجد إشعارات",
     "viewAll": "عرض جميع الإشعارات",
-    "empty": "لا توجد لديك إشعارات",
-    "loading": "جارٍ تحميل الإشعارات...",
+    "empty": "لا توجد إشعارات لديك",
+    "loading": "جاري تحميل الإشعارات...",
     "unreadNotifications": "إشعارات غير مقروءة",
-    "youHaveNoNotifications": "لا توجد لديك إشعارات بعد",
+    "youHaveNoNotifications": "ليس لديك أي إشعارات بعد",
     "noFilteredNotifications": "لا توجد إشعارات تطابق هذا الفلتر",
     "markAllRead": "تحديد الكل كمقروء",
     "filter": "فلتر",
@@ -1117,6 +1117,40 @@
       "referral_bonus": "مكافأة الإحالة",
       "mining_reminder": "تذكير التعدين",
       "staking_reminder": "تذكير التخزين"
+    },
+    "templates": {
+      "welcome": {
+        "title": "مرحباً بك في شبكة فلاي سكاي!",
+        "body": "شكراً لك على الانضمام إلى مجتمعنا. ابدأ التعدين اليوم لربح أول رموز FSN!"
+      },
+      "dailyMiningReminder": {
+        "title": "⛏️ تذكير التعدين اليومي",
+        "body": "لا تنس التعدين اليوم! جلسة التعدين اليومية جاهزة. ابدأ التعدين الآن لربح رموز FSN."
+      },
+      "stakingOpportunity": {
+        "title": "💰 فرصة التخزين متاحة",
+        "body": "احجز رموز FSN في التخزين لربح دخل سلبي. مكافآت أعلى لفترات الحجز الأطول!"
+      },
+      "referralProgram": {
+        "title": "👥 مكافأة برنامج الإحالة",
+        "body": "ادع أصدقاءك واربح رموز FSN إضافية! شارك رابط الإحالة الخاص بك واحصل على مكافآت لكل إحالة ناجحة."
+      },
+      "newFeature": {
+        "title": "🚀 ميزة جديدة متاحة!",
+        "body": "لقد أطلقنا للتو ميزة مثيرة جديدة. تحقق منها الآن واكتشف طرقاً جديدة للربح!"
+      },
+      "premiumExclusive": {
+        "title": "💎 عرض حصري للمميزين",
+        "body": "كعضو مميز، لديك إمكانية الوصول إلى ميزات حصرية ومكافآت أعلى. ارتقِ الآن لفتح المزيد من الفوائد!"
+      },
+      "inactiveReminder": {
+        "title": "🔔 نفتقدك!",
+        "body": "مر وقت طويل منذ آخر نشاط لك. عد واستمر في ربح رموز FSN مع التعدين اليومي!"
+      },
+      "maintenance": {
+        "title": "🔧 صيانة مجدولة",
+        "body": "سنقوم بإجراء صيانة مجدولة. قد تكون بعض الخدمات غير متاحة مؤقتاً. سنعود قريباً!"
+      }
     }
   },
   "pushNotifications": "الإشعارات الفورية",
@@ -1154,15 +1188,300 @@
       "checking": "جاري التحقق من صلاحيات المشرف..."
     },
     "notifications": {
-      "title": "إدارة الإشعارات",
-      "description": "إدارة وتتبع جميع إشعارات المنصة",
+      "title": "الإشعارات",
+      "description": "إدارة وإرسال الإشعارات للمستخدمين",
+      "header": {
+        "title": "الإشعارات",
+        "subtitle": "إدارة وإرسال الإشعارات للمستخدمين"
+      },
+      "actions": {
+        "sendNotification": "إرسال إشعار",
+        "editResend": "تعديل وإعادة إرسال الإشعار",
+        "refresh": "تحديث",
+        "clearAll": "مسح الكل",
+        "useTemplate": "استخدام قالب",
+        "close": "إغلاق",
+        "cancel": "إلغاء",
+        "send": "إرسال",
+        "schedule": "جدولة",
+        "sendNow": "إرسال الآن",
+        "resend": "إعادة إرسال",
+        "delete": "حذف",
+        "view": "عرض",
+        "edit": "تعديل",
+        "dismissError": "إغلاق الخطأ"
+      },
+      "form": {
+        "title": "العنوان",
+        "titlePlaceholder": "أدخل عنوان الإشعار",
+        "message": "الرسالة",
+        "messagePlaceholder": "أدخل رسالة الإشعار",
+        "targetAudience": "الجمهور المستهدف",
+        "platforms": "المنصات",
+        "schedule": "الجدولة (اختياري)",
+        "schedulePlaceholder": "اتركه فارغاً للإرسال الفوري"
+      },
+      "targetAudience": {
+          "all": "جميع المستخدمين",
+          "new": "المستخدمون الجدد (آخر 7 أيام)",
+          "inactive": "المستخدمون غير النشطون (30+ يوم)",
+          "plans": "خطط الاشتراك",
+          "custom": "مستخدمون مخصصون",
+          "selectPlans": "اختر خطط الاشتراك",
+          "customUserSelection": "اختيار المستخدمين المخصصين",
+          "searchUsers": "البحث عن المستخدمين بالبريد الإلكتروني...",
+          "searchUsersPlaceholder": "البحث عن المستخدمين بالبريد الإلكتروني أو الاسم...",
+          "selectedUsers": "المستخدمون المحددون",
+          "usersFound": "مستخدم تم العثور عليهم",
+          "targetUsers": "المستخدمون المستهدفون",
+          "selectPlansToSeeCount": "اختر الخطط لرؤية عدد المستخدمين",
+          "customUserSearch": "البحث عن المستخدمين المخصصين",
+          "customUserSearchPlaceholder": "البحث عن المستخدمين بالبريد الإلكتروني أو الاسم...",
+          "customUserSelectionPlaceholder": "اختر مستخدمين محددين للاستهداف",
+          "customUserCount": "عدد المستخدمين المخصصين",
+          "customUserCountDescription": "عدد المستخدمين المحددين للاستهداف المخصص"
+      },
+      "platforms": {
+        "mobile": "الجوال",
+        "web": "الويب",
+        "inbox": "صندوق الوارد",
+        "email": "البريد الإلكتروني"
+      },
       "stats": {
         "totalSent": "إجمالي المرسل",
+        "scheduled": "المجدول",
+        "draft": "المسودة",
+        "failed": "الفاشل",
+        "loading": "جاري تحميل الإشعارات...",
+        "noNotifications": "لا توجد إشعارات بعد",
+        "noNotificationsSubtitle": "أرسل أول إشعار لك للبدء",
         "avgOpenRate": "متوسط معدل الفتح",
         "avgClickRate": "متوسط معدل النقر",
-        "scheduled": "المجدولة",
         "fromLastWeek": "من الأسبوع الماضي",
         "nextScheduled": "التالي: 25 ديسمبر، 2:00 صباحاً"
+      },
+      "table": {
+        "title": "العنوان",
+        "status": "الحالة",
+        "audience": "الجمهور",
+        "sent": "مرسل",
+        "recipients": "المستقبلون",
+        "actions": "الإجراءات",
+        "viewDetails": "عرض التفاصيل",
+        "editResend": "تعديل وإعادة إرسال",
+        "delete": "حذف",
+        "notification": "الإشعار",
+        "type": "النوع",
+        "platforms": "المنصات",
+        "performance": "الأداء",
+        "created": "تاريخ الإنشاء",
+        "message": "الرسالة",
+        "opened": "مفتوح",
+        "clicked": "نقر",
+        "openRate": "معدل الفتح",
+        "clickRate": "معدل النقر"
+      },
+      "status": {
+        "sent": "مرسل",
+        "scheduled": "مجدول",
+        "draft": "مسودة",
+        "failed": "فشل",
+        "processing": "قيد المعالجة"
+      },
+      "deliveryStatus": {
+        "delivered": "تم التسليم",
+        "partial_success": "نجح جزئياً",
+        "failed": "fشل",
+        "pending": "قيد الانتظار"
+      },
+      "audience": {
+        "premium": "مميز",
+        "new": "جديد",
+        "inactive": "غير نشط",
+        "all": "الكل"
+      },
+      "messages": {
+        "sentSuccessfully": "تم إرسال الإشعار بنجاح!",
+        "failedToSend": "فشل في إرسال الإشعار",
+        "deletedSuccessfully": "تم حذف الإشعار بنجاح!",
+        "failedToDelete": "فشل في حذف الإشعار",
+        "resentSuccessfully": "تم إعادة إرسال الإشعار بنجاح!",
+        "failedToResend": "فشل في إعادة إرسال الإشعار",
+        "clearedSuccessfully": "تم مسح جميع الإشعارات بنجاح!",
+        "failedToClear": "فشل في مسح جميع الإشعارات",
+        "pleaseEnterBoth": "يرجى إدخال العنوان والمحتوى.",
+        "unexpectedError": "حدث خطأ غير متوقع أثناء إرسال الإشعار",
+        "errorDeleting": "حدث خطأ غير متوقع أثناء حذف الإشعار",
+        "errorResending": "حدث خطأ غير متوقع أثناء إعادة إرسال الإشعار"
+      },
+      "modals": {
+        "sendNotification": "إرسال إشعار",
+        "notificationDetails": "تفاصيل الإشعار",
+        "editResendNotification": "تعديل وإعادة إرسال الإشعار",
+        "deleteNotification": "حذف الإشعار",
+        "clearAllNotifications": "مسح جميع الإشعارات"
+      },
+      "deleteConfirm": {
+        "title": "حذف الإشعار",
+        "message": "هل أنت متأكد من حذف \"{title}\"؟",
+        "subtitle": "لا يمكن التراجع عن هذا الإجراء وسيقوم بحذف الإشعار وجميع البيانات المرتبطة به بما في ذلك السجلات ومدخلات صندوق الوارد بشكل دائم.",
+        "genericMessage": "هل أنت متأكد من حذف هذا الإشعار؟ لا يمكن التراجع عن هذا الإجراء."
+      },
+      "clearAllConfirm": {
+        "title": "مسح جميع الإشعارات",
+        "message": "هل أنت متأكد تماماً من مسح جميع الإشعارات؟",
+        "warning": "⚠️ سيقوم هذا الإجراء بحذف ما يلي بشكل دائم:",
+        "items": [
+          "جميع {count} سجل إشعار",
+          "جميع سجلات الإشعارات والتحليلات",
+          "جميع إشعارات صندوق الوارد للمستخدمين",
+          "جميع البيانات والبيانات الوصفية المرتبطة"
+        ],
+        "cannotUndone": "لا يمكن التراجع عن هذا الإجراء! يرجى التأكد من وجود نسخة احتياطية إذا لزم الأمر."
+      },
+      "details": {
+        "status": "الحالة",
+        "targetAudience": "الجمهور المستهدف",
+        "sentAt": "تاريخ الإرسال",
+        "createdAt": "تاريخ الإنشاء",
+        "recipients": "المستقبلون",
+        "platforms": "المنصات",
+        "opened": "مفتوح",
+        "clicked": "نقر",
+        "errorDetails": "تفاصيل الخطأ:",
+        "deliveryInformation": "معلومات التسليم:",
+        "totalRecipients": "إجمالي المستقبلين",
+        "successful": "نجح",
+        "failed": "فشل",
+        "errorMessage": "رسالة الخطأ"
+      },
+      "loading": {
+        "sending": "جاري الإرسال...",
+        "deleting": "جاري الحذف...",
+        "clearing": "جاري المسح...",
+        "refreshing": "جاري التحديث...",
+        "loadingPlans": "جاري تحميل الخطط المتاحة...",
+        "loadingUsers": "جاري تحميل المستخدمين..."
+      },
+      "errors": {
+        "noNotificationsToClear": "لا توجد إشعارات للمسح",
+        "noTokensFound": "لم يتم العثور على رموز. لا يوجد مستخدمين مسجلين للإشعارات.",
+        "serverError": "فشل في إرسال الإشعارات. يقول الخادم: {error}"
+      },
+      "templates": {
+        "title": "قوالب الإشعارات",
+        "description": "استخدم القوالب المعرفة مسبقاً لأنواع الإشعارات الشائعة",
+        "modalTitle": "اختر القالب",
+        "modalDescription": "اختر قالباً لملء إشعارك بسرعة",
+        "noTemplates": "لا توجد قوالب متاحة",
+        "noTemplatesDescription": "ستكون القوالب متاحة هنا لأنواع الإشعارات الشائعة",
+        "useTemplate": "استخدم القالب",
+        "previewTemplate": "معاينة القالب",
+        "templateCategories": {
+          "welcome": "الترحيب والتوجيه",
+          "reminders": "التذكيرات والتنبيهات",
+          "promotional": "التسويق والترويج",
+          "system": "النظام والصيانة",
+          "rewards": "المكافآت والمكافآت"
+        },
+        "templates": {
+          "welcome": {
+            "name": "رسالة الترحيب",
+            "title": "مرحباً بك في فلاي سكاي نتورك!",
+            "description": "ترحيب بالمستخدمين الجدد في المنصة",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "تذكير التعدين اليومي",
+            "title": "⛏️ تذكير التعدين اليومي",
+            "description": "تذكير المستخدمين بالتعدين اليومي للحصول على المكافآت",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "فرصة الستاكنج",
+            "title": "💰 فرصة الستاكنج متاحة",
+            "description": "إشعار المستخدمين بفرص الستاكنج",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "برنامج الإحالة",
+            "title": "👥 مكافأة برنامج الإحالة",
+            "description": "ترويج برنامج الإحالة للمستخدمين",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "إعلان الميزة الجديدة",
+            "title": "🚀 ميزة جديدة متاحة!",
+            "description": "إعلان الميزات الجديدة في المنصة",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "عرض مميز حصري",
+            "title": "💎 عرض مميز حصري",
+            "description": "عروض حصرية للمستخدمين المميزين",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "تذكير المستخدم غير النشط",
+            "title": "🔔 نشتاق لك!",
+            "description": "تذكير المستخدمين غير النشطين بالعودة",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "الصيانة المجدولة",
+            "title": "🔧 صيانة مجدولة",
+            "description": "إشعار المستخدمين بصيانة النظام",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "اختر",
+          "preview": "معاينة",
+          "close": "إغلاق",
+          "search": "البحث في القوالب...",
+          "filterByCategory": "تصفية حسب الفئة",
+          "allCategories": "جميع الفئات"
+        },
+        "preview": {
+          "title": "معاينة القالب",
+          "templateName": "اسم القالب",
+          "category": "الفئة",
+          "description": "الوصف",
+          "content": "معاينة المحتوى",
+          "useThisTemplate": "استخدم هذا القالب"
+        },
+        "createNew": {
+          "title": "إنشاء قالب جديد",
+          "description": "إنشاء قالب إشعار مخصص",
+          "templateName": "اسم القالب",
+          "templateNamePlaceholder": "أدخل اسم القالب",
+          "notificationTitle": "عنوان الإشعار",
+          "notificationTitlePlaceholder": "أدخل عنوان الإشعار",
+          "notificationMessage": "رسالة الإشعار",
+          "notificationMessagePlaceholder": "أدخل رسالة الإشعار",
+          "category": "الفئة",
+          "targetAudience": "الجمهور المستهدف",
+          "platforms": "المنصات",
+          "mobile": "الجوال",
+          "web": "الويب",
+          "inbox": "صندوق الوارد",
+          "cancel": "إلغاء",
+          "createTemplate": "إنشاء القالب",
+          "allUsers": "جميع المستخدمين",
+          "premiumUsers": "المستخدمون المميزون",
+          "newUsers": "المستخدمون الجدد",
+          "inactiveUsers": "المستخدمون غير النشطون",
+          "marketing": "التسويق",
+          "system": "النظام",
+          "announcement": "الإعلان",
+          "custom": "مخصص"
+        }
+      },
+      "types": {
+        "info": "معلومات",
+        "success": "نجح",
+        "warning": "تحذير",
+        "error": "خطأ"
       },
       "filters": {
         "searchPlaceholder": "البحث في الإشعارات...",
@@ -1197,23 +1516,6 @@
         "delete": "حذف",
         "confirmDelete": "هل أنت متأكد من حذف {{count}} إشعار(ات)؟"
       },
-      "table": {
-        "notification": "الإشعار",
-        "type": "النوع",
-        "status": "الحالة",
-        "audience": "الجمهور",
-        "platforms": "المنصات",
-        "performance": "الأداء",
-        "created": "تاريخ الإنشاء",
-        "actions": "الإجراءات",
-        "title": "العنوان",
-        "message": "الرسالة",
-        "recipients": "مستقبلين",
-        "opened": "مفتوح",
-        "clicked": "نقر",
-        "openRate": "معدل الفتح",
-        "clickRate": "معدل النقر"
-      },
       "mobile": {
         "notifications": "الإشعارات",
         "sent": "مرسل",
@@ -1234,39 +1536,6 @@
         "notificationSent": "تم إرسال الإشعار بنجاح!",
         "failedToSend": "فشل في إرسال الإشعارات. يقول الخادم: {{error}}",
         "errorSending": "خطأ في إرسال الإشعار."
-      },
-      "actions": {
-        "sendNotification": "إرسال إشعار",
-        "send": "إرسال",
-        "refresh": "تحديث الإشعارات",
-        "view": "عرض الإشعار",
-        "edit": "تعديل الإشعار",
-        "delete": "حذف الإشعار",
-        "dismissError": "إغلاق الخطأ",
-        "close": "إغلاق"
-      },
-      "status": {
-        "sent": "مرسل",
-        "scheduled": "مجدول",
-        "draft": "مسودة",
-        "failed": "فشل"
-      },
-      "types": {
-        "info": "معلومات",
-        "success": "نجح",
-        "warning": "تحذير",
-        "error": "خطأ"
-      },
-      "audience": {
-        "all": "الكل",
-        "premium": "مميز",
-        "new": "جديد",
-        "inactive": "غير نشط"
-      },
-      "platforms": {
-        "mobile": "الجوال",
-        "web": "الويب",
-        "email": "البريد الإلكتروني"
       },
       "pagination": {
         "showing": "عرض {{current}} من {{total}} إشعار",
@@ -2029,5 +2298,32 @@
     "create": "إنشاء",
     "view": "عرض",
     "edit": "تعديل"
+  },
+  "mainNotifications": {
+    "title": "الإشعارات",
+    "unread": "غير مقروء",
+    "markAllAsRead": "تحديد الكل كمقروء",
+    "noNotifications": "لا توجد إشعارات",
+    "viewAll": "عرض جميع الإشعارات",
+    "empty": "لا توجد إشعارات لديك",
+    "loading": "جاري تحميل الإشعارات...",
+    "unreadNotifications": "إشعارات غير مقروءة",
+    "youHaveNoNotifications": "ليس لديك أي إشعارات بعد",
+    "noFilteredNotifications": "لا توجد إشعارات تطابق هذا الفلتر",
+    "markAllRead": "تحديد الكل كمقروء",
+    "filter": "فلتر",
+    "all": "الكل",
+    "rewards": "المكافآت",
+    "messages": "الرسائل",
+    "referrals": "الإحالات",
+    "mining": "التعدين",
+    "staking": "التخزين",
+    "types": {
+      "claim_reward": "المكافأة جاهزة",
+      "inbox_message": "رسالة جديدة",
+      "referral_bonus": "مكافأة الإحالة",
+      "mining_reminder": "تذكير التعدين",
+      "staking_reminder": "تذكير التخزين"
+    }
   }
 }

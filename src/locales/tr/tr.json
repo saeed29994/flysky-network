@@ -421,6 +421,33 @@
     "fcmTitle": "🎁 Hoş Geldin Bonusu",
     "fcmBody": "{{amount}} FSN hoş geldin ödülü aldınız!"
   },
+  "mainNotifications": {
+    "title": "Bildirimler",
+    "unread": "Okunmamış",
+    "markAllAsRead": "Tümünü okundu olarak işaretle",
+    "noNotifications": "Bildirim yok",
+    "viewAll": "Tüm bildirimleri görüntüle",
+    "empty": "Bildiriminiz yok",
+    "loading": "Bildirimler yükleniyor...",
+    "unreadNotifications": "okunmamış bildirimler",
+    "youHaveNoNotifications": "Henüz bildiriminiz yok",
+    "noFilteredNotifications": "Bu filtreye uygun bildirim yok",
+    "markAllRead": "Tümünü okundu olarak işaretle",
+    "filter": "Filtre",
+    "all": "Tümü",
+    "rewards": "Ödüller",
+    "messages": "Mesajlar",
+    "referrals": "Referanslar",
+    "mining": "Madencilik",
+    "staking": "Staking",
+    "types": {
+      "claim_reward": "Ödül hazır",
+      "inbox_message": "Yeni mesaj",
+      "referral_bonus": "Referans bonusu",
+      "mining_reminder": "Madencilik hatırlatıcısı",
+      "staking_reminder": "Staking hatırlatıcısı"
+    }
+  },
   "wallet": {
     "walletOverview": "💼 Cüzdan Genel Bakışı",
     "totalBalance": "Toplam Bakiye",
@@ -1052,6 +1079,40 @@
       "referral_bonus": "Referans Bonusu",
       "mining_reminder": "Madencilik Hatırlatıcısı",
       "staking_reminder": "Staking Hatırlatıcısı"
+    },
+    "templates": {
+      "welcome": {
+        "title": "FlySky Network'e Hoş Geldiniz!",
+        "body": "Topluluğumuza katıldığınız için teşekkürler. İlk FSN tokenlerinizi kazanmak için bugün madenciliğe başlayın!"
+      },
+      "dailyMiningReminder": {
+        "title": "⛏️ Günlük Madencilik Hatırlatıcısı",
+        "body": "Bugün madenciliği unutmayın! Günlük madencilik oturumunuz hazır. FSN tokenleri kazanmak için şimdi madenciliğe başlayın."
+      },
+      "stakingOpportunity": {
+        "title": "💰 Staking Fırsatı Mevcut",
+        "body": "Pasif gelir kazanmak için FSN tokenlerinizi staking'de kilitleyin. Daha uzun kilit süreleri için daha yüksek ödüller!"
+      },
+      "referralProgram": {
+        "title": "👥 Referans Programı Bonusu",
+        "body": "Arkadaşlarınızı davet edin ve bonus FSN tokenleri kazanın! Referans linkinizi paylaşın ve her başarılı referans için ödül alın."
+      },
+      "newFeature": {
+        "title": "🚀 Yeni Özellik Mevcut!",
+        "body": "Yeni heyecan verici bir özellik yayınladık. Şimdi kontrol edin ve kazanmanın yeni yollarını keşfedin!"
+      },
+      "premiumExclusive": {
+        "title": "💎 Premium Özel Teklif",
+        "body": "Premium üye olarak, özel özelliklere ve daha yüksek ödüllere erişiminiz var. Daha fazla fayda açmak için şimdi yükseltin!"
+      },
+      "inactiveReminder": {
+        "title": "🔔 Sizi Özledik!",
+        "body": "Son aktivitenizden bu yana uzun zaman geçti. Geri gelin ve günlük madenciliğinizle FSN tokenleri kazanmaya devam edin!"
+      },
+      "maintenance": {
+        "title": "🔧 Planlı Bakım",
+        "body": "Planlı bakım yapacağız. Bazı hizmetler geçici olarak kullanılamayabilir. Yakında geri döneceğiz!"
+      }
     }
   },
   "pushNotifications": "Push Bildirimleri",
@@ -1089,15 +1150,312 @@
       "checking": "Yönetici izinleri kontrol ediliyor..."
     },
     "notifications": {
-      "title": "Bildirim Yönetimi",
-      "description": "Platformdaki tüm bildirimleri yönetin ve takip edin",
+      "title": "Bildirimler",
+      "description": "Kullanıcılara bildirim gönderin ve yönetin",
+      "header": {
+        "title": "Bildirimler",
+        "subtitle": "Kullanıcılara bildirim gönderin ve yönetin"
+      },
+      "actions": {
+        "sendNotification": "Bildirim Gönder",
+        "editResend": "Bildirimi Düzenle ve Yeniden Gönder",
+        "refresh": "Yenile",
+        "clearAll": "Tümünü Temizle",
+        "useTemplate": "Şablon Kullan",
+        "close": "Kapat",
+        "cancel": "İptal",
+        "send": "Gönder",
+        "schedule": "Zamanla",
+        "sendNow": "Şimdi Gönder",
+        "resend": "Yeniden Gönder",
+        "delete": "Sil",
+        "view": "Görüntüle",
+        "edit": "Düzenle",
+        "refreshNotifications": "Bildirimleri yenile",
+        "viewNotification": "Bildirimi görüntüle",
+        "editNotification": "Bildirimi düzenle",
+        "deleteNotification": "Bildirimi sil",
+        "dismissError": "Hatayı kapat"
+      },
+      "form": {
+        "title": "Başlık",
+        "titlePlaceholder": "Bildirim başlığını girin",
+        "message": "Mesaj",
+        "messagePlaceholder": "Bildirim mesajını girin",
+        "targetAudience": "Hedef Kitle",
+        "platforms": "Platformlar",
+        "schedule": "Zamanlama (İsteğe Bağlı)",
+        "schedulePlaceholder": "Anında göndermek için boş bırakın"
+      },
+      "targetAudience": {
+        "all": "Tüm Kullanıcılar",
+        "new": "Yeni Kullanıcılar (Son 7 gün)",
+        "inactive": "Pasif Kullanıcılar (30+ gün)",
+        "plans": "Abonelik Planları",
+        "custom": "Özel Kullanıcılar",
+        "selectPlans": "Abonelik Planlarını Seçin",
+        "customUserSelection": "Özel Kullanıcı Seçimi",
+        "searchUsers": "E-posta ile kullanıcı ara...",
+        "searchUsersPlaceholder": "E-posta veya isim ile kullanıcı ara...",
+        "selectedUsers": "Seçilen Kullanıcılar",
+        "usersFound": "kullanıcı bulundu",
+        "targetUsers": "Hedef Kullanıcılar",
+        "selectPlansToSeeCount": "Kullanıcı sayısını görmek için planları seçin",
+        "customUserSearch": "Özel Kullanıcı Arama",
+        "customUserSearchPlaceholder": "E-posta veya isim ile kullanıcı ara...",
+        "customUserSelectionPlaceholder": "Hedeflemek için belirli kullanıcıları seçin",
+        "customUserCount": "Özel Kullanıcı Sayısı",
+        "customUserCountDescription": "Özel hedefleme için seçilen kullanıcı sayısı"
+      },
+      "platforms": {
+        "mobile": "Mobil",
+        "web": "Web",
+        "inbox": "Gelen Kutusu",
+        "email": "E-posta"
+      },
       "stats": {
         "totalSent": "Toplam Gönderilen",
+        "scheduled": "Zamanlanmış",
+        "draft": "Taslak",
+        "failed": "Başarısız",
+        "loading": "Bildirimler yükleniyor...",
+        "noNotifications": "Henüz bildirim yok",
+        "noNotificationsSubtitle": "Başlamak için ilk bildiriminizi gönderin",
         "avgOpenRate": "Ort. Açılma Oranı",
         "avgClickRate": "Ort. Tıklama Oranı",
-        "scheduled": "Zamanlanmış",
         "fromLastWeek": "geçen haftadan",
         "nextScheduled": "Sonraki: 25 Ara, 02:00"
+      },
+      "table": {
+        "notification": "Bildirim",
+        "title": "Başlık",
+        "message": "Mesaj",
+        "type": "Tür",
+        "status": "Durum",
+        "audience": "Kitle",
+        "sent": "Gönderildi",
+        "recipients": "Alıcılar",
+        "platforms": "Platformlar",
+        "performance": "Performans",
+        "created": "Oluşturuldu",
+        "actions": "İşlemler",
+        "opened": "açıldı",
+        "clicked": "tıklandı",
+        "openRate": "açılma oranı",
+        "clickRate": "tıklama oranı",
+        "viewDetails": "Detayları Görüntüle",
+        "editResend": "Düzenle ve Yeniden Gönder",
+        "delete": "Sil"
+      },
+      "status": {
+        "sent": "Gönderildi",
+        "scheduled": "Zamanlandı",
+        "draft": "Taslak",
+        "failed": "Başarısız",
+        "processing": "işleniyor"
+      },
+      "deliveryStatus": {
+        "delivered": "teslim edildi",
+        "partial_success": "kısmen başarılı",
+        "failed": "başarısız",
+        "pending": "beklemede"
+      },
+      "audience": {
+        "premium": "Premium",
+        "new": "Yeni",
+        "inactive": "Pasif",
+        "all": "Tümü",
+        "allUsers": "Tüm Kullanıcılar",
+        "newUsers": "Yeni Kullanıcılar"
+      },
+      "types": {
+        "info": "Bilgi",
+        "success": "Başarı",
+        "warning": "Uyarı",
+        "error": "Hata"
+      },
+      "messages": {
+        "sentSuccessfully": "Bildirim başarıyla gönderildi!",
+        "failedToSend": "Bildirim gönderilemedi",
+        "deletedSuccessfully": "Bildirim başarıyla silindi!",
+        "failedToDelete": "Bildirim silinemedi",
+        "resentSuccessfully": "Bildirim başarıyla yeniden gönderildi!",
+        "failedToResend": "Bildirim yeniden gönderilemedi",
+        "clearedSuccessfully": "Tüm bildirimler başarıyla temizlendi!",
+        "failedToClear": "Tüm bildirimler temizlenemedi",
+        "pleaseEnterBoth": "Lütfen hem başlık hem de içerik girin.",
+        "unexpectedError": "Bildirim gönderilirken beklenmeyen bir hata oluştu",
+        "errorDeleting": "Bildirim silinirken beklenmeyen bir hata oluştu",
+        "errorResending": "Bildirim yeniden gönderilirken beklenmeyen bir hata oluştu",
+        "notificationSent": "Bildirim başarıyla gönderildi!"
+      },
+      "modals": {
+        "sendNotification": "Bildirim Gönder",
+        "notificationDetails": "Bildirim Detayları",
+        "editResendNotification": "Bildirimi Düzenle ve Yeniden Gönder",
+        "deleteNotification": "Bildirimi Sil",
+        "clearAllNotifications": "Tüm Bildirimleri Temizle"
+      },
+      "deleteConfirm": {
+        "title": "Bildirimi Sil",
+        "message": "\"{title}\" bildirimini silmek istediğinizden emin misiniz?",
+        "subtitle": "Bu işlem geri alınamaz ve bildirimi, günlükleri ve gelen kutusu girişlerini içeren tüm ilgili verileri kalıcı olarak kaldıracaktır.",
+        "genericMessage": "Bu bildirimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+      },
+      "clearAllConfirm": {
+        "title": "Tüm Bildirimleri Temizle",
+        "message": "TÜM bildirimleri temizlemek istediğinizden kesinlikle emin misiniz?",
+        "warning": "⚠️ Bu işlem aşağıdakileri kalıcı olarak silecektir:",
+        "items": [
+          "Tüm {count} bildirim kaydı",
+          "Tüm bildirim günlükleri ve analizleri",
+          "Tüm kullanıcı gelen kutusu bildirimleri",
+          "Tüm ilgili veriler ve meta veriler"
+        ],
+        "cannotUndone": "Bu işlem geri alınamaz! Gerekirse yedek aldığınızdan emin olun."
+      },
+      "details": {
+        "status": "Durum",
+        "targetAudience": "Hedef Kitle",
+        "sentAt": "Gönderildi",
+        "createdAt": "Oluşturuldu",
+        "recipients": "Alıcılar",
+        "platforms": "Platformlar",
+        "opened": "Açıldı",
+        "clicked": "Tıklandı",
+        "errorDetails": "Hata Detayları:",
+        "deliveryInformation": "Teslimat Bilgileri:",
+        "totalRecipients": "Toplam Alıcı",
+        "successful": "Başarılı",
+        "failed": "Başarısız",
+        "errorMessage": "Hata Mesajı"
+      },
+      "loading": {
+        "sending": "Gönderiliyor...",
+        "deleting": "Siliniyor...",
+        "clearing": "Temizleniyor...",
+        "refreshing": "Yenileniyor...",
+        "loadingPlans": "Mevcut planlar yükleniyor...",
+        "loadingUsers": "Kullanıcılar yükleniyor..."
+      },
+      "errors": {
+        "noNotificationsToClear": "Temizlenecek bildirim yok",
+        "noTokensFound": "Token bulunamadı. Bildirimler için kayıtlı kullanıcı yok.",
+        "serverError": "Bildirimler gönderilemedi. Sunucu diyor: {error}",
+        "failedToLoad": "Bildirimler yüklenemedi",
+        "failedToSend": "Bildirim gönderilemedi",
+        "failedToDelete": "Bildirim silinemedi",
+        "failedToUpdate": "Bildirim güncellenemedi",
+        "errorSending": "Bildirim gönderilirken hata oluştu."
+      },
+      "templates": {
+        "title": "Bildirim Şablonları",
+        "description": "Yaygın bildirim türleri için önceden tanımlanmış şablonları kullanın",
+        "modalTitle": "Şablon Seç",
+        "modalDescription": "Bildiriminizi hızlıca doldurmak için bir şablon seçin",
+        "noTemplates": "Şablon mevcut değil",
+        "noTemplatesDescription": "Yaygın bildirim türleri için şablonlar burada mevcut olacak",
+        "useTemplate": "Şablonu Kullan",
+        "previewTemplate": "Şablonu Önizle",
+        "templateCategories": {
+          "welcome": "Hoş Geldiniz ve Tanıtım",
+          "reminders": "Hatırlatıcılar ve Uyarılar",
+          "promotional": "Promosyon ve Pazarlama",
+          "system": "Sistem ve Bakım",
+          "rewards": "Ödüller ve Bonuslar"
+        },
+        "templates": {
+          "welcome": {
+            "name": "Hoş Geldiniz Mesajı",
+            "title": "FlySky Network'e Hoş Geldiniz!",
+            "description": "Platforma yeni kullanıcıları karşılayın",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "Günlük Mining Hatırlatıcısı",
+            "title": "⛏️ Günlük Mining Hatırlatıcısı",
+            "description": "Kullanıcıları ödüller için günlük mining yapmaya hatırlatın",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "Staking Fırsatı",
+            "title": "💰 Staking Fırsatı Mevcut",
+            "description": "Kullanıcıları staking fırsatları hakkında bilgilendirin",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "Referans Programı",
+            "title": "👥 Referans Programı Bonusu",
+            "description": "Referans programını kullanıcılara tanıtın",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "Yeni Özellik Duyurusu",
+            "title": "🚀 Yeni Özellik Mevcut!",
+            "description": "Platformdaki yeni özellikleri duyurun",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "Premium Özel Teklif",
+            "title": "💎 Premium Özel Teklif",
+            "description": "Premium kullanıcılar için özel teklifler",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "Pasif Kullanıcı Hatırlatıcısı",
+            "title": "🔔 Sizi Özledik!",
+            "description": "Pasif kullanıcıları geri dönmeye hatırlatın",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "Planlı Bakım",
+            "title": "🔧 Planlı Bakım",
+            "description": "Kullanıcıları sistem bakımı hakkında bilgilendirin",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "Seç",
+          "preview": "Önizle",
+          "close": "Kapat",
+          "search": "Şablon ara...",
+          "filterByCategory": "Kategoriye göre filtrele",
+          "allCategories": "Tüm Kategoriler"
+        },
+        "preview": {
+          "title": "Şablon Önizlemesi",
+          "templateName": "Şablon Adı",
+          "category": "Kategori",
+          "description": "Açıklama",
+          "content": "İçerik Önizlemesi",
+          "useThisTemplate": "Bu Şablonu Kullan"
+        },
+        "createNew": {
+          "title": "Yeni Şablon Oluştur",
+          "description": "Özel bildirim şablonu oluştur",
+          "templateName": "Şablon Adı",
+          "templateNamePlaceholder": "Şablon adını girin",
+          "notificationTitle": "Bildirim Başlığı",
+          "notificationTitlePlaceholder": "Bildirim başlığını girin",
+          "notificationMessage": "Bildirim Mesajı",
+          "notificationMessagePlaceholder": "Bildirim mesajını girin",
+          "category": "Kategori",
+          "targetAudience": "Hedef Kitle",
+          "platforms": "Platformlar",
+          "mobile": "Mobil",
+          "web": "Web",
+          "inbox": "Gelen Kutusu",
+          "cancel": "İptal",
+          "createTemplate": "Şablon Oluştur",
+          "allUsers": "Tüm Kullanıcılar",
+          "premiumUsers": "Premium Kullanıcılar",
+          "newUsers": "Yeni Kullanıcılar",
+          "inactiveUsers": "Pasif Kullanıcılar",
+          "marketing": "Pazarlama",
+          "system": "Sistem",
+          "announcement": "Duyuru",
+          "custom": "Özel"
+        }
       },
       "filters": {
         "searchPlaceholder": "Bildirim ara...",
@@ -1132,23 +1490,6 @@
         "delete": "Sil",
         "confirmDelete": "{{count}} bildirimi silmek istediğinizden emin misiniz?"
       },
-      "table": {
-        "notification": "Bildirim",
-        "type": "Tür",
-        "status": "Durum",
-        "audience": "Kitle",
-        "platforms": "Platformlar",
-        "performance": "Performans",
-        "created": "Oluşturuldu",
-        "actions": "İşlemler",
-        "title": "Başlık",
-        "message": "Mesaj",
-        "recipients": "alıcı",
-        "opened": "açıldı",
-        "clicked": "tıklandı",
-        "openRate": "açılma oranı",
-        "clickRate": "tıklama oranı"
-      },
       "mobile": {
         "notifications": "Bildirimler",
         "sent": "gönderildi",
@@ -1170,39 +1511,6 @@
         "failedToSend": "Bildirim gönderilemedi. Sunucu diyor: {{error}}",
         "errorSending": "Bildirim gönderilirken hata oluştu."
       },
-      "actions": {
-        "sendNotification": "Bildirim Gönder",
-        "send": "Gönder",
-        "refresh": "Bildirimleri yenile",
-        "view": "Bildirimi görüntüle",
-        "edit": "Bildirimi düzenle",
-        "delete": "Bildirimi sil",
-        "dismissError": "Hatayı kapat",
-        "close": "Kapat"
-      },
-      "status": {
-        "sent": "Gönderildi",
-        "scheduled": "Zamanlandı",
-        "draft": "Taslak",
-        "failed": "Başarısız"
-      },
-      "types": {
-        "info": "Bilgi",
-        "success": "Başarı",
-        "warning": "Uyarı",
-        "error": "Hata"
-      },
-      "audience": {
-        "all": "Tümü",
-        "premium": "Premium",
-        "new": "Yeni",
-        "inactive": "Pasif"
-      },
-      "platforms": {
-        "mobile": "Mobil",
-        "web": "Web",
-        "email": "E-posta"
-      },
       "pagination": {
         "showing": "{{current}} / {{total}} bildirim gösteriliyor",
         "previous": "Önceki",
@@ -1211,12 +1519,6 @@
       "empty": {
         "noNotifications": "Bildirim bulunamadı",
         "loading": "Bildirimler yükleniyor..."
-      },
-      "error": {
-        "failedToLoad": "Bildirimler yüklenemedi",
-        "failedToSend": "Bildirim gönderilemedi",
-        "failedToDelete": "Bildirim silinemedi",
-        "failedToUpdate": "Bildirim güncellenemedi"
       }
     },
     "rewards": {

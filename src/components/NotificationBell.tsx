@@ -15,6 +15,7 @@ export const NotificationBell: React.FC = () => {
     loading,
   } = useNotifications();
 
+  console.log(notifications);
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,7 +31,6 @@ export const NotificationBell: React.FC = () => {
   }, []);
 
   const unreadCount = notifications.length; // Since hook doesn't expose read flags, show total count
-
   // Format timestamp
   const formatTime = (date: Date | undefined) => {
     if (!date) return '';
@@ -58,7 +58,7 @@ export const NotificationBell: React.FC = () => {
       <button 
         onClick={handleBellClick}
         className="relative p-2 rounded-full hover:bg-white/20 transition-colors"
-        aria-label={t('notifications.title')}
+        aria-label={t('mainNotifications.title')}
       >
         <Bell className="w-6 h-6 text-white" />
         {unreadCount > 0 && (
@@ -83,7 +83,7 @@ export const NotificationBell: React.FC = () => {
             <div className="flex items-center justify-between p-4 border-b border-white/10 sticky top-0 bg-gray-900/90 backdrop-blur-xl z-10">
               <h3 className="text-white font-medium flex items-center gap-2">
                 <Bell className="w-4 h-4" /> 
-                {t('notifications.title')}
+                {t('mainNotifications.title')}
                 {unreadCount > 0 && (
                   <span className="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
                     {unreadCount}
@@ -105,12 +105,12 @@ export const NotificationBell: React.FC = () => {
               {loading ? (
                 <div className="p-8 text-center">
                   <div className="w-8 h-8 border-2 border-t-blue-500 border-blue-500/30 rounded-full animate-spin mx-auto mb-3"></div>
-                  <p className="text-gray-300 text-sm">{t('notifications.loading')}</p>
+                  <p className="text-gray-300 text-sm">{t('mainNotifications.loading')}</p>
                 </div>
               ) : notifications.length === 0 ? (
                 <div className="p-12 text-center">
                   <Bell className="w-10 h-10 text-gray-500 mx-auto mb-3" />
-                  <p className="text-gray-300 text-sm">{t('notifications.noNotifications')}</p>
+                  <p className="text-gray-300 text-sm">{t('mainNotifications.noNotifications')}</p>
                 </div>
               ) : (
                 notifications.map((notification) => (
@@ -125,10 +125,10 @@ export const NotificationBell: React.FC = () => {
                     <div className="flex gap-3">
                       <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-medium text-white flex items-center gap-2">
-                          {notification.title}
+                          {t(notification.title)}
                         </h4>
                         <p className="text-sm text-gray-300 mt-1 line-clamp-2 md:line-clamp-none">
-                          {notification.message}
+                          {t(notification.message)}
                         </p>
                         <div className="flex justify-between items-center mt-2">
                           <span className="text-xs text-gray-400">
@@ -152,7 +152,7 @@ export const NotificationBell: React.FC = () => {
                   }}
                   className="text-sm text-blue-400 hover:text-blue-300 flex items-center justify-center gap-2 w-full py-2 rounded-lg hover:bg-white/5 transition-colors"
                 >
-                  <span>{t('notifications.viewAll')}</span>
+                  <span>{t('mainNotifications.viewAll')}</span>
                 </button>
               </div>
             )}

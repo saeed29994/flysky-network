@@ -6,11 +6,7 @@ import { notifyMiningComplete } from "./notifications/notifyMiningComplete";
 import { notifyNewMessage } from "./notifications/notifyNewMessage";
 import { notifyReferralBonus } from "./notifications/notifyReferralBonus";
 import { sendDailyReminders } from "./notifications/sendPeriodicReminders";
-import { 
-  trackNotificationOpen, 
-  trackNotificationClick, 
-  getNotificationAnalytics 
-} from "./notifications/trackNotificationEvents";
+
 
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + "/../flysky-site-3daa1e4343c4.json";
 
@@ -20,7 +16,7 @@ if (!admin.apps.length) {
 
 
 
-// Note: translateFunction and sendPushNotification are defined in their respective files
+// Note: translateFunction is defined in its respective file
 // to avoid duplicate function definitions
 
 // Add the scheduled function to process scheduled notifications
@@ -277,33 +273,69 @@ export const processScheduledNotifications = functions.pubsub
   });
 
 // Add a function to manually send notifications with detailed logging
-export const sendManualNotification = functions.https.onCall(async (data, context) => {
-  // Check if the user is authenticated and has admin privileges
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated to send notifications');
+export const sendManualNotification = functions.https.onRequest(async (req, res) => {
+  // Enable CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  // Handle preflight request
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    res.status(405).send('Method not allowed');
+    return;
   }
   
   try {
-    const adminSnapshot = await admin.firestore().collection('admins').doc(context.auth.uid).get();
-    if (!adminSnapshot.exists) {
-      throw new functions.https.HttpsError('permission-denied', 'User does not have admin privileges');
+    const data = req.body;
+    
+    // Check if the user is authenticated and has admin privileges
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      res.status(401).json({ error: 'Unauthorized - No valid token provided' });
+      return;
     }
-  } catch (err) {
-    throw new functions.https.HttpsError('internal', 'Error checking admin status');
-  }
-  
-  // Validate request data
-  if (!data.title || !data.message || !data.platforms || data.platforms.length === 0) {
-    throw new functions.https.HttpsError('invalid-argument', 'Missing required fields');
-  }
-  
-  const processingStartTime = Date.now();
-  const notificationRef = admin.firestore().collection('notifications').doc();
-  const logRef = admin.firestore().collection('notificationLogs').doc();
-  
-  try {
+    
+    const idToken = authHeader.split('Bearer ')[1];
+    let decodedToken;
+    
+    try {
+      decodedToken = await admin.auth().verifyIdToken(idToken);
+    } catch (error) {
+      res.status(401).json({ error: 'Unauthorized - Invalid token' });
+      return;
+    }
+    
+    // Check admin privileges in users collection
+    const userSnapshot = await admin.firestore().collection('users').doc(decodedToken.uid).get();
+    if (!userSnapshot.exists) {
+      res.status(403).json({ error: 'User not found' });
+      return;
+    }
+    
+    const userData = userSnapshot.data();
+    if (userData?.role !== 'admin') {
+      res.status(403).json({ error: 'User does not have admin privileges' });
+      return;
+    }
+    
+    // Validate request data
+    if (!data.title || !data.message || !data.platforms || data.platforms.length === 0) {
+      res.status(400).json({ error: 'Missing required fields' });
+      return;
+    }
+    
+    const processingStartTime = Date.now();
+    const notificationRef = admin.firestore().collection('notifications').doc();
+    const logRef = admin.firestore().collection('notificationLogs').doc();
+    
     // Create notification document
-    const notificationData = {
+    const notificationData: Record<string, any> = {
       title: data.title,
       message: data.message,
       type: data.type || 'info',
@@ -311,64 +343,208 @@ export const sendManualNotification = functions.https.onCall(async (data, contex
       targetAudience: data.targetAudience || 'all',
       platforms: data.platforms,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      createdBy: context.auth.uid,
-      data: data.data || {}
+      createdBy: decodedToken.uid,
+      data: data.data || {},
+      // Add delivery status fields
+      deliveryStatus: 'pending',
+      deliveryDetails: {
+        totalRecipients: 0,
+        successfulDeliveries: 0,
+        failedDeliveries: 0
+      }
     };
+
+    // Only add titleKey and bodyKey if they exist and are not undefined
+    if (data.titleKey) {
+      notificationData.titleKey = data.titleKey;
+    }
+    if (data.bodyKey) {
+      notificationData.bodyKey = data.bodyKey;
+    }
     
     await notificationRef.set(notificationData);
     
-    // Get tokens based on target audience
+    // Get users and tokens based on target audience
     let userIds: string[] = [];
-    if (data.targetAudience && data.targetAudience !== 'all') {
+    let allTokens: string[] = [];
+    
+    console.log(`🔍 Target Audience: ${data.targetAudience}`);
+    console.log(`🔍 Selected Plans:`, data.selectedPlans);
+    console.log(`🔍 Custom User IDs:`, data.customUserIds);
+    console.log(`🔍 DEBUG: data.selectedPlans type:`, typeof data.selectedPlans);
+    console.log(`🔍 DEBUG: data.selectedPlans length:`, data.selectedPlans?.length);
+    console.log(`🔍 DEBUG: data.selectedPlans isArray:`, Array.isArray(data.selectedPlans));
+    
+    if (data.targetAudience === 'all') {
+      // Get all users and their tokens
+      const usersSnapshot = await admin.firestore().collection('users').get();
+      console.log(`📊 Total users found: ${usersSnapshot.size}`);
+      
+      // Get all tokens from userTokens collection
+      const tokensSnapshot = await admin.firestore().collection('userTokens').get();
+      console.log(`📱 Total tokens found: ${tokensSnapshot.size}`);
+      
+      tokensSnapshot.forEach((tokenDoc) => {
+        const tokenData = tokenDoc.data();
+        if (tokenData.token) {
+          allTokens.push(tokenData.token);
+        }
+      });
+      
+    } else if (data.targetAudience === 'plans' && data.selectedPlans) {
+      console.log(`🔍 DEBUG: Entering plans logic with selectedPlans:`, data.selectedPlans);
+      
+      // Get users with specific subscription plans
+      const usersSnapshot = await admin.firestore().collection('users').get();
+      console.log(`📊 Total users found: ${usersSnapshot.size}`);
+      
+      // Collect user IDs that match the selected plans
+      usersSnapshot.forEach((userDoc) => {
+        const userData = userDoc.data();
+        const userPlan = userData.membership?.planName;
+        console.log(`🔍 User ${userDoc.id}: Plan = ${userPlan}, Selected Plans = ${data.selectedPlans}`);
+        
+        // More robust plan matching - check for exact match and case-insensitive
+        const planMatches = data.selectedPlans.some((selectedPlan: string) => {
+          const exactMatch = selectedPlan === userPlan;
+          const caseInsensitiveMatch = selectedPlan.toLowerCase() === userPlan?.toLowerCase();
+          return exactMatch || caseInsensitiveMatch;
+        });
+        
+        if (planMatches) {
+          userIds.push(userDoc.id);
+          console.log(`✅ User ${userDoc.id} matches plan ${userPlan}`);
+        } else {
+          console.log(`❌ User ${userDoc.id}: Plan ${userPlan} not in selected plans ${data.selectedPlans}`);
+        }
+      });
+      
+      console.log(`📋 Users matching selected plans: ${userIds.length}`);
+      console.log(`📋 userIds array:`, userIds);
+      
+      // Get tokens for the matching users
+      if (userIds.length > 0) {
+        const tokensSnapshot = await admin.firestore().collection('userTokens').get();
+        console.log(`📱 Total tokens in collection: ${tokensSnapshot.size}`);
+        
+        let tokensFound = 0;
+        tokensSnapshot.forEach((tokenDoc) => {
+          const tokenData = tokenDoc.data();
+          console.log(`🔍 Token doc ${tokenDoc.id}: token = ${tokenData.token}, userIds.includes = ${userIds.includes(tokenDoc.id)}`);
+          
+          // Check if this token belongs to one of our target users
+          if (tokenData.token && userIds.includes(tokenDoc.id)) {
+            console.log(`✅ Found token for user ${tokenDoc.id}`);
+            allTokens.push(tokenData.token);
+            tokensFound++;
+          }
+        });
+        
+        console.log(`🔍 Total tokens found for matching users: ${tokensFound}`);
+        console.log(`🔍 allTokens array length: ${allTokens.length}`);
+      } else {
+        console.log(`🔍 No users found matching the selected plans`);
+      }
+      
+    } else if (data.targetAudience === 'custom' && data.customUserIds) {
+      // Get specific users by IDs
+      userIds = data.customUserIds;
+      console.log(`📋 Custom user IDs: ${userIds.length}`);
+      
+      // Get tokens for the custom users
+      const tokensSnapshot = await admin.firestore().collection('userTokens').get();
+      console.log(`📱 Total tokens in collection: ${tokensSnapshot.size}`);
+      
+      tokensSnapshot.forEach((tokenDoc) => {
+        const tokenData = tokenDoc.data();
+        if (tokenData.token && userIds.includes(tokenDoc.id)) {
+          console.log(`✅ Found token for user ${tokenDoc.id}`);
+          allTokens.push(tokenData.token);
+        }
+      });
+      
+    } else if (data.targetAudience === 'new') {
+      // Users created in the last 7 days
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
       const usersSnapshot = await admin.firestore().collection('users').get();
       
       usersSnapshot.forEach((userDoc) => {
         const userData = userDoc.data();
-        
-        switch (data.targetAudience) {
-          case 'premium':
-            if (userData.membership?.isPremium || userData.isPremium) {
-              userIds.push(userDoc.id);
-            }
-            break;
-          case 'new':
-            const oneWeekAgo = new Date();
-            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-            if (userData.createdAt?.toDate() >= oneWeekAgo) {
-              userIds.push(userDoc.id);
-            }
-            break;
-          case 'inactive':
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            if (userData.lastLogin?.toDate() <= thirtyDaysAgo) {
-              userIds.push(userDoc.id);
-            }
-            break;
+        if (userData.createdAt?.toDate() >= oneWeekAgo) {
+          userIds.push(userDoc.id);
         }
       });
+      
+      // Get tokens for new users
+      if (userIds.length > 0) {
+        const tokensSnapshot = await admin.firestore().collection('userTokens').get();
+        tokensSnapshot.forEach((tokenDoc) => {
+          const tokenData = tokenDoc.data();
+          if (tokenData.token && userIds.includes(tokenDoc.id)) {
+            allTokens.push(tokenData.token);
+          }
+        });
+      }
+      
+    } else if (data.targetAudience === 'inactive') {
+      // Users not active in the last 30 days
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const usersSnapshot = await admin.firestore().collection('users').get();
+      
+      usersSnapshot.forEach((userDoc) => {
+        const userData = userDoc.data();
+        if (userData.lastLogin?.toDate() <= thirtyDaysAgo) {
+          userIds.push(userDoc.id);
+        }
+      });
+      
+      // Get tokens for inactive users
+      if (userIds.length > 0) {
+        const tokensSnapshot = await admin.firestore().collection('userTokens').get();
+        tokensSnapshot.forEach((tokenDoc) => {
+          const tokenData = tokenDoc.data();
+          if (tokenData.token && userIds.includes(tokenDoc.id)) {
+            allTokens.push(tokenData.token);
+          }
+        });
+      }
     }
     
-    // Get tokens
-    const tokensSnapshot = await admin.firestore().collection('userTokens').get();
-    const tokens: string[] = [];
+    // Filter out empty/null tokens and get unique tokens
+    const tokens = allTokens.filter(token => token && token.trim() !== '');
+    const uniqueTokens = [...new Set(tokens)]; // Remove duplicates
     
-    tokensSnapshot.forEach((tokenDoc) => {
-      const tokenData = tokenDoc.data();
-      if (tokenData.token && (data.targetAudience === 'all' || !data.targetAudience || userIds.includes(tokenDoc.id))) {
-        tokens.push(tokenData.token);
-      }
-    });
+    console.log(`📱 Raw tokens found: ${allTokens.length}`);
+    console.log(`📱 Valid tokens after filtering: ${tokens.length}`);
+    console.log(`📱 Unique tokens after deduplication: ${uniqueTokens.length}`);
+    console.log(`📱 Found ${uniqueTokens.length} unique FCM tokens from ${userIds.length > 0 ? userIds.length : 'all'} users`);
     
-    if (tokens.length === 0) {
+    if (uniqueTokens.length === 0) {
       console.warn(`⚠️ No tokens found for manual notification ${notificationRef.id}`);
+      console.log(`🔍 Debug Info:`);
+      console.log(`   - Target Audience: ${data.targetAudience}`);
+      console.log(`   - Selected Plans: ${data.selectedPlans || 'N/A'}`);
+      console.log(`   - Custom User IDs: ${data.customUserIds || 'N/A'}`);
+      console.log(`   - Raw tokens collected: ${allTokens.length}`);
+      console.log(`   - Valid tokens after filtering: ${tokens.length}`);
+      console.log(`   - Unique tokens after deduplication: ${uniqueTokens.length}`);
       
       await Promise.all([
         // Update notification status
         notificationRef.update({
           status: 'failed',
           error: 'No tokens found for the target audience',
-          processedAt: admin.firestore.FieldValue.serverTimestamp()
+          processedAt: admin.firestore.FieldValue.serverTimestamp(),
+          // Update delivery status
+          deliveryStatus: 'failed',
+          deliveryDetails: {
+            totalRecipients: 0,
+            successfulDeliveries: 0,
+            failedDeliveries: 0,
+            errorMessage: 'No tokens found for the target audience'
+          }
         }),
         
         // Log the failure
@@ -388,17 +564,21 @@ export const sendManualNotification = functions.https.onCall(async (data, contex
         })
       ]);
       
-      return {
+      res.status(200).json({
         success: false,
         error: 'No tokens found for the target audience',
         notificationId: notificationRef.id
-      };
+      });
+      return;
     }
+
+    // Filter out invalid tokens and proceed with valid ones
+    console.log(`📱 Found ${tokens.length} valid tokens, proceeding with notification delivery`);
     
     // Send notification to all tokens
     const messaging = admin.messaging();
     const results = await Promise.allSettled(
-      tokens.map(token => 
+      uniqueTokens.map(token => 
         messaging.send({
           token,
           notification: {
@@ -427,16 +607,54 @@ export const sendManualNotification = functions.https.onCall(async (data, contex
       })
       .filter(Boolean);
     
-    console.log(`✅ Manual notification ${notificationRef.id} sent to ${successCount} devices with ${errorCount} failures`);
+    // Determine notification status based on results
+    let notificationStatus = 'sent';
+    let deliveryStatus = 'delivered';
+    let errorMessage = null;
+    
+    if (successCount === 0) {
+      // Complete failure - no notifications delivered
+      notificationStatus = 'failed';
+      deliveryStatus = 'failed';
+      errorMessage = 'All notification attempts failed';
+    } else if (errorCount > 0) {
+      // Partial success - some delivered, some failed
+      notificationStatus = 'sent'; // Still consider it sent since some succeeded
+      deliveryStatus = 'partial_success';
+      errorMessage = `${errorCount} notifications failed to deliver`;
+    } else {
+      // Complete success - all notifications delivered
+      notificationStatus = 'sent';
+      deliveryStatus = 'delivered';
+    }
+    
+    console.log(`✅ Manual notification ${notificationRef.id}: ${successCount} successful, ${errorCount} failed (Status: ${notificationStatus})`);
     
     // Handle inbox notifications if platform includes 'inbox'
     if (data.platforms.includes('inbox')) {
-      const inboxTargetUserIds = userIds.length > 0 ? userIds : tokensSnapshot.docs.map(d => d.id);
-      console.log(`📥 Adding notification to ${inboxTargetUserIds.length} user inboxes`);
+      // For inbox, we need to determine which users to add to
+      let inboxUserIds: string[] = [];
+      
+      if (data.targetAudience === 'all') {
+        // Get all user IDs for inbox
+        const usersSnapshot = await admin.firestore().collection('users').get();
+        inboxUserIds = usersSnapshot.docs.map(doc => doc.id);
+      } else if (data.targetAudience === 'plans' && data.selectedPlans) {
+        // Use the userIds we already collected for plans
+        inboxUserIds = userIds;
+      } else if (data.targetAudience === 'custom' && data.customUserIds) {
+        // Use the custom user IDs
+        inboxUserIds = data.customUserIds;
+      } else {
+        // For other target audiences, use the userIds we collected
+        inboxUserIds = userIds;
+      }
+      
+      console.log(`📥 Adding notification to ${inboxUserIds.length} user inboxes`);
       
       const inboxBatch = admin.firestore().batch();
       
-      for (const userId of inboxTargetUserIds) {
+      for (const userId of inboxUserIds) {
         const inboxRef = admin.firestore()
           .collection('users')
           .doc(userId)
@@ -460,15 +678,25 @@ export const sendManualNotification = functions.https.onCall(async (data, contex
     await Promise.all([
       // Update notification status
       notificationRef.update({
-        status: 'sent',
+        status: notificationStatus,
         sentAt: admin.firestore.FieldValue.serverTimestamp(),
         processedAt: admin.firestore.FieldValue.serverTimestamp(),
-        recipients: tokens.length,
+        recipients: uniqueTokens.length,
         opened: 0,
         clicked: 0,
         successCount,
         errorCount,
-        errors: errors.length > 0 ? errors : null
+        errors: errors.length > 0 ? errors : null,
+        error: errorMessage, // Add error message if any
+        // Update delivery status
+        deliveryStatus: deliveryStatus,
+        deliveryDetails: {
+          totalRecipients: uniqueTokens.length,
+          successfulDeliveries: successCount,
+          failedDeliveries: errorCount,
+          errorMessage: errorMessage,
+          sentAt: admin.firestore.FieldValue.serverTimestamp()
+        }
       }),
       
       // Log the success/partial success
@@ -481,50 +709,30 @@ export const sendManualNotification = functions.https.onCall(async (data, contex
         platforms: data.platforms,
         timestamp: admin.firestore.FieldValue.serverTimestamp(),
         processingTime: Date.now() - processingStartTime,
-        recipients: tokens.length,
+        recipients: uniqueTokens.length,
         successCount: successCount,
         errorCount: errorCount,
         errors: errors.length > 0 ? errors : null
       })
     ]);
     
-    return {
-      success: true,
+    res.status(200).json({
+      success: successCount > 0, // Consider it successful if at least one notification was delivered
       notificationId: notificationRef.id,
-      recipients: tokens.length,
+      recipients: uniqueTokens.length,
       successCount,
-      errorCount
-    };
+      errorCount,
+      status: notificationStatus,
+      deliveryStatus: deliveryStatus,
+      error: errorMessage
+    });
   } catch (err) {
     console.error(`❌ Error sending manual notification:`, err);
     
-    await Promise.all([
-      // Update notification status
-      notificationRef.update({
-        status: 'failed',
-        error: (err as Error).message || 'Unknown error',
-        processedAt: admin.firestore.FieldValue.serverTimestamp()
-      }),
-      
-      // Log the error
-      logRef.set({
-        notificationId: notificationRef.id,
-        title: data.title,
-        message: data.message,
-        status: 'failed',
-        error: (err as Error).message || 'Unknown error',
-        errorDetails: (err as Error).stack,
-        targetAudience: data.targetAudience || 'all',
-        platforms: data.platforms || [],
-        timestamp: admin.firestore.FieldValue.serverTimestamp(),
-        processingTime: Date.now() - processingStartTime,
-        recipients: 0,
-        successCount: 0,
-        errorCount: 0
-      })
-    ]);
-    
-    throw new functions.https.HttpsError('internal', `Error sending notification: ${(err as Error).message}`);
+    res.status(500).json({
+      success: false,
+      error: `Error sending notification: ${(err as Error).message}`
+    });
   }
 });
 
@@ -535,13 +743,15 @@ const runtimeOpts = {
   cors: true
 };
 
+
+
 // Export notification functions with configuration
 export { 
   notifyMiningComplete, 
   notifyNewMessage, 
   notifyReferralBonus, 
-  sendDailyReminders,
-  trackNotificationOpen,
-  trackNotificationClick,
-  getNotificationAnalytics
+  sendDailyReminders
 };
+
+// Export internationalized admin notification function
+export { sendInternationalizedAdminNotification } from './adminNotifications';

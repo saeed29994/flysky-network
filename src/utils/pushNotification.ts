@@ -33,6 +33,10 @@ export const requestPermissionAndToken = async (uid: string) => {
     }
 
     const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+    if (!messaging) {
+      console.warn('⚠️ Messaging not available');
+      return null;
+    }
     const token = await getToken(messaging, { vapidKey });
 
     console.log('📱 معلومات الجهاز:', {
@@ -76,6 +80,10 @@ export const requestPermissionAndToken = async (uid: string) => {
 // Update to clear token from both storage locations
 export const deleteCurrentToken = async (uid: string) => {
   try {
+    if (!messaging) {
+      console.warn('⚠️ Messaging not available');
+      return;
+    }
     const currentToken = await getToken(messaging, {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
     });
@@ -110,6 +118,10 @@ export const deleteCurrentToken = async (uid: string) => {
 
 // Improved foreground message handler
 export const listenToForegroundMessages = () => {
+  if (!messaging) {
+    console.warn('⚠️ Messaging not available');
+    return;
+  }
   onMessage(messaging, (payload) => {
     console.log('📥 تم استقبال إشعار أثناء فتح التطبيق:', payload);
     
