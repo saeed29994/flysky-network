@@ -11,7 +11,7 @@ import {
   FaChartLine, FaUsers, FaTrophy, FaArrowRight
 } from 'react-icons/fa';
 import logo from '../assets/fsn-logo.png';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -48,44 +48,32 @@ const Dashboard = () => {
 
   // Fetch wallet data directly from Firestore (similar to Wallet.tsx)
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      setLoading(true);
+    const fetchWalletData = async () => {
       const user = auth.currentUser;
-      if (!user) {
-        setLoading(false);
-        return;
-      }
+      if (!user) return;
 
       try {
-        // Fetch user data
+        setLoading(true);
+        
+        // Get user document
         const userRef = doc(db, 'users', user.uid);
-        const snap = await getDoc(userRef);
-
-        if (snap.exists()) {
-          const data = snap.data();
-          setBalance(data.balance || 0);
-          setReferralRewards(data.referralReward || 0);
-          
-          // Get referrals count
-          const referralList = data.referralList || [];
-          setReferralsCount(referralList.length);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          setBalance(userData.balance || 0);
+          setLockedInStaking(userData.lockedInStaking || 0);
+          setReferralRewards(userData.referralRewards || 0);
+          setReferralsCount(userData.referralsCount || 0);
         }
-
-        // Fetch staking data (same as in Wallet.tsx)
-        const stakingSnap = await getDocs(collection(db, 'users', user.uid, 'staking'));
-        const stakingList = stakingSnap.docs.map(doc => doc.data());
-        const lockedSum = stakingList
-          .filter((s: any) => s.status === 'active')
-          .reduce((sum, s: any) => sum + (s.amount || 0), 0);
-        setLockedInStaking(lockedSum);
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        console.error('Error fetching wallet data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDashboardData();
+    fetchWalletData();
   }, []);
 
   const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -186,8 +174,8 @@ const Dashboard = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-white">{t('dashboard.loading')}</p>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-white text-lg">{t('dashboard.loading')}</p>
         </div>
       </div>
     );

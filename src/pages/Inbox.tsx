@@ -29,7 +29,7 @@ import {
 interface InboxMessage {
   id: string;
   title: string;
-  body: string;
+  message: string;
   timestamp: Timestamp | number;
   amount?: number;
   type?: string;
@@ -116,7 +116,8 @@ const Inbox = () => {
 
     setSelectedMessage({ ...msg, read: true });
   };
-
+  console.log(selectedMessage);
+  debugger
   const handleClaim = async () => {
     const user = auth.currentUser;
     if (!user || !selectedMessage || selectedMessage.claimed) return;
@@ -401,7 +402,7 @@ const Inbox = () => {
                                 })
                               : msg.type === 'welcome_bonus'
                                 ? t('welcomeBonus.body', { amount: msg.amount || 0 })
-                                : msg.body}
+                                : msg.message}
                           </p>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 text-gray-500 text-sm">
@@ -506,7 +507,7 @@ const Inbox = () => {
                         })
                       : selectedMessage.type === 'welcome_bonus'
                         ? t('welcomeBonus.body', { amount: selectedMessage.amount || 0 })
-                        : selectedMessage.body}
+                        : selectedMessage.message}
                   </p>
 
                   {!selectedMessage.claimed &&

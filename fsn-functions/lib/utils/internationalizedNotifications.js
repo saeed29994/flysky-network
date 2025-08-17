@@ -118,11 +118,28 @@ async function sendInternationalizedNotification(userId, title, body, data) {
     try {
         // Get user's language preference
         const userLanguage = await getUserLanguage(userId);
+        // Add in-app notification to user's collection
+        try {
+            await admin.firestore().collection("users").doc(userId).collection("notifications").add({
+                type: data?.type || 'system',
+                title: title,
+                body: body,
+                read: false,
+                timestamp: admin.firestore.FieldValue.serverTimestamp(),
+                link: data?.link,
+                data: data
+            });
+            console.log(`✅ Added in-app notification to user ${userId}'s collection`);
+        }
+        catch (error) {
+            console.error(`❌ Failed to add in-app notification for user ${userId}:`, error);
+        }
         // Get user's FCM token
         const tokenDoc = await admin.firestore().collection('userTokens').doc(userId).get();
         if (!tokenDoc.exists || !tokenDoc.data()?.token) {
             console.warn(`⚠️ No FCM token found for user ${userId}`);
-            return false;
+            // Still return true since in-app notification was created
+            return true;
         }
         const token = tokenDoc.data().token;
         // Translate notification content
@@ -173,6 +190,23 @@ async function sendInternationalizedNotificationsToUsers(userIds, title, body, d
         const batchPromises = batch.map(async (userId) => {
             try {
                 const userLanguage = await getUserLanguage(userId);
+                // Add in-app notification to user's collection
+                try {
+                    await admin.firestore().collection("users").doc(userId).collection("notifications").add({
+                        type: data?.type || 'system',
+                        title: title,
+                        body: body,
+                        read: false,
+                        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+                        link: data?.link,
+                        data: data
+                    });
+                    console.log(`✅ Added in-app notification to user ${userId}'s collection`);
+                }
+                catch (error) {
+                    console.error(`❌ Failed to add in-app notification for user ${userId}:`, error);
+                }
+                // Send push notification
                 const success = await sendInternationalizedNotification(userId, title, body, data);
                 results.push({ userId, success, language: userLanguage });
                 if (success) {

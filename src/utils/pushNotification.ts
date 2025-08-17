@@ -122,8 +122,11 @@ export const listenToForegroundMessages = () => {
     console.warn('⚠️ Messaging not available');
     return;
   }
+  
+  console.log('🔔 Setting up foreground message listener...');
+  
   onMessage(messaging, (payload) => {
-    console.log('📥 تم استقبال إشعار أثناء فتح التطبيق:', payload);
+    console.log('📥 Received foreground message:', payload);
     
     // Show foreground notification using Notification API
     if (payload.notification) {
@@ -132,19 +135,39 @@ export const listenToForegroundMessages = () => {
         body: body,
         icon: '/fsn-logo.png',
         badge: '/fsn-logo.png',
-        data: payload.data
+        data: payload.data,
+        tag: 'foreground-notification', // Prevent duplicate notifications
+        requireInteraction: false,
+        silent: false
       };
       
       try {
         // Check if we have permission before showing
         if (Notification.permission === 'granted') {
-          new Notification(title || 'FSN Network', notifOptions);
+          const notification = new Notification(title || 'FSN Network', notifOptions);
+          
+          // Auto-close after 5 seconds
+          setTimeout(() => {
+            notification.close();
+          }, 5000);
+          
+          console.log('✅ Foreground notification shown successfully');
+        } else {
+          console.warn('⚠️ No permission to show notifications');
         }
       } catch (error) {
         console.error('❌ Error showing foreground notification:', error);
       }
+    } else if (payload.data) {
+      // Handle data-only messages
+      console.log('📊 Received data-only message:', payload.data);
+      
+      // You can add custom handling for data-only messages here
+      // For example, updating UI, showing custom notifications, etc.
     }
   });
+  
+  console.log('✅ Foreground message listener set up successfully');
 };
 
 // Add a new method to check FCM permission status

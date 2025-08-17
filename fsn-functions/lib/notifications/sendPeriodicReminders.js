@@ -92,9 +92,20 @@ exports.sendDailyReminders = functions.pubsub
             // Check mining activity
             if (!userData.lastMiningTime ||
                 userData.lastMiningTime.toMillis() < oneDayAgo.getTime()) {
-                // User hasn't mined in over 24 hours, send reminder
-                await sendMiningReminder(userId, fcmTokens, lang, userData);
-                miningRemindersCount++;
+                // Check if user already received a mining reminder recently (within last 24 hours)
+                const recentMiningRemindersQuery = await db.collection("users").doc(userId).collection("notifications")
+                    .where('type', '==', 'mining_reminder')
+                    .where('timestamp', '>=', oneDayAgo)
+                    .limit(1)
+                    .get();
+                if (recentMiningRemindersQuery.empty) {
+                    // User hasn't received a mining reminder recently, send one
+                    await sendMiningReminder(userId, fcmTokens, lang, userData);
+                    miningRemindersCount++;
+                }
+                else {
+                    console.log(`ℹ️ User ${userId} already received a mining reminder recently, skipping`);
+                }
             }
             // Check staking activity - optional based on plan
             if (userData.plan &&
@@ -108,9 +119,20 @@ exports.sendDailyReminders = functions.pubsub
                     .limit(1)
                     .get();
                 if (stakingQuery.empty) {
-                    // No active staking found, send reminder
-                    await sendStakingReminder(userId, fcmTokens, lang, userData);
-                    stakingRemindersCount++;
+                    // Check if user already received a staking reminder recently (within last 24 hours)
+                    const recentStakingRemindersQuery = await db.collection("users").doc(userId).collection("notifications")
+                        .where('type', '==', 'staking_reminder')
+                        .where('timestamp', '>=', oneDayAgo)
+                        .limit(1)
+                        .get();
+                    if (recentStakingRemindersQuery.empty) {
+                        // User hasn't received a staking reminder recently, send one
+                        await sendStakingReminder(userId, fcmTokens, lang, userData);
+                        stakingRemindersCount++;
+                    }
+                    else {
+                        console.log(`ℹ️ User ${userId} already received a staking reminder recently, skipping`);
+                    }
                 }
             }
         }

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { doc, updateDoc, serverTimestamp, getDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp, getDoc, collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { notifyMiningComplete } from '../utils/notifications';
 import { Line } from 'react-chartjs-2';
@@ -163,17 +163,82 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
         setClaimReady(true);
         setIsMaxed(true);
         setRemainingTime(0);
-        if (!sentNotification.current) {
-          // Trigger the notification and set the flag
-          notifyMiningComplete()
-            .then(() => {
-              console.log("✅ Mining completion notification triggered successfully");
-              sentNotification.current = true;
-            })
-            .catch((error) => {
-              console.error("❌ Error triggering mining notification:", error);
+        
+        // Check if we've already sent a notification for this mining session
+        // Use a more persistent approach to prevent duplicate notifications
+        const checkAndSendNotification = async () => {
+          const user = auth.currentUser;
+          if (!user) return;
+          
+          try {
+            // First check if user has already claimed today (to prevent notifications after claiming)
+            const userRef = doc(db, 'users', user.uid);
+            const userDoc = await getDoc(userRef);
+            const userData = userDoc.data();
+            
+            // If user has already claimed today and it's a new day, don't send notification
+            if (userData?.lastMiningTime) {
+              const lastMiningTime = userData.lastMiningTime.toDate();
+              const now = new Date();
+              const isSameDay = lastMiningTime.getDate() === now.getDate() &&
+                               lastMiningTime.getMonth() === now.getMonth() &&
+                               lastMiningTime.getFullYear() === now.getFullYear();
+              
+              if (isSameDay && userData?.dailyMined === 0) {
+                console.log("ℹ️ User already claimed today, skipping notification");
+                return;
+              }
+            }
+            
+            // Check if we already have a notification for this mining session
+            const notificationsRef = collection(db, `users/${user.uid}/notifications`);
+            const recentNotificationsQuery = query(
+              notificationsRef,
+              where('type', '==', 'claim_reward'),
+              where('timestamp', '>=', new Date(Date.now() - 24 * 60 * 60 * 1000)), // Last 24 hours
+              orderBy('timestamp', 'desc'),
+              limit(1)
+            );
+            
+            const snapshot = await getDocs(recentNotificationsQuery);
+            const hasRecentNotification = snapshot.docs.some(doc => {
+              const data = doc.data();
+              // Check if this notification is for mining completion and was created recently
+              return data.type === 'claim_reward' && 
+                     data.title?.includes('Mining Complete') &&
+                     data.timestamp?.toDate() > new Date(Date.now() - 5 * 60 * 1000); // Last 5 minutes
             });
-        }
+            
+            if (!hasRecentNotification && !sentNotification.current) {
+              // Only send notification if we don't have a recent one and haven't sent one this session
+              notifyMiningComplete()
+                .then(() => {
+                  console.log("✅ Mining completion notification triggered successfully");
+                  sentNotification.current = true;
+                })
+                .catch((error) => {
+                  console.error("❌ Error triggering mining notification:", error);
+                });
+            } else {
+              console.log("ℹ️ Skipping duplicate mining notification");
+            }
+          } catch (error) {
+            console.error("❌ Error checking for existing notifications:", error);
+            // Fallback to the original logic if checking fails
+            if (!sentNotification.current) {
+              notifyMiningComplete()
+                .then(() => {
+                  console.log("✅ Mining completion notification triggered successfully (fallback)");
+                  sentNotification.current = true;
+                })
+                .catch((error) => {
+                  console.error("❌ Error triggering mining notification (fallback):", error);
+                });
+            }
+          }
+        };
+        
+        checkAndSendNotification();
       } else {
         setRemainingTime(MINING_CYCLE_SECONDS - elapsed);
       }

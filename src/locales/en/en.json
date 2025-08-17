@@ -422,6 +422,7 @@
     "title": "Notifications",
     "unread": "Unread",
     "markAllAsRead": "Mark all as read",
+    "markAsRead": "Mark as read",
     "noNotifications": "No notifications",
     "viewAll": "View all notifications",
     "empty": "You have no notifications",

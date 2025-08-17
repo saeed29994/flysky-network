@@ -49,7 +49,7 @@ Object.defineProperty(exports, "sendDailyReminders", { enumerable: true, get: fu
 if (!admin.apps.length) {
     admin.initializeApp();
 }
-// Note: translateFunction and sendPushNotification are defined in their respective files
+// Note: translateFunction is defined in its respective file
 // to avoid duplicate function definitions
 // Add the scheduled function to process scheduled notifications
 exports.processScheduledNotifications = functions.pubsub

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell, X } from 'lucide-react';
+import { Bell, X, Check, CheckCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useNotifications } from '../hooks/useNotifications';
+import { useUserNotifications } from '../hooks/useUserNotifications';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
@@ -13,9 +13,11 @@ export const NotificationBell: React.FC = () => {
   const {
     notifications,
     loading,
-  } = useNotifications();
+    markAsRead,
+    markAllAsRead,
+    unreadCount,
+  } = useUserNotifications();
 
-  console.log(notifications);
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,10 +32,10 @@ export const NotificationBell: React.FC = () => {
     };
   }, []);
 
-  const unreadCount = notifications.length; // Since hook doesn't expose read flags, show total count
   // Format timestamp
-  const formatTime = (date: Date | undefined) => {
-    if (!date) return '';
+  const formatTime = (timestamp: any) => {
+    if (!timestamp) return '';
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     const now = new Date();
     if (
       date.getDate() === now.getDate() &&
@@ -52,6 +54,32 @@ export const NotificationBell: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleMarkAsRead = async (notificationId: string) => {
+    try {
+      await markAsRead(notificationId);
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await markAllAsRead();
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
+  };
+
+  const handleNotificationClick = (notification: any) => {
+    // Mark as read if not already read
+    if (!notification.read) {
+      handleMarkAsRead(notification.id);
+    }
+    
+    setIsOpen(false);
+    navigate('/notifications');
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Notification Bell */}
@@ -62,7 +90,7 @@ export const NotificationBell: React.FC = () => {
       >
         <Bell className="w-6 h-6 text-white" />
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-semibold shadow-lg">
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-semibold shadow-lg animate-pulse">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -76,7 +104,7 @@ export const NotificationBell: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed z-50 top-16 right-0 left-0 mx-2 md:left-auto md:right-8 md:top-16 md:mx-0 md:w-[400px] max-h-[calc(100vh-6rem)] md:max-h-[500px] bg-gray-900/95 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl overflow-hidden flex flex-col"
+            className="fixed z-50 top-16 right-0 left-0 mx-2 md:left-auto md:right-8 md:top-16 md:mx-0 md:w-[450px] max-h-[calc(100vh-6rem)] md:max-h-[600px] bg-gray-900/95 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl overflow-hidden flex flex-col"
             style={{ transformOrigin: 'top right' }}
           >
             {/* Header */}
@@ -85,15 +113,25 @@ export const NotificationBell: React.FC = () => {
                 <Bell className="w-4 h-4" /> 
                 {t('mainNotifications.title')}
                 {unreadCount > 0 && (
-                  <span className="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                  <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
                     {unreadCount}
                   </span>
                 )}
               </h3>
               <div className="flex items-center gap-2">
+                {unreadCount > 0 && (
+                  <button
+                    onClick={handleMarkAllAsRead}
+                    className="text-xs text-blue-400 hover:text-blue-300 px-2 py-1 rounded-lg hover:bg-blue-500/10 transition-colors flex items-center gap-1"
+                    title={t('mainNotifications.markAllAsRead')}
+                  >
+                    <CheckCheck className="w-3 h-3" />
+                    {t('mainNotifications.markAllAsRead')}
+                  </button>
+                )}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-gray-400 hover:text-white p-1 rounded-full hover:bg-white/5"
+                  className="text-gray-400 hover:text-white p-1 rounded-full hover:bg-white/5 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -109,36 +147,95 @@ export const NotificationBell: React.FC = () => {
                 </div>
               ) : notifications.length === 0 ? (
                 <div className="p-12 text-center">
-                  <Bell className="w-10 h-10 text-gray-500 mx-auto mb-3" />
+                  <Bell className="w-12 h-12 text-gray-500 mx-auto mb-3" />
                   <p className="text-gray-300 text-sm">{t('mainNotifications.noNotifications')}</p>
                 </div>
               ) : (
-                notifications.map((notification) => (
-                  <div
-                    key={notification.id}
-                    className={`p-4 border-b border-white/5 hover:bg-white/10 cursor-pointer transition-colors`}
-                    onClick={() => {
-                      setIsOpen(false);
-                      navigate('/notifications');
-                    }}
-                  >
-                    <div className="flex gap-3">
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium text-white flex items-center gap-2">
-                          {t(notification.title)}
-                        </h4>
-                        <p className="text-sm text-gray-300 mt-1 line-clamp-2 md:line-clamp-none">
-                          {t(notification.message)}
-                        </p>
-                        <div className="flex justify-between items-center mt-2">
-                          <span className="text-xs text-gray-400">
-                            {formatTime(notification.createdAt)}
-                          </span>
+                <div className="space-y-1 p-2">
+                  {notifications.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className={`group relative p-4 rounded-lg border border-white/5 hover:bg-white/10 cursor-pointer transition-all duration-200 ${
+                        !notification.read ? 'bg-blue-500/10 border-blue-500/20' : 'hover:border-white/10'
+                      }`}
+                      onClick={() => handleNotificationClick(notification)}
+                    >
+                      {/* Read/Unread indicator */}
+                      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {!notification.read ? (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleMarkAsRead(notification.id);
+                            }}
+                            className="p-1.5 rounded-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 hover:text-blue-300 transition-colors"
+                            title={t('mainNotifications.markAsRead')}
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                          </button>
+                        ) : (
+                          <div className="p-1.5 rounded-full bg-green-500/20 text-green-400">
+                            <CheckCheck className="w-3.5 h-3.5" />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex gap-3 pr-12">
+                        {/* Notification icon based on type */}
+                        <div className="flex-shrink-0 mt-1">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                            !notification.read ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-600/50 text-gray-400'
+                          }`}>
+                            {notification.type === 'claim_reward' ? (
+                              <span className="text-lg">🎁</span>
+                            ) : notification.type === 'referral_bonus' ? (
+                              <span className="text-lg">👥</span>
+                            ) : notification.type === 'mining_reminder' ? (
+                              <span className="text-lg">⛏️</span>
+                            ) : notification.type === 'staking_reminder' ? (
+                              <span className="text-lg">🔒</span>
+                            ) : notification.type === 'inbox_message' ? (
+                              <span className="text-lg">💬</span>
+                            ) : (
+                              <span className="text-lg">🔔</span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <h4 className={`text-sm font-medium flex items-center gap-2 ${
+                            !notification.read ? 'text-white' : 'text-gray-300'
+                          }`}>
+                            {notification.title}
+                            {!notification.read && (
+                              <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+                            )}
+                          </h4>
+                          <p className={`text-sm mt-1 line-clamp-2 ${
+                            !notification.read ? 'text-gray-200' : 'text-gray-400'
+                          }`}>
+                            {notification.body}
+                          </p>
+                          <div className="flex justify-between items-center mt-2">
+                            <span className="text-xs text-gray-500">
+                              {formatTime(notification.timestamp)}
+                            </span>
+                            <span className={`text-xs px-2 py-1 rounded-full ${
+                              notification.type === 'claim_reward' ? 'bg-yellow-500/20 text-yellow-400' :
+                              notification.type === 'referral_bonus' ? 'bg-green-500/20 text-green-400' :
+                              notification.type === 'mining_reminder' ? 'bg-purple-500/20 text-purple-400' :
+                              notification.type === 'staking_reminder' ? 'bg-pink-500/20 text-pink-400' :
+                              notification.type === 'inbox_message' ? 'bg-blue-500/20 text-blue-400' :
+                              'bg-gray-500/20 text-gray-400'
+                            }`}>
+                              {notification.type.replace('_', ' ')}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </div>
 

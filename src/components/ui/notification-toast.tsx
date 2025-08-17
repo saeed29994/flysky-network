@@ -1,11 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { X, Bell, Info, Gift, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Notification } from '../../hooks/useNotifications';
 import { useTranslation } from 'react-i18next';
 
+// Interface for user notifications (from useUserNotifications)
+interface UserNotification {
+  id: string;
+  type: string;
+  title: string;
+  body: string;
+  read: boolean;
+  timestamp: any;
+  link?: string;
+  data?: any;
+}
+
 interface NotificationToastProps {
-  notification: Notification | null;
+  notification: UserNotification | null;
   onClose: () => void;
   onRead: (id: string) => void;
   onNavigate?: (link: string) => void;
@@ -17,26 +28,43 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
   onClose,
   onRead,
   onNavigate,
-  autoCloseTime = 3000, // 3 seconds default
+  autoCloseTime = 5000, // 5 seconds default
 }) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
+  const [progressWidth, setProgressWidth] = useState(100);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const animationCompleteRef = useRef(false);
+  const hasStartedRef = useRef(false);
 
   // Reset state when a new notification arrives
   useEffect(() => {
-    if (notification) {
+    if (notification && !hasStartedRef.current) {
       // Clear any existing timers
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
+      if (progressTimerRef.current) {
+        clearTimeout(progressTimerRef.current);
+      }
       
-      // Reset animation complete flag
+      // Reset flags
       animationCompleteRef.current = false;
+      hasStartedRef.current = true;
       
       // Make notification visible
       setIsVisible(true);
+      setProgressWidth(100);
+      
+      // Start progress bar animation
+      const progressStep = 100 / (autoCloseTime / 50); // Update every 50ms
+      progressTimerRef.current = setInterval(() => {
+        setProgressWidth(prev => {
+          const newWidth = prev - progressStep;
+          return newWidth <= 0 ? 0 : newWidth;
+        });
+      }, 50);
       
       // Set timer for auto-close
       timerRef.current = setTimeout(() => {
@@ -49,8 +77,18 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
+      if (progressTimerRef.current) {
+        clearInterval(progressTimerRef.current);
+      }
     };
-  }, [notification, autoCloseTime]);
+  }, [notification?.id, autoCloseTime]); // Only depend on notification ID, not the entire object
+
+  // Reset hasStartedRef when notification becomes null
+  useEffect(() => {
+    if (!notification) {
+      hasStartedRef.current = false;
+    }
+  }, [notification]);
 
   // Handle animation complete - clean up after exit animation
   const handleAnimationComplete = (definition: string) => {
@@ -65,11 +103,11 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'claim_reward':
+      case 'referral_bonus':
+      case 'welcome_bonus':
         return <Gift className="w-5 h-5 text-yellow-400" />;
       case 'inbox_message':
         return <Bell className="w-5 h-5 text-blue-400" />;
-      case 'referral_bonus':
-        return <Gift className="w-5 h-5 text-green-400" />;
       case 'mining_reminder':
       case 'staking_reminder':
         return <Clock className="w-5 h-5 text-purple-400" />;
@@ -81,7 +119,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
   // Get translated type label
   const getNotificationTypeLabel = (type: string) => {
     try {
-      return t(`mainNotifications.types.${type}`);
+      return t(`mainNotifications.types.${type}`) || t('mainNotifications.types.info') || 'Notification';
     } catch (error) {
       // Fallback to a default label if translation key doesn't exist
       return t('mainNotifications.types.info') || 'Notification';
@@ -94,7 +132,9 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
       onRead(notification.id);
       
       // Navigate to the specified link if available
-      if (onNavigate) {
+      if (notification.link && onNavigate) {
+        onNavigate(notification.link);
+      } else if (onNavigate) {
         onNavigate('/notifications');
       }
     }
@@ -103,6 +143,14 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
   // Handle close button click
   const handleCloseClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    
+    // Clear timers
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    if (progressTimerRef.current) {
+      clearInterval(progressTimerRef.current);
+    }
     
     // Just trigger the animation to hide
     setIsVisible(false);
@@ -131,10 +179,10 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-white font-semibold text-sm line-clamp-1">
-                  {t(notification.title)}
+                  {notification.title}
                 </h3>
                 <p className="text-gray-200 text-xs mt-1 line-clamp-2">
-                  {t(notification.message)}
+                  {notification.body}
                 </p>
                 <p className="text-xs text-blue-400 mt-1">
                   {getNotificationTypeLabel(notification.type)}
@@ -150,14 +198,9 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
             
             {/* Progress bar for auto-close timer */}
             <div className="mt-2 h-1 w-full bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
-                initial={{ width: "100%" }}
-                animate={{ width: "0%" }}
-                transition={{ 
-                  duration: autoCloseTime / 1000, 
-                  ease: "linear"
-                }}
+              <div
+                className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-100 ease-linear"
+                style={{ width: `${progressWidth}%` }}
               />
             </div>
           </motion.div>
