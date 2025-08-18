@@ -198,7 +198,8 @@ const AdminDashboard = () => {
 
   // Calculate statistics
   const totalUsers = users.length;
-  const verifiedKycUsers = users.filter(u => u.kycStatus === 'Verified').length;
+  const verifiedKycUsers = users.filter(u => u.kycStatus === 'Verified' || u.kycStatus === 'Approved').length;
+  const pendingKycUsers = users.filter(u => u.kycStatus === 'Pending').length;
   const businessPlans = users.filter(u => u.plan === 'business').length;
   const firstClassPlans = users.filter(u => u.plan.startsWith('first')).length;
   const totalBalance = users.reduce((sum, u) => sum + u.balance, 0);
@@ -370,7 +371,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="bg-white/5 rounded-xl p-3 sm:p-4">
                       <p className="text-gray-400 text-xs sm:text-sm">{t('admin.dashboard.pendingKYC')}</p>
-                      <p className="text-base sm:text-lg font-bold text-white">{totalUsers - verifiedKycUsers}</p>
+                      <p className="text-base sm:text-lg font-bold text-white">{pendingKycUsers}</p>
                     </div>
                   </div>
                 </div>

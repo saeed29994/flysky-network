@@ -1113,6 +1113,9 @@
       "totalRewardsClaimed": "Total des récompenses réclamées",
       "totalDeposits": "Dépôts totaux",
       "totalWithdrawals": "Retraits totaux",
+      "stakingEarnings": "Gains de staking",
+      "activeStakes": "Stakes actifs",
+      "totalStaked": "Total staké",
       "tabs": {
         "basicInfo": "Informations de base",
         "accountInfo": "Compte",
@@ -1789,3 +1792,4 @@
     "edit": "Modifier"
   }
 }
+

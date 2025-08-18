@@ -1861,6 +1861,9 @@
       "totalRewardsClaimed": "إجمالي المكافآت المسحوبة",
       "totalDeposits": "إجمالي الإيداعات",
       "totalWithdrawals": "إجمالي السحوبات",
+      "stakingEarnings": "أرباح الستيكنج",
+      "activeStakes": "الستيكات النشطة",
+      "totalStaked": "إجمالي الستيك",
       "tabs": {
         "basicInfo": "معلومات أساسية",
         "accountInfo": "الحساب",

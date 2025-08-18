@@ -2052,6 +2052,9 @@
       "totalRewardsClaimed": "Total Rewards Claimed",
       "totalDeposits": "Total Deposits",
       "totalWithdrawals": "Total Withdrawals",
+      "stakingEarnings": "Staking Earnings",
+      "activeStakes": "Active Stakes",
+      "totalStaked": "Total Staked",
       "tabs": {
         "basicInfo": "Basic Info",
         "accountInfo": "Account",

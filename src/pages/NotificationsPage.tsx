@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import DashboardLayout from './DashboardLayout';
 import { useUserNotifications } from '../hooks/useUserNotifications';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
   Bell, 
@@ -24,7 +23,6 @@ type NotificationType = 'claim_reward' | 'inbox_message' | 'referral_bonus' | 'm
 
 const NotificationsPage: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState<NotificationType | 'all'>('all');
   const { 
@@ -191,14 +189,7 @@ const NotificationsPage: React.FC = () => {
                     <span className="sm:hidden">{t('mainNotifications.markAllAsRead')}</span>
                   </button>
                 )}
-                <button
-                  onClick={() => navigate('/dashboard')}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all duration-200 w-full sm:w-auto justify-center hover:scale-105"
-                >
-                  <CheckCircle className="w-4 h-4" />
-                  <span className="hidden sm:inline">{t('mainNotifications.viewAll')}</span>
-                  <span className="sm:hidden">{t('mainNotifications.viewAll')}</span>
-                </button>
+
               </div>
             </div>
           </div>

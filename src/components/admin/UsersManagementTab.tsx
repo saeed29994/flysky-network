@@ -7,7 +7,7 @@ import {
   FaUsers, FaSearch, FaEdit, FaTrash, FaCheck, FaTimes,
   FaCrown, FaStar, FaGem, FaCoins, FaUserCheck,
   FaBan, FaWallet, FaEye, FaCalendarAlt,
-  FaClock, FaGlobe, FaUserFriends, FaIdCard, FaMoneyBillWave, FaGift
+  FaClock, FaGlobe, FaUserFriends, FaIdCard, FaMoneyBillWave, FaGift, FaLock
 } from 'react-icons/fa';
 import { 
   fetchUsersFromFirebase, 
@@ -440,6 +440,33 @@ const UsersManagementTab = () => {
                       <div className="text-xl font-bold flex items-center gap-2">
                         <FaWallet className="text-red-400" />
                         {selectedUser.totalWithdrawals.toLocaleString()} FSN
+                      </div>
+                    </div>
+                    
+                    {/* Staking Earnings */}
+                    <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                      <div className="text-gray-400 mb-1">{t('admin.users.stakingEarnings')}</div>
+                      <div className="text-xl font-bold flex items-center gap-2">
+                        <FaCoins className="text-amber-400" />
+                        {(selectedUser.stakingEarnings || 0).toLocaleString()} FSN
+                      </div>
+                    </div>
+                    
+                    {/* Active Stakes */}
+                    <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                      <div className="text-gray-400 mb-1">{t('admin.users.activeStakes')}</div>
+                      <div className="text-xl font-bold flex items-center gap-2">
+                        <FaLock className="text-blue-400" />
+                        {selectedUser.activeStakes || 0} stakes
+                      </div>
+                    </div>
+                    
+                    {/* Total Staked Amount */}
+                    <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                      <div className="text-gray-400 mb-1">{t('admin.users.totalStaked')}</div>
+                      <div className="text-xl font-bold flex items-center gap-2">
+                        <FaLock className="text-orange-400" />
+                        {(selectedUser.totalStaked || 0).toLocaleString()} FSN
                       </div>
                     </div>
                   </div>

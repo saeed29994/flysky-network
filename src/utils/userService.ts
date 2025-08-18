@@ -30,6 +30,9 @@ export interface FirebaseUser {
     subscriptionEnd: number;
     paymentMethod: string;
   };
+  stakingEarnings?: number;
+  activeStakes?: number;
+  totalStaked?: number;
 }
 
 // Cache for users data to avoid repeated Firebase calls
@@ -51,6 +54,7 @@ export const fetchUsersFromFirebase = async (): Promise<FirebaseUser[]> => {
 
   try {
     console.log('🔍 Fetching users from Firebase...');
+    
     const usersRef = collection(db, 'users');
     const snapshot = await getDocs(usersRef);
     
@@ -61,8 +65,9 @@ export const fetchUsersFromFirebase = async (): Promise<FirebaseUser[]> => {
 
     const usersData: FirebaseUser[] = [];
     
-    snapshot.forEach((doc) => {
-      const data = doc.data();
+    // Process users sequentially to avoid overwhelming Firebase
+    for (const docSnap of snapshot.docs) {
+      const data = docSnap.data();
       
       // Calculate total transactions
       const transactionHistory = data.transactionHistory || [];
@@ -79,8 +84,35 @@ export const fetchUsersFromFirebase = async (): Promise<FirebaseUser[]> => {
                                  (data.stakingEarnings || 0) + 
                                  (data.referralReward || 0);
       
+      // Calculate staking earnings from staking collection
+      let stakingEarnings = 0;
+      let activeStakes = 0;
+      let totalStaked = 0;
+      
+      try {
+        const stakingSnap = await getDocs(collection(db, 'users', docSnap.id, 'staking'));
+        const stakingList = stakingSnap.docs.map(doc => doc.data());
+        
+        stakingList.forEach((stake: any) => {
+          if (stake.status === 'completed' && stake.claimed) {
+            // For completed stakes, calculate actual earnings
+            stakingEarnings += (stake.expectedReturn - stake.amount);
+          } else if (stake.status === 'active') {
+            // For active stakes, calculate potential earnings
+            stakingEarnings += (stake.expectedReturn - stake.amount);
+          }
+          
+          if (stake.status === 'active') {
+            activeStakes++;
+            totalStaked += stake.amount || 0;
+          }
+        });
+      } catch (err) {
+        console.error(`Error fetching staking data for user ${docSnap.id}:`, err);
+      }
+      
       usersData.push({
-        id: doc.id,
+        id: docSnap.id,
         fullName: data.fullName || '',
         email: data.email || '',
         createdAt: data.createdAt,
@@ -101,8 +133,11 @@ export const fetchUsersFromFirebase = async (): Promise<FirebaseUser[]> => {
         balance: data.balance || 0,
         role: data.role,
         membership: data.membership,
+        stakingEarnings,
+        activeStakes,
+        totalStaked,
       });
-    });
+    }
 
     // Update cache
     usersCache = usersData;
@@ -166,6 +201,33 @@ export const fetchUserById = async (userId: string): Promise<FirebaseUser | null
                                (data.stakingEarnings || 0) + 
                                (data.referralReward || 0);
     
+    // Calculate staking earnings from staking collection
+    let stakingEarnings = 0;
+    let activeStakes = 0;
+    let totalStaked = 0;
+    
+    try {
+      const stakingSnap = await getDocs(collection(db, 'users', userId, 'staking'));
+      const stakingList = stakingSnap.docs.map(doc => doc.data());
+      
+      stakingList.forEach((stake: any) => {
+        if (stake.status === 'completed' && stake.claimed) {
+          // For completed stakes, calculate actual earnings
+          stakingEarnings += (stake.expectedReturn - stake.amount);
+        } else if (stake.status === 'active') {
+          // For active stakes, calculate potential earnings
+          stakingEarnings += (stake.expectedReturn - stake.amount);
+        }
+        
+        if (stake.status === 'active') {
+          activeStakes++;
+          totalStaked += stake.amount || 0;
+        }
+      });
+    } catch (err) {
+      console.error(`Error fetching staking data for user ${userId}:`, err);
+    }
+    
     return {
       id: userSnap.id,
       fullName: data.fullName || '',
@@ -188,6 +250,9 @@ export const fetchUserById = async (userId: string): Promise<FirebaseUser | null
       balance: data.balance || 0,
       role: data.role,
       membership: data.membership,
+      stakingEarnings,
+      activeStakes,
+      totalStaked,
     };
     
   } catch (error) {

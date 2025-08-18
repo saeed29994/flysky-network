@@ -1837,6 +1837,9 @@
       "totalRewardsClaimed": "Toplam Talep Edilen Ödüller",
       "totalDeposits": "Toplam Yatırılan",
       "totalWithdrawals": "Toplam Çekilen",
+      "stakingEarnings": "Staking Kazançları",
+      "activeStakes": "Aktif Stakes",
+      "totalStaked": "Toplam Stakelenen",
       "tabs": {
         "basicInfo": "Temel Bilgiler",
         "accountInfo": "Hesap",

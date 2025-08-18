@@ -1831,6 +1831,9 @@
       "totalRewardsClaimed": "已领取总奖励",
       "totalDeposits": "总存入",
       "totalWithdrawals": "总取出",
+      "stakingEarnings": "质押收益",
+      "activeStakes": "活跃质押",
+      "totalStaked": "总质押量",
       "tabs": {
         "basicInfo": "基本信息",
         "accountInfo": "账户",
