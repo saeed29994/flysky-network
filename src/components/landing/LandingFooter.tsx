@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ChevronDown, Twitter, MessageCircle, MessageSquare } from 'lucide-react';
 import headerLogo from '../../assets/landing/header-logo.png';
 import { SOCIAL_LINKS, FOOTER_LINKS } from '../../constants/landing';
@@ -53,13 +54,23 @@ const NavigationSection: React.FC = () => {
     <div className="flex flex-col items-start sm:items-end space-y-4">
       <nav className="flex flex-wrap justify-start sm:justify-end gap-4 sm:gap-6">
         {FOOTER_LINKS.map((link) => (
-          <button
-            key={link.name}
-            onClick={() => handleFooterLinkClick(link)}
-            className="text-white hover:text-[#FABA33] transition-colors text-sm font-medium"
-          >
-            {t(`landing.footer.links.${link.name.toLowerCase()}`)}
-          </button>
+          link.action ? (
+            <button
+              key={link.name}
+              onClick={() => handleFooterLinkClick(link)}
+              className="text-white hover:text-[#FABA33] transition-colors text-sm font-medium"
+            >
+              {t(`landing.footer.links.${link.name.toLowerCase()}`)}
+            </button>
+          ) : (
+            <Link
+              key={link.name}
+              to={link.href}
+              className="text-white hover:text-[#FABA33] transition-colors text-sm font-medium"
+            >
+              {t(`landing.footer.links.${link.name.toLowerCase()}`)}
+            </Link>
+          )
         ))}
         <button className="flex items-center space-x-2 text-white cursor-pointer hover:text-[#FABA33] transition-colors">
           <span className="text-sm font-medium">{t('landing.footer.language')}</span>

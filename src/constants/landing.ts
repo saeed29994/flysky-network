@@ -130,6 +130,6 @@ export const SOCIAL_LINKS = [
 
 export const FOOTER_LINKS = [
   { name: 'Terms', href: '/terms', action: 'scroll-top' as const },
-  { name: 'Privacy', href: '/privacy', action: 'scroll-top' as const },
+  { name: 'Privacy', href: '/privacy-policy' },
   { name: 'Contact', href: '/contact', action: 'scroll-contact' as const }
 ]; 

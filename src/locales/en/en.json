@@ -249,6 +249,8 @@
     "referralCode": "Referral Code (optional)",
     "agreeTo": "I agree to the",
     "terms": "terms and conditions",
+    "and": "and",
+    "privacy": "privacy policy",
     "signUpWithGoogle": "Sign Up with Google",
     "haveAccount": "Already have an account?"
   },

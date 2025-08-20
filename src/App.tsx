@@ -43,6 +43,7 @@ import Contact from './pages/Contact';
 import AboutUs from './pages/AboutUs';
 import DashboardLayout from './pages/DashboardLayout';
 import TermsPage from './pages/TermsPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import PrintToken from './pages/PrintToken';
 import UploadBanner from './pages/UploadBanner';
 import NotificationsPage from './pages/NotificationsPage';
@@ -75,6 +76,7 @@ const publicRoutes = [
   { path: '/inbox-debug', element: <Inbox_Debug /> },
   { path: '/about', element: <AboutUs /> },
   { path: '/terms', element: <TermsPage /> },
+  { path: '/privacy-policy', element: <PrivacyPolicy /> },
   { path: '/upload-banner', element: <UploadBanner /> },
   { path: '/print-token', element: <PrintToken /> },
 ];

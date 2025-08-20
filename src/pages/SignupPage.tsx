@@ -309,6 +309,10 @@ const SignupPage = () => {
                   <Link to="/terms" className="text-purple-400 hover:text-purple-300 transition">
                     {t('auth.terms')}
                   </Link>
+                  {' '}{t('auth.and')}{' '}
+                  <Link to="/privacy-policy" className="text-purple-400 hover:text-purple-300 transition">
+                    {t('auth.privacy')}
+                  </Link>
                 </span>
               </label>
 

@@ -252,6 +252,8 @@
     "referralCode": "Referans Kodu (isteğe bağlı)",
     "agreeTo": "Şunları kabul ediyorum:",
     "terms": "şartlar ve koşullar",
+    "and": "ve",
+    "privacy": "gizlilik politikası",
     "signUpWithGoogle": "Google ile Kayıt Ol",
     "haveAccount": "Zaten hesabınız var mı?"
   },
