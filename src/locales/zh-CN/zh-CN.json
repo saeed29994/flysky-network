@@ -532,8 +532,10 @@
     "sections": {
       "main": "主要",
       "earning": "赚取",
-      "account": "账户"
-    }
+      "account": "账户",
+      "admin": "管理"
+    },
+    "goToAdmin": "前往管理"
   },
   "inboxPage": {
     "description": "管理您的消息、奖励和通知",
@@ -1716,6 +1718,8 @@
       "businessPlans": "商务计划",
       "firstClassPlans": "头等舱计划"
     },
+    "goToDashboard": "前往仪表板",
+    "goToDashboardShort": "仪表板",
     "tabs": {
       "dashboard": "仪表板",
       "users": "用户管理",

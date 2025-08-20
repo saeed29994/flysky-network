@@ -690,7 +690,36 @@ const Inbox = () => {
                 </div>
 
                 <div className="p-6 border-t border-white/10 bg-gray-900/80">
-                  <div className="flex justify-between items-center">
+                  {/* Mobile Layout - Stacked buttons */}
+                  <div className="md:hidden space-y-3">
+                    {!selectedMessage.archived && !selectedMessage.deleted && (
+                      <div className="flex gap-2 justify-center">
+                        <button
+                          onClick={() => handleArchive(selectedMessage)}
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 transition-colors"
+                        >
+                          <Archive className="w-4 h-4" />
+                          {t('archive')}
+                        </button>
+                        <button
+                          onClick={() => handleDelete(selectedMessage)}
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30 transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          {t('delete')}
+                        </button>
+                      </div>
+                    )}
+                    <button
+                      onClick={() => setSelectedMessage(null)}
+                      className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg"
+                    >
+                      {t('close')}
+                    </button>
+                  </div>
+
+                  {/* Desktop Layout - Side by side buttons */}
+                  <div className="hidden md:flex justify-between items-center">
                     <div className="flex gap-2">
                       {!selectedMessage.archived && !selectedMessage.deleted && (
                         <>

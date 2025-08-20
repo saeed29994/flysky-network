@@ -8,11 +8,11 @@ PODS:
   - CapacitorFirebaseMessaging (7.3.0):
     - Capacitor
     - FirebaseMessaging (~> 11.7.0)
-  - CapacitorShare (7.0.1):
+  - CapacitorShare (7.0.2):
     - Capacitor
-  - CapacitorSplashScreen (7.0.1):
+  - CapacitorSplashScreen (7.0.2):
     - Capacitor
-  - CapacitorStatusBar (7.0.1):
+  - CapacitorStatusBar (7.0.2):
     - Capacitor
   - FirebaseCore (11.7.0):
     - FirebaseCoreInternal (~> 11.7.0)
@@ -109,9 +109,9 @@ SPEC CHECKSUMS:
   CapacitorCordova: 5e58d04631bc5094894ac106e2bf1da18a9e6151
   CapacitorFirebaseApp: cbbd40ac6669947896d56b8ff661d19749d20ab4
   CapacitorFirebaseMessaging: 27e0095959a34129b8be6a96e49e1522caa496a6
-  CapacitorShare: 58d6c2da63b093e8693287b2d36db92435538435
-  CapacitorSplashScreen: 19cd3573e57507e02d6f34597a8c421e00931487
-  CapacitorStatusBar: 275cbf2f4dfc00388f519ef80c7ec22edda342c9
+  CapacitorShare: 051c3ceee0ddf3bb54574851a622bbb317eed5bd
+  CapacitorSplashScreen: 8d6c8cb0542a8e81585c593815db8785ed8ce454
+  CapacitorStatusBar: 5526833b87fa9c96a2a90c1322bb1f663c04505f
   FirebaseCore: 3227e35f4197a924206fbcdc0349325baf4f5de4
   FirebaseCoreInternal: d6c17dafc8dc33614733a8b52df78fcb4394c881
   FirebaseInstallations: 9347e719c3d52d8d7b9074b2c32407dd027305e9

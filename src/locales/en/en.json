@@ -459,7 +459,7 @@
       "default": "Install app for better experience"
     },
     "buttons": {
-      "howToInstall": "How to Install",
+      "howToInstall": "Install",
       "install": "Install"
     },
     "toast": {
@@ -522,8 +522,10 @@
     "sections": {
       "main": "Main",
       "earning": "Earning",
-      "account": "Account"
-    }
+      "account": "Account",
+      "admin": "Admin"
+    },
+    "goToAdmin": "Go to Admin"
   },
   "inboxPage": {
     "description": "Manage your messages, rewards, and notifications",
@@ -1938,6 +1940,8 @@
       "firstClassPlans": "First Class Plans",
       "pendingKYC": "Pending KYC"
     },
+    "goToDashboard": "Go to Dashboard",
+    "goToDashboardShort": "Dashboard",
     "tabs": {
       "dashboard": "Dashboard",
       "users": "Users Management",

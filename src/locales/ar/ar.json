@@ -509,8 +509,10 @@
     "sections": {
       "main": "الرئيسية",
       "earning": "الربح",
-      "account": "الحساب"
-    }
+      "account": "الحساب",
+      "admin": "الإدارة"
+    },
+    "goToAdmin": "اذهب للإدارة"
   },
   "inboxPage": {
     "description": "إدارة رسائلك ومكافآتك وإشعاراتك",
@@ -1749,6 +1751,8 @@
       "businessPlans": "الخطط التجارية",
       "firstClassPlans": "خطط الدرجة الأولى"
     },
+    "goToDashboard": "اذهب للوحة التحكم",
+    "goToDashboardShort": "الرئيسية",
     "tabs": {
       "dashboard": "لوحة التحكم",
       "users": "إدارة المستخدمين",

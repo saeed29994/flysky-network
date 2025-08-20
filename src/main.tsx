@@ -5,7 +5,7 @@ import App from './App';
 import './index.css';
 
 // ✅ مزود الاتصال مع المحافظ (يدعم WalletConnect تلقائيًا)
-import { AppKitProvider } from './providers/AppKitProvider';
+// import { AppKitProvider } from './providers/AppKitProvider';
 
 // ✅ تهيئة Sentry
 import * as Sentry from "@sentry/react";
@@ -20,9 +20,9 @@ const root = document.getElementById('root');
 if (root) {
   ReactDOM.createRoot(root).render(
     <React.StrictMode>
-      <AppKitProvider>
+      {/* <AppKitProvider> */}
         <App />
-      </AppKitProvider>
+      {/* </AppKitProvider> */}
     </React.StrictMode>
   );
 } else {

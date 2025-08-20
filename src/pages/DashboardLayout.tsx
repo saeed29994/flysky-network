@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Home, Wallet, User, Mail, LogOut, Menu, X, Phone, Settings,
-  Gem, Share2, Gamepad2, Video, Coins, Info,
+  Gem, Share2, Gamepad2, Video, Coins, Info, Shield,
 } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
@@ -33,6 +33,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [userPlan, setUserPlan] = useState('');
   const [kycStatus, setKycStatus] = useState<'Not Actived' | 'Pending' | 'Approved'>('Not Actived');
   const [subscriptionEnd, setSubscriptionEnd] = useState<string | undefined>(undefined);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -58,6 +59,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
         setUserName(data?.fullName || '');
         setUserEmail(data?.email || '');
+        setIsAdmin(data?.role === 'admin');
 
         const planValue = data?.membership?.planName || data?.plan || 'economy';
         const normalizedPlan =
@@ -161,6 +163,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       ]
     }
   ];
+
+  // Add admin section if user is admin
+  if (isAdmin) {
+    menuSections.push({
+      title: t('menu.sections.admin'),
+      items: [
+        { to: "/admin", icon: <Shield size={20} />, label: t('menu.goToAdmin') }
+      ]
+    });
+  }
 
   const isActiveLink = (path: string) => {
     return location.pathname === path;

@@ -18,6 +18,26 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
+        <!-- Firebase Analytics -->
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="true" />
+            
+        <!-- Firebase Performance -->
+        <meta-data
+            android:name="firebase_performance_collection_enabled"
+            android:value="true" />
+            
+        <!-- Firebase Crashlytics -->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="true" />
+            
+        <!-- Firebase App Check -->
+        <meta-data
+            android:name="firebase_appcheck_debug_token"
+            android:value="true" />
+
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"
             android:name=".MainActivity"
@@ -51,6 +71,17 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        
+        <!-- Firebase App Check Service -->
+        <service
+            android:name="com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory"
+            android:exported="false" />
+            
+        <!-- Firebase Performance Service -->
+        <service
+            android:name="com.google.firebase.perf.provider.FirebasePerfProvider"
+            android:exported="false"
+            android:authorities="${applicationId}.firebaseperfprovider" />
     </application>
 
     <!-- Permissions -->
@@ -60,4 +91,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- Additional Firebase Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>

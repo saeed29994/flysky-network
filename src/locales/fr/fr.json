@@ -267,7 +267,15 @@
     "profile": "Profil",
     "logout": "Déconnexion",
     "settings": "Paramètres",
-    "back": "Retour"
+    "kyc": "Vérification KYC",
+    "back": "Retour",
+    "sections": {
+      "main": "Principal",
+      "earning": "Gains",
+      "account": "Compte",
+      "admin": "Administration"
+    },
+    "goToAdmin": "Aller à l'Administration"
   },
   "archived": "Archivé",
   "trash": "Corbeille",
@@ -1001,6 +1009,8 @@
       "businessPlans": "Plans Business",
       "firstClassPlans": "Plans Première Classe"
     },
+    "goToDashboard": "Aller au Tableau de Bord",
+    "goToDashboardShort": "Tableau",
     "tabs": {
       "dashboard": "Tableau de bord",
       "users": "Gestion des utilisateurs",

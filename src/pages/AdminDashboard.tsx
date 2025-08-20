@@ -12,10 +12,11 @@ import {
 } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   FaUsers, FaIdCard, FaCreditCard, FaChartLine, FaEdit, FaTrash, FaCheck, FaTimes,
   FaCrown, FaStar, FaGem, FaCoins, FaUserCheck, FaEye, FaDownload,
-  FaGift, FaImage, FaChartBar, FaExclamationTriangle
+  FaGift, FaImage, FaChartBar, FaExclamationTriangle, FaHome
 } from 'react-icons/fa';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 
@@ -65,6 +66,7 @@ interface ManualPayment {
 
 const AdminDashboard = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const tabs = useMemo(() => [
     { key: 'dashboard', name: t('admin.tabs.dashboard'), shortName: t('admin.tabs.short.dashboard'), icon: FaChartLine },
@@ -232,7 +234,8 @@ const AdminDashboard = () => {
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 relative z-[100000]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="flex items-center justify-between gap-3 sm:gap-4">
+          {/* Desktop Layout */}
+          <div className="hidden md:flex items-center justify-between gap-3 sm:gap-4">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
                 <FaChartLine className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
@@ -243,7 +246,40 @@ const AdminDashboard = () => {
               </div>
             </div>
             <div className={`flex items-center gap-2 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-lg active:scale-95"
+              >
+                <FaHome className="w-4 h-4" />
+                <span className="hidden lg:inline">{t('admin.goToDashboard', 'Go to Dashboard')}</span>
+                <span className="lg:hidden">{t('admin.goToDashboardShort', 'Dashboard')}</span>
+              </button>
               <LanguageSwitcher />
+            </div>
+          </div>
+
+          {/* Mobile Layout */}
+          <div className="md:hidden space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <FaChartLine className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-bold text-white">{t('admin.dashboard.title', 'Admin Dashboard')}</h1>
+                  <p className="text-gray-400 text-xs">{t('admin.dashboard.subtitle', 'Manage users, KYC, and payments')}</p>
+                </div>
+              </div>
+              <LanguageSwitcher />
+            </div>
+            <div className="flex justify-center">
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-lg active:scale-95"
+              >
+                <FaHome className="w-4 h-4" />
+                {t('admin.goToDashboard', 'Go to Dashboard')}
+              </button>
             </div>
           </div>
         </div>

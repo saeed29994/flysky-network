@@ -494,8 +494,10 @@
     "sections": {
       "main": "Ana",
       "earning": "Kazanç",
-      "account": "Hesap"
-    }
+      "account": "Hesap",
+      "admin": "Yönetici"
+    },
+    "goToAdmin": "Yönetici Paneline Git"
   },
   "inboxPage": {
     "description": "Mesajlarınızı, ödüllerinizi ve bildirimlerinizi yönetin",
@@ -1725,6 +1727,8 @@
       "businessPlans": "İş Planları",
       "firstClassPlans": "Birinci Sınıf Planlar"
     },
+    "goToDashboard": "Panele Git",
+    "goToDashboardShort": "Panel",
     "tabs": {
       "dashboard": "Panel",
       "users": "Kullanıcı Yönetimi",
