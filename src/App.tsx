@@ -44,6 +44,7 @@ import AboutUs from './pages/AboutUs';
 import DashboardLayout from './pages/DashboardLayout';
 import TermsPage from './pages/TermsPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import PublicDataDeletion from './pages/PublicDataDeletion';
 import PrintToken from './pages/PrintToken';
 import UploadBanner from './pages/UploadBanner';
 import NotificationsPage from './pages/NotificationsPage';
@@ -77,6 +78,7 @@ const publicRoutes = [
   { path: '/about', element: <AboutUs /> },
   { path: '/terms', element: <TermsPage /> },
   { path: '/privacy-policy', element: <PrivacyPolicy /> },
+  { path: '/data-deletion', element: <PublicDataDeletion /> },
   { path: '/upload-banner', element: <UploadBanner /> },
   { path: '/print-token', element: <PrintToken /> },
 ];

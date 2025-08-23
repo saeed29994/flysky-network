@@ -793,6 +793,38 @@
       "emailUpdates": "E-posta Güncellemeleri",
       "deviceLogins": "Cihaz Girişleri",
       "viewAll": "Tüm Aktiviteyi Görüntüle"
+    },
+    "privacy": {
+      "title": "Gizlilik ve Veri",
+      "dataDeletion": "Veri Silme",
+      "requestDataDeletion": "Veri Silme Talebi",
+      "dataDeletionDescription": "Hesabınızın ve tüm ilişkili verilerin sistemimizden kalıcı olarak silinmesini talep edebilirsiniz. Bu işlem geri alınamaz.",
+      "whatWillBeDeleted": "Silinecek olanlar:",
+      "deletionItems": [
+        "Hesap profiliniz ve kişisel bilgileriniz",
+        "Tüm işlem geçmişi ve finansal veriler",
+        "Madencilik ve staking kayıtları",
+        "Bildirim tercihleri ve ayarları",
+        "Referans ilişkileri ve ödülleri",
+        "KYC doğrulama verileri",
+        "Tüm uygulama tercihleri ve ayarları"
+      ],
+      "deletionWarning": "⚠️ Uyarı: Bu işlem kalıcıdır ve geri alınamaz. Tüm verileriniz kalıcı olarak kaybolacaktır.",
+      "deletionProcess": "Silme Süreci:",
+      "deletionSteps": [
+        "Talebiniz 30 gün içinde incelenecektir",
+        "İşlem başladığında e-posta onayı alacaksınız",
+        "Veri silme işlemi 90 gün içinde tamamlanacaktır",
+        "Tamamlandığında nihai onay alacaksınız"
+      ],
+      "requestDeletion": "Veri Silme Talebi",
+      "cancelRequest": "Silme Talebini İptal Et",
+      "deletionRequested": "Silme Talebi Gönderildi",
+      "deletionRequestedMessage": "Veri silme talebiniz gönderildi. 24 saat içinde e-posta onayı alacaksınız.",
+      "deletionInProgress": "Silme İşlemi Devam Ediyor",
+      "deletionInProgressMessage": "Veri silme işleminiz şu anda işleniyor. Bu işlem tamamlanması 90 güne kadar sürebilir.",
+      "contactSupport": "Destek ile İletişim",
+      "contactSupportMessage": "Acil yardım veya silme talebiniz hakkında sorular için lütfen destek ekibimizle iletişime geçin."
     }
   },
   "whitepaper": {

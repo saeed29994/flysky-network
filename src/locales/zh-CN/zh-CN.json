@@ -809,6 +809,38 @@
       "emailUpdates": "电子邮件更新",
       "deviceLogins": "设备登录",
       "viewAll": "查看所有活动"
+    },
+    "privacy": {
+      "title": "隐私与数据",
+      "dataDeletion": "数据删除",
+      "requestDataDeletion": "请求数据删除",
+      "dataDeletionDescription": "您可以请求从我们的系统中永久删除您的账户和所有相关数据。此操作无法撤销。",
+      "whatWillBeDeleted": "将被删除的内容：",
+      "deletionItems": [
+        "您的账户档案和个人信息",
+        "所有交易历史和财务数据",
+        "挖矿和质押记录",
+        "通知偏好和设置",
+        "推荐关系和奖励",
+        "KYC验证数据",
+        "所有应用程序偏好和设置"
+      ],
+      "deletionWarning": "⚠️ 警告：此操作是永久性的，无法撤销。您将永久丢失所有数据。",
+      "deletionProcess": "删除过程：",
+      "deletionSteps": [
+        "您的请求将在30天内被审核",
+        "处理开始时您将收到电子邮件确认",
+        "数据删除将在90天内完成",
+        "完成后您将收到最终确认"
+      ],
+      "requestDeletion": "请求数据删除",
+      "cancelRequest": "取消删除请求",
+      "deletionRequested": "删除请求已提交",
+      "deletionRequestedMessage": "您的数据删除请求已提交。您将在24小时内收到电子邮件确认。",
+      "deletionInProgress": "删除进行中",
+      "deletionInProgressMessage": "您的数据删除目前正在处理中。这可能需要长达90天才能完成。",
+      "contactSupport": "联系支持",
+      "contactSupportMessage": "如需即时帮助或有关删除请求的问题，请联系我们的支持团队。"
     }
   },
   "whitepaper": {

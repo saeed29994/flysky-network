@@ -37,6 +37,7 @@ import ContentTab from '../components/admin/ContentTab';
 import NotificationsTab from '../components/admin/NotificationsTab';
 import KycVerificationTab from '../components/admin/KycVerificationTab';
 import UsersManagementTab from '../components/admin/UsersManagementTab';
+import DataDeletionManagementTab from '../components/admin/DataDeletionManagementTab';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -78,6 +79,7 @@ const AdminDashboard = () => {
     { key: 'rewards', name: t('admin.tabs.rewards'), shortName: t('admin.tabs.short.rewards'), icon: FaGift },
     { key: 'content', name: t('admin.tabs.content'), shortName: t('admin.tabs.short.content'), icon: FaImage },
     { key: 'notifications', name: t('admin.tabs.notifications'), shortName: t('admin.tabs.short.notifications'), icon: FaChartBar },
+    { key: 'dataDeletion', name: 'Data Deletion', shortName: 'Deletion', icon: FaTrash },
   ], [t]);
 
   const [users, setUsers] = useState<User[]>([]);
@@ -645,6 +647,11 @@ const AdminDashboard = () => {
             {/* Notifications Tab */}
             <Tab.Panel>
               <NotificationsTab />
+            </Tab.Panel>
+
+            {/* Data Deletion Tab */}
+            <Tab.Panel>
+              <DataDeletionManagementTab />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

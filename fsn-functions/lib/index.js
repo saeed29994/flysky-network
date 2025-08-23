@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendInternationalizedAdminNotification = exports.notifyKycRejection = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.sendManualNotification = exports.processScheduledNotifications = void 0;
+exports.sendInternationalizedAdminNotification = exports.notifyKycRejection = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.publicDataDeletion = exports.sendManualNotification = exports.processScheduledNotifications = void 0;
 const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
 // Import notification functions
@@ -681,6 +681,96 @@ exports.sendManualNotification = functions.https.onRequest(async (req, res) => {
         res.status(500).json({
             success: false,
             error: `Error sending notification: ${err.message}`
+        });
+    }
+});
+exports.publicDataDeletion = functions
+    .runWith({
+    timeoutSeconds: 60,
+    memory: '256MB'
+})
+    .https.onRequest(async (req, res) => {
+    // Enable CORS for web requests
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+    // Only allow POST requests
+    if (req.method !== 'POST') {
+        res.status(405).send('Method Not Allowed');
+        return;
+    }
+    try {
+        const { fullName, email, reason } = req.body;
+        // Validate required fields
+        if (!fullName || !email || !reason) {
+            res.status(400).json({
+                error: 'Missing required fields: fullName, email, reason'
+            });
+            return;
+        }
+        // Generate unique request ID
+        const requestId = `public_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        // Check if user already exists
+        const usersRef = admin.firestore().collection('users');
+        const userQuery = await usersRef.where('email', '==', email).limit(1).get();
+        let existingUser = null;
+        if (!userQuery.empty) {
+            existingUser = userQuery.docs[0];
+        }
+        // Create deletion request
+        const deletionRequest = {
+            fullName,
+            email,
+            reason,
+            source: 'public_web',
+            userAgent: req.headers['user-agent'] || '',
+            language: req.headers['accept-language'] || 'en',
+            timestamp: new Date().toISOString(),
+            status: 'pending',
+            requestDate: admin.firestore.FieldValue.serverTimestamp(),
+            estimatedCompletion: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+            isPublicRequest: true,
+            existingUser: !!existingUser,
+            existingUserId: existingUser ? existingUser.id : null
+        };
+        // Save to dataDeletionRequests collection
+        await admin.firestore()
+            .collection('dataDeletionRequests')
+            .doc(requestId)
+            .set(deletionRequest);
+        // Save to publicDeletionRequests collection for tracking
+        await admin.firestore()
+            .collection('publicDeletionRequests')
+            .doc(requestId)
+            .set({
+            ...deletionRequest,
+            requestId
+        });
+        // If user exists, update their user document
+        if (existingUser) {
+            await existingUser.ref.update({
+                dataDeletionRequested: true,
+                dataDeletionStatus: 'pending',
+                publicDeletionRequest: true,
+                lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+            });
+        }
+        res.json({
+            success: true,
+            message: 'Data deletion request submitted successfully',
+            requestId
+        });
+    }
+    catch (error) {
+        console.error('Error processing deletion request:', error);
+        res.status(500).json({
+            error: 'Failed to submit deletion request',
+            details: error.message || 'Unknown error occurred'
         });
     }
 });

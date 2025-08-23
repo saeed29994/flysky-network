@@ -42,6 +42,7 @@ import {
   X
 } from 'lucide-react';
 import PushNotificationManager from '../components/PushNotificationManager';
+import PrivacyDataTab from '../components/PrivacyDataTab';
 
 const Settings = () => {
   const { t, i18n } = useTranslation();
@@ -340,7 +341,8 @@ const Settings = () => {
     { id: 'security', label: t('settingsSection.securityTitle'), icon: Shield },
     { id: 'notifications', label: t('settingsSection.notificationsTitle'), icon: Bell },
     { id: 'appearance', label: t('settingsSection.appearanceTitle'), icon: Palette },
-    { id: 'account', label: t('settingsSection.account'), icon: Crown }
+    { id: 'account', label: t('settingsSection.account'), icon: Crown },
+    { id: 'privacy', label: t('settingsSection.privacy.title'), icon: Shield }
   ];
 
   const renderTabContent = () => {
@@ -742,6 +744,9 @@ const Settings = () => {
             )}
           </div>
         );
+
+      case 'privacy':
+        return <PrivacyDataTab />;
 
       default:
         return null;

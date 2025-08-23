@@ -843,6 +843,38 @@
       "emailUpdates": "Email Updates",
       "deviceLogins": "Device Logins",
       "viewAll": "View All Activity"
+    },
+    "privacy": {
+      "title": "Privacy & Data",
+      "dataDeletion": "Data Deletion",
+      "requestDataDeletion": "Request Data Deletion",
+      "dataDeletionDescription": "You can request that your account and all associated data be permanently deleted from our system. This action cannot be undone.",
+      "whatWillBeDeleted": "What will be deleted:",
+      "deletionItems": [
+        "Your account profile and personal information",
+        "All transaction history and financial data",
+        "Mining and staking records",
+        "Notification preferences and settings",
+        "Referral relationships and rewards",
+        "KYC verification data",
+        "All app preferences and settings"
+      ],
+      "deletionWarning": "⚠️ Warning: This action is permanent and cannot be undone. All your data will be permanently lost.",
+      "deletionProcess": "Deletion Process:",
+      "deletionSteps": [
+        "Your request will be reviewed within 30 days",
+        "You'll receive email confirmation when processing begins",
+        "Data deletion will be completed within 90 days",
+        "You'll receive final confirmation when complete"
+      ],
+      "requestDeletion": "Request Data Deletion",
+      "cancelRequest": "Cancel Deletion Request",
+      "deletionRequested": "Deletion Request Submitted",
+      "deletionRequestedMessage": "Your data deletion request has been submitted. You'll receive email confirmation within 24 hours.",
+      "deletionInProgress": "Deletion in Progress",
+      "deletionInProgressMessage": "Your data deletion is currently being processed. This may take up to 90 days to complete.",
+      "contactSupport": "Contact Support",
+      "contactSupportMessage": "For immediate assistance or questions about your deletion request, please contact our support team."
     }
   },
   "whitepaper": {

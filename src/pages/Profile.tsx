@@ -11,7 +11,10 @@ import {
   Hexagon, Trophy, Lock,
   Mail, Shield as ShieldIcon,
   Calendar as CalendarIcon, 
-  Edit
+  Edit,
+  Shield,
+  Trash2,
+  AlertTriangle
 } from 'lucide-react';
 
 interface UserStats {
@@ -86,7 +89,10 @@ const Profile = () => {
     createdAt: '',
     referralCode: '',
     language: 'en',
-    theme: 'dark'
+    theme: 'dark',
+    dataDeletionRequested: false,
+    dataDeletionStatus: 'none' as 'none' | 'pending' | 'processing' | 'completed' | 'cancelled',
+    publicDeletionRequest: false
   });
 
   const [userStats, setUserStats] = useState<UserStats>({
@@ -215,7 +221,10 @@ const Profile = () => {
             createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : '',
             referralCode: data.referralCode || '',
             language: data.language || 'en',
-            theme: data.theme || 'dark'
+            theme: data.theme || 'dark',
+            dataDeletionRequested: data.dataDeletionRequested || false,
+            dataDeletionStatus: data.dataDeletionStatus || 'none',
+            publicDeletionRequest: data.publicDeletionRequest || false
           });
 
           setUserStats({
@@ -248,9 +257,9 @@ const Profile = () => {
   const getPlanBadge = () => {
     if (userData.plan === 'first' || userData.plan === 'first-lifetime' || userData.plan === 'first-6') {
       return (
-        <div className="flex items-center gap-2">
-          <Crown className="w-4 h-4 text-yellow-400" />
-          <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs px-3 py-1 rounded-full font-semibold">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+          <Crown className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+          <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
             {t('profile.firstClass')}
           </span>
         </div>
@@ -258,18 +267,18 @@ const Profile = () => {
     }
     if (userData.plan === 'business') {
       return (
-        <div className="flex items-center gap-2">
-          <Star className="w-4 h-4 text-blue-400" />
-          <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+          <Star className="w-4 h-4 text-blue-400 flex-shrink-0" />
+          <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
             {t('profile.businessClass')}
           </span>
         </div>
       );
     }
     return (
-      <div className="flex items-center gap-2">
-        <Zap className="w-4 h-4 text-gray-400" />
-        <span className="bg-gradient-to-r from-gray-500 to-gray-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+        <Zap className="w-4 h-4 text-gray-400 flex-shrink-0" />
+        <span className="bg-gradient-to-r from-gray-500 to-gray-600 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
           {t('profile.economyClass')}
         </span>
       </div>
@@ -279,9 +288,9 @@ const Profile = () => {
   const getKYCStatus = () => {
     if (userData.kycStatus === 'Verified' || userData.kycStatus === 'Approved') {
       return (
-        <div className="flex items-center gap-2">
-          <CheckCircle className="w-4 h-4 text-green-400" />
-          <span className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+          <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+          <span className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
             {t('kycApproved')}
           </span>
         </div>
@@ -289,9 +298,9 @@ const Profile = () => {
     }
     if (userData.kycStatus === 'Pending') {
       return (
-        <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-yellow-400" />
-          <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs px-3 py-1 rounded-full font-semibold">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+          <Clock className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+          <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
             {t('kycPending')}
           </span>
         </div>
@@ -301,19 +310,64 @@ const Profile = () => {
     return (
       <button
         onClick={() => navigate('/kyc')}
-        className="flex items-center gap-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full hover:from-red-600 hover:to-pink-600 transition-all duration-200 font-semibold"
+        className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-2 sm:px-3 py-1 rounded-full hover:from-red-600 hover:to-pink-600 transition-all duration-200 font-semibold"
       >
-        <AlertCircle className="w-4 h-4" />
-        {t('notVerified')}
+        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        <span className="whitespace-nowrap">{t('notVerified')}</span>
       </button>
     );
+  };
+
+  const getDataDeletionStatus = () => {
+    if (userData.dataDeletionRequested) {
+      if (userData.dataDeletionStatus === 'completed') {
+        return (
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+            <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+            <span className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
+              Data Deleted
+            </span>
+          </div>
+        );
+      } else if (userData.dataDeletionStatus === 'processing') {
+        return (
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+            <Clock className="w-4 h-4 text-blue-400 flex-shrink-0" />
+            <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
+              Deletion in Progress
+            </span>
+          </div>
+        );
+      } else if (userData.dataDeletionStatus === 'cancelled') {
+        return (
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+            <AlertCircle className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <span className="bg-gradient-to-r from-gray-500 to-gray-600 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
+              Deletion Cancelled
+            </span>
+          </div>
+        );
+      } else {
+        // pending status
+        return (
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+            <Clock className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs px-2 sm:px-3 py-1 rounded-full font-semibold whitespace-nowrap">
+              Deletion Pending
+            </span>
+          </div>
+        );
+      }
+    }
+    return null;
   };
 
   const tabs = [
     { id: 'about', label: t('profile.about'), icon: User },
     { id: 'achievements', label: t('profile.achievements'), icon: Trophy },
     { id: 'activity', label: t('profile.activity'), icon: Activity },
-    { id: 'stats', label: t('profile.stats'), icon: ChartBar }
+    { id: 'stats', label: t('profile.stats'), icon: ChartBar },
+    { id: 'privacy', label: 'Privacy & Data', icon: Shield }
   ];
 
   const renderTabContent = () => {
@@ -362,6 +416,18 @@ const Profile = () => {
                     {getKYCStatus()}
                   </div>
                 </div>
+
+                {userData.dataDeletionRequested && (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/5 rounded-lg">
+                    <Trash2 className="w-5 h-5 text-red-400 flex-shrink-0 mt-1 sm:mt-0" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-white font-medium text-sm sm:text-base mb-2 sm:mb-0">Data Deletion Status</p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {getDataDeletionStatus()}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex items-center gap-4 p-3 sm:p-4 bg-white/5 rounded-lg">
                   <Users className="w-5 h-5 text-gray-400 flex-shrink-0" />
@@ -600,6 +666,101 @@ const Profile = () => {
           </div>
         );
 
+      case 'privacy':
+        return (
+          <div className="space-y-6">
+            {/* Data Deletion Status */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                <Shield className="w-5 h-5 text-blue-400" />
+                Data Deletion & Privacy
+              </h3>
+              
+              {userData.dataDeletionRequested ? (
+                <div className="space-y-4">
+                  <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Trash2 className="w-5 h-5 text-blue-400" />
+                      <h4 className="text-blue-400 font-semibold">Data Deletion Request Active</h4>
+                    </div>
+                    <div className="space-y-3">
+                      {getDataDeletionStatus()}
+                      <p className="text-blue-300 text-sm">
+                        Your data deletion request is being processed. This process typically takes up to 90 days to complete.
+                      </p>
+                      <div className="bg-blue-500/20 rounded-lg p-3">
+                        <h5 className="text-blue-300 font-medium mb-2">What happens next?</h5>
+                        <ul className="text-blue-200 text-sm space-y-1">
+                          <li>• Request reviewed within 30 days</li>
+                          <li>• Processing begins after approval</li>
+                          <li>• Data deletion completed within 90 days</li>
+                          <li>• Final confirmation sent via email</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <AlertTriangle className="w-5 h-5 text-yellow-400" />
+                      <h4 className="text-yellow-400 font-semibold">Important Notice</h4>
+                    </div>
+                    <p className="text-yellow-300 text-sm">
+                      While your deletion request is being processed, your account remains active but limited. 
+                      You can still access basic information but cannot perform new transactions.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <CheckCircle className="w-5 h-5 text-green-400" />
+                      <h4 className="text-green-400 font-semibold">No Active Deletion Requests</h4>
+                    </div>
+                    <p className="text-green-300 text-sm">
+                      Your account is currently active with no pending data deletion requests.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-gray-500/10 border border-gray-500/20 rounded-lg p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Shield className="w-5 h-5 text-gray-400" />
+                      <h4 className="text-gray-300 font-semibold">Data Privacy</h4>
+                    </div>
+                    <p className="text-gray-300 text-sm">
+                      Your personal data is protected and only used for service delivery. 
+                      You can request data deletion at any time through our privacy portal.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Privacy Actions */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-4">Privacy Actions</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  onClick={() => navigate('/data-deletion')}
+                  className="flex items-center gap-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-200"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Request Data Deletion
+                </button>
+                
+                <button
+                  onClick={() => navigate('/settings')}
+                  className="flex items-center gap-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-200"
+                >
+                  <Settings className="w-4 h-4" />
+                  Privacy Settings
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -653,9 +814,10 @@ const Profile = () => {
                   <span>{t('profile.memberSince')} {userData.createdAt}</span>
                 </div>
               </div>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-3">
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center sm:justify-start gap-2 sm:gap-3 mt-3">
                 {getPlanBadge()}
                 {getKYCStatus()}
+                {getDataDeletionStatus()}
               </div>
             </div>
           </div>

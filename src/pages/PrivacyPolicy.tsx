@@ -65,7 +65,13 @@ const PrivacyPolicy = () => {
               <h3 className="text-lg font-semibold text-yellow-400 mb-2">4. User Rights</h3>
               <ul className="list-disc list-inside space-y-1 ml-4 text-gray-300">
                 <li>You can access and update your account information at any time from within the app.</li>
-                <li>You have the right to delete your account and associated data directly in the app, in compliance with Google Play policy.</li>
+                <li>You have the right to request deletion of your account and associated data through multiple methods:</li>
+                <ul className="list-disc list-inside space-y-1 ml-8 mt-2">
+                  <li><strong>In-App:</strong> Settings → Privacy & Data tab</li>
+                  <li><strong>Web Portal:</strong> <a href="/data-deletion" className="text-blue-400 hover:text-blue-300 underline">Public Data Deletion Request Form</a></li>
+                  <li><strong>Email:</strong> support@fsncrew.io</li>
+                </ul>
+                <li>Data deletion requests are processed within 90 days and you will receive email confirmation at each stage.</li>
                 <li>You can contact us at <span className="text-yellow-400 font-semibold">support@fsncrew.io</span> for any privacy-related inquiries.</li>
               </ul>
             </div>

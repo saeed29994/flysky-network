@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Home, Wallet, User, Mail, LogOut, Menu, X, Phone, Settings,
-  Gem, Share2, Gamepad2, Video, Coins, Info, Shield,
+  Gem, Share2, Gamepad2, Video, Coins, Info, Shield, Trash2
 } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
@@ -159,6 +159,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         { to: "/wallet", icon: <Wallet size={20} />, label: t('menu.wallet') },
         { to: "/inbox", icon: <Mail size={20} />, label: t('menu.inbox'), badge: hasUnreadMessages },
         { to: "/settings", icon: <Settings size={20} />, label: t('menu.settings') },
+        { to: "/data-deletion", icon: <Trash2 size={20} />, label: "Data Deletion" },
         { to: "/about", icon: <Info size={20} />, label: t('menu.about') }
       ]
     }

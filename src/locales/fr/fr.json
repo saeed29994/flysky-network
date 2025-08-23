@@ -220,6 +220,38 @@
       "emailUpdates": "Mises à jour d'e-mail",
       "deviceLogins": "Connexions d'appareils",
       "viewAll": "Voir toute l'activité"
+    },
+    "privacy": {
+      "title": "Confidentialité et données",
+      "dataDeletion": "Suppression des données",
+      "requestDataDeletion": "Demander la suppression des données",
+      "dataDeletionDescription": "Vous pouvez demander que votre compte et toutes les données associées soient définitivement supprimés de notre système. Cette action ne peut pas être annulée.",
+      "whatWillBeDeleted": "Ce qui sera supprimé :",
+      "deletionItems": [
+        "Votre profil de compte et informations personnelles",
+        "Tous les antécédents de transactions et données financières",
+        "Enregistrements d'exploitation et de staking",
+        "Préférences de notification et paramètres",
+        "Relations de parrainage et récompenses",
+        "Données de vérification KYC",
+        "Toutes les préférences et paramètres de l'application"
+      ],
+      "deletionWarning": "⚠️ Avertissement : Cette action est définitive et ne peut pas être annulée. Toutes vos données seront définitivement perdues.",
+      "deletionProcess": "Processus de suppression :",
+      "deletionSteps": [
+        "Votre demande sera examinée dans les 30 jours",
+        "Vous recevrez une confirmation par e-mail lorsque le traitement commencera",
+        "La suppression des données sera terminée dans les 90 jours",
+        "Vous recevrez une confirmation finale une fois terminé"
+      ],
+      "requestDeletion": "Demander la suppression des données",
+      "cancelRequest": "Annuler la demande de suppression",
+      "deletionRequested": "Demande de suppression soumise",
+      "deletionRequestedMessage": "Votre demande de suppression de données a été soumise. Vous recevrez une confirmation par e-mail dans les 24 heures.",
+      "deletionInProgress": "Suppression en cours",
+      "deletionInProgressMessage": "Votre suppression de données est actuellement en cours de traitement. Cela peut prendre jusqu'à 90 jours pour être terminé.",
+      "contactSupport": "Contacter le support",
+      "contactSupportMessage": "Pour une assistance immédiate ou des questions sur votre demande de suppression, veuillez contacter notre équipe de support."
     }
   },
   "contact": {
