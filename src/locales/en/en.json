@@ -1406,6 +1406,68 @@
       "view": "View",
       "search": "Search"
     },
+    "dataDeletion": {
+      "title": "Data Deletion Management",
+      "description": "Review and manage user data deletion requests. This is a critical operation that permanently removes user data.",
+      "stats": {
+        "pending": "pending",
+        "approved": "approved",
+        "inProgress": "in progress",
+        "completed": "completed",
+        "cancelled": "cancelled"
+      },
+      "requests": {
+        "title": "Deletion Requests",
+        "total": "Total: {{count}} requests",
+        "noRequests": "No deletion requests found",
+        "loading": "Loading deletion requests..."
+      },
+      "badges": {
+        "webRequest": "Web Request",
+        "existingUser": "Existing User"
+      },
+      "fields": {
+        "email": "Email",
+        "requested": "Requested",
+        "source": "Source",
+        "reviewed": "Reviewed",
+        "started": "Started",
+        "completed": "Completed"
+      },
+      "actions": {
+        "viewDetails": "View Details",
+        "approve": "Approve",
+        "reject": "Reject",
+        "startProcessing": "Start Processing",
+        "completeDeletion": "Complete Deletion",
+        "processing": "Processing..."
+      },
+      "adminNotes": {
+        "title": "Admin Notes",
+        "placeholder": "Add notes about the deletion request...",
+        "description": "Notes will be saved when you update the status of a deletion request."
+      },
+      "details": {
+        "title": "Deletion Request Details",
+        "userName": "User Name",
+        "email": "Email",
+        "status": "Status",
+        "requestDate": "Request Date",
+        "reviewDate": "Review Date",
+        "processingStartDate": "Processing Start Date",
+        "completionDate": "Completion Date",
+        "estimatedCompletion": "Estimated Completion",
+        "adminNotes": "Admin Notes",
+        "userReason": "User Reason"
+      },
+      "messages": {
+        "statusUpdated": "Status updated to {{status}}",
+        "userDataDeleted": "User data deleted successfully",
+        "failedToLoad": "Failed to load deletion requests",
+        "failedToUpdate": "Failed to update status",
+        "failedToProcess": "Failed to process deletion"
+      }
+    },
     "route": {
       "checking": "Checking admin permissions..."
     },

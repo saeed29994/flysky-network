@@ -1225,6 +1225,68 @@
     "route": {
       "checking": "جاري التحقق من صلاحيات المشرف..."
     },
+    "dataDeletion": {
+      "title": "إدارة حذف البيانات",
+      "description": "مراجعة وإدارة طلبات حذف بيانات المستخدمين. هذه عملية حرجة تقوم بحذف بيانات المستخدمين بشكل دائم.",
+      "stats": {
+        "pending": "في الانتظار",
+        "approved": "تمت الموافقة",
+        "inProgress": "قيد المعالجة",
+        "completed": "مكتمل",
+        "cancelled": "ملغي"
+      },
+      "requests": {
+        "title": "طلبات الحذف",
+        "total": "الإجمالي: {{count}} طلب",
+        "noRequests": "لم يتم العثور على طلبات حذف",
+        "loading": "جاري تحميل طلبات الحذف..."
+      },
+      "badges": {
+        "webRequest": "طلب ويب",
+        "existingUser": "مستخدم موجود"
+      },
+      "fields": {
+        "email": "البريد الإلكتروني",
+        "requested": "تم الطلب",
+        "source": "المصدر",
+        "reviewed": "تم المراجعة",
+        "started": "تم البدء",
+        "completed": "مكتمل"
+      },
+      "actions": {
+        "viewDetails": "عرض التفاصيل",
+        "approve": "موافقة",
+        "reject": "رفض",
+        "startProcessing": "بدء المعالجة",
+        "completeDeletion": "إكمال الحذف",
+        "processing": "قيد المعالجة..."
+      },
+      "adminNotes": {
+        "title": "ملاحظات المشرف",
+        "placeholder": "أضف ملاحظات حول طلب الحذف...",
+        "description": "سيتم حفظ الملاحظات عند تحديث حالة طلب الحذف."
+      },
+      "details": {
+        "title": "تفاصيل طلب الحذف",
+        "userName": "اسم المستخدم",
+        "email": "البريد الإلكتروني",
+        "status": "الحالة",
+        "requestDate": "تاريخ الطلب",
+        "reviewDate": "تاريخ المراجعة",
+        "processingStartDate": "تاريخ بدء المعالجة",
+        "completionDate": "تاريخ الإكمال",
+        "estimatedCompletion": "تاريخ الإكمال المتوقع",
+        "adminNotes": "ملاحظات المشرف",
+        "userReason": "سبب المستخدم"
+      },
+      "messages": {
+        "statusUpdated": "تم تحديث الحالة إلى {{status}}",
+        "userDataDeleted": "تم حذف بيانات المستخدم بنجاح",
+        "failedToLoad": "فشل في تحميل طلبات الحذف",
+        "failedToUpdate": "فشل في تحديث الحالة",
+        "failedToProcess": "فشل في معالجة الحذف"
+      }
+    },
     "notifications": {
       "title": "الإشعارات",
       "description": "إدارة وإرسال الإشعارات للمستخدمين",

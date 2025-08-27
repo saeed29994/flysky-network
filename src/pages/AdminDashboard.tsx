@@ -290,20 +290,20 @@ const AdminDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <Tab.Group selectedIndex={selectedTab} onChange={setSelectedTab}>
           {/* Mobile Tab Selector */}
-          <div className="lg:hidden mb-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-2 border border-white/20 shadow-xl">
-              <div className="grid grid-cols-3 gap-2">
+          <div className="md:hidden mb-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-2 sm:p-3 border border-white/20 shadow-xl">
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
                 {tabs.map((tab, index) => (
                   <button
                     key={tab.name}
                     onClick={() => setSelectedTab(index)}
-                    className={`flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-xl text-xs font-medium transition-all duration-300 ${selectedTab === index
+                    className={`flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs font-medium transition-all duration-300 min-w-0 ${selectedTab === index
                         ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg'
-                        : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                        : 'text-gray-500 hover:bg-white/10 hover:text-white'
                       }`}
                   >
-                    <tab.icon className="w-4 h-4" />
-                    <span className="text-center leading-tight">{tab.shortName}</span>
+                    <tab.icon className="w-3 h-3" />
+                    <span className="text-center leading-tight text-[10px]">{tab.shortName}</span>
                   </button>
                 ))}
               </div>
@@ -311,14 +311,14 @@ const AdminDashboard = () => {
           </div>
 
           {/* Desktop Tab List */}
-          <div className="hidden lg:block">
-            <Tab.List className="flex space-x-2 rounded-2xl bg-white/10 backdrop-blur-sm p-2 border border-white/20 shadow-xl">
+          <div className="hidden md:block">
+            <Tab.List className="grid grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-2 rounded-2xl bg-white/10 backdrop-blur-sm p-2 lg:p-3 border border-white/20 shadow-xl">
               {tabs.map((tab) => (
                 <Tab
                   key={tab.name}
                   className={({ selected }) =>
                     classNames(
-                      'flex items-center gap-2 w-full rounded-xl py-3 px-4 text-sm font-medium leading-5 transition-all duration-300',
+                      'flex items-center gap-2 rounded-xl py-3 px-3 lg:px-4 text-xs lg:text-sm font-medium leading-5 transition-all duration-300 min-w-0',
                       selected
                         ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg transform scale-105'
                         : 'text-gray-300 hover:bg-white/10 hover:text-white'
@@ -326,13 +326,13 @@ const AdminDashboard = () => {
                   }
                 >
                   <tab.icon className="w-4 h-4" />
-                  {tab.name}
+                  <span className="truncate">{tab.name}</span>
                 </Tab>
               ))}
             </Tab.List>
           </div>
 
-          <Tab.Panels className="mt-6 lg:mt-8">
+          <Tab.Panels className="mt-4 md:mt-6 lg:mt-8">
             {/* Dashboard Tab */}
             <Tab.Panel>
               <motion.div

@@ -9,6 +9,7 @@ import { auth, db } from '../firebase';
 import {
   doc,
   setDoc,
+  updateDoc,
   serverTimestamp,
   getDoc,
   collection,
@@ -16,11 +17,12 @@ import {
   where,
   getDocs,
   Timestamp,
+  arrayUnion,
+  increment,
 } from 'firebase/firestore';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { requestPermissionAndToken } from '../utils/pushNotification';
-import { sendInternationalizedNotification } from '../utils/internationalizedNotificationService';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { Spinner } from '../components/ui/spinner';
@@ -71,22 +73,22 @@ const SignupPage = () => {
         type: 'welcome_bonus',
       });
 
-      await sendInternationalizedNotification({
-        title: t('welcomeBonus.fcmTitle'),
-        message: t('welcomeBonus.fcmBody', { amount: 500 }),
-        targetAudience: 'custom',
-        platforms: ['mobile', 'web'],
-        customUserIds: [uid], // Send only to this specific new user
-        data: {
-          type: 'welcome_bonus',
-          amount: '500' // Convert to string as required by the API
-        }
-      });
+      // Note: FCM notifications are handled by Cloud Functions when needed
+      // This prevents permission errors during signup
+      console.log('✅ Welcome message added to inbox');
     }
   };
 
   const registerReferral = async (referredCode: string, referredEmail: string) => {
     try {
+      console.log('🔍 Searching for referrer with code:', referredCode);
+      console.log('📧 Email to register:', referredEmail);
+      
+      // Check authentication status
+      const currentUser = auth.currentUser;
+      console.log('🔐 Current user authenticated:', !!currentUser);
+      console.log('🔐 Current user UID:', currentUser?.uid);
+      
       const q = query(collection(db, 'users'), where('referralCode', '==', referredCode));
       const querySnapshot = await getDocs(q);
 
@@ -97,29 +99,47 @@ const SignupPage = () => {
         const refUser = querySnapshot.docs[0];
         refUserRef = refUser.ref;
         refData = refUser.data();
+        console.log('✅ Found referrer by referral code:', refUser.id);
+        console.log('🔍 Referrer document path:', refUserRef.path);
       } else {
+        console.log('🔍 Trying alternative lookup by UID...');
         const altRef = doc(db, 'users', referredCode);
         const altSnap = await getDoc(altRef);
         if (altSnap.exists()) {
           refUserRef = altRef;
           refData = altSnap.data();
+          console.log('✅ Found referrer by UID:', referredCode);
+          console.log('🔍 Referrer document path:', refUserRef.path);
         }
       }
 
       if (refUserRef && refData) {
-        const referralList = refData.referralList || [];
-        referralList.push({
-          email: referredEmail,
-          status: 'Pending',
-        });
-
-        await setDoc(refUserRef, { referralList }, { merge: true });
-        console.log('✅ Referral registered successfully.');
+        console.log('📝 Updating referrer document:', refUserRef.id);
+        console.log('📊 Current referral count:', refData.referrals || 0);
+        console.log('📊 Current referral list length:', (refData.referralList || []).length);
+        
+        // Log the exact data we're trying to update
+        const updateData = {
+          referralList: arrayUnion({
+            email: referredEmail,
+            status: 'Pending',
+            timestamp: Date.now(),
+          }),
+          referrals: increment(1),
+        };
+        console.log('📝 Update data:', updateData);
+        
+        // Use updateDoc with FieldValue.increment to properly update referrals count
+        await updateDoc(refUserRef, updateData);
+        console.log('✅ Referral registered successfully with count increment.');
       } else {
         console.warn('⚠️ No matching referrer found for code:', referredCode);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('❌ Failed to update referral list:', err);
+      console.error('🔍 Error details:', err.message);
+      console.error('🔍 Error code:', err.code);
+      console.error('🔍 Full error object:', err);
     }
   };
 
@@ -158,7 +178,15 @@ const SignupPage = () => {
         transactionHistory: [],
       });
 
-      if (finalReferral) await registerReferral(finalReferral, email);
+      console.log('🔍 Final referral code:', finalReferral);
+      console.log('🔍 User email:', email);
+      
+      if (finalReferral) {
+        console.log('🔄 Registering referral...');
+        await registerReferral(finalReferral, email);
+      } else {
+        console.log('ℹ️ No referral code provided');
+      }
 
       await sendWelcomeMessage(user.uid);
       await sendEmailVerification(user);

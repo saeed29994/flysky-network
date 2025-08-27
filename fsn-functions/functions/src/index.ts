@@ -860,5 +860,8 @@ export {
   notifyKycRejection
 };
 
+// Export referral functions
+export { updateReferralStatus } from './referrals/updateReferralStatus';
+
 // Export internationalized admin notification function
 export { sendInternationalizedAdminNotification } from './adminNotifications';

@@ -1203,6 +1203,68 @@
     "route": {
       "checking": "正在检查管理员权限..."
     },
+    "dataDeletion": {
+      "title": "数据删除管理",
+      "description": "审查和管理用户数据删除请求。这是一项关键操作，将永久删除用户数据。",
+      "stats": {
+        "pending": "待处理",
+        "approved": "已批准",
+        "inProgress": "处理中",
+        "completed": "已完成",
+        "cancelled": "已取消"
+      },
+      "requests": {
+        "title": "删除请求",
+        "total": "总计：{{count}} 个请求",
+        "noRequests": "未找到删除请求",
+        "loading": "正在加载删除请求..."
+      },
+      "badges": {
+        "webRequest": "网络请求",
+        "existingUser": "现有用户"
+      },
+      "fields": {
+        "email": "邮箱",
+        "requested": "请求时间",
+        "source": "来源",
+        "reviewed": "审核时间",
+        "started": "开始时间",
+        "completed": "完成时间"
+      },
+      "actions": {
+        "viewDetails": "查看详情",
+        "approve": "批准",
+        "reject": "拒绝",
+        "startProcessing": "开始处理",
+        "completeDeletion": "完成删除",
+        "processing": "处理中..."
+      },
+      "adminNotes": {
+        "title": "管理员备注",
+        "placeholder": "添加关于删除请求的备注...",
+        "description": "当您更新删除请求状态时，备注将被保存。"
+      },
+      "details": {
+        "title": "删除请求详情",
+        "userName": "用户名",
+        "email": "邮箱",
+        "status": "状态",
+        "requestDate": "请求日期",
+        "reviewDate": "审核日期",
+        "processingStartDate": "处理开始日期",
+        "completionDate": "完成日期",
+        "estimatedCompletion": "预计完成时间",
+        "adminNotes": "管理员备注",
+        "userReason": "用户原因"
+      },
+      "messages": {
+        "statusUpdated": "状态已更新为 {{status}}",
+        "userDataDeleted": "用户数据已成功删除",
+        "failedToLoad": "加载删除请求失败",
+        "failedToUpdate": "更新状态失败",
+        "failedToProcess": "处理删除失败"
+      }
+    },
     "notifications": {
       "title": "通知",
       "description": "管理和发送通知给用户",

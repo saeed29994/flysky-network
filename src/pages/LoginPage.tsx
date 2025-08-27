@@ -8,7 +8,7 @@ import { auth, db } from '../firebase';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
 import { requestPermissionAndToken } from '../utils/pushNotification';
-import { doc, getDoc, setDoc, serverTimestamp, collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, query, where, getDocs, Timestamp, arrayUnion, increment } from 'firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { v4 as uuidv4 } from 'uuid';
@@ -83,14 +83,16 @@ const LoginPage = () => {
       }
 
       if (refUserRef && refData) {
-        const referralList = refData.referralList || [];
-        referralList.push({
-          email: referredEmail,
-          status: 'Pending',
+        // Use updateDoc with FieldValue.increment to properly update referrals count
+        await updateDoc(refUserRef, {
+          referralList: arrayUnion({
+            email: referredEmail,
+            status: 'Pending',
+            timestamp: Date.now(),
+          }),
+          referrals: increment(1),
         });
-
-        await setDoc(refUserRef, { referralList }, { merge: true });
-        console.log('✅ Referral registered successfully.');
+        console.log('✅ Referral registered successfully with count increment.');
       } else {
         console.warn('⚠️ No matching referrer found for code:', referredCode);
       }

@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendInternationalizedAdminNotification = exports.notifyKycRejection = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.publicDataDeletion = exports.sendManualNotification = exports.processScheduledNotifications = void 0;
+exports.sendInternationalizedAdminNotification = exports.updateReferralStatus = exports.notifyKycRejection = exports.sendDailyReminders = exports.notifyReferralBonus = exports.notifyNewMessage = exports.notifyMiningComplete = exports.publicDataDeletion = exports.sendManualNotification = exports.processScheduledNotifications = void 0;
 const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
 // Import notification functions
@@ -780,6 +780,9 @@ const runtimeOpts = {
     memory: '256MB',
     cors: true
 };
+// Export referral functions
+var updateReferralStatus_1 = require("./referrals/updateReferralStatus");
+Object.defineProperty(exports, "updateReferralStatus", { enumerable: true, get: function () { return updateReferralStatus_1.updateReferralStatus; } });
 // Export internationalized admin notification function
 var adminNotifications_1 = require("./adminNotifications");
 Object.defineProperty(exports, "sendInternationalizedAdminNotification", { enumerable: true, get: function () { return adminNotifications_1.sendInternationalizedAdminNotification; } });

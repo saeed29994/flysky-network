@@ -1185,6 +1185,68 @@
     "route": {
       "checking": "Yönetici izinleri kontrol ediliyor..."
     },
+    "dataDeletion": {
+      "title": "Veri Silme Yönetimi",
+      "description": "Kullanıcı veri silme isteklerini inceleyin ve yönetin. Bu, kullanıcı verilerini kalıcı olarak kaldıran kritik bir işlemdir.",
+      "stats": {
+        "pending": "beklemede",
+        "approved": "onaylandı",
+        "inProgress": "işleniyor",
+        "completed": "tamamlandı",
+        "cancelled": "iptal edildi"
+      },
+      "requests": {
+        "title": "Silme İstekleri",
+        "total": "Toplam: {{count}} istek",
+        "noRequests": "Silme isteği bulunamadı",
+        "loading": "Silme istekleri yükleniyor..."
+      },
+      "badges": {
+        "webRequest": "Web İsteği",
+        "existingUser": "Mevcut Kullanıcı"
+      },
+      "fields": {
+        "email": "E-posta",
+        "requested": "Talep Edildi",
+        "source": "Kaynak",
+        "reviewed": "İncelendi",
+        "started": "Başladı",
+        "completed": "Tamamlandı"
+      },
+      "actions": {
+        "viewDetails": "Detayları Görüntüle",
+        "approve": "Onayla",
+        "reject": "Reddet",
+        "startProcessing": "İşlemeyi Başlat",
+        "completeDeletion": "Silme İşlemini Tamamla",
+        "processing": "İşleniyor..."
+      },
+      "adminNotes": {
+        "title": "Yönetici Notları",
+        "placeholder": "Silme isteği hakkında not ekleyin...",
+        "description": "Notlar, bir silme isteğinin durumunu güncellediğinizde kaydedilecektir."
+      },
+      "details": {
+        "title": "Silme İsteği Detayları",
+        "userName": "Kullanıcı Adı",
+        "email": "E-posta",
+        "status": "Durum",
+        "requestDate": "Talep Tarihi",
+        "reviewDate": "İnceleme Tarihi",
+        "processingStartDate": "İşleme Başlangıç Tarihi",
+        "completionDate": "Tamamlanma Tarihi",
+        "estimatedCompletion": "Tahmini Tamamlanma",
+        "adminNotes": "Yönetici Notları",
+        "userReason": "Kullanıcı Nedeni"
+      },
+      "messages": {
+        "statusUpdated": "Durum {{status}} olarak güncellendi",
+        "userDataDeleted": "Kullanıcı verileri başarıyla silindi",
+        "failedToLoad": "Silme istekleri yüklenemedi",
+        "failedToUpdate": "Durum güncellenemedi",
+        "failedToProcess": "Silme işlenemedi"
+      }
+    },
     "notifications": {
       "title": "Bildirimler",
       "description": "Kullanıcılara bildirim gönderin ve yönetin",

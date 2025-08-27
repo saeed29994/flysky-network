@@ -475,6 +475,68 @@
     "route": {
       "checking": "Vérification des permissions administrateur..."
     },
+    "dataDeletion": {
+      "title": "Gestion de la suppression des données",
+      "description": "Examiner et gérer les demandes de suppression de données des utilisateurs. Il s'agit d'une opération critique qui supprime définitivement les données des utilisateurs.",
+      "stats": {
+        "pending": "en attente",
+        "approved": "approuvé",
+        "inProgress": "en cours",
+        "completed": "terminé",
+        "cancelled": "annulé"
+      },
+      "requests": {
+        "title": "Demandes de suppression",
+        "total": "Total : {{count}} demandes",
+        "noRequests": "Aucune demande de suppression trouvée",
+        "loading": "Chargement des demandes de suppression..."
+      },
+      "badges": {
+        "webRequest": "Demande Web",
+        "existingUser": "Utilisateur existant"
+      },
+      "fields": {
+        "email": "Email",
+        "requested": "Demandé",
+        "source": "Source",
+        "reviewed": "Examiné",
+        "started": "Commencé",
+        "completed": "Terminé"
+      },
+      "actions": {
+        "viewDetails": "Voir les détails",
+        "approve": "Approuver",
+        "reject": "Rejeter",
+        "startProcessing": "Commencer le traitement",
+        "completeDeletion": "Terminer la suppression",
+        "processing": "Traitement en cours..."
+      },
+      "adminNotes": {
+        "title": "Notes d'administration",
+        "placeholder": "Ajouter des notes sur la demande de suppression...",
+        "description": "Les notes seront sauvegardées lorsque vous mettrez à jour le statut d'une demande de suppression."
+      },
+      "details": {
+        "title": "Détails de la demande de suppression",
+        "userName": "Nom d'utilisateur",
+        "email": "Email",
+        "status": "Statut",
+        "requestDate": "Date de demande",
+        "reviewDate": "Date d'examen",
+        "processingStartDate": "Date de début de traitement",
+        "completionDate": "Date de fin",
+        "estimatedCompletion": "Fin estimée",
+        "adminNotes": "Notes d'administration",
+        "userReason": "Raison de l'utilisateur"
+      },
+      "messages": {
+        "statusUpdated": "Statut mis à jour vers {{status}}",
+        "userDataDeleted": "Données utilisateur supprimées avec succès",
+        "failedToLoad": "Échec du chargement des demandes de suppression",
+        "failedToUpdate": "Échec de la mise à jour du statut",
+        "failedToProcess": "Échec du traitement de la suppression"
+      }
+    },
     "notifications": {
       "title": "Notifications",
       "description": "Gérer et envoyer des notifications aux utilisateurs",

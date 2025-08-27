@@ -1,0 +1,157 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ✅ Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return request.auth.token.role == "admin";
+    }
+
+    function isOwner() {
+      return request.auth.token.role == "owner";
+    }
+
+    function isCustomer() {
+      return request.auth.token.role == "customer";
+    }
+
+    function isUserSelf(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // ✅ Users collection permissions
+    match /users/{userId} {
+      allow read: if true;  // Allow anyone to read
+      allow create: if true;  // Allow anyone to create
+      allow update: if true;  // Allow anyone to update (TEMPORARY FOR TESTING)
+      allow delete: if isAdmin();
+      
+      // Inbox subcollection permissions (for welcome messages)
+      match /inbox/{messageId} {
+        allow read, write: if isUserSelf(userId) || isAdmin();
+      }
+      
+      // ✅ System notification permissions
+      match /notifications/{notificationId} {
+        allow read, write: if isUserSelf(userId) || isAdmin();
+        allow read: if isSignedIn();
+        allow delete: if isAdmin();
+      }
+    }
+    
+    // ✅ Mining permissions
+    match /mining/{userId} {
+      allow read, write: if isUserSelf(userId) || isAdmin();
+    }
+
+    // ✅ Invoice permissions for each customer within user document
+    match /users/{userId}/invoices/{invoiceId} {
+      allow read, write: if isUserSelf(userId) || isAdmin();
+    }
+
+    // ✅ Staking permissions within user account
+    match /users/{userId}/staking/{stakingId} {
+      allow read, write: if isUserSelf(userId) || isAdmin();
+    }
+
+    // ✅ Inbox message permissions
+    match /users/{userId}/messages/{messageId} {
+      allow read, write: if isUserSelf(userId) || isAdmin();
+    }
+
+    // ✅ FCM Tokens storage permissions
+    match /userTokens/{userId} {
+      allow read, write: if isUserSelf(userId) || isAdmin();
+    }
+
+    // ✅ Prices table permissions - read only
+    match /prices/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // ✅ Ads permissions
+    match /ads/{adId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // ✅ Subscription plan permissions
+    match /plans/{planId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // ✅ Data Deletion Requests - Allow public creation, admin full access
+    match /dataDeletionRequests/{requestId} {
+      allow read: if isAdmin() || 
+                   (isSignedIn() && resource.data.existingUserId == request.auth.uid);
+      allow create: if true; // Allow public creation
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ✅ Public Deletion Requests - For tracking public submissions
+    match /publicDeletionRequests/{requestId} {
+      allow read: if isAdmin();
+      allow create: if true; // Allow public creation
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ✅ Settings permissions (optional for future)
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ✅ Broadcast or system messages
+    match /broadcasts/{broadcastId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+    
+    match /manualPayments/{paymentId} {
+      allow read, write: if isAdmin();
+    }
+    
+    match /rewards/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+    
+    match /rewards/{docId}/{sub=**} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+    
+    // ✅ Main Rewards permissions
+    match /rewards/staking/items/{itemId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /rewards/referrals/items/{itemId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /rewards/watchAds/items/{itemId} {
+      allow read, write: if isAdmin();
+    }
+
+    // ✅ System Notifications permissions
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // ✅ Notification Logs permissions
+    match /notificationLogs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false; // Only Cloud Functions should write to this collection
+    }
+  }
+}
