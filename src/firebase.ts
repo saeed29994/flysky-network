@@ -29,7 +29,7 @@ const getPlatform = (): 'web' | 'ios' | 'android' => {
 // Get platform-specific config
 const getFirebaseConfig = () => {
   const platform = getPlatform();
-  
+
   // Base configuration (same for all platforms)
   const baseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -68,7 +68,6 @@ const getFirebaseConfig = () => {
 // Initialize Firebase with platform-specific config
 const firebaseConfig = getFirebaseConfig();
 const app = initializeApp(firebaseConfig);
-
 // Initialize services
 const auth = getAuth(app);
 const db = getFirestore(app);
