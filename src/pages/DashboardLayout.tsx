@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Home, Wallet, User, Mail, LogOut, Menu, X, Phone, Settings,
-  Gem, Share2, Gamepad2, Video, Coins, Info, Shield, Trash2
+  Gem, Share2, Video, Coins, Info, Shield, Trash2
 } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
@@ -149,7 +149,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         { to: "/mining", icon: <Gem size={20} />, label: t('menu.mining') },
         { to: "/staking", icon: <Coins size={20} />, label: t('menu.staking') },
         { to: "/referral-program", icon: <Share2 size={20} />, label: t('menu.referral') },
-        { to: "/playtoearn", icon: <Gamepad2 size={20} />, label: t('menu.play') },
+        // { to: "/playtoearn", icon: <Gamepad2 size={20} />, label: t('menu.play') },
         { to: "/watch-to-earn", icon: <Video size={20} />, label: t('menu.watch') }
       ]
     },

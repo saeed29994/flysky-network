@@ -72,6 +72,12 @@ const MiningPage = () => {
 
     try {
       const userRef = doc(db, 'users', user.uid);
+      
+      // Get current user data and transaction history
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data() || {};
+      const currentTransactionHistory = userData.transactionHistory || [];
+      
       const newBalance = userData.balance + amount;
       const newMiningEarnings = userData.miningEarnings + amount;
 
@@ -79,7 +85,14 @@ const MiningPage = () => {
         balance: newBalance,
         lastMiningTime: serverTimestamp(),
         dailyMined: 0,
-        miningEarnings: newMiningEarnings
+        miningEarnings: newMiningEarnings,
+        // Add transaction to history
+        transactionHistory: [...currentTransactionHistory, {
+          description: `Mining reward claimed (+${amount.toLocaleString()} FSN)`,
+          timestamp: Date.now(),
+          type: 'mining',
+          amount: amount
+        }]
       };
 
       await updateDoc(userRef, updateData);

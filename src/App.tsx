@@ -36,7 +36,7 @@ import StakingPage from './pages/Staking';
 import KycPage from './pages/KycPage';
 import Wallet from './pages/Wallet';
 import MiningPage from './pages/MiningPage';
-import PlayToEarn from './pages/PlayToEarn';
+// import PlayToEarn from './pages/PlayToEarn';
 import WatchToEarn from './pages/WatchToEarn';
 import Settings from './pages/Settings';
 import Contact from './pages/Contact';
@@ -94,7 +94,7 @@ const dashboardRoutes = [
   { path: '/kyc', element: <KycPage /> },
   { path: '/wallet', element: <Wallet /> },
   { path: '/mining', element: <MiningPage /> },
-  { path: '/playtoearn', element: <PlayToEarn /> },
+  // { path: '/playtoearn', element: <PlayToEarn /> },
   { path: '/watch-to-earn', element: <WatchToEarn /> },
   { path: '/settings', element: <Settings /> },
   { path: '/contact', element: <Contact /> },

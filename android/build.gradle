@@ -11,6 +11,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.4.2'
         // Firebase plugins for full service support
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -32,6 +33,15 @@ allprojects {
                 compileOptions {
                     sourceCompatibility JavaVersion.VERSION_17
                     targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+        
+        // Override Kotlin JVM target for all subprojects
+        if (project.hasProperty('kotlin')) {
+            project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+                kotlinOptions {
+                    jvmTarget = '17'
                 }
             }
         }

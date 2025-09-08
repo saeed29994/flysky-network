@@ -43,6 +43,7 @@ import {
 } from 'lucide-react';
 import PushNotificationManager from '../components/PushNotificationManager';
 import PrivacyDataTab from '../components/PrivacyDataTab';
+import { PLAN_CONFIG } from '../utils/planConstants';
 
 const Settings = () => {
   const { t, i18n } = useTranslation();
@@ -100,7 +101,7 @@ const Settings = () => {
         const data = snap.data();
         setFullName(data.fullName || "");
         setAvatarUrl(data.avatarUrl || "");
-        setPlan(data.membership?.plan || "economy");
+        setPlan(data.membership?.planName || "economy");
         if (data.membership?.subscriptionEnd) {
           setSubscriptionEnd(new Date(data.membership.subscriptionEnd).toLocaleDateString());
         }
@@ -301,29 +302,39 @@ const Settings = () => {
   };
 
   const getPlanBadge = () => {
-    if (plan === 'first' || plan === 'first-lifetime' || plan === 'first-6') {
+    const planConfig = PLAN_CONFIG[plan as keyof typeof PLAN_CONFIG];
+    
+    if (!planConfig) {
       return (
         <div className="flex items-center gap-2">
-          <Crown className="w-4 h-4 text-yellow-400" />
-          <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs px-3 py-1 rounded-full font-semibold">
-            {t('settingsSection.firstClass')}
+          <span className="bg-gray-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
+            {t('settingsSection.economyClass')}
           </span>
         </div>
       );
     }
-    if (plan === 'business') {
-      return (
-        <div className="flex items-center gap-2">
-          <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
-            {t('settingsSection.businessClass')}
-          </span>
-        </div>
-      );
-    }
+
+    const isFirstClass = plan === 'first-lifetime' || plan === 'first-6';
+    
     return (
       <div className="flex items-center gap-2">
-        <span className="bg-gray-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
-          {t('settingsSection.economyClass')}
+        {isFirstClass && <Crown className="w-4 h-4 text-yellow-400" />}
+        <span 
+          className={`text-xs px-3 py-1 rounded-full font-semibold ${
+            planConfig.color.includes('yellow') || planConfig.color.includes('orange')
+              ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black'
+              : planConfig.color.includes('blue') || planConfig.color.includes('purple')
+              ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+              : planConfig.color.includes('emerald') || planConfig.color.includes('green')
+              ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white'
+              : planConfig.color.includes('purple') || planConfig.color.includes('indigo')
+              ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white'
+              : planConfig.color.includes('pink') || planConfig.color.includes('rose')
+              ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white'
+              : 'bg-gray-600 text-white'
+          }`}
+        >
+          {planConfig.name}
         </span>
       </div>
     );
@@ -696,6 +707,15 @@ const Settings = () => {
                   <span className="text-gray-300">{t('settingsSection.currentPlan')}</span>
                   {getPlanBadge()}
                 </div>
+
+                {plan !== 'economy' && (
+                  <div className="flex items-center justify-between py-3 border-b border-white/10">
+                    <span className="text-gray-300">{t('settingsSection.planPrice')}</span>
+                    <span className="text-white font-medium">
+                      {PLAN_CONFIG[plan as keyof typeof PLAN_CONFIG]?.priceLabel || 'Free'}
+                    </span>
+                  </div>
+                )}
 
                 {subscriptionEnd && (
                   <div className="flex items-center justify-between py-3 border-b border-white/10">

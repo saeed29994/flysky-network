@@ -22,7 +22,7 @@ import { useUserPlan } from '../contexts/UserPlanContext';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
 interface MiningCardProps {
-  plan: 'economy' | 'business' | 'first' | 'first-6' | 'first-lifetime';
+  plan: 'economy' | 'business' | 'first-6' | 'first-lifetime';
   onClaim: (amount: number) => void;
   balance: number;
 }
@@ -45,8 +45,8 @@ const MiningCard = ({ plan, onClaim, balance }: MiningCardProps) => {
   const [dailyLimit, setDailyLimit] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Map legacy 'first' to 'first-lifetime' for compatibility
-  const normalizedPlan = (plan === 'first' ? 'first-lifetime' : plan) as 'economy' | 'business' | 'first-6' | 'first-lifetime';
+  // Use the plan directly since we've standardized the plan IDs
+  const normalizedPlan = plan;
 
   // Fetch plans data from Firebase
   useEffect(() => {

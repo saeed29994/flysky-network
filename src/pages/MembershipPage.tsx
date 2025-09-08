@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserPlan } from '../contexts/UserPlanContext';
 import SubscribeModal from '../components/SubscribeModal';
-import { getPlanBonus, getPlanPrice, getPlanFeatures } from '../utils/planConstants';
+import { getPlanBonus, getPlanPrice, getPlanFeatures, PLAN_CONFIG } from '../utils/planConstants';
 import { motion } from 'framer-motion';
 import { 
   Crown, 
@@ -24,7 +24,7 @@ interface Plan {
 const MembershipPage = () => {
   const { t } = useTranslation();
   const { currentPlan, subscriptionEnd } = useUserPlan();
-  const [modalPlan, setModalPlan] = useState<null | { id: string; price: string }>(null);
+  const [modalPlan, setModalPlan] = useState<null | { id: string; price: string; bonus: number; features: string[] }>(null);
   const [loading, setLoading] = useState(true);
   const [membershipData, setMembershipData] = useState<any>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -60,7 +60,7 @@ const MembershipPage = () => {
     fetchMembershipData();
   }, []);
 
-  // Fetch plans from Firestore
+  // Fetch plans from Firestore, fallback to plan constants
   useEffect(() => {
     const fetchPlans = async () => {
       try {
@@ -72,10 +72,23 @@ const MembershipPage = () => {
         })) as Plan[];
         
         if (plansData.length > 0) {
-          setPlans(plansData);
+          // Sort plans by price (ascending order)
+          const sortedPlans = plansData.sort((a, b) => (a.price || 0) - (b.price || 0));
+          setPlans(sortedPlans);
+        } else {
+          // Fallback to plan constants if Firestore is empty
+          const fallbackPlans = Object.values(PLAN_CONFIG).filter(plan => plan.id !== 'economy') as Plan[];
+          // Sort fallback plans by price as well
+          const sortedFallbackPlans = fallbackPlans.sort((a, b) => (a.price || 0) - (b.price || 0));
+          setPlans(sortedFallbackPlans);
         }
       } catch (error) {
         console.error('Error fetching plans:', error);
+        // Fallback to plan constants on error
+        const fallbackPlans = Object.values(PLAN_CONFIG).filter(plan => plan.id !== 'economy') as Plan[];
+        // Sort fallback plans by price as well
+        const sortedFallbackPlans = fallbackPlans.sort((a, b) => (a.price || 0) - (b.price || 0));
+        setPlans(sortedFallbackPlans);
       }
     };
 
@@ -281,7 +294,12 @@ const MembershipPage = () => {
                     ) : (
                       <button
                         className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold py-4 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
-                        onClick={() => setModalPlan({ id: plan.id, price: String(price) })}
+                        onClick={() => setModalPlan({ 
+                          id: plan.id, 
+                          price: String(price), 
+                          bonus: bonus,
+                          features: features
+                        })}
                       >
                         <ShoppingCart className="w-6 h-6" />
                         {plan.id === normalizedCurrentPlan && actualIsExpired ? t('membershipPage.renew') : t('membershipPage.subscribeNow')}
@@ -296,7 +314,13 @@ const MembershipPage = () => {
 
 
         {modalPlan && (
-          <SubscribeModal planId={String(modalPlan.id)} price={modalPlan.price} onClose={() => setModalPlan(null)} />
+          <SubscribeModal 
+            planId={String(modalPlan.id)} 
+            price={modalPlan.price} 
+            bonus={modalPlan.bonus}
+            features={modalPlan.features}
+            onClose={() => setModalPlan(null)} 
+          />
         )}
       </div>
     </div>

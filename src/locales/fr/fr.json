@@ -1754,7 +1754,7 @@
       "items": {
         "business": {
           "title": "Classe Affaires",
-          "price": "9.99",
+          "price": "15",
           "description": "Toutes les fonctionnalités de la classe Affaires pour augmenter vos récompenses FSN avec FlySky",
           "features": [
             "Bonus 100 000 FSN",
@@ -1766,7 +1766,7 @@
         },
         "first": {
           "title": "Première Classe",
-          "price": "49.99",
+          "price": "120",
           "description": "Toutes les fonctionnalités de la Première Classe pour augmenter vos récompenses FSN",
           "features": [
             "Bonus 500 000 FSN",
@@ -1778,7 +1778,7 @@
         },
         "firstLifetime": {
           "title": "Première Classe (à vie)",
-          "price": "99.99",
+          "price": "1990",
           "description": "Toutes les fonctionnalités de la Première Classe (à vie) pour augmenter vos récompenses FSN",
           "features": [
             "Bonus 1 000 000 FSN",

@@ -42,7 +42,7 @@
     "items": {
       "business": {
         "title": "商务舱",
-        "price": "9.99",
+        "price": "15",
         "description": "包含所有商务舱功能，助力提升您的 FSN 奖励",
         "features": [
           "100,000 FSN 奖励",
@@ -54,7 +54,7 @@
       },
       "first": {
         "title": "头等舱",
-        "price": "49.99",
+        "price": "120",
         "description": "包含所有头等舱功能，助力提升您的 FSN 奖励",
         "features": [
           "500,000 FSN 奖励",
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "头等舱（终身）",
-        "price": "99.99",
+        "price": "1990",
         "description": "包含头等舱（终身）功能，助力提升您的 FSN 奖励",
         "features": [
           "1,000,000 FSN 奖励",
@@ -93,6 +93,13 @@
       "title": "高级功能",
       "desc": "解锁专属功能与奖励"
     }
+  },
+  "transactions": {
+    "membershipBonus": "收到 {{plan}} 会员奖励 (+{{amount}} FSN)",
+    "miningReward": "领取挖矿奖励 (+{{amount}} FSN)",
+    "watchToEarnReward": "领取观看奖励 (+{{amount}} FSN)",
+    "stakingLock": "质押 {{amount}} FSN {{duration}} 个月",
+    "stakingReward": "领取质押奖励 (+{{amount}} FSN)"
   },
   "first6": "头等舱（6个月）",
   "firstLifetime": "头等舱（终身）",
@@ -780,6 +787,7 @@
     "soundEffects": "音效",
     "enableSoundEffectsForInteractions": "为交互启用音效",
     "accountInformation": "账户信息",
+    "planPrice": "计划价格",
     "language": "语言",
     "upgradeYourPlan": "升级您的计划",
     "unlockPremiumFeatures": "通过我们的头等舱会员资格解锁高级功能和专属福利。",

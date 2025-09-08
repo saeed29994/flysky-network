@@ -42,7 +42,7 @@
     "items": {
       "business": {
         "title": "Business Class",
-        "price": "9.99",
+        "price": "15",
         "description": "All business class features to boost your FSN rewards with FlySky Network",
         "features": [
           "Bonus 100,000 FSN",
@@ -54,10 +54,10 @@
       },
       "first": {
         "title": "First Class",
-        "price": "49.99",
+        "price": "120",
         "description": "All first class features to boost your FSN rewards with FlySky Network",
         "features": [
-          "Bonus 500,000 FSN",
+          "Bonus 1,000,000 FSN",
           "All business features",
           "Faster mining",
           "Event access"
@@ -66,10 +66,10 @@
       },
       "firstLifetime": {
         "title": "First class (Lifetime)",
-        "price": "99.99",
+        "price": "1990",
         "description": "All first class (lifetime) features to boost your FSN rewards with FlySky Network",
         "features": [
-          "Bonus 1,000,000 FSN",
+          "Bonus 1,500,000 FSN",
           "Highest mining",
           "Lifetime access",
           "Access to premium features"
@@ -118,9 +118,9 @@
     "firstLifetime": "Lifetime plan with maximum returns."
   },
   "planNames": {
-    "economy": "Economy Class:",
+    "economy": "Economy Class",
     "business": "Business Class",
-    "first": "First Class",
+    "first-6": "First Class (6 Months)",
     "first-lifetime": "First Class (Lifetime)"
   },
   "planFeatures": {
@@ -814,6 +814,7 @@
     "soundEffects": "Sound Effects",
     "enableSoundEffectsForInteractions": "Enable sound effects for interactions",
     "accountInformation": "Account Information",
+    "planPrice": "Plan Price",
     "language": "Language",
     "upgradeYourPlan": "Upgrade Your Plan",
     "unlockPremiumFeatures": "Unlock premium features and exclusive benefits with our First Class membership.",
@@ -1073,6 +1074,19 @@
   "fsnUsageDescription": "that can only be used within the app for features like Mining, Staking, and Upgrades. They cannot be withdrawn, sold, or traded externally.",
   "purchaseNow": "Purchase Now",
   "purchaseTerms": "By purchasing, you agree to our terms of service and privacy policy.",
+  "processing": "Processing...",
+  "restorePurchases": "Restore Purchases",
+  "purchaseAppleNotice": "Payment will be charged to your Apple ID account at confirmation of purchase.",
+  "purchaseGoogleNotice": "Payment will be charged to your Google Play account at confirmation of purchase.",
+  "purchaseFailed": "Purchase failed. Please try again.",
+  "purchaseCancelled": "Purchase was cancelled.",
+  "purchaseSuccess": "Thank you for your purchase!",
+  "noPackagesAvailable": "No purchase options available",
+  "restoreSuccess": "Your purchases have been restored!",
+  "restoreFailed": "Failed to restore purchases",
+  "noRestorablePurchases": "No purchases to restore",
+  "membershipActivated": "Membership activated successfully!",
+  "membershipUpdateFailed": "Failed to update membership status",
   "purchaseFailed": "Purchase failed. Please try again.",
   "bonusReceived": "Bonus Received",
   "oneTimePayment": "One-time payment",
@@ -2687,6 +2701,13 @@
       "title": "Premium Features",
       "desc": "Unlock exclusive features and bonuses"
     }
+  },
+  "transactions": {
+    "membershipBonus": "Membership bonus received for {{plan}} (+{{amount}} FSN)",
+    "miningReward": "Mining reward claimed (+{{amount}} FSN)",
+    "watchToEarnReward": "Watch-to-earn reward claimed (+{{amount}} FSN)",
+    "stakingLock": "Staked {{amount}} FSN for {{duration}} months",
+    "stakingReward": "Staking reward claimed (+{{amount}} FSN)"
   },
   "hiw": {
     "title": "HOW IT WORKS",

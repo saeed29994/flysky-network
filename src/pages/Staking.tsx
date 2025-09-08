@@ -264,8 +264,21 @@ const StakingPage = () => {
         claimed: false
       });
 
-      await updateDoc(doc(db, 'users', user.uid), {
-        balance: balance - amountNum
+      // Get current transaction history
+      const userRef = doc(db, 'users', user.uid);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data() || {};
+      const currentTransactionHistory = userData.transactionHistory || [];
+
+      await updateDoc(userRef, {
+        balance: balance - amountNum,
+        // Add transaction to history
+        transactionHistory: [...currentTransactionHistory, {
+          description: `Staked ${amountNum.toLocaleString()} FSN for ${durationNum} months`,
+          timestamp: Date.now(),
+          type: 'staking',
+          amount: -amountNum
+        }]
       });
 
       toast.success(t('success.stakeCreated'));
@@ -294,8 +307,20 @@ const StakingPage = () => {
       });
 
       const userDocRef = doc(db, 'users', user.uid);
+      // Get current transaction history
+      const userSnap = await getDoc(userDocRef);
+      const userData = userSnap.data() || {};
+      const currentTransactionHistory = userData.transactionHistory || [];
+
       await updateDoc(userDocRef, {
-        balance: balance + stake.expectedReturn
+        balance: balance + stake.expectedReturn,
+        // Add transaction to history
+        transactionHistory: [...currentTransactionHistory, {
+          description: `Staking reward claimed (+${stake.expectedReturn.toLocaleString()} FSN)`,
+          timestamp: Date.now(),
+          type: 'staking_reward',
+          amount: stake.expectedReturn
+        }]
       });
 
       toast.success(t('success.claimed'));

@@ -42,7 +42,7 @@
     "items": {
       "business": {
         "title": "İş Sınıfı",
-        "price": "9.99",
+        "price": "15",
         "description": "FlySky ile FSN ödüllerinizi artırmak için İş Sınıfı özelliklerinin tümü",
         "features": [
           "100.000 FSN Bonus",
@@ -54,7 +54,7 @@
       },
       "first": {
         "title": "Birinci Sınıf",
-        "price": "49.99",
+        "price": "120",
         "description": "FSN ödüllerinizi artırmak için Birinci Sınıf özelliklerinin tümü",
         "features": [
           "500.000 FSN Bonus",
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "Birinci Sınıf (Ömür Boyu)",
-        "price": "99.99",
+        "price": "1990",
         "description": "FSN ödüllerinizi artırmak için Birinci Sınıf (Ömür Boyu) özelliklerinin tümü",
         "features": [
           "1.000.000 FSN Bonus",
@@ -764,6 +764,7 @@
     "soundEffects": "Ses Efektleri",
     "enableSoundEffectsForInteractions": "Etkileşimler için ses efektlerini etkinleştir",
     "accountInformation": "Hesap Bilgileri",
+    "planPrice": "Plan Fiyatı",
     "language": "Dil",
     "upgradeYourPlan": "Planınızı Yükseltin",
     "unlockPremiumFeatures": "Birinci Sınıf üyeliğimizle premium özellikleri ve özel faydaları açın.",
@@ -2394,6 +2395,13 @@
       "title": "Premium Özellikler",
       "desc": "Özel özelliklerin ve bonusların kilidini açın"
     }
+  },
+  "transactions": {
+    "membershipBonus": "{{plan}} için üyelik bonusu alındı (+{{amount}} FSN)",
+    "miningReward": "Madencilik ödülü talep edildi (+{{amount}} FSN)",
+    "watchToEarnReward": "İzle-kazan ödülü talep edildi (+{{amount}} FSN)",
+    "stakingLock": "{{amount}} FSN {{duration}} ay için stake edildi",
+    "stakingReward": "Staking ödülü talep edildi (+{{amount}} FSN)"
   },
   "hiw": {
     "title": "NASIL ÇALIŞIR",

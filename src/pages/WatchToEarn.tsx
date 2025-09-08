@@ -206,11 +206,21 @@ const WatchToEarn = () => {
         txNewBalance = currentBalance + reward;
         txReward = reward;
 
+        // Get current transaction history
+        const currentTransactionHistory = usr.transactionHistory || [];
+        
         tx.update(userRef, {
           balance: txNewBalance,
           watchedAdsToday: 0,
           adIndex: 0,
           adsLastWatched: serverTimestamp(),
+          // Add transaction to history
+          transactionHistory: [...currentTransactionHistory, {
+            description: `Watch-to-earn reward claimed (+${reward.toLocaleString()} FSN)`,
+            timestamp: Date.now(),
+            type: 'watch_to_earn',
+            amount: reward
+          }]
         });
       });
 

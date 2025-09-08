@@ -32,7 +32,7 @@ const Wallet = () => {
         const data = snap.data();
         setBalance(data.balance || 0);
         setReferralRewards(data.referralReward || 0);
-        setTransactions(data.transactions || []);
+        setTransactions(data.transactionHistory || []);
         
 
       }
@@ -340,7 +340,10 @@ const Wallet = () => {
                     </div>
         ) : (
                     <div className="space-y-4 max-h-96 overflow-y-auto">
-                      {transactions.slice(0, 10).map((tx: any, index) => (
+                      {transactions
+                        .sort((a: any, b: any) => b.timestamp - a.timestamp)
+                        .slice(0, 10)
+                        .map((tx: any, index) => (
                         <motion.div
                           key={index}
                           initial={{ opacity: 0, x: -20 }}

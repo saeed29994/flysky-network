@@ -91,6 +91,7 @@ This repository contains the Flysky Network web application along with WebView b
 ## Features
 
 - **Firebase Integration**: Push notifications work on both platforms
+- **In-App Purchases**: Membership subscriptions via Apple App Store and Google Play
 - **Responsive Design**: The web app is optimized for mobile devices
 - **Offline Support**: App can function without constant internet connection
 - **Native Look & Feel**: Status bar and navigation styling match native apps
@@ -104,12 +105,29 @@ Capacitor configuration is managed in `capacitor.config.ts`. You can modify sett
 - Background color
 - Deep linking
 
+### In-App Purchase Configuration
+
+In-app purchases are configured in `src/utils/iapConfig.ts`. You need to:
+
+1. Set your RevenueCat API keys for both platforms
+2. Verify the product IDs match your App Store Connect and Google Play Console configurations
+
+For detailed setup instructions, see the documentation in the `/docs` directory:
+- [In-App Purchase Implementation](/docs/in-app-purchases.md)
+- [Android IAP Setup](/docs/android-iap-setup.md)
+- [iOS IAP Setup](/docs/ios-iap-setup.md)
+- [IAP Testing Guide](/docs/iap-testing-guide.md)
+
 ## Troubleshooting
 
 - **White screen on app launch**: Check the web build output and ensure all paths are relative
 - **Push notifications not working**: Verify Firebase configuration and ensure proper permissions
 - **Styling issues**: Check the responsive design in the web application
 - **Build errors**: Ensure all native dependencies are properly installed
+- **In-app purchases not working**: 
+  - Verify product IDs match exactly between your code and the app stores
+  - Check that the app is installed from the respective app store (not via direct APK/IPA)
+  - Ensure test accounts are properly configured in the developer consoles
 
 ## Updating the App
 

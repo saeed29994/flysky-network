@@ -1,4 +1,4 @@
-export type PlanType = 'business' | 'economy' | 'first' | 'first-lifetime';
+export type PlanType = 'business' | 'economy' | 'first-6' | 'first-lifetime';
 
 export interface Plan {
   createdAt: Date;

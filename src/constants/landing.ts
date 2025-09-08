@@ -56,7 +56,7 @@ export const FEATURES = [
 export const MEMBERSHIP_PLANS = [
   {
     title: "Business Class",
-    price: "9.99",
+    price: "15",
     description: "All business class features to boost your FSN rewards with FlySky Network",
     features: ["Bonus 100,000 FSN", "Advanced mining", "Priority support", "Staking access"],
     popular: false,
@@ -64,17 +64,17 @@ export const MEMBERSHIP_PLANS = [
   },
   {
     title: "First Class",
-    price: "49.99",
+    price: "120",
     description: "All first class features to boost your FSN rewards with FlySky Network",
-    features: ["Bonus 500,000 FSN", "All business features", "Faster mining", "Event access"],
+    features: ["Bonus 1,000,000 FSN", "All business features", "Faster mining", "Event access"],
     popular: true,
     buttonText: "Choose First Class"
   },
   {
     title: "First class (Lifetime)",
-    price: "99.99",
+    price: "1990",
     description: "All first class (lifetime) features to boost your FSN rewards with FlySky Network",
-    features: ["Bonus 1,000,000 FSN", "Highest mining", "Lifetime access", "Access to premium features"],
+    features: ["Bonus 1,500,000 FSN", "Highest mining", "Lifetime access", "Access to premium features"],
     popular: false,
     buttonText: "Choose First-Lifetime"
   }

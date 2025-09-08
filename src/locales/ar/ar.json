@@ -42,7 +42,7 @@
     "items": {
       "business": {
         "title": "درجة الأعمال",
-        "price": "9.99",
+        "price": "15",
         "description": "جميع ميزات درجة الأعمال لتعزيز مكافآت FSN الخاصة بك مع فلاي سكاي",
         "features": [
           "مكافأة 100,000 FSN",
@@ -54,7 +54,7 @@
       },
       "first": {
         "title": "الدرجة الأولى",
-        "price": "49.99",
+        "price": "120",
         "description": "جميع ميزات الدرجة الأولى لتعزيز مكافآت FSN الخاصة بك مع فلاي سكاي",
         "features": [
           "مكافأة 500,000 FSN",
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "الدرجة الأولى (مدى الحياة)",
-        "price": "99.99",
+        "price": "1990",
         "description": "جميع ميزات الدرجة الأولى (مدى الحياة) لتعزيز مكافآت FSN الخاصة بك مع فلاي سكاي",
         "features": [
           "مكافأة 1,000,000 FSN",
@@ -93,6 +93,13 @@
       "title": "ميزات مميزة",
       "desc": "افتح ميزات ومكافآت حصرية"
     }
+  },
+  "transactions": {
+    "membershipBonus": "تم استلام مكافأة العضوية لـ {{plan}} (+{{amount}} FSN)",
+    "miningReward": "تم استلام مكافأة التعدين (+{{amount}} FSN)",
+    "watchToEarnReward": "تم استلام مكافأة المشاهدة (+{{amount}} FSN)",
+    "stakingLock": "تم ربط {{amount}} FSN لمدة {{duration}} أشهر",
+    "stakingReward": "تم استلام مكافأة الربط (+{{amount}} FSN)"
   },
   "first6": "الدرجة الأولى (6 أشهر)",
   "firstLifetime": "الدرجة الأولى (مدى الحياة)",
@@ -136,9 +143,9 @@
     "firstLifetime": "خطة مدى الحياة بأقصى عوائد."
   },
   "planNames": {
-    "economy": "الدرجة الاقتصادية:",
+    "economy": "الدرجة الاقتصادية",
     "business": "درجة الأعمال",
-    "first": "الدرجة الأولى",
+    "first-6": "الدرجة الأولى (6 أشهر)",
     "first-lifetime": "الدرجة الأولى (مدى الحياة)"
   },
   "planFeatures": {
@@ -804,6 +811,7 @@
     "soundEffects": "المؤثرات الصوتية",
     "enableSoundEffectsForInteractions": "تفعيل المؤثرات الصوتية للتفاعلات",
     "accountInformation": "معلومات الحساب",
+    "planPrice": "سعر الخطة",
     "language": "اللغة",
     "upgradeYourPlan": "ترقية خطتك",
     "unlockPremiumFeatures": "افتح الميزات المميزة والفوائد الحصرية مع عضوية الدرجة الأولى.",

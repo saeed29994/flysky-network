@@ -26,6 +26,7 @@ interface MembershipPlan {
   price: number;
   durationDays: number;
   dailyMiningReward: number;
+  bonus: number;
   features: string[];
   createdAt?: any;
 }
@@ -48,6 +49,15 @@ const formatTimestamp = (ts: any): string => {
   return '-';
 };
 
+const formatNumber = (num: number): string => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1).replace('.0', '') + 'M';
+  } else if (num >= 1000) {
+    return num.toLocaleString();
+  }
+  return num.toString();
+};
+
 const MembershipsTab = () => {
   const { t } = useTranslation();
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
@@ -62,6 +72,7 @@ const MembershipsTab = () => {
     price: 0,
     durationDays: 30,
     dailyMiningReward: 0,
+    bonus: 0,
     features: []
   });
   const [newFeature, setNewFeature] = useState<string>('');
@@ -98,7 +109,7 @@ const MembershipsTab = () => {
 
   console.log('🔍 Plans:', plans);
 
-  const displayPlans = plans;
+  const displayPlans = plans.sort((a, b) => a.price - b.price);
 
   const handleCreatePlan = async () => {
     if (!newPlan.id || !newPlan.name || newPlan.price === undefined || newPlan.durationDays === undefined) {
@@ -114,6 +125,7 @@ const MembershipsTab = () => {
         price: Number(newPlan.price),
         durationDays: Number(newPlan.durationDays),
         dailyMiningReward: Number(newPlan.dailyMiningReward || 0),
+        bonus: Number(newPlan.bonus || 0),
         features: Array.isArray(newPlan.features) ? newPlan.features : [],
         createdAt: serverTimestamp()
       };
@@ -141,6 +153,7 @@ const MembershipsTab = () => {
         price: 0,
         durationDays: 30,
         dailyMiningReward: 0,
+        bonus: 0,
         features: []
       });
       setNewFeature('');
@@ -281,11 +294,11 @@ const MembershipsTab = () => {
               </div>
               <div className="bg-white/5 rounded-lg p-3">
                 <p className="text-gray-400 text-xs">{t('admin.memberships.dailyMiningReward')}</p>
-                <p className="text-white font-bold">{plan.dailyMiningReward || 0} FSN</p>
+                <p className="text-white font-bold">{formatNumber(plan.dailyMiningReward || 0)} FSN</p>
               </div>
               <div className="bg-white/5 rounded-lg p-3">
-                <p className="text-gray-400 text-xs">{t('admin.memberships.createdAt')}</p>
-                <p className="text-white font-bold">{formatTimestamp(plan.createdAt)}</p>
+                <p className="text-gray-400 text-xs">{t('admin.memberships.bonusFSN')}</p>
+                <p className="text-white font-bold">{formatNumber(plan.bonus || 0)} FSN</p>
               </div>
             </div>
 
@@ -409,6 +422,17 @@ const MembershipsTab = () => {
               </div>
 
               <div>
+                <label className="block text-sm text-gray-300 mb-1">{t('admin.memberships.bonusFSN')}</label>
+                <input
+                  type="number"
+                  placeholder={t('admin.memberships.bonusFSN')}
+                  value={newPlan.bonus}
+                  onChange={(e) => setNewPlan(prev => ({ ...prev, bonus: Number(e.target.value) }))}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
                 <label className="block text-sm text-gray-300 mb-1">{t('admin.memberships.features')}</label>
                 <div className="flex gap-2">
                   <input
@@ -484,7 +508,8 @@ const MembershipsTab = () => {
                   <p><span className="text-gray-400">{t('admin.memberships.name')}:</span> <span className="text-white">{showViewModal.name}</span></p>
                   <p><span className="text-gray-400">{t('admin.memberships.price')}:</span> <span className="text-white">${showViewModal.price}</span></p>
                   <p><span className="text-gray-400">{t('admin.memberships.duration')}:</span> <span className="text-white">{showViewModal.durationDays} {t('admin.memberships.days')}</span></p>
-                  <p><span className="text-gray-400">{t('admin.memberships.dailyMiningReward')}:</span> <span className="text-white">{showViewModal.dailyMiningReward || 0} FSN</span></p>
+                  <p><span className="text-gray-400">{t('admin.memberships.dailyMiningReward')}:</span> <span className="text-white">{formatNumber(showViewModal.dailyMiningReward || 0)} FSN</span></p>
+                  <p><span className="text-gray-400">{t('admin.memberships.bonusFSN')}:</span> <span className="text-white">{formatNumber(showViewModal.bonus || 0)} FSN</span></p>
                   <p><span className="text-gray-400">{t('admin.memberships.createdAt')}:</span> <span className="text-white">{formatTimestamp(showViewModal.createdAt)}</span></p>
                 </div>
               </div>
@@ -567,6 +592,17 @@ const MembershipsTab = () => {
                   placeholder={t('admin.memberships.dailyMiningReward')}
                   value={editingPlan.dailyMiningReward}
                   onChange={(e) => setEditingPlan(prev => prev ? { ...prev, dailyMiningReward: Number(e.target.value) } : null)}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">{t('admin.memberships.bonusFSN')}</label>
+                <input
+                  type="number"
+                  placeholder={t('admin.memberships.bonusFSN')}
+                  value={editingPlan.bonus}
+                  onChange={(e) => setEditingPlan(prev => prev ? { ...prev, bonus: Number(e.target.value) } : null)}
                   className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>

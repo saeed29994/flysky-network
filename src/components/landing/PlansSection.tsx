@@ -12,7 +12,7 @@ const PlansSection = () => {
       popular: false
     },
     {
-      key: 'first',
+      key: 'first-6',
       popular: true
     },
     {
@@ -44,7 +44,7 @@ const PlansSection = () => {
             const rawFeatures = t([`landing.plans.items.${plan.key}.features`, `plans.items.${plan.key}.features`] as any, { returnObjects: true }) as unknown;
             const features = Array.isArray(rawFeatures) ? (rawFeatures as string[]) : [];
             const buttonText = t([`landing.plans.items.${plan.key}.buttonText`, `plans.items.${plan.key}.buttonText`] as any);
-            const isPopular = plan.key === 'first' ? true : plan.popular;
+            const isPopular = plan.key === 'first-6' ? true : plan.popular;
 
             return (
               <div 

@@ -6,7 +6,7 @@ import { requestPermissionAndToken } from '../utils/pushNotification';
 import { auth, db } from '../firebase';
 import { useTranslation } from 'react-i18next';
 import {
-  FaGem, FaRocket, FaShareAlt, FaGamepad, FaInfoCircle, FaCoins,
+  FaGem, FaRocket, FaShareAlt, FaInfoCircle, FaCoins,
   FaVideo, FaWallet, FaEnvelope, FaCogs, FaIdCard, FaPhoneAlt,
   FaChartLine, FaUsers, FaTrophy, FaArrowRight
 } from 'react-icons/fa';
@@ -129,13 +129,13 @@ const Dashboard = () => {
       description: t('dashboard.features.membership.description'),
       highlight: true
     },
-    {
-      to: '/playtoearn',
-      icon: <FaGamepad className="w-4 h-4 sm:w-5 sm:h-5" />,
-      title: t('dashboard.features.playToEarn.title'),
-      description: t('dashboard.features.playToEarn.description'),
-      highlight: false
-    },
+    // {
+    //   to: '/playtoearn',
+    //   icon: <FaGamepad className="w-4 h-4 sm:w-5 sm:h-5" />,
+    //   title: t('dashboard.features.playToEarn.title'),
+    //   description: t('dashboard.features.playToEarn.description'),
+    //   highlight: false
+    // },
     {
       to: '/watch-to-earn',
       icon: <FaVideo className="w-4 h-4 sm:w-5 sm:h-5" />,

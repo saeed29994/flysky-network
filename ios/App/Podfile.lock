@@ -67,6 +67,12 @@ PODS:
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
   - PromisesObjC (2.4.0)
+  - PurchasesHybridCommon (17.5.0):
+    - RevenueCat (= 5.37.0)
+  - RevenueCat (5.37.0)
+  - RevenuecatPurchasesCapacitor (11.2.0):
+    - Capacitor
+    - PurchasesHybridCommon (= 17.5.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -76,6 +82,7 @@ DEPENDENCIES:
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - "RevenuecatPurchasesCapacitor (from `../../node_modules/@revenuecat/purchases-capacitor`)"
 
 SPEC REPOS:
   trunk:
@@ -87,6 +94,8 @@ SPEC REPOS:
     - GoogleUtilities
     - nanopb
     - PromisesObjC
+    - PurchasesHybridCommon
+    - RevenueCat
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -103,6 +112,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/splash-screen"
   CapacitorStatusBar:
     :path: "../../node_modules/@capacitor/status-bar"
+  RevenuecatPurchasesCapacitor:
+    :path: "../../node_modules/@revenuecat/purchases-capacitor"
 
 SPEC CHECKSUMS:
   Capacitor: 156d98aba46ec01dde72c4bbb92fa626837cad29
@@ -120,7 +131,10 @@ SPEC CHECKSUMS:
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  PurchasesHybridCommon: 7d56bf25c61e2c8a62e5b23d7bf16b5060420fe9
+  RevenueCat: fc4ad171bbfbfb974210f0b26ce470b007be111f
+  RevenuecatPurchasesCapacitor: f5e42aa9c590fc481ff19c518589abceb8020e8d
 
-PODFILE CHECKSUM: 114f10b93270dd5b57ebcfffa9d2b035f33dfd19
+PODFILE CHECKSUM: 5dbf298b980ef4fc0cbf21743c6213e6d98f9ca2
 
 COCOAPODS: 1.16.2

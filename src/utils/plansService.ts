@@ -8,6 +8,7 @@ export interface FirebasePlan {
   price: number;
   durationDays: number;
   dailyMiningReward: number;
+  bonus: number;
   features: string[];
   color: string; // Gradient color classes for UI styling
   createdAt?: any;
@@ -50,6 +51,7 @@ export const fetchPlansFromFirebase = async (): Promise<Record<string, FirebaseP
         price: data.price || 0,
         durationDays: data.durationDays || 30,
         dailyMiningReward: data.dailyMiningReward || 0,
+        bonus: data.bonus || 0,
         features: data.features || [],
         color: data.color || '', // Assuming 'color' is a field in your Firebase document
         createdAt: data.createdAt
@@ -92,6 +94,7 @@ export const fetchPlanById = async (planId: string): Promise<FirebasePlan | null
       price: data.price || 0,
       durationDays: data.durationDays || 30,
       dailyMiningReward: data.dailyMiningReward || 0,
+      bonus: data.bonus || 0,
       features: data.features || [],
       color: data.color || '', // Assuming 'color' is a field in your Firebase document
       createdAt: data.createdAt
@@ -167,7 +170,7 @@ export const isPlansCacheValid = (): boolean => {
 /**
  * Get plan information for display purposes
  * @param planId - The plan ID
- * @returns Promise<{ name: string; dailyMiningReward: number; price: number } | null>
+ * @returns Promise<{ name: string; dailyMiningReward: number; price: number; bonus: number } | null>
  */
 export const getPlanDisplayInfo = async (planId: string) => {
   try {
@@ -177,11 +180,28 @@ export const getPlanDisplayInfo = async (planId: string) => {
     return {
       name: plan.name,
       dailyMiningReward: plan.dailyMiningReward,
-      price: plan.price
+      price: plan.price,
+      bonus: plan.bonus
     };
     
   } catch (error) {
     console.error(`❌ Error getting plan display info for ${planId}:`, error);
     return null;
+  }
+};
+
+/**
+ * Get bonus amount for a specific plan
+ * @param planId - The plan ID
+ * @returns Promise<number> - The bonus amount
+ */
+export const getPlanBonus = async (planId: string): Promise<number> => {
+  try {
+    const plan = await fetchPlanById(planId);
+    return plan?.bonus || 0;
+    
+  } catch (error) {
+    console.error(`❌ Error getting bonus for plan ${planId}:`, error);
+    return 0;
   }
 }; 
