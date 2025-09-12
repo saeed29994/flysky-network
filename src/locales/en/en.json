@@ -52,8 +52,8 @@
         ],
         "buttonText": "Choose Business Class"
       },
-      "first": {
-        "title": "First Class",
+      "first-6": {
+        "title": "First Class (6 Months)",
         "price": "120",
         "description": "All first class features to boost your FSN rewards with FlySky Network",
         "features": [
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "First class (Lifetime)",
-        "price": "1990",
+        "price": "199",
         "description": "All first class (lifetime) features to boost your FSN rewards with FlySky Network",
         "features": [
           "Bonus 1,500,000 FSN",
@@ -174,6 +174,10 @@
         "title": "Play to Earn",
         "description": "Play games and earn tokens"
       },
+      "amazingRewards": {
+        "title": "Amazing Rewards",
+        "description": "Mine, stake and make referalls to earn bonuses"
+      },
       "watchToEarn": {
         "title": "Watch to Earn",
         "description": "Watch ads and earn rewards"
@@ -239,6 +243,8 @@
     "loggingIn": "Logging in...",
     "or": "OR",
     "loginWithGoogle": "Login with Google",
+    "loginWithApple": "Continue with Apple",
+    "signUpWithApple": "Sign up with Apple",
     "pleaseWait": "Please wait...",
     "noAccount": "Don't have an account?",
     "signUp": "Sign Up",
@@ -668,6 +674,15 @@
     "UnlockedForever": "Unlocked forever",
     "LifetimePerks": "Lifetime perks",
     "Advanced Mining": "Advanced mining",
+    "Staking access": "Staking access",
+    "Faster mining": "Faster mining",
+    "Event access": "Event access",
+    "Priority support": "Priority support",
+    "All business features": "All business features",
+    "Access to Premium Features": "Access to premium features",
+    "Everything unlocked forever": "Everything unlocked forever",
+    "Limited Staking": "Limited staking",
+    "Lifetime perks": "Lifetime perks",
     "Priority Support": "Priority support",
     "Highest Mining": "Highest mining",
     "Lifetime Access": "Lifetime access",
@@ -713,6 +728,10 @@
       "playToEarn": {
         "title": "PLAY TO EARN",
         "desc": "Play mini-games and complete in game challenges to earn FSN tokens"
+      },
+      "amazingRewards": {
+        "title": "Amazing Rewards",
+        "desc": "Mine, stake and make referalls to earn bonuses"
       }
     }
   },
@@ -1087,11 +1106,9 @@
   "noRestorablePurchases": "No purchases to restore",
   "membershipActivated": "Membership activated successfully!",
   "membershipUpdateFailed": "Failed to update membership status",
-  "purchaseFailed": "Purchase failed. Please try again.",
   "bonusReceived": "Bonus Received",
   "oneTimePayment": "One-time payment",
   "bonusDescription": "Virtual in-app currency for enhanced features",
-  "processing": "Processing...",
   "paymentCompleted": "Payment Completed",
   "subscriptionProcessed": "Your subscription has been processed successfully.",
   "subscriptionBonusTitle": "🎁 Subscription Bonus Received",
@@ -2640,7 +2657,11 @@
         "playToEarn": {
           "title": "PLAY TO EARN",
           "desc": "Play mini-games and complete in game challenges to earn FSN tokens"
-        }
+        },
+        "amazingRewards": {
+        "title": "Amazing Rewards",
+        "desc": "Mine, stake and make referalls to earn bonuses"
+      }
       }
     },
     "getStarted": {
@@ -2660,7 +2681,7 @@
       "steps": {
         "1": {
           "title": "Register",
-          "desc": "Create your account and verify your identity to start crypto earning journey",
+          "desc": "Create your account and verify your identity to start your earning journey",
           "cta": "Sign Up"
         },
         "2": {
@@ -2715,7 +2736,7 @@
     "steps": {
       "1": {
         "title": "Register",
-        "desc": "Create your account and verify your identity to start crypto earning journey",
+        "desc": "Create your account and verify your identity to start your earning journey",
         "cta": "Sign Up"
       },
       "2": {

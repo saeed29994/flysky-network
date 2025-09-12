@@ -7,6 +7,7 @@ import TypingAnimation from '../ui/typing-animation';
 import Ellipse from '../ui/ellipse';
 import { Apple, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { shouldShowAppStore, shouldShowGooglePlay } from '../../utils/pwaUtils';
 
 const HeroSection = () => {
     const { navigateToSignup, navigateToLogin } = useButtonActions();
@@ -67,31 +68,35 @@ const HeroSection = () => {
                                 </Button>
                             </div>
                             
-                            {/* Download Buttons for Mobile/Tablet */}
+                            {/* Platform-specific store buttons */}
                             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                                {/* App Store Button */}
-                                <button 
-                                    onClick={navigateToSignup}
-                                    className="flex items-center gap-3 bg-black text-white px-4 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 w-full sm:w-auto justify-center"
-                                >
-                                    <Apple className="w-6 h-6" />
-                                    <div className="text-center">
-                                        <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
-                                        <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
-                                    </div>
-                                </button>
+                                {/* App Store Button - Show on iOS and Web */}
+                                {shouldShowAppStore() && (
+                                    <button 
+                                        onClick={navigateToSignup}
+                                        className="flex items-center gap-3 bg-black text-white px-4 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 w-full sm:w-auto justify-center"
+                                    >
+                                        <Apple className="w-6 h-6" />
+                                        <div className="text-center">
+                                            <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
+                                            <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
+                                        </div>
+                                    </button>
+                                )}
                                 
-                                {/* Google Play Button */}
-                                <button 
-                                    onClick={navigateToSignup}
-                                    className="flex items-center gap-3 bg-black text-white px-4 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 w-full sm:w-auto justify-center"
-                                >
-                                    <Play className="w-6 h-6" />
-                                    <div className="text-center">
-                                        <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
-                                        <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
-                                    </div>
-                                </button>
+                                {/* Google Play Button - Show on Android and Web */}
+                                {shouldShowGooglePlay() && (
+                                    <button 
+                                        onClick={navigateToSignup}
+                                        className="flex items-center gap-3 bg-black text-white px-4 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 w-full sm:w-auto justify-center"
+                                    >
+                                        <Play className="w-6 h-6" />
+                                        <div className="text-center">
+                                            <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
+                                            <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
+                                        </div>
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -146,31 +151,35 @@ const HeroSection = () => {
                                         </Button>
                                     </div>
                                     
-                                    {/* Download Buttons for Desktop */}
+                                    {/* Platform-specific store buttons */}
                                     <div className="flex flex-row gap-4 justify-center">
-                                        {/* App Store Button */}
-                                        <button 
-                                            onClick={navigateToSignup}
-                                            className="flex items-center gap-3 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                                        >
-                                            <Apple className="w-6 h-6" />
-                                            <div className="text-left">
-                                                <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
-                                                <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
-                                            </div>
-                                        </button>
+                                        {/* App Store Button - Show on iOS and Web */}
+                                        {shouldShowAppStore() && (
+                                            <button 
+                                                onClick={navigateToSignup}
+                                                className="flex items-center gap-3 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                                            >
+                                                <Apple className="w-6 h-6" />
+                                                <div className="text-left">
+                                                    <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
+                                                    <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
+                                                </div>
+                                            </button>
+                                        )}
                                         
-                                        {/* Google Play Button */}
-                                        <button 
-                                            onClick={navigateToSignup}
-                                            className="flex items-center gap-3 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                                        >
-                                            <Play className="w-6 h-6" />
-                                            <div className="text-left">
-                                                <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
-                                                <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
-                                            </div>
-                                        </button>
+                                        {/* Google Play Button - Show on Android and Web */}
+                                        {shouldShowGooglePlay() && (
+                                            <button 
+                                                onClick={navigateToSignup}
+                                                className="flex items-center gap-3 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                                            >
+                                                <Play className="w-6 h-6" />
+                                                <div className="text-left">
+                                                    <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
+                                                    <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
+                                                </div>
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

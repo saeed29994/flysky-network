@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  signInWithPopup,
-  GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import {
@@ -29,6 +27,9 @@ import { Spinner } from '../components/ui/spinner';
 import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
 import fsnLogo from '../assets/fsn-logo.png';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import AppleSignInService from '../services/appleSignInService';
+import GoogleSignInService from '../services/googleSignInService';
+import { isPlatformIOS } from '../utils/pwaUtils';
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -43,6 +44,7 @@ const SignupPage = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLogoSpin(false), 3000);
@@ -53,6 +55,8 @@ const SignupPage = () => {
     const refFromUrl = searchParams.get('ref');
     if (refFromUrl) setReferralCode(refFromUrl);
   }, [searchParams]);
+
+  // Note: Redirect handling is no longer needed with Capacitor Firebase Authentication
 
   useEffect(() => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
@@ -201,51 +205,43 @@ const SignupPage = () => {
   };
 
   const handleGoogleSignup = async () => {
+    setError('');
+    setGoogleLoading(true);
     try {
-      setGoogleLoading(true);
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) {
-        const generatedReferralCode = uuidv4().slice(0, 8);
-
-        await setDoc(userRef, {
-          fullName: user.displayName || '',
-          email: user.email || '',
-          balance: 0,
-          watchedAdsToday: 0,
-          adsLastWatched: Timestamp.fromMillis(0),
-          plan: 'economy',
-          createdAt: serverTimestamp(),
-          referralCode: generatedReferralCode,
-          referredBy: referralCode.trim() || '',
-          language: 'en',
-          theme: 'dark',
-          kycStatus: 'Not Actived',
-          dailyMined: 0,
-          lockedFromStaking: 0,
-          stakingEarnings: 0,
-          referralReward: 0,
-          referrals: 0,
-          agreedToTerms: true,
-          transactionHistory: [],
-        });
-
-        if (referralCode.trim()) await registerReferral(referralCode.trim(), user.email || '');
-        await sendWelcomeMessage(user.uid);
-        await requestPermissionAndToken(user.uid);
+      console.log('🔍 Starting Google Sign In from SignupPage...');
+      const result = await GoogleSignInService.signIn(referralCode);
+      
+      if (result.success) {
+        // Google Sign In successful, navigate to dashboard
+        navigate('/dashboard');
+      } else {
+        setError(result.error || 'Google Sign In failed');
       }
-
-      navigate('/dashboard');
     } catch (err: any) {
-      console.error(err);
-      setError(getFirebaseErrorMessage(err.code));
+      console.error('Google signup error:', err);
+      setError(err.message || 'Google Sign In failed');
     } finally {
       setGoogleLoading(false);
+    }
+  };
+
+  const handleAppleSignup = async () => {
+    setError('');
+    setAppleLoading(true);
+    try {
+      const result = await AppleSignInService.signIn(referralCode);
+      
+      if (result.success) {
+        // Apple Sign In successful, navigate to dashboard
+        navigate('/dashboard');
+      } else {
+        setError(result.error || 'Apple Sign In failed');
+      }
+    } catch (err: any) {
+      console.error('Apple signup error:', err);
+      setError(err.message || 'Apple Sign In failed');
+    } finally {
+      setAppleLoading(false);
     }
   };
 
@@ -372,32 +368,67 @@ const SignupPage = () => {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={handleGoogleSignup}
-                disabled={!acceptedTerms || googleLoading}
-                className={`w-full py-3 rounded-lg font-semibold transition flex justify-center items-center ${
-                  acceptedTerms && !googleLoading
-                    ? 'bg-white text-gray-800 hover:bg-gray-100'
-                    : 'bg-gray-700/50 text-gray-400 cursor-not-allowed'
-                }`}
-              >
-                {googleLoading ? (
-                  <>
-                    <Spinner size="sm" color="primary" className="mr-2" />
-                    {t('auth.pleaseWait')}
-                  </>
-                ) : (
-                  <>
-                    <img
-                      src="https://developers.google.com/identity/images/g-logo.png"
-                      alt="Google Logo"
-                      className="w-5 h-5 mr-2"
-                    />
-                    {t('auth.signUpWithGoogle')}
-                  </>
-                )}
-              </button>
+              {/* Google Sign In Button - Hide on iOS devices */}
+              {!isPlatformIOS() && (
+                <button
+                  type="button"
+                  onClick={handleGoogleSignup}
+                  disabled={!acceptedTerms || googleLoading || appleLoading}
+                  className={`w-full py-3 rounded-lg font-semibold transition flex justify-center items-center ${
+                    acceptedTerms && !googleLoading && !appleLoading
+                      ? 'bg-white text-gray-800 hover:bg-gray-100'
+                      : 'bg-gray-700/50 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  {googleLoading ? (
+                    <>
+                      <Spinner size="sm" color="primary" className="mr-2" />
+                      {t('auth.pleaseWait')}
+                    </>
+                  ) : (
+                    <>
+                      <img
+                        src="https://developers.google.com/identity/images/g-logo.png"
+                        alt="Google Logo"
+                        className="w-5 h-5 mr-2"
+                      />
+                      {t('auth.signUpWithGoogle')}
+                    </>
+                  )}
+                </button>
+              )}
+
+              {/* Apple Sign In Button - Only show on iOS devices */}
+              {isPlatformIOS() && (
+                <button
+                  type="button"
+                  onClick={handleAppleSignup}
+                  disabled={!acceptedTerms || googleLoading || appleLoading}
+                  className={`w-full py-3 rounded-lg font-semibold transition flex justify-center items-center mt-3 ${
+                    acceptedTerms && !googleLoading && !appleLoading
+                      ? 'bg-black text-white hover:bg-gray-800'
+                      : 'bg-gray-700/50 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  {appleLoading ? (
+                    <>
+                      <Spinner size="sm" color="white" className="mr-2" />
+                      {t('auth.pleaseWait')}
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-5 h-5 mr-2"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.11-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                      </svg>
+                      {t('auth.signUpWithApple')}
+                    </>
+                  )}
+                </button>
+              )}
 
               <p className="text-center text-sm text-gray-400 mt-4">
                 {t('auth.haveAccount')}{' '}

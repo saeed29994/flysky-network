@@ -52,7 +52,7 @@ The following product IDs are defined in `iapConfig.ts`:
 
 | Plan | Android Product ID | iOS Product ID | Price | Bonus |
 |------|-------------------|---------------|-------|-------|
-| First Class (Lifetime) | io.fsncrew.app.first_lifetime | io.fsncrew.app.first_lifetime | $1990 | 1,500,000 FSN |
+| First Class (Lifetime) | io.fsncrew.app.first_lifetime | io.fsncrew.app.first_lifetime | $199 | 1,500,000 FSN |
 | First Class (6 Months) | io.fsncrew.app.first_6months | io.fsncrew.app.first_6months | $120 | 1,000,000 FSN |
 | Business Class | io.fsncrew.app.business_monthly | io.fsncrew.app.business_monthly | $15/month | 100,000 FSN |
 

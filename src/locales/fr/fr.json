@@ -1661,7 +1661,7 @@
       "joinNow": "Rejoindre maintenant",
       "openDashboard": "Ouvrir le tableau de bord",
       "getStarted": "Commencer",
-      "createEning": "Commencer à gagner",
+      "createEarning": "Commencer à gagner",
       "readMore": "En savoir plus",
       "tryForFree": "Essayer gratuitement"
     },
@@ -1764,7 +1764,7 @@
           ],
           "buttonText": "Choisir Classe Affaires"
         },
-        "first": {
+        "first-6": {
           "title": "Première Classe",
           "price": "120",
           "description": "Toutes les fonctionnalités de la Première Classe pour augmenter vos récompenses FSN",
@@ -1778,7 +1778,7 @@
         },
         "firstLifetime": {
           "title": "Première Classe (à vie)",
-          "price": "1990",
+          "price": "199",
           "description": "Toutes les fonctionnalités de la Première Classe (à vie) pour augmenter vos récompenses FSN",
           "features": [
             "Bonus 1 000 000 FSN",

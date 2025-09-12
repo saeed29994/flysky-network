@@ -72,7 +72,7 @@ export const MEMBERSHIP_PLANS = [
   },
   {
     title: "First class (Lifetime)",
-    price: "1990",
+    price: "199",
     description: "All first class (lifetime) features to boost your FSN rewards with FlySky Network",
     features: ["Bonus 1,500,000 FSN", "Highest mining", "Lifetime access", "Access to premium features"],
     popular: false,
@@ -84,7 +84,7 @@ export const HOW_IT_WORKS_STEPS = [
   {
     step: "01",
     title: "Register",
-    description: "Create your account and verify your identity to start crypto earning journey",
+    description: "Create your account and verify your identity to start your earning journey",
     iconSvg: "how-it-works-1",
     btnText: "Sign Up",
     btnIcon: "arrow-right"

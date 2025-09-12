@@ -52,8 +52,8 @@
         ],
         "buttonText": "İş Sınıfını Seç"
       },
-      "first": {
-        "title": "Birinci Sınıf",
+      "first-6": {
+        "title": "Birinci Sınıf (6 Ay)",
         "price": "120",
         "description": "FSN ödüllerinizi artırmak için Birinci Sınıf özelliklerinin tümü",
         "features": [
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "Birinci Sınıf (Ömür Boyu)",
-        "price": "1990",
+        "price": "199",
         "description": "FSN ödüllerinizi artırmak için Birinci Sınıf (Ömür Boyu) özelliklerinin tümü",
         "features": [
           "1.000.000 FSN Bonus",
@@ -122,7 +122,6 @@
   "planNames": {
     "economy": "Ekonomi Sınıfı",
     "business": "İş Sınıfı",
-    "first": "Birinci Sınıf",
     "first-6": "Birinci Sınıf (6 Ay)",
     "first-lifetime": "Birinci Sınıf (Ömür Boyu)"
   },
@@ -176,6 +175,10 @@
       "playToEarn": {
         "title": "Oyna ve Kazan",
         "description": "Oyun oynayın ve token kazanın"
+      },
+      "amazingRewards": {
+        "title": "Harika Ödüller",
+        "description": "Madencilik, staking ve referanslarla ödül kazanın"
       },
       "watchToEarn": {
         "title": "İzle ve Kazan",
@@ -242,6 +245,8 @@
     "loggingIn": "Giriş yapılıyor...",
     "or": "VEYA",
     "loginWithGoogle": "Google ile Giriş Yap",
+    "loginWithApple": "Apple ile Devam Et",
+    "signUpWithApple": "Apple ile Kayıt Ol",
     "pleaseWait": "Lütfen bekleyin...",
     "noAccount": "Hesabınız yok mu?",
     "signUp": "Kayıt Ol",
@@ -2355,6 +2360,10 @@
         "playToEarn": {
           "title": "OYNA VE KAZAN",
           "desc": "Mini oyunlar oynayın ve FSN kazanmak için görevleri tamamlayın"
+        },
+        "amazingRewards": {
+          "title": "Harika Ödüller",
+          "desc": "Madencilik, staking ve referanslarla ödül kazanın"
         }
       }
     },

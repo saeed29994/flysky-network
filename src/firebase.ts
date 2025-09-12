@@ -30,28 +30,28 @@ const getPlatform = (): 'web' | 'ios' | 'android' => {
 const getFirebaseConfig = () => {
   const platform = getPlatform();
 
-  // Base configuration (same for all platforms)
+  // Use consistent hardcoded config (same as firebase-config.js)
   const baseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    apiKey: "AIzaSyCbAz_c1hz2Xd5Ju7u1TOdftZL7OGzCEKA",
+    authDomain: platform === 'web' ? "flysky-site.firebaseapp.com" : "fsncrew.io",
+    projectId: "flysky-site",
+    storageBucket: "flysky-site.firebasestorage.app",
+    messagingSenderId: "3676998780",
   };
 
-  // Platform-specific app IDs
+  // Platform-specific app IDs (matching actual platform configs)
   const platformConfigs: Record<'web' | 'ios' | 'android', typeof baseConfig & { appId: string }> = {
     web: {
       ...baseConfig,
-      appId: import.meta.env.VITE_FIREBASE_WEB_APP_ID || import.meta.env.VITE_FIREBASE_APP_ID,
+      appId: "1:3676998780:web:7660a9ff69960163550df9",
     },
     android: {
       ...baseConfig,
-      appId: import.meta.env.VITE_FIREBASE_ANDROID_APP_ID || import.meta.env.VITE_FIREBASE_APP_ID,
+      appId: "1:3676998780:android:6d18cd417d4512bb550df9",
     },
     ios: {
       ...baseConfig,
-      appId: import.meta.env.VITE_FIREBASE_IOS_APP_ID || import.meta.env.VITE_FIREBASE_APP_ID,
+      appId: "1:3676998780:ios:6bf4ca917a4eb864550df9",
     }
   };
 
@@ -68,8 +68,36 @@ const getFirebaseConfig = () => {
 // Initialize Firebase with platform-specific config
 const firebaseConfig = getFirebaseConfig();
 const app = initializeApp(firebaseConfig);
+
 // Initialize services
 const auth = getAuth(app);
+
+// Configure auth for mobile platforms to handle referer issues
+if (getPlatform() !== 'web') {
+  // Set custom headers for mobile platforms
+  auth.settings.appVerificationDisabledForTesting = false;
+  
+  // Override the fetch function to add proper headers
+  const originalFetch = window.fetch;
+  window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
+    
+    // Add referer header for Firebase auth requests
+    if (url.includes('identitytoolkit.googleapis.com') || url.includes('securetoken.googleapis.com')) {
+      const headers = new Headers(init?.headers);
+      headers.set('Referer', 'https://fsncrew.io');
+      headers.set('Origin', 'https://fsncrew.io');
+      
+      return originalFetch(input, {
+        ...init,
+        headers
+      });
+    }
+    
+    return originalFetch(input, init);
+  };
+}
+
 const db = getFirestore(app);
 const functions = getFunctions(app, 'us-central1');
 const storage = getStorage(app);

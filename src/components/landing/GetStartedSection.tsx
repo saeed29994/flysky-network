@@ -3,6 +3,7 @@ import getStartedImage from '@/assets/landing/get-started-2.svg';
 import { Apple, Play } from 'lucide-react';
 import Ellipse from '../ui/ellipse';
 import { useTranslation } from 'react-i18next';
+import { shouldShowAppStore, shouldShowGooglePlay } from '../../utils/pwaUtils';
 
 const GetStartedSection = () => {
   const { navigateToSignup } = useButtonActions();
@@ -34,30 +35,35 @@ const GetStartedSection = () => {
               {t('landing.getStarted.subtitle')}
             </p>
             
+            {/* Platform-specific store buttons */}
             <div className="flex flex-row gap-4 justify-center items-center">
-              {/* App Store Button - Official Style */}
-              <button 
-                onClick={navigateToSignup}
-                className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-              >
-                <Apple className="w-6 h-6" />
-                <div className="text-left">
-                  <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
-                  <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
-                </div>
-              </button>
+              {/* App Store Button - Show on iOS and Web */}
+              {shouldShowAppStore() && (
+                <button 
+                  onClick={navigateToSignup}
+                  className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  <Apple className="w-6 h-6" />
+                  <div className="text-left">
+                    <div className="text-xs text-gray-300">{t('landing.store.appStoreTop')}</div>
+                    <div className="text-sm font-semibold">{t('landing.store.appStore')}</div>
+                  </div>
+                </button>
+              )}
               
-              {/* Google Play Button - Official Style */}
-              <button 
-                onClick={navigateToSignup}
-                className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-              >
-                <Play className="w-6 h-6" />
-                <div className="text-left">
-                  <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
-                  <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
-                </div>
-              </button>
+              {/* Google Play Button - Show on Android and Web */}
+              {shouldShowGooglePlay() && (
+                <button 
+                  onClick={navigateToSignup}
+                  className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  <Play className="w-6 h-6" />
+                  <div className="text-left">
+                    <div className="text-xs text-gray-300">{t('landing.store.getItOn')}</div>
+                    <div className="text-sm font-semibold">{t('landing.store.googlePlay')}</div>
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         </div>

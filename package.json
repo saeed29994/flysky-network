@@ -12,7 +12,9 @@
     "i18n:dedupe": "node scripts/dedupeLocales.mjs"
   },
   "dependencies": {
+    "@capacitor-community/apple-sign-in": "^7.0.1",
     "@capacitor-firebase/app": "^7.3.0",
+    "@capacitor-firebase/authentication": "^7.3.1",
     "@capacitor-firebase/messaging": "^7.3.0",
     "@capacitor/android": "^7.4.2",
     "@capacitor/cli": "^7.4.2",

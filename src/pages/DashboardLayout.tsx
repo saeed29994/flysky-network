@@ -44,38 +44,75 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log('DashboardLayout: Auth state changed', {
+        hasUser: !!user,
+        uid: user?.uid,
+        email: user?.email,
+        emailVerified: user?.emailVerified,
+        providers: user?.providerData?.map(p => p.providerId),
+        platform: 'ios'
+      });
+      
       // Clear any existing listeners when auth state changes
       firestoreListeners.current.forEach(unsub => unsub());
       firestoreListeners.current = [];
       
       if (!user) {
+        console.log('DashboardLayout: No user, redirecting to login');
         navigate('/login');
         return;
       }
+      
+      console.log('DashboardLayout: User authenticated, starting user data loading...');
+
+      // Set a timeout to prevent infinite loading
+      const loadingTimeout = setTimeout(() => {
+        console.warn('User data loading timeout - clearing loading state');
+        setIsLoading(false);
+      }, 10000); // 10 second timeout
 
       const userRef = doc(db, 'users', user.uid);
       const unsubscribeSnapshot = onSnapshot(userRef, (userSnap) => {
-        const data = userSnap.data();
+        try {
+          console.log('DashboardLayout: User document snapshot received', {
+            exists: userSnap.exists(),
+            hasData: !!userSnap.data(),
+            uid: user?.uid
+          });
+          
+          const data = userSnap.data();
+          console.log('DashboardLayout: User data:', data);
 
-        setUserName(data?.fullName || '');
-        setUserEmail(data?.email || '');
-        setIsAdmin(data?.role === 'admin');
+          setUserName(data?.fullName || '');
+          setUserEmail(data?.email || '');
+          setIsAdmin(data?.role === 'admin');
 
-        const planValue = data?.membership?.planName || data?.plan || 'economy';
-        const normalizedPlan =
-          planValue.includes('first') ? 'first' :
-          planValue === 'business' ? 'business' : 'economy';
-        setUserPlan(normalizedPlan);
+          const planValue = data?.membership?.planName || data?.plan || 'economy';
+          const normalizedPlan =
+            planValue.includes('first') ? 'first' :
+            planValue === 'business' ? 'business' : 'economy';
+          setUserPlan(normalizedPlan);
 
-        const rawKyc = (data?.kycStatus || data?.kyc?.kycStatus || 'Not Actived').toLowerCase();
-        const normalizedKyc =
-          rawKyc === 'approved' || rawKyc === 'actived' || rawKyc === 'verified' ? 'Approved' :
-          rawKyc === 'pending' ? 'Pending' : 'Not Actived';
-        setKycStatus(normalizedKyc);
+          const rawKyc = (data?.kycStatus || data?.kyc?.kycStatus || 'Not Actived').toLowerCase();
+          const normalizedKyc =
+            rawKyc === 'approved' || rawKyc === 'actived' || rawKyc === 'verified' ? 'Approved' :
+            rawKyc === 'pending' ? 'Pending' : 'Not Actived';
+          setKycStatus(normalizedKyc);
 
-        const endDate = data?.membership?.subscriptionEnd;
-        if (endDate) setSubscriptionEnd(new Date(endDate).toLocaleDateString());
+          const endDate = data?.membership?.subscriptionEnd;
+          if (endDate) setSubscriptionEnd(new Date(endDate).toLocaleDateString());
 
+          console.log('DashboardLayout: User data processed successfully, clearing loading state');
+          clearTimeout(loadingTimeout);
+          setIsLoading(false);
+        } catch (error) {
+          console.error('DashboardLayout: Error processing user data:', error);
+          clearTimeout(loadingTimeout);
+          setIsLoading(false);
+        }
+      }, (error) => {
+        console.error('DashboardLayout: Error listening to user document:', error);
+        clearTimeout(loadingTimeout);
         setIsLoading(false);
       });
       
@@ -85,12 +122,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       const inboxQuery = query(collection(db, 'users', user.uid, 'inbox'), where('read', '==', false));
       const unsubscribeInbox = onSnapshot(inboxQuery, (snapshot) => {
         setHasUnreadMessages(!snapshot.empty);
+      }, (error) => {
+        console.error('Error listening to inbox:', error);
       });
       
       // Store the listener
       firestoreListeners.current.push(unsubscribeInbox);
 
       return () => {
+        clearTimeout(loadingTimeout);
         unsubscribeSnapshot();
         unsubscribeInbox();
         firestoreListeners.current = [];

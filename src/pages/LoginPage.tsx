@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react';
 import {
   signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
 } from 'firebase/auth';
-import { auth, db } from '../firebase';
+import { auth } from '../firebase';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
 import { requestPermissionAndToken } from '../utils/pushNotification';
-import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, query, where, getDocs, Timestamp, arrayUnion, increment } from 'firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
-import { v4 as uuidv4 } from 'uuid';
 import { Spinner } from '../components/ui/spinner';
 import fsnLogo from '../assets/fsn-logo.png';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import AppleSignInService from '../services/appleSignInService';
+import GoogleSignInService from '../services/googleSignInService';
+import { isPlatformIOS } from '../utils/pwaUtils';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -23,6 +22,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [emailLoading, setEmailLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
   const [logoSpin, setLogoSpin] = useState(true);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -39,67 +39,22 @@ const LoginPage = () => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
   }, [i18n.language]);
 
+  // Clear loading states when component unmounts or when user navigates away
+  useEffect(() => {
+    return () => {
+      setGoogleLoading(false);
+      setAppleLoading(false);
+      setEmailLoading(false);
+    };
+  }, []);
+
   useEffect(() => {
     const refFromUrl = searchParams.get('ref');
     if (refFromUrl) setReferralCode(refFromUrl);
   }, [searchParams]);
 
-  const sendWelcomeMessage = async (uid: string) => {
-    const inboxRef = doc(db, 'users', uid, 'inbox', 'welcome');
-    const inboxSnap = await getDoc(inboxRef);
+  // Note: Redirect handling is no longer needed with Capacitor Firebase Authentication
 
-    if (!inboxSnap.exists()) {
-      await setDoc(inboxRef, {
-        title: t('welcomeBonus.title'),
-        body: t('welcomeBonus.body', { amount: 500 }),
-        timestamp: Date.now(),
-        read: false,
-        claimed: false,
-        amount: 500,
-        type: 'welcome_bonus',
-      });
-    }
-  };
-
-  const registerReferral = async (referredCode: string, referredEmail: string) => {
-    try {
-      const q = query(collection(db, 'users'), where('referralCode', '==', referredCode));
-      const querySnapshot = await getDocs(q);
-
-      let refUserRef = null;
-      let refData = null;
-
-      if (!querySnapshot.empty) {
-        const refUser = querySnapshot.docs[0];
-        refUserRef = refUser.ref;
-        refData = refUser.data();
-      } else {
-        const altRef = doc(db, 'users', referredCode);
-        const altSnap = await getDoc(altRef);
-        if (altSnap.exists()) {
-          refUserRef = altRef;
-          refData = altSnap.data();
-        }
-      }
-
-      if (refUserRef && refData) {
-        // Use updateDoc with FieldValue.increment to properly update referrals count
-        await updateDoc(refUserRef, {
-          referralList: arrayUnion({
-            email: referredEmail,
-            status: 'Pending',
-            timestamp: Date.now(),
-          }),
-          referrals: increment(1),
-        });
-        console.log('✅ Referral registered successfully with count increment.');
-      } else {
-        console.warn('⚠️ No matching referrer found for code:', referredCode);
-      }
-    } catch (err) {
-      console.error('❌ Failed to update referral list:', err);
-    }
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,54 +86,56 @@ const LoginPage = () => {
     setError('');
     setGoogleLoading(true);
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
-
-      // Request notification permission
-      await requestPermissionAndToken(user.uid);
-
-      if (!userSnap.exists()) {
-        // New user registration via Google
-        const generatedReferralCode = uuidv4().slice(0, 8);
-        const finalReferral = referralCode.trim();
-
-        await setDoc(userRef, {
-          fullName: user.displayName || '',
-          email: user.email || '',
-          balance: 0,
-          watchedAdsToday: 0,
-          adsLastWatched: Timestamp.fromMillis(0),
-          plan: 'economy',
-          createdAt: serverTimestamp(),
-          referralCode: generatedReferralCode,
-          referredBy: finalReferral || '',
-          language: 'en',
-          theme: 'dark',
-          kycStatus: 'Not Actived',
-          dailyMined: 0,
-          lockedFromStaking: 0,
-          stakingEarnings: 0,
-          referralReward: 0,
-          referrals: 0,
-          agreedToTerms: true,
-          transactionHistory: [],
-        });
-
-        if (finalReferral) await registerReferral(finalReferral, user.email || '');
-        await sendWelcomeMessage(user.uid);
+      console.log('🔍 Starting Google Sign In from LoginPage...');
+      const result = await GoogleSignInService.signIn(referralCode);
+      
+      if (result.success) {
+        console.log('✅ Google Sign In successful, navigating to dashboard...');
+        // Google Sign In successful, navigate to dashboard
+        navigate('/dashboard');
+        // Don't set loading to false here - let the navigation handle it
+        return;
+      } else if (result.error?.includes('Redirecting to Google Sign In')) {
+        // For Android redirect, show loading message
+        setError('Redirecting to Google Sign In...');
+        // Don't set loading to false as we're redirecting
+        return;
+      } else {
+        setError(result.error || 'Google Sign In failed');
+        setGoogleLoading(false);
       }
-
-      // Google users go directly to dashboard (already verified)
-      navigate('/dashboard');
     } catch (err: any) {
       console.error('Google login error:', err);
-      setError(getFirebaseErrorMessage(err.code));
-    } finally {
+      setError(err.message || 'Google Sign In failed');
       setGoogleLoading(false);
+    }
+  };
+
+  const handleAppleLogin = async () => {
+    setError('');
+    setAppleLoading(true);
+    try {
+      console.log('🍎 Starting Apple Sign In from LoginPage...');
+      const result = await AppleSignInService.signIn(referralCode);
+      
+      console.log('🍎 Apple Sign In result from LoginPage:', result);
+      
+      if (result.success) {
+        console.log('✅ Apple Sign In successful, navigating to dashboard...');
+        console.log('🍎 User object from Apple Sign In:', result.user);
+        // Apple Sign In successful, navigate to dashboard
+        navigate('/dashboard');
+        // Don't set loading to false here - let the navigation handle it
+        return;
+      } else {
+        console.error('❌ Apple Sign In failed:', result.error);
+        setError(result.error || 'Apple Sign In failed');
+        setAppleLoading(false);
+      }
+    } catch (err: any) {
+      console.error('Apple login error:', err);
+      setError(err.message || 'Apple Sign In failed');
+      setAppleLoading(false);
     }
   };
 
@@ -268,28 +225,59 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={handleGoogleLogin}
-              disabled={emailLoading || googleLoading}
-              className="w-full py-3 bg-white text-gray-800 font-semibold rounded-lg hover:bg-gray-100 transition flex items-center justify-center"
-            >
-              {googleLoading ? (
-                <>
-                  <Spinner size="sm" color="primary" className="mr-2" />
-                  {t('auth.pleaseWait')}
-                </>
-              ) : (
-                <>
-                  <img
-                    src="https://developers.google.com/identity/images/g-logo.png"
-                    alt="Google Logo"
-                    className="w-5 h-5 mr-3"
-                  />
-                  {t('auth.loginWithGoogle')}
-                </>
-              )}
-            </button>
+            {/* Google Sign In Button - Hide on iOS devices */}
+            {!isPlatformIOS() && (
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                disabled={emailLoading || googleLoading || appleLoading}
+                className="w-full py-3 bg-white text-gray-800 font-semibold rounded-lg hover:bg-gray-100 transition flex items-center justify-center"
+              >
+                {googleLoading ? (
+                  <>
+                    <Spinner size="sm" color="primary" className="mr-2" />
+                    {t('auth.pleaseWait')}
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src="https://developers.google.com/identity/images/g-logo.png"
+                      alt="Google Logo"
+                      className="w-5 h-5 mr-3"
+                    />
+                    {t('auth.loginWithGoogle')}
+                  </>
+                )}
+              </button>
+            )}
+
+            {/* Apple Sign In Button - Only show on iOS devices */}
+            {isPlatformIOS() && (
+              <button
+                type="button"
+                onClick={handleAppleLogin}
+                disabled={emailLoading || googleLoading || appleLoading}
+                className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition flex items-center justify-center mt-3"
+              >
+                {appleLoading ? (
+                  <>
+                    <Spinner size="sm" color="white" className="mr-2" />
+                    {t('auth.pleaseWait')}
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="w-5 h-5 mr-3"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.11-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                    </svg>
+                    {t('auth.loginWithApple')}
+                  </>
+                )}
+              </button>
+            )}
 
             <p className="mt-6 text-sm text-gray-400 text-center">
               {t('auth.noAccount')}{' '}

@@ -52,8 +52,8 @@
         ],
         "buttonText": "选择商务舱"
       },
-      "first": {
-        "title": "头等舱",
+      "first-6": {
+        "title": "头等舱（6个月）",
         "price": "120",
         "description": "包含所有头等舱功能，助力提升您的 FSN 奖励",
         "features": [
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "头等舱（终身）",
-        "price": "1990",
+        "price": "199",
         "description": "包含头等舱（终身）功能，助力提升您的 FSN 奖励",
         "features": [
           "1,000,000 FSN 奖励",
@@ -145,7 +145,6 @@
   "planNames": {
     "economy": "经济舱",
     "business": "商务舱",
-    "first": "头等舱",
     "first-6": "头等舱（6个月）",
     "first-lifetime": "头等舱（终身）"
   },
@@ -199,6 +198,10 @@
       "playToEarn": {
         "title": "玩赚",
         "description": "玩游戏并赚取代币"
+      },
+      "amazingRewards": {
+        "title": "惊人奖励",
+        "description": "挖矿、质押和推荐赚取奖励"
       },
       "watchToEarn": {
         "title": "看赚",
@@ -265,6 +268,8 @@
     "loggingIn": "登录中...",
     "or": "或",
     "loginWithGoogle": "使用 Google 登录",
+    "loginWithApple": "使用 Apple 继续",
+    "signUpWithApple": "使用 Apple 注册",
     "pleaseWait": "请稍候...",
     "noAccount": "没有账户？",
     "signUp": "注册",
@@ -686,6 +691,10 @@
       "playToEarn": {
         "title": "玩游戏赚取",
         "desc": "玩迷你游戏并完成挑战以赚取 FSN"
+      },
+      "amazingRewards": {
+        "title": "惊人奖励",
+        "desc": "挖矿、质押和推荐赚取奖励"
       }
     }
   },
@@ -2329,6 +2338,10 @@
         "playToEarn": {
           "title": "玩游戏赚取",
           "desc": "玩迷你游戏并完成挑战以赚取 FSN"
+        },
+        "amazingRewards": {
+          "title": "惊人奖励",
+          "desc": "挖矿、质押和推荐赚取奖励"
         }
       }
     },

@@ -103,7 +103,6 @@ const MembershipPage = () => {
     // Handle plan name formatting
     if (planId === 'first-lifetime') return t('planNames.first-lifetime');
     if (planId === 'first-6') return t('planNames.first-6');
-    if (planId === 'first') return t('planNames.first-lifetime'); // Legacy handling
     if (planId === 'business') return t('planNames.business');
     
     return planId;
@@ -228,7 +227,7 @@ const MembershipPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {plans.map((plan, index) => {
               // Handle legacy 'first' plan mapping to 'first-lifetime'
-              const normalizedCurrentPlan = actualPlan === 'first' ? 'first-lifetime' : actualPlan;
+              const normalizedCurrentPlan = actualPlan === 'first-6' ? 'first-lifetime' : actualPlan;
               const isActive = plan.id === normalizedCurrentPlan && !actualIsExpired;
               const bonus = plan.bonus || getPlanBonus(plan.id);
               const price = plan.price || getPlanPrice(plan.id);

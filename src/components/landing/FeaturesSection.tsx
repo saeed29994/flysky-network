@@ -11,7 +11,7 @@ import stakingIcon from '../../assets/landing/staking.svg';
 import featureBorderBottom from '../../assets/landing/feature-border-bottom.svg';
 
 interface FeatureItemDef {
-  key: 'mining' | 'membership' | 'staking' | 'referral' | 'watchToEarn' | 'playToEarn';
+  key: 'mining' | 'membership' | 'staking' | 'referral' | 'watchToEarn' | 'amazingRewards';
   icon: string;
   size?: 'default' | 'large';
 }
@@ -26,7 +26,7 @@ const FeaturesSection = () => {
     staking: stakingIcon,
     referral: miningIcon, 
     watchToEarn: membershipIcon,
-    playToEarn: stakingIcon 
+    amazingRewards: stakingIcon 
   } as const;
 
   const features: FeatureItemDef[] = [
@@ -35,7 +35,7 @@ const FeaturesSection = () => {
     { key: 'staking', icon: iconMap.staking },
     { key: 'referral', icon: iconMap.referral },
     { key: 'watchToEarn', icon: iconMap.watchToEarn, size: 'large' },
-    { key: 'playToEarn', icon: iconMap.playToEarn },
+    { key: 'amazingRewards', icon: iconMap.amazingRewards },
   ];
 
   return (

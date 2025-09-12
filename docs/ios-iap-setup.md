@@ -38,7 +38,7 @@ For each membership plan, create a product with the following details:
 - **Type**: Non-Consumable
 - **Reference Name**: First Class (Lifetime)
 - **Product ID**: `io.fsncrew.app.first_lifetime`
-- **Price**: $1990 USD
+- **Price**: $199 USD
 - **Description**: Lifetime access to premium features with highest mining rate (6000 FSN/12h) + 1,500,000 FSN bonus
 - Fill in all required metadata (description, review information)
 

@@ -30,6 +30,17 @@ const config: CapacitorConfig = {
         defaultChannelLightColor: "#FF231F7C",
       }
     },
+    AppleSignIn: {
+      // Apple Sign In configuration
+      // This plugin doesn't require specific configuration
+    },
+    CapacitorHttp: {
+      enabled: true
+    },
+    FirebaseAuthentication: {
+      skipNativeAuth: false,
+      providers: ["google.com", "apple.com"]
+    },
   },
   android: {
     allowMixedContent: true,
@@ -41,10 +52,15 @@ const config: CapacitorConfig = {
     allowsLinkPreview: false,
     scrollEnabled: true,
     limitsNavigationsToAppBoundDomains: true
+
   },
   server: {
+    androidScheme: "https",
+    // For development, use localhost
+    // hostname: "localhost",
+    // For production, use your domain
     hostname: "fsncrew.io",
-    androidScheme: "https"
+    cleartext: true
   }
 };
 

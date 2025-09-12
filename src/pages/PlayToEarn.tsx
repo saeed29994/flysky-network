@@ -1,3 +1,14 @@
+// GAMING FEATURES COMMENTED OUT - TO BE ENABLED LATER
+// This file contains the PlayToEarn page component that was commented out
+// to comply with App Store guidelines (Guideline 2.1 - App Completeness)
+// 
+// To re-enable gaming features:
+// 1. Uncomment all the code below
+// 2. Uncomment the route in App.tsx
+// 3. Uncomment the feature in Dashboard.tsx
+// 4. Uncomment the translations in localization files
+
+/*
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Gamepad2, Clock, Star } from 'lucide-react';
@@ -9,14 +20,12 @@ const PlayToEarn = () => {
 
   return (
     <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Professional Header Section */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="relative overflow-hidden"
       >
-        {/* Background Pattern */}
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-purple-500/5 to-yellow-500/5"></div>
         <div className="absolute inset-0 opacity-30" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -55,13 +64,8 @@ const PlayToEarn = () => {
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 pb-12">
-        {/* Main Content Grid - Professional Layout */}
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-          
-          {/* Left Column - Main Content (8 columns on xl) */}
           <div className="xl:col-span-8 space-y-8">
-            
-            {/* Coming Soon Card */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -79,43 +83,8 @@ const PlayToEarn = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="p-6">
-                {/* Mobile Image */}
-                <div className="block md:hidden mb-6">
-      <img
-        src={playImageMobile}
-        alt="Play to Earn Mobile"
-                    className="w-full h-auto rounded-xl shadow-xl border-2 border-yellow-400/50"
-      />
-                </div>
-                
-                {/* Desktop Image */}
-                <div className="hidden md:block mb-6">
-      <img
-        src={playImage}
-        alt="Play to Earn"
-                    className="w-full h-auto rounded-xl shadow-xl border-2 border-yellow-400/50"
-                  />
-                </div>
-
-                {/* Coming Soon Message */}
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Star className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-4">{t('playToEarnPage.stayTuned')}</h3>
-                  <p className="text-gray-400 mb-6 max-w-md mx-auto leading-relaxed">
-                    {t('playToEarnPage.underDevelopment')}
-                  </p>
-                  <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-4 border border-yellow-500/30">
-                    <p className="text-yellow-400 font-medium">{t('playToEarnPage.comingSoon')}</p>
-                  </div>
-                </div>
-              </div>
             </motion.div>
 
-            {/* Features Preview */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -150,7 +119,6 @@ const PlayToEarn = () => {
             </motion.div>
           </div>
 
-          {/* Right Column - Info (4 columns on xl) */}
           <div className="xl:col-span-4">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
@@ -158,7 +126,6 @@ const PlayToEarn = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="space-y-6 sticky top-8"
             >
-              {/* Gaming Info Card */}
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -201,7 +168,6 @@ const PlayToEarn = () => {
                 </div>
               </div>
 
-              {/* Rewards Preview Card */}
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -248,3 +214,18 @@ const PlayToEarn = () => {
 };
 
 export default PlayToEarn;
+*/
+
+// Temporary placeholder component to prevent build errors
+// const PlayToEarn = () => {
+//   return (
+//     <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen flex items-center justify-center">
+//       <div className="text-center text-white">
+//         <h1 className="text-2xl font-bold mb-4">Gaming Features Coming Soon</h1>
+//         <p className="text-gray-400">This feature is currently under development.</p>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default PlayToEarn;

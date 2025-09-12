@@ -76,8 +76,8 @@ export const PLAN_CONFIG: Record<PlanType, {
   'first-lifetime': {
     id: 'first-lifetime',
     name: 'First Class (Lifetime)',
-    price: 1990,
-    priceLabel: '$1990 USD one-time',
+    price: 199,
+    priceLabel: '$199 USD one-time',
     bonus: 1500000,
     miningRate: '6000 FSN / 12 hours',
     features: ['Highest mining', 'Lifetime access', 'Premium access', 'Priority support', 'Unlocked forever', 'Lifetime perks', 'Event access'],
