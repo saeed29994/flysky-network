@@ -26,28 +26,45 @@ const getPlatform = (): 'web' | 'ios' | 'android' => {
   return 'web';
 };
 
-// Get platform-specific config
+// Secure Firebase configuration using environment variables
 const getFirebaseConfig = () => {
   const platform = getPlatform();
 
-  // Use consistent hardcoded config (same as firebase-config.js)
+  // Validate required environment variables
+  const requiredEnvVars = [
+    'VITE_FIREBASE_API_KEY',
+    'VITE_FIREBASE_AUTH_DOMAIN',
+    'VITE_FIREBASE_PROJECT_ID',
+    'VITE_FIREBASE_STORAGE_BUCKET',
+    'VITE_FIREBASE_MESSAGING_SENDER_ID',
+    'VITE_FIREBASE_WEB_APP_ID'
+  ];
+
+  const missingVars = requiredEnvVars.filter(varName => !import.meta.env[varName]);
+  
+  if (missingVars.length > 0) {
+    throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
+  }
+
+  // Base configuration from environment variables
   const baseConfig = {
-    apiKey: "AIzaSyCbAz_c1hz2Xd5Ju7u1TOdftZL7OGzCEKA",
-    authDomain: "flysky-site.firebaseapp.com",
-    projectId: "flysky-site",
-    storageBucket: "flysky-site.firebasestorage.app",
-    messagingSenderId: "3676998780",
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   };
 
   // For Capacitor (mobile), always use web config to avoid URL scheme issues
   if (platform === 'ios' || platform === 'android') {
     const config = {
       ...baseConfig,
-      appId: "1:3676998780:web:7660a9ff69960163550df9", // Use web app ID for Capacitor
+      appId: import.meta.env.VITE_FIREBASE_WEB_APP_ID, // Use web app ID for Capacitor
     };
     
+    // Only log in development and without sensitive data
     if (import.meta.env.DEV) {
-      console.log(`Firebase config for Capacitor (${platform}):`, config);
+      console.log(`Firebase initialized for Capacitor (${platform})`);
     }
     
     return config;
@@ -57,15 +74,15 @@ const getFirebaseConfig = () => {
   const platformConfigs: Record<'web', typeof baseConfig & { appId: string }> = {
     web: {
       ...baseConfig,
-      appId: "1:3676998780:web:7660a9ff69960163550df9",
+      appId: import.meta.env.VITE_FIREBASE_WEB_APP_ID,
     }
   };
 
   const config = platformConfigs[platform];
   
-  // Log platform info in development
+  // Only log in development and without sensitive data
   if (import.meta.env.DEV) {
-    console.log(`Firebase config for platform: ${platform}`, config);
+    console.log(`Firebase initialized for platform: ${platform}`);
   }
   
   return config;
@@ -102,11 +119,10 @@ if (getPlatform() === 'web') {
 // Development emulator setup
 if (import.meta.env.DEV) {
   try {
-    console.log(`Development environment detected. Platform: ${getPlatform()}`);
+    console.log('Development environment detected');
     // Uncomment for local emulator
     // import { connectFunctionsEmulator } from 'firebase/functions';
     // connectFunctionsEmulator(functions, 'localhost', 5001);
-    console.log('Development environment detected. CORS issues with Cloud Functions may occur.');
     console.log('To use local emulator, uncomment the connectFunctionsEmulator line.');
   } catch (error) {
     console.error('Failed to connect to emulator:', error);

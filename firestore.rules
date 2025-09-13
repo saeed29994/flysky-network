@@ -153,5 +153,14 @@ service cloud.firestore {
       allow read: if isAdmin();
       allow write: if false; // Only Cloud Functions should write to this collection
     }
+
+    // ✅ Purchase tracking permissions
+    match /purchases/{purchaseId} {
+      allow read: if isAdmin() || 
+                   (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn(); // Allow users to create their own purchase records
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
   }
 }

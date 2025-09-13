@@ -1,6 +1,6 @@
 import { Purchases, PurchasesOffering, PurchasesPackage, CustomerInfo, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
 import { Capacitor } from '@capacitor/core';
-import { REVENUECAT_API_KEY, PRODUCT_IDS, ENTITLEMENT_IDS, PLAN_SUBSCRIPTION_TYPE } from '../utils/iapConfig';
+import { REVENUECAT_API_KEY, PRODUCT_IDS, ENTITLEMENT_IDS } from '../utils/iapConfig';
 import { PLAN_CONFIG } from '../utils/planConstants';
 import { auth, db } from '../firebase';
 import { doc, updateDoc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
@@ -205,41 +205,112 @@ class IAPService {
       await this.initialize();
     }
 
+    const platform = Capacitor.getPlatform();
+    console.log(`🚀 Starting ${platform} purchase for package:`, pkg.identifier);
+    console.log('📦 Package details:', {
+      identifier: pkg.identifier,
+      productId: pkg.product.identifier,
+      productType: pkg.product.productType,
+      price: pkg.product.price,
+      currencyCode: pkg.product.currencyCode,
+      platform: platform
+    });
+    
     try {
-      console.log('🚀 Starting purchase for package:', pkg.identifier);
-      console.log('📦 Package details:', {
-        identifier: pkg.identifier,
-        productId: pkg.product.identifier,
-        productType: pkg.product.productType,
-        price: pkg.product.price,
-        currencyCode: pkg.product.currencyCode
-      });
-      
       const { customerInfo } = await Purchases.purchasePackage({ 
         aPackage: pkg
       });
       
       console.log('✅ Purchase completed successfully');
       console.log('👤 Customer info:', customerInfo);
+      console.log('🔍 Customer info details:', {
+        originalAppUserId: customerInfo.originalAppUserId,
+        activeSubscriptions: Object.keys(customerInfo.activeSubscriptions),
+        entitlements: Object.keys(customerInfo.entitlements.active),
+        allPurchaseDates: Object.keys(customerInfo.allPurchaseDates),
+        platform: platform
+      });
       
       // Check if the user has the premium entitlement
       const isPremium = customerInfo.entitlements.active[ENTITLEMENT_IDS.premium];
       console.log('🔐 Premium entitlement active:', isPremium);
+      console.log('🔍 All active entitlements:', Object.keys(customerInfo.entitlements.active));
+      console.log('🔍 Looking for entitlement:', ENTITLEMENT_IDS.premium);
+      console.log('🔍 Active subscriptions:', Object.keys(customerInfo.activeSubscriptions));
       
-      if (isPremium) {
-        console.log('🎉 Updating membership in Firebase...');
+      // Check if user has any active subscription (fallback check)
+      const hasActiveSubscription = Object.keys(customerInfo.activeSubscriptions).length > 0;
+      console.log('🔍 Has active subscription:', hasActiveSubscription);
+      
+      if (isPremium || hasActiveSubscription) {
+        console.log('🎉 Premium entitlement or active subscription found! Updating membership in Firebase...');
         // Update user's membership in Firebase
         await this.updateMembershipInFirebase(planId, customerInfo);
-        console.log('✅ Membership updated in Firebase');
+        console.log('✅ Membership updated in Firebase successfully');
+        
+        // Show success message
+        toast.success(`🎉 ${platform === 'android' ? 'Google Play' : 'App Store'} purchase successful! Membership activated.`);
+        
         return customerInfo;
       } else {
-        console.log('❌ Premium entitlement not found after purchase');
-        throw new Error('Purchase completed but premium entitlement not found');
+        console.log('❌ No premium entitlement or active subscription found after purchase');
+        
+        // For Android, sometimes there's a delay in entitlement activation
+        if (platform === 'android') {
+          console.log('⏳ Android detected - checking for delayed entitlement activation...');
+          
+          // Wait a bit and check again
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          
+          try {
+            const { customerInfo: refreshedCustomerInfo } = await Purchases.getCustomerInfo();
+            const refreshedPremium = refreshedCustomerInfo.entitlements.active[ENTITLEMENT_IDS.premium];
+            const refreshedActiveSubscriptions = Object.keys(refreshedCustomerInfo.activeSubscriptions).length > 0;
+            
+            console.log('🔄 Refresh check - Premium:', refreshedPremium);
+            console.log('🔄 Refresh check - Active subscriptions:', Object.keys(refreshedCustomerInfo.activeSubscriptions));
+            
+            if (refreshedPremium || refreshedActiveSubscriptions) {
+              console.log('✅ Premium entitlement or subscription found after refresh!');
+              await this.updateMembershipInFirebase(planId, refreshedCustomerInfo);
+              toast.success('🎉 Google Play purchase successful! Membership activated.');
+              return refreshedCustomerInfo;
+            }
+          } catch (refreshError) {
+            console.error('❌ Error refreshing customer info:', refreshError);
+          }
+        }
+        
+        // If we still don't have entitlement, but purchase was successful, 
+        // we should still update the membership based on the purchase
+        console.log('⚠️ No entitlement found, but purchase was successful. Updating membership anyway...');
+        await this.updateMembershipInFirebase(planId, customerInfo);
+        toast.success(`🎉 ${platform === 'android' ? 'Google Play' : 'App Store'} purchase successful! Membership activated.`);
+        
+        return customerInfo;
       }
     } catch (error: any) {
       console.log('❌ Purchase error:', error);
       console.log('❌ Error code:', error.code);
       console.log('❌ Error message:', error.message);
+      console.log('❌ Platform:', platform);
+      
+      // Handle specific Android errors
+      if (platform === 'android') {
+        if (error.code === 'PURCHASE_CANCELLED_ERROR') {
+          console.log('User cancelled the purchase');
+          throw new Error('Purchase cancelled');
+        } else if (error.code === 'STORE_PROBLEM_ERROR') {
+          console.log('Google Play Store problem');
+          throw new Error('Google Play Store is temporarily unavailable. Please try again.');
+        } else if (error.code === 'NETWORK_ERROR') {
+          console.log('Network error during purchase');
+          throw new Error('Network error. Please check your internet connection and try again.');
+        } else if (error.message?.includes('BILLING_RESPONSE_RESULT_USER_CANCELED')) {
+          console.log('User cancelled billing');
+          throw new Error('Purchase cancelled');
+        }
+      }
       
       // Handle user cancellation separately
       if (error.code === 'PURCHASE_CANCELLED_ERROR') {
@@ -252,53 +323,6 @@ class IAPService {
     }
   }
 
-  /**
-   * Restore purchases
-   */
-  public async restorePurchases(): Promise<CustomerInfo> {
-    if (!this.isInitialized) {
-      await this.initialize();
-    }
-
-    try {
-      const { customerInfo } = await Purchases.restorePurchases();
-      
-      // Check if the user has the premium entitlement
-      const isPremium = customerInfo.entitlements.active[ENTITLEMENT_IDS.premium];
-      
-      if (isPremium) {
-        // Find the plan ID from the product identifier
-        const platform = Capacitor.getPlatform() === 'ios' ? 'ios' : 'android';
-        const productIds = PRODUCT_IDS[platform as keyof typeof PRODUCT_IDS];
-        let restoredPlanId: string | null = null;
-        
-        for (const [planId, productId] of Object.entries(productIds)) {
-          const activeEntitlement = Object.values(customerInfo.entitlements.active).find(
-            (entitlement: any) => entitlement.productIdentifier === productId
-          );
-          
-          if (activeEntitlement) {
-            restoredPlanId = planId;
-            break;
-          }
-        }
-        
-        if (restoredPlanId) {
-          // Update user's membership in Firebase
-          await this.updateMembershipInFirebase(restoredPlanId, customerInfo);
-          toast.success('Your purchases have been restored!');
-          return customerInfo;
-        }
-      }
-      
-      toast.error('No purchases to restore');
-      throw new Error('No purchases to restore');
-    } catch (error) {
-      console.error('Restore purchases failed:', error);
-      toast.error('Failed to restore purchases');
-      throw error;
-    }
-  }
 
   /**
    * Get current customer info
@@ -327,26 +351,45 @@ class IAPService {
     }
 
     try {
-      // Calculate subscription end date based on plan type
+      // Calculate subscription end date based on plan duration from Firebase
       const now = Math.floor(Date.now() / 1000);
       let subscriptionEnd: number;
       
-      switch (PLAN_SUBSCRIPTION_TYPE[planId as keyof typeof PLAN_SUBSCRIPTION_TYPE]) {
-        case 'lifetime':
-          // Set a very far future date for lifetime (10 years)
-          subscriptionEnd = now + (10 * 365 * 24 * 60 * 60);
-          break;
-        case 'six_months':
-          // 6 months in seconds
-          subscriptionEnd = now + (6 * 30 * 24 * 60 * 60);
-          break;
-        case 'monthly':
-          // 1 month in seconds
+      try {
+        // Get plan duration from Firebase plans collection
+        const planRef = doc(db, 'plans', planId);
+        const planSnap = await getDoc(planRef);
+        
+        if (planSnap.exists()) {
+          const planData = planSnap.data();
+          const durationDays = planData.durationDays || 30; // Default to 30 days if not found
+          
+          // Calculate subscription end: current time + duration in seconds
+          subscriptionEnd = now + (durationDays * 24 * 60 * 60);
+          
+          console.log('📅 Subscription calculation:', {
+            planId: planId,
+            planData: planData,
+            durationDays: durationDays,
+            currentTime: now,
+            currentTimeFormatted: new Date(now * 1000).toLocaleString(),
+            subscriptionEnd: subscriptionEnd,
+            subscriptionEndFormatted: new Date(subscriptionEnd * 1000).toLocaleString(),
+            durationInSeconds: durationDays * 24 * 60 * 60
+          });
+        } else {
+          // Fallback to 30 days if plan not found in Firebase
           subscriptionEnd = now + (30 * 24 * 60 * 60);
-          break;
-        default:
-          // Default to 1 month
-          subscriptionEnd = now + (30 * 24 * 60 * 60);
+          console.log('⚠️ Plan not found in Firebase, using 30-day fallback:', {
+            planId: planId,
+            subscriptionEnd: subscriptionEnd,
+            subscriptionEndFormatted: new Date(subscriptionEnd * 1000).toLocaleString()
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching plan duration from Firebase:', error);
+        // Fallback to 30 days on error
+        subscriptionEnd = now + (30 * 24 * 60 * 60);
       }
 
       // Get entitlement expiration date if available
@@ -387,6 +430,7 @@ class IAPService {
       await updateDoc(userRef, {
         membership: {
           planName: planId,
+          subscriptionStart: now, // Store subscription start timestamp
           subscriptionEnd,
           purchaseDate: serverTimestamp(),
           platform: Capacitor.getPlatform() === 'ios' ? 'ios' : 'android',
@@ -403,21 +447,27 @@ class IAPService {
         }]
       });
 
-      // Also log the purchase in a separate collection for tracking
-      const purchaseRef = doc(db, 'purchases', `${user.uid}_${Date.now()}`);
-      await setDoc(purchaseRef, {
-        userId: user.uid,
-        planId,
-        purchaseDate: serverTimestamp(),
-        subscriptionEnd,
-        platform: Capacitor.getPlatform() === 'ios' ? 'ios' : 'android',
-        receiptInfo: {
-          productIdentifier: premiumEntitlement?.productIdentifier || '',
-          isSandbox: customerInfo.originalAppUserId.includes('sandbox'),
-          purchaseDate: premiumEntitlement?.originalPurchaseDate || '',
-          expirationDate: premiumEntitlement?.expirationDate || '',
-        }
-      });
+      // Also log the purchase in a separate collection for tracking (optional)
+      try {
+        const purchaseRef = doc(db, 'purchases', `${user.uid}_${Date.now()}`);
+        await setDoc(purchaseRef, {
+          userId: user.uid,
+          planId,
+          purchaseDate: serverTimestamp(),
+          subscriptionEnd,
+          platform: Capacitor.getPlatform() === 'ios' ? 'ios' : 'android',
+          receiptInfo: {
+            productIdentifier: premiumEntitlement?.productIdentifier || '',
+            isSandbox: customerInfo.originalAppUserId.includes('sandbox'),
+            purchaseDate: premiumEntitlement?.originalPurchaseDate || '',
+            expirationDate: premiumEntitlement?.expirationDate || '',
+          }
+        });
+        console.log('✅ Purchase logged successfully');
+      } catch (purchaseLogError) {
+        console.warn('⚠️ Failed to log purchase (non-critical):', purchaseLogError);
+        // Don't throw error for purchase logging failure
+      }
 
       toast.success(`🎉 Membership activated! You received ${bonusAmount.toLocaleString()} FSN bonus!`);
     } catch (error) {

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUserPlan } from '../contexts/UserPlanContext';
 import SubscribeModal from '../components/SubscribeModal';
 import { getPlanBonus, getPlanPrice, getPlanFeatures, PLAN_CONFIG } from '../utils/planConstants';
 import { motion } from 'framer-motion';
@@ -12,7 +11,7 @@ import {
   Gift,
 } from 'lucide-react';
 import { auth, db } from '../firebase';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, collection, getDocs, onSnapshot } from 'firebase/firestore';
 
 interface Plan {
   id: string;
@@ -23,41 +22,64 @@ interface Plan {
 
 const MembershipPage = () => {
   const { t } = useTranslation();
-  const { currentPlan, subscriptionEnd } = useUserPlan();
   const [modalPlan, setModalPlan] = useState<null | { id: string; price: string; bonus: number; features: string[] }>(null);
   const [loading, setLoading] = useState(true);
   const [membershipData, setMembershipData] = useState<any>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
   const now = Math.floor(Date.now() / 1000);
 
-  // Fetch membership data directly from Firestore
+  // Real-time membership data listener
   useEffect(() => {
-    const fetchMembershipData = async () => {
-      setLoading(true);
-      const user = auth.currentUser;
-      if (!user) {
-        setLoading(false);
-        return;
-      }
+    const user = auth.currentUser;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
+    console.log('🔄 Setting up real-time membership listener for user:', user.uid);
+    setLoading(true);
+
+    const userRef = doc(db, 'users', user.uid);
+    
+    // Set up real-time listener for membership updates
+    const unsubscribe = onSnapshot(userRef, (userSnap) => {
       try {
-        const userRef = doc(db, 'users', user.uid);
-        const userSnap = await getDoc(userRef);
-        
         if (userSnap.exists()) {
           const userData = userSnap.data();
+          console.log('📊 Real-time Firebase User Data Update:', {
+            userId: user.uid,
+            userData: userData,
+            membershipData: userData.membership,
+            hasMembership: !!userData.membership,
+            timestamp: new Date().toLocaleString()
+          });
+          
           if (userData.membership) {
             setMembershipData(userData.membership);
+            console.log('✅ Real-time membership data updated:', userData.membership);
+          } else {
+            console.log('⚠️ No membership data found in user document');
+            setMembershipData(null);
           }
+        } else {
+          console.log('❌ User document does not exist');
+          setMembershipData(null);
         }
       } catch (error) {
-        console.error('Error fetching membership data:', error);
+        console.error('❌ Error in real-time membership listener:', error);
       } finally {
         setLoading(false);
       }
-    };
+    }, (error) => {
+      console.error('❌ Real-time listener error:', error);
+      setLoading(false);
+    });
 
-    fetchMembershipData();
+    // Cleanup listener on unmount
+    return () => {
+      console.log('🧹 Cleaning up real-time membership listener');
+      unsubscribe();
+    };
   }, []);
 
   // Fetch plans from Firestore, fallback to plan constants
@@ -74,12 +96,28 @@ const MembershipPage = () => {
         if (plansData.length > 0) {
           // Sort plans by price (ascending order)
           const sortedPlans = plansData.sort((a, b) => (a.price || 0) - (b.price || 0));
+          console.log('📋 Plans loaded from Firebase:', sortedPlans);
+          
+          // Debug: Show plan durations
+          console.log('🔍 Plan Duration Analysis:');
+          sortedPlans.forEach(plan => {
+            const durationDays = (plan as any).durationDays || 'Not set';
+            console.log(`  ${plan.id}: ${durationDays} days`);
+            
+            if (durationDays !== 'Not set') {
+              const now = Math.floor(Date.now() / 1000);
+              const subscriptionEnd = now + (durationDays * 24 * 60 * 60);
+              console.log(`    If purchased now, would expire: ${new Date(subscriptionEnd * 1000).toLocaleString()}`);
+            }
+          });
+          
           setPlans(sortedPlans);
         } else {
           // Fallback to plan constants if Firestore is empty
           const fallbackPlans = Object.values(PLAN_CONFIG).filter(plan => plan.id !== 'economy') as Plan[];
           // Sort fallback plans by price as well
           const sortedFallbackPlans = fallbackPlans.sort((a, b) => (a.price || 0) - (b.price || 0));
+          console.log('📋 Using fallback plans from constants:', sortedFallbackPlans);
           setPlans(sortedFallbackPlans);
         }
       } catch (error) {
@@ -108,30 +146,65 @@ const MembershipPage = () => {
     return planId;
   };
 
-  // Get actual plan from Firestore data first, then fall back to context
+  // Get actual plan from Firebase membership data only
   const getActualPlan = () => {
-    // First check Firestore data
-    if (membershipData && membershipData.planName && membershipData.subscriptionEnd && membershipData.subscriptionEnd > now) {
+    if (membershipData && membershipData.planName) {
       return membershipData.planName;
     }
-    
-    // Fall back to context data
-    return currentPlan;
+    return 'economy'; // Default to economy if no membership data
   };
 
   const actualPlan = getActualPlan();
   const displayPlanName = getPlanDisplayName(actualPlan);
   
-  // Get actual subscription end date
+  // Get subscription end date from Firebase membership data only
   const getActualSubscriptionEnd = () => {
     if (membershipData && membershipData.subscriptionEnd) {
       return membershipData.subscriptionEnd;
     }
-    return subscriptionEnd;
+    return null; // No subscription end date means no active subscription
   };
   
   const actualSubscriptionEnd = getActualSubscriptionEnd();
   const actualIsExpired = actualSubscriptionEnd ? actualSubscriptionEnd < now : true;
+
+  // Console logging for debugging user plan info
+  console.log('🔍 Membership Page State Debug:', {
+    // Raw membership data from Firebase
+    membershipData: membershipData,
+    
+    // Calculated plan info
+    actualPlan: actualPlan,
+    displayPlanName: displayPlanName,
+    
+    // Subscription timing info
+    actualSubscriptionEnd: actualSubscriptionEnd,
+    actualIsExpired: actualIsExpired,
+    currentTime: now,
+    currentTimeFormatted: new Date(now * 1000).toLocaleString(),
+    
+    // Subscription start info
+    subscriptionStart: membershipData?.subscriptionStart,
+    subscriptionStartFormatted: membershipData?.subscriptionStart ? new Date(membershipData.subscriptionStart * 1000).toLocaleString() : 'No start date',
+    
+    // Expiration details
+    expirationDate: actualSubscriptionEnd ? new Date(actualSubscriptionEnd * 1000).toLocaleString() : 'No expiration date',
+    timeUntilExpiration: actualSubscriptionEnd ? Math.floor((actualSubscriptionEnd - now) / (24 * 60 * 60)) : 'N/A',
+    
+    // Duration calculation
+    subscriptionDuration: membershipData?.subscriptionStart && actualSubscriptionEnd ? 
+      Math.floor((actualSubscriptionEnd - membershipData.subscriptionStart) / (24 * 60 * 60)) : 'Unknown',
+    
+    // Plan status summary
+    planStatus: {
+      plan: actualPlan,
+      isActive: !actualIsExpired,
+      isExpired: actualIsExpired,
+      hasSubscription: !!actualSubscriptionEnd,
+      daysRemaining: actualSubscriptionEnd ? Math.floor((actualSubscriptionEnd - now) / (24 * 60 * 60)) : 0,
+      hasStartDate: !!membershipData?.subscriptionStart
+    }
+  });
 
   if (loading) {
     return (
@@ -226,12 +299,21 @@ const MembershipPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {plans.map((plan, index) => {
-              // Handle legacy 'first' plan mapping to 'first-lifetime'
-              const normalizedCurrentPlan = actualPlan === 'first-6' ? 'first-lifetime' : actualPlan;
-              const isActive = plan.id === normalizedCurrentPlan && !actualIsExpired;
+              // Use the actual plan without incorrect normalization
+              const isActive = plan.id === actualPlan && !actualIsExpired;
               const bonus = plan.bonus || getPlanBonus(plan.id);
               const price = plan.price || getPlanPrice(plan.id);
               const features = plan.features || getPlanFeatures(plan.id);
+              
+              // Console log for each plan comparison
+              console.log(`🔍 Plan ${plan.id} comparison:`, {
+                planId: plan.id,
+                actualPlan: actualPlan,
+                isActive: isActive,
+                actualIsExpired: actualIsExpired,
+                planMatches: plan.id === actualPlan,
+                willShowAsActive: isActive
+              });
               
               const getPlanGradient = () => {
                 if (plan.id === 'business') return 'from-green-500 to-emerald-500';
@@ -301,7 +383,7 @@ const MembershipPage = () => {
                         })}
                       >
                         <ShoppingCart className="w-6 h-6" />
-                        {plan.id === normalizedCurrentPlan && actualIsExpired ? t('membershipPage.renew') : t('membershipPage.subscribeNow')}
+                        {plan.id === actualPlan && actualIsExpired ? t('membershipPage.renew') : t('membershipPage.subscribeNow')}
                       </button>
                     )}
                   </div>
@@ -318,7 +400,11 @@ const MembershipPage = () => {
             price={modalPlan.price} 
             bonus={modalPlan.bonus}
             features={modalPlan.features}
-            onClose={() => setModalPlan(null)} 
+            onClose={() => {
+              setModalPlan(null);
+              // Modal closed - real-time listener will handle updates
+              console.log('🔄 Modal closed, real-time listener will handle updates');
+            }} 
           />
         )}
       </div>

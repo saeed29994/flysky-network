@@ -13,7 +13,6 @@ import {
   Zap,
   Crown,
   Star,
-  RefreshCw,
 } from 'lucide-react';
 
 interface Props {
@@ -27,7 +26,6 @@ interface Props {
 const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClose }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [restoring, setRestoring] = useState(false);
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -62,7 +60,8 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
   }, [planId]);
 
   const handlePurchase = async () => {
-    console.log('🛒 Purchase button clicked');
+    const platform = Capacitor.getPlatform();
+    console.log(`🛒 ${platform} purchase button clicked`);
     console.log('📦 Available packages:', packages.length);
     console.log('📋 Packages:', packages);
     
@@ -73,24 +72,53 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
     }
 
     try {
-      console.log('🚀 Starting purchase process...');
+      console.log(`🚀 Starting ${platform} purchase process...`);
       setLoading(true);
       setError(null);
       
       console.log('📦 Using package:', packages[0]);
       console.log('📋 Plan ID:', planId);
+      console.log('📱 Platform:', platform);
       
       // Use the first package for this plan
-      await IAPService.purchasePackage(packages[0], planId);
+      const customerInfo = await IAPService.purchasePackage(packages[0], planId);
       
       console.log('✅ Purchase completed successfully, closing modal');
+      console.log('🎉 Final customer info:', customerInfo);
+      
+      // Clear any previous errors
+      setError(null);
+      
       // Close modal on successful purchase
       onClose();
+      
+      // Success feedback is already handled by IAPService
+      console.log('🎉 Purchase flow completed successfully');
+      
     } catch (err: any) {
       console.error('❌ Purchase failed:', err);
+      console.error('❌ Error details:', {
+        message: err.message,
+        code: err.code,
+        platform: platform
+      });
       
       // Don't show error for user cancellation
-      if (err.message !== 'Purchase cancelled') {
+      if (err.message === 'Purchase cancelled') {
+        console.log('User cancelled the purchase');
+        return;
+      }
+      
+      // Show platform-specific error messages
+      if (platform === 'android') {
+        if (err.message?.includes('Google Play Store')) {
+          setError('Google Play Store is temporarily unavailable. Please try again.');
+        } else if (err.message?.includes('Network error')) {
+          setError('Network error. Please check your internet connection and try again.');
+        } else {
+          setError('Purchase failed. Please try again or contact support.');
+        }
+      } else {
         setError('Purchase failed. Please try again.');
       }
     } finally {
@@ -98,22 +126,6 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
     }
   };
   
-  const handleRestorePurchases = async () => {
-    try {
-      setRestoring(true);
-      setError(null);
-      
-      await IAPService.restorePurchases();
-      
-      // Close modal on successful restore
-      onClose();
-    } catch (err) {
-      console.error('Restore failed:', err);
-      // Don't show toast as the service already does
-    } finally {
-      setRestoring(false);
-    }
-  };
 
   const getPlanIcon = () => {
     switch (planId) {
@@ -226,19 +238,6 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
           )}
         </button>
 
-        {/* Restore Purchases Button */}
-        <button
-          onClick={handleRestorePurchases}
-          disabled={restoring}
-          className="mt-3 w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 sm:py-3 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
-        >
-          {restoring ? (
-            <div className="w-4 h-4 border-2 border-gray-500/30 border-t-gray-500 rounded-full animate-spin"></div>
-          ) : (
-            <RefreshCw className="w-4 h-4" />
-          )}
-          {t('restorePurchases')}
-        </button>
 
         {/* Terms */}
         <p className="text-xs text-gray-500 text-center mt-3 sm:mt-4 leading-relaxed">
