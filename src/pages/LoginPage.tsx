@@ -39,15 +39,6 @@ const LoginPage = () => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
   }, [i18n.language]);
 
-  // Clear loading states when component unmounts or when user navigates away
-  useEffect(() => {
-    return () => {
-      setGoogleLoading(false);
-      setAppleLoading(false);
-      setEmailLoading(false);
-    };
-  }, []);
-
   useEffect(() => {
     const refFromUrl = searchParams.get('ref');
     if (refFromUrl) setReferralCode(refFromUrl);
@@ -90,11 +81,8 @@ const LoginPage = () => {
       const result = await GoogleSignInService.signIn(referralCode);
       
       if (result.success) {
-        console.log('✅ Google Sign In successful, navigating to dashboard...');
         // Google Sign In successful, navigate to dashboard
         navigate('/dashboard');
-        // Don't set loading to false here - let the navigation handle it
-        return;
       } else if (result.error?.includes('Redirecting to Google Sign In')) {
         // For Android redirect, show loading message
         setError('Redirecting to Google Sign In...');
@@ -102,11 +90,11 @@ const LoginPage = () => {
         return;
       } else {
         setError(result.error || 'Google Sign In failed');
-        setGoogleLoading(false);
       }
     } catch (err: any) {
       console.error('Google login error:', err);
       setError(err.message || 'Google Sign In failed');
+    } finally {
       setGoogleLoading(false);
     }
   };
@@ -115,26 +103,18 @@ const LoginPage = () => {
     setError('');
     setAppleLoading(true);
     try {
-      console.log('🍎 Starting Apple Sign In from LoginPage...');
       const result = await AppleSignInService.signIn(referralCode);
       
-      console.log('🍎 Apple Sign In result from LoginPage:', result);
-      
       if (result.success) {
-        console.log('✅ Apple Sign In successful, navigating to dashboard...');
-        console.log('🍎 User object from Apple Sign In:', result.user);
         // Apple Sign In successful, navigate to dashboard
         navigate('/dashboard');
-        // Don't set loading to false here - let the navigation handle it
-        return;
       } else {
-        console.error('❌ Apple Sign In failed:', result.error);
         setError(result.error || 'Apple Sign In failed');
-        setAppleLoading(false);
       }
     } catch (err: any) {
       console.error('Apple login error:', err);
       setError(err.message || 'Apple Sign In failed');
+    } finally {
       setAppleLoading(false);
     }
   };

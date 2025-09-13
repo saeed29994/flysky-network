@@ -64,20 +64,169 @@ class GoogleSignInService {
     try {
       console.log('🔍 Starting Google Sign In...');
       console.log('🔍 Current platform:', Capacitor.getPlatform());
-      console.log('🔍 Capacitor available:', !!Capacitor);
-      console.log('🔍 FirebaseAuthentication available:', !!FirebaseAuthentication);
       
-      // Add timeout to prevent hanging
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('Google Sign In timeout after 30 seconds')), 30000);
-      });
-      
-      const signInPromise = this.performSignIn(referralCode);
-      
-      return await Promise.race([signInPromise, timeoutPromise]);
+      const platform = Capacitor.getPlatform();
+      let userCredential: UserCredential;
+
+      if (platform === 'android' || platform === 'ios') {
+        // For mobile platforms, use Capacitor Firebase Authentication
+        console.log(`📱 Using Capacitor Firebase Auth for ${platform}`);
+        
+        try {
+          // Use Capacitor Firebase Authentication plugin
+          const result = await FirebaseAuthentication.signInWithGoogle();
+          console.log('✅ Capacitor Firebase Auth successful:', result);
+          
+          // Create Firebase credential from Capacitor result
+          const credential = GoogleAuthProvider.credential(result.credential?.idToken);
+          
+          if (!credential) {
+            throw new Error('Failed to create Firebase credential from Google Sign-In result');
+          }
+          
+          // Sign in to Firebase with the credential
+          userCredential = await signInWithCredential(auth, credential);
+          console.log('✅ Firebase authentication successful:', userCredential.user.uid);
+          
+        } catch (capacitorError: any) {
+          console.error('❌ Capacitor Firebase Auth failed:', capacitorError);
+          
+          // Fallback to web-based auth for mobile if Capacitor fails
+          console.log('🔄 Falling back to web-based authentication...');
+          
+          const provider = new GoogleAuthProvider();
+          provider.addScope('email');
+          provider.addScope('profile');
+          provider.setCustomParameters({
+            prompt: 'select_account'
+          });
+
+          // Add timeout to prevent indefinite loading
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => {
+              reject(new Error('Google Sign In timed out. Please try again.'));
+            }, 30000); // 30 second timeout
+          });
+
+          try {
+            userCredential = await Promise.race([
+              signInWithPopup(auth, provider),
+              timeoutPromise
+            ]) as UserCredential;
+            
+            console.log('✅ Fallback web auth successful');
+          } catch (fallbackError: any) {
+            console.error('❌ Fallback web auth failed:', fallbackError);
+            
+            if (fallbackError.message?.includes('timed out')) {
+              throw new Error('Google Sign In timed out. Please try again.');
+            }
+            
+            if (fallbackError.code === 'auth/popup-closed-by-user') {
+              throw new Error('Sign in was cancelled');
+            }
+            
+            if (fallbackError.code === 'auth/popup-blocked') {
+              throw new Error('Popup was blocked. Please allow popups and try again.');
+            }
+            
+            if (fallbackError.code === 'auth/network-request-failed') {
+              throw new Error('Network error. Please check your internet connection and try again.');
+            }
+            
+            throw new Error('Google Sign In failed. Please try again.');
+          }
+        }
+      } else {
+        // Web platform - use standard popup
+        console.log('🌐 Using web Google Sign In approach');
+        const provider = new GoogleAuthProvider();
+        provider.addScope('email');
+        provider.addScope('profile');
+        
+        // Add timeout for web as well
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => {
+            reject(new Error('Google Sign In timed out. Please try again.'));
+          }, 30000); // 30 second timeout
+        });
+
+        try {
+          userCredential = await Promise.race([
+            signInWithPopup(auth, provider),
+            timeoutPromise
+          ]) as UserCredential;
+          
+          console.log('✅ Web popup sign-in successful');
+        } catch (popupError: any) {
+          console.log('⚠️ Web popup failed:', popupError);
+          
+          if (popupError.message?.includes('timed out')) {
+            throw new Error('Google Sign In timed out. Please try again.');
+          }
+          
+          if (popupError.code === 'auth/popup-closed-by-user') {
+            throw new Error('Sign in was cancelled');
+          }
+          
+          if (popupError.code === 'auth/popup-blocked') {
+            throw new Error('Popup was blocked. Please allow popups and try again.');
+          }
+          
+          if (popupError.code === 'auth/network-request-failed') {
+            throw new Error('Network error. Please check your internet connection and try again.');
+          }
+          
+          throw new Error('Google Sign In failed. Please try again.');
+        }
+      }
+
+      const user = userCredential.user;
+      console.log('✅ Google Sign In successful:', user.uid);
+
+      // Handle user data creation/update
+      await this.handleUserData(user, referralCode);
+
+      // Request notification permission
+      await requestPermissionAndToken(user.uid);
+
+      return {
+        success: true,
+        user: user
+      };
+
     } catch (error: any) {
       console.error('❌ Google Sign In error:', error);
       
+      // Handle specific error cases
+      if (error.message?.includes('timed out')) {
+        return {
+          success: false,
+          error: 'Google Sign In timed out. Please try again.'
+        };
+      }
+      
+      if (error.message?.includes('cancelled')) {
+        return {
+          success: false,
+          error: 'Sign in was cancelled'
+        };
+      }
+      
+      if (error.message?.includes('blocked')) {
+        return {
+          success: false,
+          error: 'Popup was blocked. Please allow popups and try again.'
+        };
+      }
+      
+      if (error.message?.includes('Network error')) {
+        return {
+          success: false,
+          error: 'Network error. Please check your internet connection and try again.'
+        };
+      }
+
       return {
         success: false,
         error: error.message || 'Google Sign In failed'
@@ -85,92 +234,15 @@ class GoogleSignInService {
     }
   }
 
-  private async performSignIn(referralCode?: string): Promise<GoogleSignInResult> {
-    const platform = Capacitor.getPlatform();
-    let userCredential: UserCredential;
-
-    if (platform === 'android' || platform === 'ios') {
-      // For mobile platforms, use Capacitor Firebase Authentication
-      console.log(`📱 Using Capacitor Firebase Auth for ${platform}`);
-      
-      try {
-        // Use Capacitor Firebase Authentication plugin
-        const result = await FirebaseAuthentication.signInWithGoogle();
-        console.log('✅ Capacitor Firebase Auth successful:', result);
-        
-        // Create Firebase credential from Capacitor result
-        const credential = GoogleAuthProvider.credential(result.credential?.idToken);
-        
-        if (!credential) {
-          throw new Error('Failed to create Firebase credential from Google Sign-In result');
-        }
-        
-        // Sign in to Firebase with the credential
-        userCredential = await signInWithCredential(auth, credential);
-        console.log('✅ Firebase authentication successful:', userCredential.user.uid);
-        
-      } catch (capacitorError: any) {
-        console.error('❌ Capacitor Firebase Auth failed:', capacitorError);
-        
-        // For Android, if native auth fails, show proper error message
-        if (platform === 'android') {
-          throw new Error('Google Sign-In is not properly configured for Android. Please contact support.');
-        }
-        
-        throw capacitorError;
-      }
-    } else {
-      // Web platform - use standard popup
-      console.log(`🌐 Using web Google Sign In approach for ${platform}`);
-      const provider = new GoogleAuthProvider();
-      provider.addScope('email');
-      provider.addScope('profile');
-      
-      userCredential = await signInWithPopup(auth, provider);
-      console.log('✅ Web popup sign-in successful');
-    }
-
-    const user = userCredential.user;
-    console.log('✅ Google Sign In successful:', user.uid);
-    console.log('🔍 Google Sign In - User details:', {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      emailVerified: user.emailVerified,
-      providerData: user.providerData.map(p => ({ providerId: p.providerId, uid: p.uid }))
-    });
-
-    // Handle user data creation/update
-    console.log('🔍 Starting user data handling...');
-    await this.handleUserData(user, referralCode);
-    console.log('✅ User data handling completed');
-
-    // Request notification permission
-    console.log('🔍 Starting notification permission request...');
-    await requestPermissionAndToken(user.uid);
-    console.log('✅ Notification permission request completed');
-
-    console.log('🔍 Google Sign In - Returning success result');
-    return {
-      success: true,
-      user: user
-    };
-  }
-
   /**
    * Handle user data creation and updates
    */
   private async handleUserData(user: User, referralCode?: string): Promise<GoogleUserData> {
-    console.log('🔍 handleUserData: Starting user data processing for:', user.uid);
-    
     const userRef = doc(db, 'users', user.uid);
-    console.log('🔍 handleUserData: Getting user document from Firestore...');
     const userSnap = await getDoc(userRef);
-    console.log('🔍 handleUserData: User document exists:', userSnap.exists());
 
     const isNewUser = !userSnap.exists();
     const finalReferral = referralCode?.trim() || '';
-    console.log('🔍 handleUserData: isNewUser:', isNewUser, 'referralCode:', finalReferral);
 
     const userData = {
       fullName: user.displayName || '',
@@ -199,24 +271,17 @@ class GoogleSignInService {
 
     if (isNewUser) {
       console.log('👤 Creating new user with Google Sign In');
-      console.log('🔍 handleUserData: Setting user document...');
       await setDoc(userRef, userData);
-      console.log('✅ handleUserData: User document created');
 
       // Handle referral if provided
       if (finalReferral) {
-        console.log('🔍 handleUserData: Processing referral...');
         await this.registerReferral(finalReferral, user.email || '');
-        console.log('✅ handleUserData: Referral processed');
       }
 
       // Send welcome message
-      console.log('🔍 handleUserData: Sending welcome message...');
       await this.sendWelcomeMessage(user.uid);
-      console.log('✅ handleUserData: Welcome message sent');
     } else {
       console.log('👤 Updating existing user with Google Sign In');
-      console.log('🔍 handleUserData: Updating user document...');
       // Update only specific fields for existing users
       await setDoc(userRef, {
         ...userData,
@@ -242,7 +307,6 @@ class GoogleSignInService {
         signInMethod: 'google',
         lastSignIn: serverTimestamp()
       }, { merge: true });
-      console.log('✅ handleUserData: User document updated');
     }
 
     return {
@@ -258,12 +322,10 @@ class GoogleSignInService {
    */
   private async registerReferral(referredCode: string, referredEmail: string): Promise<void> {
     try {
-      console.log('🔍 registerReferral: Starting referral registration for code:', referredCode);
+      console.log('🔍 Searching for referrer with code:', referredCode);
       
       const q = query(collection(db, 'users'), where('referralCode', '==', referredCode));
-      console.log('🔍 registerReferral: Executing Firestore query...');
       const querySnapshot = await getDocs(q);
-      console.log('🔍 registerReferral: Query completed, results:', querySnapshot.size);
 
       let refUserRef = null;
       let refData = null;
@@ -310,14 +372,10 @@ class GoogleSignInService {
    */
   private async sendWelcomeMessage(uid: string): Promise<void> {
     try {
-      console.log('🔍 sendWelcomeMessage: Starting welcome message creation for:', uid);
       const inboxRef = doc(db, 'users', uid, 'inbox', 'welcome');
-      console.log('🔍 sendWelcomeMessage: Checking if welcome message exists...');
       const inboxSnap = await getDoc(inboxRef);
-      console.log('🔍 sendWelcomeMessage: Welcome message exists:', inboxSnap.exists());
 
       if (!inboxSnap.exists()) {
-        console.log('🔍 sendWelcomeMessage: Creating welcome message...');
         await setDoc(inboxRef, {
           title: 'Welcome to FlySky Network!',
           body: 'Welcome! You received 500 FSN as a welcome bonus!',
@@ -327,12 +385,10 @@ class GoogleSignInService {
           amount: 500,
           type: 'welcome_bonus',
         });
-        console.log('✅ sendWelcomeMessage: Welcome message added to inbox');
-      } else {
-        console.log('🔍 sendWelcomeMessage: Welcome message already exists, skipping');
+        console.log('✅ Welcome message added to inbox');
       }
     } catch (error) {
-      console.error('❌ sendWelcomeMessage: Failed to send welcome message:', error);
+      console.error('❌ Failed to send welcome message:', error);
     }
   }
 

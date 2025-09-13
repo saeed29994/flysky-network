@@ -105,7 +105,7 @@ class AppleSignInService {
           const provider = new OAuthProvider('apple.com');
           const credential = provider.credential({
             idToken: result.credential?.idToken,
-            rawNonce: result.credential?.nonce || undefined
+            rawNonce: undefined
           });
           
           if (!credential) {
@@ -117,13 +117,6 @@ class AppleSignInService {
           const user = userCredential.user;
 
           console.log('✅ Firebase authentication successful:', user.uid);
-          console.log('🍎 iOS Apple Sign In - User details:', {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName,
-            emailVerified: user.emailVerified,
-            providerData: user.providerData.map(p => ({ providerId: p.providerId, uid: p.uid }))
-          });
 
           // Handle user data creation/update
           await this.handleUserData(user, {
@@ -138,7 +131,6 @@ class AppleSignInService {
           // Request notification permission
           await requestPermissionAndToken(user.uid);
 
-          console.log('🍎 iOS Apple Sign In - Returning success result');
           return {
             success: true,
             user: user
@@ -150,17 +142,16 @@ class AppleSignInService {
           // Fallback to original Apple Sign In plugin
           console.log('🔄 Falling back to original Apple Sign In plugin...');
           
-          try {
-            await this.initialize();
-            const result = await SignInWithApple.authorize();
-            console.log('🍎 Apple Sign In result:', result);
+          await this.initialize();
+          const result = await SignInWithApple.authorize();
+          console.log('🍎 Apple Sign In result:', result);
 
-            if (!result.response) {
-              return {
-                success: false,
-                error: 'Apple Sign In was cancelled or failed'
-              };
-            }
+          if (!result.response) {
+            return {
+              success: false,
+              error: 'Apple Sign In was cancelled or failed'
+            };
+          }
 
           // Create Firebase credential for iOS
           const provider = new OAuthProvider('apple.com');
@@ -181,19 +172,10 @@ class AppleSignInService {
           // Request notification permission
           await requestPermissionAndToken(user.uid);
 
-          console.log('✅ Apple Sign In flow completed successfully');
           return {
             success: true,
             user: user
           };
-          
-          } catch (fallbackError: any) {
-            console.error('❌ Fallback Apple Sign In failed:', fallbackError);
-            return {
-              success: false,
-              error: fallbackError.message || 'Apple Sign In failed'
-            };
-          }
         }
       } else if (platform === 'web') {
         // Web implementation using Firebase

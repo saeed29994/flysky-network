@@ -33,25 +33,31 @@ const getFirebaseConfig = () => {
   // Use consistent hardcoded config (same as firebase-config.js)
   const baseConfig = {
     apiKey: "AIzaSyCbAz_c1hz2Xd5Ju7u1TOdftZL7OGzCEKA",
-    authDomain: platform === 'web' ? "flysky-site.firebaseapp.com" : "fsncrew.io",
+    authDomain: "flysky-site.firebaseapp.com",
     projectId: "flysky-site",
     storageBucket: "flysky-site.firebasestorage.app",
     messagingSenderId: "3676998780",
   };
 
-  // Platform-specific app IDs (matching actual platform configs)
-  const platformConfigs: Record<'web' | 'ios' | 'android', typeof baseConfig & { appId: string }> = {
+  // For Capacitor (mobile), always use web config to avoid URL scheme issues
+  if (platform === 'ios' || platform === 'android') {
+    const config = {
+      ...baseConfig,
+      appId: "1:3676998780:web:7660a9ff69960163550df9", // Use web app ID for Capacitor
+    };
+    
+    if (import.meta.env.DEV) {
+      console.log(`Firebase config for Capacitor (${platform}):`, config);
+    }
+    
+    return config;
+  }
+
+  // Platform-specific app IDs for web
+  const platformConfigs: Record<'web', typeof baseConfig & { appId: string }> = {
     web: {
       ...baseConfig,
       appId: "1:3676998780:web:7660a9ff69960163550df9",
-    },
-    android: {
-      ...baseConfig,
-      appId: "1:3676998780:android:6d18cd417d4512bb550df9",
-    },
-    ios: {
-      ...baseConfig,
-      appId: "1:3676998780:ios:6bf4ca917a4eb864550df9",
     }
   };
 
@@ -69,35 +75,9 @@ const getFirebaseConfig = () => {
 const firebaseConfig = getFirebaseConfig();
 const app = initializeApp(firebaseConfig);
 
+// Note: Using web config for Capacitor to avoid URL scheme blocking issues
 // Initialize services
 const auth = getAuth(app);
-
-// Configure auth for mobile platforms to handle referer issues
-if (getPlatform() !== 'web') {
-  // Set custom headers for mobile platforms
-  auth.settings.appVerificationDisabledForTesting = false;
-  
-  // Override the fetch function to add proper headers
-  const originalFetch = window.fetch;
-  window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-    const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
-    
-    // Add referer header for Firebase auth requests
-    if (url.includes('identitytoolkit.googleapis.com') || url.includes('securetoken.googleapis.com')) {
-      const headers = new Headers(init?.headers);
-      headers.set('Referer', 'https://fsncrew.io');
-      headers.set('Origin', 'https://fsncrew.io');
-      
-      return originalFetch(input, {
-        ...init,
-        headers
-      });
-    }
-    
-    return originalFetch(input, init);
-  };
-}
-
 const db = getFirestore(app);
 const functions = getFunctions(app, 'us-central1');
 const storage = getStorage(app);
