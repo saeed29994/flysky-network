@@ -34,10 +34,9 @@ const PrivacyPolicy = () => {
               <p className="mb-3">We may collect the following information from users:</p>
               <ul className="list-disc list-inside space-y-1 ml-4 text-gray-300">
                 <li>Email address</li>
-                <li>Wallet address</li>
                 <li>KYC documents and identity verification data</li>
                 <li>Subscription details and activity logs</li>
-                <li>Technical information via third-party services such as Firebase and Metamask</li>
+                <li>Technical information via third-party services such as Firebase</li>
               </ul>
             </div>
 

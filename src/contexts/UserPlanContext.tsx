@@ -1,11 +1,10 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { auth, db } from '../firebase';
 import { doc, onSnapshot, collection, getDocs } from 'firebase/firestore';
-import { ethers } from 'ethers';
-import contractAbi from '../contracts/FlySkySafeSubscription.json';
+// Smart contract imports removed for App Store compliance
 import { onAuthStateChanged } from 'firebase/auth';
 
-const CONTRACT_ADDRESS = '0xbb23b4ed3d8521795ecfa4b75142448f4069bbe3';
+// Contract address removed for App Store compliance
 
 interface UserPlanContextProps {
   currentPlan: string | null;
@@ -126,32 +125,7 @@ export const UserPlanProvider = ({ children }: { children: ReactNode }) => {
             setLockedInStaking(0);
           }
 
-          // ✅ Try to get data from smart contract first
-          if (window.ethereum && data.membership?.walletAddress) {
-            try {
-              const provider = new ethers.BrowserProvider(window.ethereum);
-              const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi, provider);
-              const sub = await contract.subscriptions(data.membership.walletAddress);
-
-              const now = Math.floor(Date.now() / 1000);
-              if (Number(sub.end) > now) {
-                const planIndex = Number(sub.plan);
-                const planName =
-                  planIndex === 2
-                    ? 'first-lifetime'
-                    : planIndex === 1
-                    ? 'first-6'
-                    : 'business';
-
-                setCurrentPlan(planName);
-                setSubscriptionEnd(Number(sub.end));
-                setLoading(false);
-                return;
-              }
-            } catch (err) {
-              console.warn('⚠️ Smart contract fetch failed. Fallback to Firestore.');
-            }
-          }
+          // Smart contract integration removed for App Store compliance
           
           // Check for membership data in Firestore
           if (data.membership) {

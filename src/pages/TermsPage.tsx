@@ -28,9 +28,9 @@ const TermsPage = () => {
 
           <p><strong>2. Acceptable Use:</strong> Users agree to use the Site for lawful purposes only and in a way that does not violate any laws, rights, or regulations. It is prohibited to use the Site for any fraudulent activity, money laundering, terrorism financing, or any legally prohibited activity.</p>
 
-          <p><strong>3. Payments and Subscriptions:</strong> Digital assets (such as FSN) will not be transferred to the user's wallet until the token sale is successful and the FSN token is officially listed. If the token sale fails or the token is not listed for any reason, the Site is not obligated to refund or compensate any amounts or allocated tokens. Payments are made using BUSD on the BNB Smart Chain network, and we may add other cryptocurrencies in the future. Payments are non-refundable once the blockchain transaction is confirmed. Users are responsible for verifying transaction details and the selected plan before confirming payment.</p>
+          <p><strong>3. Payments and Subscriptions:</strong> All subscription payments are processed through Apple's in-app purchase system. FSN tokens are virtual in-app currency that cannot be withdrawn, sold, or traded externally. All payments are non-refundable once processed through the App Store. Users are responsible for verifying subscription details before confirming payment.</p>
 
-          <p><strong>4. Data and Privacy:</strong> We collect data such as email address, wallet address, KYC data, and user activity. We use third-party services such as Firebase, Metamask, and others. We may share data with technical partners solely for the purpose of service operation.</p>
+          <p><strong>4. Data and Privacy:</strong> We collect data such as email address, KYC data, and user activity. We use third-party services such as Firebase and others. We may share data with technical partners solely for the purpose of service operation.</p>
 
           <p><strong>5. Intellectual Property:</strong> All logos, content, designs, and functionality on the Site are the exclusive property of FlySky Network or its licensors. Reuse or redistribution of any content without explicit written permission is prohibited.</p>
 

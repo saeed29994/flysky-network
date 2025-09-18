@@ -487,7 +487,7 @@
     "totalBalance": "Total Balance",
     "availableBalance": "Available Balance",
     "lockedInStaking": "Locked in Staking",
-    "referralRewards": "Referral Rewards (Verified Only)",
+    "referralRewardsVerified": "Referral Rewards (Verified Only)",
     "balanceDistribution": "💹 Balance Distribution",
     "noBalanceData": "No balance data to display.",
     "transactionHistory": "📜 Transaction History",
@@ -2162,8 +2162,6 @@
         "credit_card": "Credit Card",
         "bank_transfer": "Bank Transfer",
         "crypto": "Virtual Currency",
-        "paypal": "PayPal",
-        "stripe": "Stripe",
         "in_app_purchase": "In-App Purchase",
         "other": "Other"
       },
