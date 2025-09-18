@@ -10,13 +10,13 @@ export const REVENUECAT_API_KEY = {
 export const PRODUCT_IDS = {
   // Android product IDs (Google Play)
   android: {
-    'first-lifetime': 'firstclass_lifetime',
+    'first-lifetime': 'io.fsncrew.app.first_lifetime',
     'first-6': 'io.fsncrew.app.first_6months',
     'business': 'io.fsncrew.app.business_monthly',
   },
   // iOS product IDs (App Store)
   ios: {
-    'first-lifetime': 'firstclass_lifetime',
+    'first-lifetime': 'io.fsncrew.app.first_lifetimee',
     'first-6': 'io.fsncrew.app.first_6months',
     'business': 'io.fsncrew.app.business_monthly',
   }

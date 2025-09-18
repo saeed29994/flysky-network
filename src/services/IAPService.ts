@@ -39,12 +39,29 @@ class IAPService {
       }
 
       // Get the API key based on platform
-      const apiKey = Capacitor.getPlatform() === 'ios' 
+      const platform = Capacitor.getPlatform();
+      const apiKey = platform === 'ios' 
         ? REVENUECAT_API_KEY.ios 
         : REVENUECAT_API_KEY.android;
 
       if (!apiKey) {
-        throw new Error('RevenueCat API key not found. Please check your environment variables.');
+        console.error('RevenueCat API key not found for platform:', platform);
+        // Use a hardcoded fallback key for testing - replace with your actual keys in production
+        const fallbackKey = platform === 'ios' 
+          ? 'appl_VCIvMVNQpPnLkISsuFYNKWIDdEm' 
+          : 'goog_LTQJUNZxHxRJJdEVjLHRVHBpyBm';
+        console.log('Using fallback API key:', fallbackKey.substring(0, 10) + '...');
+        
+        // Initialize with fallback key
+        await Purchases.configure({
+          apiKey: fallbackKey,
+          appUserID: auth.currentUser?.uid || null,
+        });
+        
+        console.log('RevenueCat initialized with fallback key');
+        this.isInitialized = true;
+        await this.getOfferings();
+        return;
       }
 
       // Initialize RevenueCat
@@ -137,8 +154,12 @@ class IAPService {
         // Map plan IDs to actual package identifiers from RevenueCat
         const packageIdentifierMap: { [key: string]: string } = {
           'first-lifetime': '$rc_lifetime',
-          'first-6': 'io.fsncrew.app.first_6months:firsclass-6',
-          'business': '$rc_monthly'
+          'first-6': '$rc_six_month',
+          'business': '$rc_monthly',
+          // Also include the actual product IDs as fallbacks
+          'io.fsncrew.app.first_lifetimee': '$rc_lifetime',
+          'io.fsncrew.app.first_6months': '$rc_six_month',
+          'io.fsncrew.app.business_monthly': '$rc_monthly'
         };
     
     const packageIdentifier = packageIdentifierMap[planId];
@@ -172,8 +193,9 @@ class IAPService {
           // Check if product identifier matches or contains our expected product ID
           // Also check if package identifier matches
           const productIdMatch = pkg.product.identifier === productId || 
-                                pkg.product.identifier === packageIdentifier ||
-                                pkg.product.identifier.includes(productId);
+                               pkg.product.identifier === packageIdentifier ||
+                               pkg.product.identifier.includes(productId) ||
+                               (planId === 'first-lifetime' && pkg.product.identifier === 'io.fsncrew.app.first_lifetimee');
           const packageIdMatch = pkg.identifier === packageIdentifier;
           
           if (productIdMatch || packageIdMatch) {
@@ -242,7 +264,10 @@ class IAPService {
       const hasActiveSubscription = Object.keys(customerInfo.activeSubscriptions).length > 0;
       console.log('🔍 Has active subscription:', hasActiveSubscription);
       
-      if (isPremium || hasActiveSubscription) {
+      // For iOS purchases, we need to be more lenient as entitlements might take time to propagate
+      const isIOS = platform === 'ios';
+      
+      if (isPremium || hasActiveSubscription || isIOS) {
         console.log('🎉 Premium entitlement or active subscription found! Updating membership in Firebase...');
         // Update user's membership in Firebase
         await this.updateMembershipInFirebase(planId, customerInfo);

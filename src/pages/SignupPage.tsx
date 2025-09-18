@@ -27,7 +27,7 @@ import { Spinner } from '../components/ui/spinner';
 import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
 import fsnLogo from '../assets/fsn-logo.png';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import AppleSignInService from '../services/appleSignInService';
+// import AppleSignInService from '../services/appleSignInService';
 import GoogleSignInService from '../services/googleSignInService';
 import { isPlatformIOS } from '../utils/pwaUtils';
 
@@ -44,7 +44,7 @@ const SignupPage = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [appleLoading, setAppleLoading] = useState(false);
+  // const [appleLoading, setAppleLoading] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLogoSpin(false), 3000);
@@ -225,25 +225,25 @@ const SignupPage = () => {
     }
   };
 
-  const handleAppleSignup = async () => {
-    setError('');
-    setAppleLoading(true);
-    try {
-      const result = await AppleSignInService.signIn(referralCode);
+  // const handleAppleSignup = async () => {
+  //   setError('');
+  //   setAppleLoading(true);
+  //   try {
+  //     const result = await AppleSignInService.signIn(referralCode);
       
-      if (result.success) {
-        // Apple Sign In successful, navigate to dashboard
-        navigate('/dashboard');
-      } else {
-        setError(result.error || 'Apple Sign In failed');
-      }
-    } catch (err: any) {
-      console.error('Apple signup error:', err);
-      setError(err.message || 'Apple Sign In failed');
-    } finally {
-      setAppleLoading(false);
-    }
-  };
+  //     if (result.success) {
+  //       // Apple Sign In successful, navigate to dashboard
+  //       navigate('/dashboard');
+  //     } else {
+  //       setError(result.error || 'Apple Sign In failed');
+  //     }
+  //   } catch (err: any) {
+  //     console.error('Apple signup error:', err);
+  //     setError(err.message || 'Apple Sign In failed');
+  //   } finally {
+  //     setAppleLoading(false);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4">
@@ -373,9 +373,12 @@ const SignupPage = () => {
                 <button
                   type="button"
                   onClick={handleGoogleSignup}
-                  disabled={!acceptedTerms || googleLoading || appleLoading}
+                  disabled={!acceptedTerms || googleLoading
+                    //  || appleLoading
+                    }
                   className={`w-full py-3 rounded-lg font-semibold transition flex justify-center items-center ${
-                    acceptedTerms && !googleLoading && !appleLoading
+                    acceptedTerms && !googleLoading
+                    //  && !appleLoading
                       ? 'bg-white text-gray-800 hover:bg-gray-100'
                       : 'bg-gray-700/50 text-gray-400 cursor-not-allowed'
                   }`}
@@ -399,7 +402,7 @@ const SignupPage = () => {
               )}
 
               {/* Apple Sign In Button - Only show on iOS devices */}
-              {isPlatformIOS() && (
+              {/* {isPlatformIOS() && (
                 <button
                   type="button"
                   onClick={handleAppleSignup}
@@ -428,7 +431,7 @@ const SignupPage = () => {
                     </>
                   )}
                 </button>
-              )}
+              )} */}
 
               <p className="text-center text-sm text-gray-400 mt-4">
                 {t('auth.haveAccount')}{' '}

@@ -57,7 +57,7 @@ export default defineConfig({
       manifest: {
         name: 'Flysky Network',
         short_name: 'Flysky',
-        description: 'Flysky Network - Crypto Mining Platform',
+        description: 'Flysky Network - Virtual Mining Platform',
         theme_color: '#000000',
         background_color: '#ffffff',
         display: 'standalone',

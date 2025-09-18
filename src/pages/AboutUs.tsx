@@ -189,7 +189,7 @@ const AboutUs: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Battle Legend Game Section */}
+          {/* Additional Features Section */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -203,8 +203,8 @@ const AboutUs: React.FC = () => {
                     <Gamepad2 className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold text-white">{t("about.battleLegend.title")}</h2>
-                    <p className="text-gray-400 text-lg">{t("about.thrillingAdventuresAwait")}</p>
+                    <h2 className="text-3xl font-bold text-white">{t("about.interactiveGames")}</h2>
+                    <p className="text-gray-400 text-lg">{t("about.allWithinTheApp")}</p>
                   </div>
                 </div>
               </div>
@@ -214,16 +214,16 @@ const AboutUs: React.FC = () => {
                   <div>
                     <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-500/20">
                       <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                        {t("about.battleLegend.description")}
+                        {t("about.features.enjoy")}
                       </p>
                       <div className="space-y-3">
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span className="text-white">{t("about.competeWithOtherPlayers")}</span>
+                          <span className="text-white">{t("about.earnFSNPoints")}</span>
                         </div>
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span className="text-white">{t("about.winExcitingRewards")}</span>
+                          <span className="text-white">{t("about.unlockFeatures")}</span>
                         </div>
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-400" />

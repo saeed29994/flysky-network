@@ -228,7 +228,7 @@
     "playDesc": "Coming Soon: Fun mini-games to earn more FSN!",
     "playButton": "Explore Play to Earn",
     "aboutTitle": "About Us",
-    "aboutDesc": "FlySky Network is a next-gen digital economy platform combining mining, staking, gaming, and NFTs.",
+    "aboutDesc": "FlySky Network is a next-gen digital economy platform combining virtual token earning, staking, gaming, and NFTs.",
     "aboutButton": "Learn More About Us",
     "stakingTitle": "Staking Opportunities",
     "stakingDesc": "Stake your FSN tokens and earn passive income with flexible plans and high returns.",
@@ -556,7 +556,7 @@
   "close": "Close",
   "about": {
     "title": "About Us",
-    "intro": "FlySky Network is a digital entertainment platform that combines virtual mining, interactive games, and in-app rewards into one smooth and engaging experience.",
+    "intro": "FlySky Network is a digital entertainment platform that combines virtual token earning, interactive games, and in-app rewards into one smooth and engaging experience.",
     "visionTitle": "Our Vision",
     "vision": "To deliver an innovative entertainment platform that offers users a fun and rewarding experience, with a focus on simplicity and accessibility.",
     "missionTitle": "Our Mission",
@@ -571,9 +571,9 @@
       "title": "FSN Points",
       "description": "FSN points are purely virtual in-app currency, used exclusively to unlock features, join games, and access activities. They cannot be withdrawn, sold, or traded outside the app."
     },
-    "battleLegend": {
-      "title": "Battle Legend Game",
-      "description": "Get ready for thrilling adventures in Battle Legend, where you can compete and win rewards — all within the app."
+    "interactiveFeatures": {
+      "title": "Interactive Features",
+      "description": "Explore our interactive features and earn rewards as you engage with the platform."
     },
     "join": "Join us and be part of the future of digital entertainment!",
     "ourFutureVision": "Our future vision",
@@ -600,13 +600,13 @@
     "getStartedToday": "Get Started Today",
     "smartContract": "SMART CONTRACT",
     "from": "from",
-    "p1": "FlySky is a Web3-powered digital ecosystem designed to make crypto accessible for everyone.",
-    "p2": "Our platform combines mining, staking, gaming, and NFTs into a seamless experience where users can earn, grow, and engage all in one place.",
+    "p1": "FlySky is a Web3-powered digital entertainment platform designed to make virtual token earning accessible for everyone.",
+    "p2": "Our platform combines virtual token earning, staking, gaming, and NFTs into a seamless experience where users can earn virtual rewards, grow their in-app assets, and engage all in one place.",
     "scLabel": "SMART - CONTRACT ",
-    "scDesc": "- is a decentralized crypto application.",
+    "scDesc": "- is a decentralized virtual token application.",
     "who": {
       "title": "WHO WE ARE",
-      "p1": "FlySky Network is a next-generation digital economy platform that combines mining, staking, gaming, and NFTs into one seamless experience.",
+      "p1": "FlySky Network is a next-generation digital economy platform that combines virtual token earning, staking, gaming, and NFTs into one seamless experience.",
       "p2": "We are committed to building a vibrant ecosystem where users can earn, trade, and grow their assets through engaging interactions."
     }
   },
@@ -700,14 +700,14 @@
   "features": {
     "titleMobile": "OUR FEATURES",
     "titleDesktop": "POWERFUL FEATURES",
-    "subtitle": "Everything you need to start earning crypto today",
+    "subtitle": "Everything you need to start earning virtual tokens today",
     "alt": {
       "border": "Feature border"
     },
     "items": {
       "mining": {
         "title": "DAILY MINING",
-        "desc": "Earn crypto every day through automated mining processes"
+        "desc": "Earn virtual tokens every day through automated virtual earning processes"
       },
       "membership": {
         "title": "MEMBERSHIP PLANS",
@@ -903,14 +903,14 @@
     "introTitle": "Introduction",
     "intro": "FlySky Network is designed to redefine the user-tech relationship by integrating multiple digital elements into one ecosystem.",
     "tokenTitle": "FSN Token",
-    "tokenIntro": "FSN is the cornerstone of the FlySky economy, used for mining, staking, purchases, and rewards.",
+    "tokenIntro": "FSN is the cornerstone of the FlySky virtual economy, used for virtual token earning, staking, in-app purchases, and rewards.",
     "phase": "We follow a phased execution plan that includes pre-sale, public sale, and full launch stages.",
     "mainSale": "The main sale occurs in stages, ensuring fair allocation and complete transparency.",
-    "uses": "The token is used for: mining, rewards, marketplace fees, governance, and character development within games.",
-    "gameTitle": "Battle Legend Game",
-    "gameIntro": "Battle Legend is the first Survive-to-Earn game combining strategy, entertainment, and rewards.",
-    "gameDetails": "The game offers vehicles, weapons, and a resource system within a fully integrated economy based on the BLT token.",
-    "gameFeaturesTitle": "Game Features",
+    "uses": "The virtual token is used for: virtual token earning, rewards, in-app marketplace fees, governance, and platform features.",
+    "featureTitle": "Platform Features",
+    "featureIntro": "Our platform combines multiple interactive elements to create an engaging user experience.",
+    "featureDetails": "The platform offers various ways to earn and use FSN tokens within our integrated ecosystem.",
+    "featureHighlightsTitle": "Feature Highlights",
     "status": "Currently in the pre-sale preparation phase, with a clear roadmap for each stage.",
     "roadmap": "Roadmap",
     "roadmapDesc": "Includes development stages, partnerships, launch, and ecosystem expansion.",
@@ -919,8 +919,8 @@
     "conclusion": "Conclusion",
     "conclusionDesc": "FlySky Network represents the unified future of technology, economy, and entertainment. Join us now.",
     "join": "Be part of the digital revolution — Join FlySky Network now.",
-    "battleLegendTitle": "Battle Legend Game",
-    "battleLegend": "Part of our ecosystem is Battle Legend — the first 'Survive to Earn' game that combines fun combat, customizable vehicles, and an integrated economy powered by the BLT token.",
+    "platformFeaturesTitle": "Platform Features",
+    "platformFeatures": "Our ecosystem combines multiple interactive elements with an integrated economy powered by the FSN token.",
     "roadmapTitle": "Roadmap",
     "securityTitle": "Security & Transparency"
   },
@@ -1078,13 +1078,7 @@
   "planFeaturesTitle": "Plan Features",
   "paymentMethod": "Payment Method",
   "paymentMethods": {
-    "credit_card": "Credit Card",
-    "bank_transfer": "Bank Transfer",
-    "crypto": "Cryptocurrency",
-    "paypal": "PayPal",
-    "stripe": "Stripe",
-    "in_app_purchase": "In-App Purchase",
-    "other": "Other"
+    "in_app_purchase": "In-App Purchase"
   },
   "inAppPurchase": "In-App Purchase",
   "securePayment": "Secure Payment",
@@ -2167,7 +2161,7 @@
       "paymentMethods": {
         "credit_card": "Credit Card",
         "bank_transfer": "Bank Transfer",
-        "crypto": "Cryptocurrency",
+        "crypto": "Virtual Currency",
         "paypal": "PayPal",
         "stripe": "Stripe",
         "in_app_purchase": "In-App Purchase",
@@ -2591,8 +2585,8 @@
   "landing": {
     "hero": {
       "brand": "FlySky Network",
-      "tagline": "Mine. Earn. Grow.",
-      "desc": "FlySky is a Web3 platform where users earn crypto through daily mining, staking, referrals, and more.",
+      "tagline": "Earn. Play. Grow.",
+      "desc": "FlySky is a Web3 platform where users earn virtual tokens through daily virtual earning, staking, referrals, and more.",
       "alt": {
         "heroBanner": "FlySky Network Hero Banner",
         "heroBannerMobile": "FlySky Network Hero Banner (Mobile)"
@@ -2625,14 +2619,14 @@
     "features": {
       "titleMobile": "OUR FEATURES",
       "titleDesktop": "POWERFUL FEATURES",
-      "subtitle": "Everything you need to start earning crypto today",
+      "subtitle": "Everything you need to start earning virtual tokens today",
       "alt": {
         "border": "Feature border"
       },
       "items": {
         "mining": {
           "title": "DAILY MINING",
-          "desc": "Earn crypto every day through automated mining processes"
+          "desc": "Earn virtual tokens every day through automated virtual earning processes"
         },
         "membership": {
           "title": "MEMBERSHIP PLANS",
@@ -2663,17 +2657,17 @@
     "getStarted": {
       "titlePart1": "Start earning with",
       "titleEmphasis": "FlySky now!",
-      "subtitle": "Join thousands of users already earning crypto daily",
+      "subtitle": "Join thousands of users already earning virtual tokens daily",
       "alt": "Start earning with FlySky"
     },
     "who": {
       "title": "WHO WE ARE",
-      "p1": "FlySky Network is a next-generation digital economy platform that combines mining, staking, gaming, and NFTs into one seamless experience.",
+      "p1": "FlySky Network is a next-generation digital economy platform that combines virtual token earning, staking, gaming, and NFTs into one seamless experience.",
       "p2": "We are committed to building a vibrant ecosystem where users can earn, trade, and grow their assets through engaging interactions."
     },
     "hiw": {
       "title": "HOW IT WORKS",
-      "subtitle": "Join thousands of users earning crypto through our innovative platform",
+      "subtitle": "Join thousands of users earning virtual tokens through our innovative platform",
       "steps": {
         "1": {
           "title": "Register",
@@ -2687,13 +2681,13 @@
         },
         "3": {
           "title": "CLAIM REWARDS",
-          "desc": "Withdraw earned crypto rewards directly to your wallet",
+          "desc": "Use earned virtual token rewards within the app",
           "cta": "Claim Now"
         }
       }
     },
     "footer": {
-      "tagline": "Mine. Earn. Grow.",
+      "tagline": "Earn. Play. Grow.",
       "language": "Language",
       "rights": "All rights reserved.",
       "links": {
@@ -2728,7 +2722,7 @@
   },
   "hiw": {
     "title": "HOW IT WORKS",
-    "subtitle": "Join thousands of users earning crypto through our innovative platform",
+    "subtitle": "Join thousands of users earning virtual tokens through our innovative platform",
     "steps": {
       "1": {
         "title": "Register",
@@ -2742,13 +2736,13 @@
       },
       "3": {
         "title": "CLAIM REWARDS",
-        "desc": "Withdraw earned crypto rewards directly to your wallet",
+        "desc": "Use earned virtual token rewards within the app",
         "cta": "Claim Now"
       }
     }
   },
   "footer": {
-    "tagline": "Mine. Earn. Grow.",
+    "tagline": "Earn. Play. Grow.",
     "language": "Language",
     "rights": "All rights reserved.",
     "links": {

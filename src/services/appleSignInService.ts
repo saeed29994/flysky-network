@@ -2,7 +2,6 @@
 
 import { Capacitor } from '@capacitor/core';
 import { SignInWithApple } from '@capacitor-community/apple-sign-in';
-import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { 
   signInWithCredential, 
   signInWithPopup,
@@ -93,58 +92,22 @@ class AppleSignInService {
       const platform = Capacitor.getPlatform();
       
       if (platform === 'ios') {
-        // Native iOS implementation using Capacitor Firebase Auth
-        console.log('🍎 Using Capacitor Firebase Auth for iOS Apple Sign In');
+        // Native iOS implementation using original Apple Sign In plugin
+        console.log('🍎 Using original Apple Sign In plugin for iOS');
         
         try {
-          // Use Capacitor Firebase Authentication plugin
-          const result = await FirebaseAuthentication.signInWithApple();
-          console.log('✅ Capacitor Firebase Auth Apple Sign In successful:', result);
+          await this.initialize();
+          console.log('🍎 Calling SignInWithApple.authorize()...');
           
-          // Create Firebase credential from Capacitor result
-          const provider = new OAuthProvider('apple.com');
-          const credential = provider.credential({
-            idToken: result.credential?.idToken,
-            rawNonce: undefined
+          // Add timeout to prevent hanging
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Apple Sign In timeout after 30 seconds')), 30000);
           });
           
-          if (!credential) {
-            throw new Error('Failed to create Firebase credential from Apple Sign-In result');
-          }
+          const signInPromise = SignInWithApple.authorize();
+          const result = await Promise.race([signInPromise, timeoutPromise]) as any;
           
-          // Sign in to Firebase with the credential
-          const userCredential: UserCredential = await signInWithCredential(auth, credential);
-          const user = userCredential.user;
-
-          console.log('✅ Firebase authentication successful:', user.uid);
-
-          // Handle user data creation/update
-          await this.handleUserData(user, {
-            user: user.uid,
-            email: user.email,
-            givenName: user.displayName?.split(' ')[0] || null,
-            familyName: user.displayName?.split(' ').slice(1).join(' ') || null,
-            identityToken: result.credential?.idToken || '',
-            authorizationCode: result.credential?.accessToken || ''
-          }, referralCode);
-
-          // Request notification permission
-          await requestPermissionAndToken(user.uid);
-
-          return {
-            success: true,
-            user: user
-          };
-          
-        } catch (capacitorError: any) {
-          console.error('❌ Capacitor Firebase Auth Apple Sign In failed:', capacitorError);
-          
-          // Fallback to original Apple Sign In plugin
-          console.log('🔄 Falling back to original Apple Sign In plugin...');
-          
-          await this.initialize();
-          const result = await SignInWithApple.authorize();
-          console.log('🍎 Apple Sign In result:', result);
+          console.log('🍎 Apple Sign In result:', JSON.stringify(result, null, 2));
 
           if (!result.response) {
             return {
@@ -160,7 +123,12 @@ class AppleSignInService {
             rawNonce: undefined
           });
 
+          if (!credential) {
+            throw new Error('Failed to create Firebase credential from Apple Sign-In result');
+          }
+
           // Sign in to Firebase
+          console.log('🔥 Signing in to Firebase with Apple credential...');
           const userCredential: UserCredential = await signInWithCredential(auth, credential);
           const user = userCredential.user;
 
@@ -176,6 +144,28 @@ class AppleSignInService {
             success: true,
             user: user
           };
+          
+        } catch (error: any) {
+          console.error('❌ Apple Sign In failed:', error);
+          console.error('Error details:', JSON.stringify(error, null, 2));
+          
+          // Handle timeout specifically
+          if (error.message?.includes('timeout')) {
+            return {
+              success: false,
+              error: 'Apple Sign In timed out. Please try again.'
+            };
+          }
+          
+          // Handle cancellation
+          if (error.message?.includes('cancel') || error.message?.includes('cancelled')) {
+            return {
+              success: false,
+              error: 'Apple Sign In was cancelled by user'
+            };
+          }
+          
+          throw error;
         }
       } else if (platform === 'web') {
         // Web implementation using Firebase
@@ -214,12 +204,21 @@ class AppleSignInService {
 
     } catch (error: any) {
       console.error('❌ Apple Sign In error:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
       
       // Handle specific error cases
-      if (error.code === 'SignInWithAppleError') {
+      if (error.code === 'SignInWithAppleError' || error.message?.includes('cancel') || error.message?.includes('cancelled')) {
         return {
           success: false,
           error: 'Apple Sign In was cancelled by user'
+        };
+      }
+      
+      // Handle Firebase authentication errors
+      if (error.code?.startsWith('auth/')) {
+        return {
+          success: false,
+          error: `Authentication error: ${error.message || error.code}`
         };
       }
 
