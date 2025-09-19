@@ -28,7 +28,7 @@ export interface FirebaseUser {
     planName: string;
     purchaseDate: number;
     subscriptionEnd: number;
-    paymentMethod: string;
+    paymentMethod: 'in_app_purchase';
   };
   stakingEarnings?: number;
   activeStakes?: number;

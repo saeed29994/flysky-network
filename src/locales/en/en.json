@@ -2159,11 +2159,7 @@
       "planEndDate": "Plan End Date",
       "paymentMethod": "Payment Method",
       "paymentMethods": {
-        "credit_card": "Credit Card",
-        "bank_transfer": "Bank Transfer",
-        "crypto": "Virtual Currency",
-        "in_app_purchase": "In-App Purchase",
-        "other": "Other"
+        "in_app_purchase": "In-App Purchase"
       },
       "referralCode": "Referral Code",
       "referredBy": "Referred By",
