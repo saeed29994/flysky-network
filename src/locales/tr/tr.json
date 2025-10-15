@@ -42,7 +42,7 @@
     "items": {
       "business": {
         "title": "İş Sınıfı",
-        "price": "15",
+        "price": "14.99",
         "description": "FlySky ile FSN ödüllerinizi artırmak için İş Sınıfı özelliklerinin tümü",
         "features": [
           "100.000 FSN Bonus",
@@ -54,7 +54,7 @@
       },
       "first-6": {
         "title": "Birinci Sınıf (6 Ay)",
-        "price": "120",
+        "price": "119.99",
         "description": "FSN ödüllerinizi artırmak için Birinci Sınıf özelliklerinin tümü",
         "features": [
           "500.000 FSN Bonus",
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "Birinci Sınıf (Ömür Boyu)",
-        "price": "199",
+        "price": "199.99",
         "description": "FSN ödüllerinizi artırmak için Birinci Sınıf (Ömür Boyu) özelliklerinin tümü",
         "features": [
           "1.000.000 FSN Bonus",
@@ -1019,6 +1019,7 @@
   "fsnVirtualCurrency": "FSN tokenları sanal uygulama içi para birimidir",
   "fsnUsageDescription": "sadece uygulama içinde Madencilik, Staking ve Yükseltmeler gibi özellikler için kullanılabilir. Dışarıda çekilemez, satılamaz veya takas edilemez.",
   "purchaseNow": "Şimdi Satın Al",
+  "restorePurchases": "Satın Alımları Geri Yükle",
   "purchaseTerms": "Satın alarak hizmet şartlarımızı ve gizlilik politikamızı kabul etmiş olursunuz.",
   "purchaseFailed": "Satın alma başarısız. Lütfen tekrar deneyin.",
   "bonusReceived": "Bonus Alındı",
@@ -2322,7 +2323,8 @@
       "about": "Hakkımızda",
       "features": "Özellikler",
       "plans": "Planlar",
-      "how-it-works": "Nasıl Çalışır"
+      "how-it-works": "Nasıl Çalışır",
+      "membership": "Üyelik"
     },
     "features": {
       "titleMobile": "ÖZELLİKLERİMİZ",

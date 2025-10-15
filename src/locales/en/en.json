@@ -42,7 +42,7 @@
     "items": {
       "business": {
         "title": "Business Class",
-        "price": "15",
+        "price": "14.99",
         "description": "All business class features to boost your FSN rewards with FlySky Network",
         "features": [
           "Bonus 100,000 FSN",
@@ -54,7 +54,7 @@
       },
       "first-6": {
         "title": "First Class (6 Months)",
-        "price": "120",
+        "price": "119.99",
         "description": "All first class features to boost your FSN rewards with FlySky Network",
         "features": [
           "Bonus 1,000,000 FSN",
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "First class (Lifetime)",
-        "price": "199",
+        "price": "199.99",
         "description": "All first class (lifetime) features to boost your FSN rewards with FlySky Network",
         "features": [
           "Bonus 1,500,000 FSN",
@@ -1086,6 +1086,7 @@
   "fsnVirtualCurrency": "FSN tokens are virtual in-app currency",
   "fsnUsageDescription": "that can only be used within the app for features like Mining, Staking, and Upgrades. They cannot be withdrawn, sold, or traded externally.",
   "purchaseNow": "Purchase Now",
+  "restorePurchases": "Restore Purchases",
   "purchaseTerms": "By purchasing, you agree to our terms of service and privacy policy.",
   "processing": "Processing...",
   "purchaseAppleNotice": "Payment will be charged to your Apple ID account at confirmation of purchase.",
@@ -2608,7 +2609,8 @@
       "about": "About",
       "features": "Features",
       "plans": "Plans",
-      "how-it-works": "How it Works"
+      "how-it-works": "How it Works",
+      "membership": "Membership"
     },
     "features": {
       "titleMobile": "OUR FEATURES",

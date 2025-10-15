@@ -39,11 +39,13 @@ import {
   ChevronRight,
   Edit3,
   Save,
-  X
+  X,
+  RotateCcw
 } from 'lucide-react';
 import PushNotificationManager from '../components/PushNotificationManager';
 import PrivacyDataTab from '../components/PrivacyDataTab';
 import { PLAN_CONFIG } from '../utils/planConstants';
+import IAPService from '../services/IAPService';
 
 const Settings = () => {
   const { t, i18n } = useTranslation();
@@ -87,6 +89,7 @@ const Settings = () => {
   // UI States
   const [editingProfile, setEditingProfile] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
+  const [restoringPurchases, setRestoringPurchases] = useState(false);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -298,6 +301,18 @@ const Settings = () => {
     if (user) {
       const docRef = doc(db, "users", user.uid);
       await updateDoc(docRef, { soundEnabled: newValue });
+    }
+  };
+
+  const handleRestorePurchases = async () => {
+    try {
+      setRestoringPurchases(true);
+      await IAPService.restorePurchases();
+    } catch (error: any) {
+      console.error('Restore purchases failed:', error);
+      toast.error(error.message || 'Failed to restore purchases');
+    } finally {
+      setRestoringPurchases(false);
     }
   };
 
@@ -739,6 +754,36 @@ const Settings = () => {
                     <option value="zh-CN">🇨🇳 中文</option>
                     <option value="tr">🇹🇷 Türkçe</option>
                   </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Restore Purchases Section */}
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+              <h3 className="text-lg font-semibold text-white mb-4">Subscription Management</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-gray-300 block">Restore Previous Purchases</span>
+                    <span className="text-xs text-gray-400">Restore your previous subscription purchases</span>
+                  </div>
+                  <button
+                    onClick={handleRestorePurchases}
+                    disabled={restoringPurchases}
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {restoringPurchases ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Restoring...
+                      </>
+                    ) : (
+                      <>
+                        <RotateCcw className="w-4 h-4" />
+                        Restore Purchases
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             </div>

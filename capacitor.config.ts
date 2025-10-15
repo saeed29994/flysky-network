@@ -49,7 +49,7 @@ const config: CapacitorConfig = {
   server: {
     hostname: "localhost",
     androidScheme: "https",
-    iosScheme: "capacitor"
+    iosScheme: "https"
   }
 };
 

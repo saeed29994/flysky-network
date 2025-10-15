@@ -32,10 +32,8 @@ class IAPService {
       // Enable debug logging only in development
       if (import.meta.env.DEV) {
         await Purchases.setLogLevel({ level: LOG_LEVEL.DEBUG });
-        console.log('RevenueCat debug logging enabled (development mode)');
       } else {
         await Purchases.setLogLevel({ level: LOG_LEVEL.INFO });
-        console.log('RevenueCat production mode enabled');
       }
 
       // Get the API key based on platform
@@ -45,12 +43,9 @@ class IAPService {
         : REVENUECAT_API_KEY.android;
 
       if (!apiKey) {
-        console.error('RevenueCat API key not found for platform:', platform);
-        // Use a hardcoded fallback key for testing - replace with your actual keys in production
         const fallbackKey = platform === 'ios' 
-          ? 'appl_VCIvMVNQpPnLkISsuFYNKWIDdEm' 
-          : 'goog_LTQJUNZxHxRJJdEVjLHRVHBpyBm';
-        console.log('Using fallback API key:', fallbackKey.substring(0, 10) + '...');
+          ? 'appl_ItFSUohzIAkPehJxXSCTDwGVGff' 
+          : 'goog_MpRktrMBsjKwbeBZvxUnAiUECjM';
         
         // Initialize with fallback key
         await Purchases.configure({
@@ -58,7 +53,6 @@ class IAPService {
           appUserID: auth.currentUser?.uid || null,
         });
         
-        console.log('RevenueCat initialized with fallback key');
         this.isInitialized = true;
         await this.getOfferings();
         return;
@@ -70,9 +64,6 @@ class IAPService {
         appUserID: auth.currentUser?.uid || null, // Use Firebase UID as RevenueCat user ID
       });
 
-      console.log('RevenueCat initialized successfully');
-      console.log('Platform:', Capacitor.getPlatform());
-      console.log('API Key (first 10 chars):', apiKey.substring(0, 10) + '...');
       this.isInitialized = true;
 
       // Fetch offerings after initialization
@@ -92,50 +83,36 @@ class IAPService {
     }
 
     try {
-      console.log('🔄 Fetching offerings from RevenueCat...');
-      console.log('🔑 API Key being used:', REVENUECAT_API_KEY.android?.substring(0, 10) + '...');
-      console.log('📱 Platform:', Capacitor.getPlatform());
-      
       const offerings = await Purchases.getOfferings();
-      console.log('✅ Offerings received:', offerings);
-      console.log('📦 Current offering:', offerings.current);
-      console.log('📋 All offerings:', Object.keys(offerings.all || {}));
       
       this.offerings = offerings.current ? [offerings.current] : [];
       
       if (offerings.all) {
-        Object.values(offerings.all).forEach(offering => {
-          if (offering && !this.offerings.find(o => o.identifier === offering.identifier)) {
+        Object.values(offerings.all).forEach((offering: any) => {
+          if (offering && offering.identifier && !this.offerings.find(o => o.identifier === offering.identifier)) {
             this.offerings.push(offering);
           }
         });
       }
       
-      console.log('🎯 Final offerings array:', this.offerings.length);
-      
-      // Log detailed package information
-      this.offerings.forEach((offering, index) => {
-        console.log(`📦 Offering ${index + 1}:`, offering.identifier);
-        console.log(`📋 Packages in offering ${index + 1}:`, offering.availablePackages.length);
-        offering.availablePackages.forEach((pkg, pkgIndex) => {
-          console.log(`  📦 Package ${pkgIndex + 1}:`, {
-            identifier: pkg.identifier,
-            productId: pkg.product.identifier,
-            price: pkg.product.priceString,
-            currency: pkg.product.currencyCode
-          });
-        });
-      });
+      if (this.offerings.length === 0) {
+        throw new Error('No offerings available from RevenueCat. Please check your RevenueCat configuration.');
+      }
       
       return this.offerings;
     } catch (error: any) {
-      console.error('❌ Failed to get offerings:', error);
-      console.error('❌ Error details:', {
-        message: error.message,
-        code: error.code,
-        stack: error.stack
-      });
-      throw error;
+      console.error('Failed to get offerings:', error);
+      
+      // Provide more specific error messages
+      if (error.message?.includes('API key') || error.code === 'INVALID_API_KEY') {
+        throw new Error('Invalid API key configuration. Please contact support.');
+      } else if (error.message?.includes('Network') || error.code === 'NETWORK_ERROR') {
+        throw new Error('Network error. Please check your internet connection.');
+      } else if (error.message?.includes('offerings') || error.code === 'OFFERINGS_ERROR') {
+        throw new Error('Unable to load subscription options from store.');
+      } else {
+        throw new Error('Failed to load payment options. Please try again.');
+      }
     }
   }
 
@@ -151,23 +128,6 @@ class IAPService {
     const platform = Capacitor.getPlatform() === 'ios' ? 'ios' : 'android';
     const productId = PRODUCT_IDS[platform as keyof typeof PRODUCT_IDS][planId as keyof typeof PRODUCT_IDS.ios];
     
-        // Map plan IDs to actual package identifiers from RevenueCat
-        const packageIdentifierMap: { [key: string]: string } = {
-          'first-lifetime': '$rc_lifetime',
-          'first-6': '$rc_six_month',
-          'business': '$rc_monthly',
-          // Also include the actual product IDs as fallbacks
-          'io.fsncrew.app.first_lifetimee': '$rc_lifetime',
-          'io.fsncrew.app.first_6months': '$rc_six_month',
-          'io.fsncrew.app.business_monthly': '$rc_monthly'
-        };
-    
-    const packageIdentifier = packageIdentifierMap[planId];
-    
-    console.log('Looking for product ID:', productId, 'for plan:', planId, 'on platform:', platform);
-    console.log('Looking for package identifier:', packageIdentifier);
-    console.log('Available offerings:', this.offerings.length);
-    
     if (!productId) {
       throw new Error(`No product ID found for plan: ${planId}`);
     }
@@ -177,41 +137,14 @@ class IAPService {
       const packages: PurchasesPackage[] = [];
       
       for (const offering of this.offerings) {
-        console.log('Checking offering:', offering.identifier, 'with', offering.availablePackages.length, 'packages');
         for (const pkg of offering.availablePackages) {
-          console.log('📦 Package details:');
-          console.log('  - identifier:', pkg.identifier);
-          console.log('  - productId:', pkg.product.identifier);
-          console.log('  - productTitle:', pkg.product.title);
-          console.log('  - price:', pkg.product.priceString);
-          console.log('🔍 Matching check:');
-          console.log('  - productIdMatch:', pkg.product.identifier === productId);
-          console.log('  - packageIdMatch:', pkg.identifier === packageIdentifier);
-          console.log('  - expectedProductId:', productId);
-          console.log('  - expectedPackageId:', packageIdentifier);
-          
-          // Check if product identifier matches or contains our expected product ID
-          // Also check if package identifier matches
-          const productIdMatch = pkg.product.identifier === productId || 
-                               pkg.product.identifier === packageIdentifier ||
-                               pkg.product.identifier.includes(productId) ||
-                               (planId === 'first-lifetime' && pkg.product.identifier === 'io.fsncrew.app.first_lifetimee');
-          const packageIdMatch = pkg.identifier === packageIdentifier;
-          
-          if (productIdMatch || packageIdMatch) {
+          // Simple matching: check product identifier
+          if (pkg.product.identifier === productId) {
             packages.push(pkg);
-            console.log('✅ Package matched!');
-          } else {
-            console.log('❌ Package did not match');
-            console.log('  - Actual productId:', pkg.product.identifier);
-            console.log('  - Actual packageId:', pkg.identifier);
-            console.log('  - Expected productId:', productId);
-            console.log('  - Expected packageId:', packageIdentifier);
           }
         }
       }
       
-      console.log('Found packages:', packages.length);
       return packages;
     } catch (error) {
       console.error(`Failed to get packages for plan ${planId}:`, error);
@@ -363,6 +296,78 @@ class IAPService {
     } catch (error) {
       console.error('Failed to get customer info:', error);
       throw error;
+    }
+  }
+
+  /**
+   * Restore previously purchased subscriptions
+   */
+  public async restorePurchases(): Promise<CustomerInfo> {
+    if (!this.isInitialized) {
+      await this.initialize();
+    }
+
+    try {
+      console.log('🔄 Starting restore purchases...');
+      const { customerInfo } = await Purchases.restorePurchases();
+      
+      console.log('✅ Restore purchases completed');
+      console.log('👤 Customer info after restore:', customerInfo);
+      console.log('🔍 Active subscriptions:', Object.keys(customerInfo.activeSubscriptions));
+      console.log('🔍 Active entitlements:', Object.keys(customerInfo.entitlements.active));
+      
+      // Check if user has any active subscriptions or entitlements
+      const hasActiveSubscription = Object.keys(customerInfo.activeSubscriptions).length > 0;
+      const hasActiveEntitlement = Object.keys(customerInfo.entitlements.active).length > 0;
+      
+      if (hasActiveSubscription || hasActiveEntitlement) {
+        console.log('🎉 Found active subscriptions/entitlements after restore!');
+        
+        // Find the most recent active subscription to determine the plan
+        let restoredPlanId = 'business'; // Default fallback
+        
+        // Try to determine the plan from active subscriptions
+        const activeSubscriptions = Object.keys(customerInfo.activeSubscriptions);
+        if (activeSubscriptions.length > 0) {
+          // Get the first active subscription and try to map it to a plan
+          const firstSubscription = activeSubscriptions[0];
+          console.log('🔍 First active subscription:', firstSubscription);
+          
+          // Map subscription to plan ID based on product identifiers
+          const platform = Capacitor.getPlatform() === 'ios' ? 'ios' : 'android';
+          const productIds = PRODUCT_IDS[platform as keyof typeof PRODUCT_IDS];
+          
+          for (const [planId, productId] of Object.entries(productIds)) {
+            if (firstSubscription.includes(productId) || productId.includes(firstSubscription)) {
+              restoredPlanId = planId;
+              break;
+            }
+          }
+        }
+        
+        console.log('🔍 Determined restored plan:', restoredPlanId);
+        
+        // Update membership in Firebase
+        await this.updateMembershipInFirebase(restoredPlanId, customerInfo);
+        
+        toast.success('🎉 Purchases restored successfully! Your membership has been activated.');
+        return customerInfo;
+      } else {
+        console.log('ℹ️ No active subscriptions found after restore');
+        toast('No previous purchases found to restore.', { icon: 'ℹ️' });
+        return customerInfo;
+      }
+    } catch (error: any) {
+      console.error('❌ Failed to restore purchases:', error);
+      
+      // Provide user-friendly error messages
+      if (error.code === 'NETWORK_ERROR') {
+        throw new Error('Network error. Please check your internet connection and try again.');
+      } else if (error.message?.includes('No purchases')) {
+        throw new Error('No previous purchases found to restore.');
+      } else {
+        throw new Error('Failed to restore purchases. Please try again.');
+      }
     }
   }
 

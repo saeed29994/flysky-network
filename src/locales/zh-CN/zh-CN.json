@@ -42,7 +42,7 @@
     "items": {
       "business": {
         "title": "商务舱",
-        "price": "15",
+        "price": "14.99",
         "description": "包含所有商务舱功能，助力提升您的 FSN 奖励",
         "features": [
           "100,000 FSN 奖励",
@@ -54,7 +54,7 @@
       },
       "first-6": {
         "title": "头等舱（6个月）",
-        "price": "120",
+        "price": "119.99",
         "description": "包含所有头等舱功能，助力提升您的 FSN 奖励",
         "features": [
           "500,000 FSN 奖励",
@@ -66,7 +66,7 @@
       },
       "firstLifetime": {
         "title": "头等舱（终身）",
-        "price": "199",
+        "price": "199.99",
         "description": "包含头等舱（终身）功能，助力提升您的 FSN 奖励",
         "features": [
           "1,000,000 FSN 奖励",
@@ -1046,6 +1046,7 @@
   "fsnVirtualCurrency": "FSN 代币是虚拟应用内货币",
   "fsnUsageDescription": "只能在应用内用于挖矿、质押和升级等功能。不能在外部提取、出售或交易。",
   "purchaseNow": "立即购买",
+  "restorePurchases": "恢复购买",
   "purchaseTerms": "购买即表示您同意我们的服务条款和隐私政策。",
   "purchaseFailed": "购买失败。请重试。",
   "bonusReceived": "收到奖励",
@@ -2300,7 +2301,8 @@
       "about": "关于我们",
       "features": "功能",
       "plans": "方案",
-      "how-it-works": "工作原理"
+      "how-it-works": "工作原理",
+      "membership": "会员"
     },
     "features": {
       "titleMobile": "我们的功能",

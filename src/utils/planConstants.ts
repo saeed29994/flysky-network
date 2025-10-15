@@ -46,8 +46,8 @@ export const PLAN_CONFIG: Record<PlanType, {
   business: {
     id: 'business',
     name: 'Business Class',
-    price: 15,
-    priceLabel: '$15 USD / month',
+    price: 14.99,
+    priceLabel: '$14.99 USD / month',
     bonus: 100000,
     miningRate: '3000 FSN / 12 hours',
     features: ['Advanced mining', 'Priority support', 'Staking access', 'Faster mining'],
@@ -61,8 +61,8 @@ export const PLAN_CONFIG: Record<PlanType, {
   'first-6': {
     id: 'first-6',
     name: 'First Class (6 Months)',
-    price: 120,
-    priceLabel: '$120 USD / 6 months',
+    price: 119.99,
+    priceLabel: '$119.99 USD / 6 months',
     bonus: 1000000,
     miningRate: '6000 FSN / 12 hours',
     features: ['All business features', 'Faster mining', 'Event access', 'Priority support', 'Highest mining', 'Premium access'],
@@ -76,8 +76,8 @@ export const PLAN_CONFIG: Record<PlanType, {
   'first-lifetime': {
     id: 'first-lifetime',
     name: 'First Class (Lifetime)',
-    price: 199,
-    priceLabel: '$199 USD one-time',
+    price: 199.99,
+    priceLabel: '$199.99 USD one-time',
     bonus: 1500000,
     miningRate: '6000 FSN / 12 hours',
     features: ['Highest mining', 'Lifetime access', 'Premium access', 'Priority support', 'Unlocked forever', 'Lifetime perks', 'Event access'],

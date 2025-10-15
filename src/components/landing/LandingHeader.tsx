@@ -10,7 +10,7 @@ import LanguageSwitcher from '../LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 
 const LandingHeader: React.FC = () => {
-  const { navigateToSignup } = useButtonActions();
+  const { navigateToSignup, navigateToMembershipPage } = useButtonActions();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const scrolled = useScrollEffect();
   const { t, i18n } = useTranslation();
@@ -18,6 +18,15 @@ const LandingHeader: React.FC = () => {
   const handleScrollToSection = (sectionId: string) => {
     scrollToSection(sectionId);
     setIsMenuOpen(false);
+  };
+
+  const handleMenuClick = (itemId: string) => {
+    if (itemId === 'membership') {
+      navigateToMembershipPage();
+      setIsMenuOpen(false);
+    } else {
+      handleScrollToSection(itemId);
+    }
   };
 
   return (
@@ -40,7 +49,7 @@ const LandingHeader: React.FC = () => {
               {MENU_ITEMS.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => handleScrollToSection(item.id)}
+                  onClick={() => handleMenuClick(item.id)}
                   className="text-[#FFFFFFB5] hover:text-white text-sm font-semibold transition-all duration-200 relative group pb-1 cursor-pointer"
                 >
                   {t(`landing.menu.${item.id}`)}
@@ -105,7 +114,7 @@ const LandingHeader: React.FC = () => {
           {MENU_ITEMS.map((item) => (
             <button
               key={item.id}
-              onClick={() => handleScrollToSection(item.id)}
+              onClick={() => handleMenuClick(item.id)}
               className="text-white text-lg font-medium transition-all duration-200 hover:text-yellow-400 text-left"
             >
               {t(`landing.menu.${item.id}`)}

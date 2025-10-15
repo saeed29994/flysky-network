@@ -53,7 +53,13 @@ class GoogleSignInService {
    * Check if Google Sign In is available on the current platform
    */
   public isAvailable(): boolean {
-    // Google Sign In is available on all platforms
+    // Google Sign In is disabled on iOS
+    if (Capacitor.getPlatform() === 'ios') {
+      console.log('🚫 Google Sign In is disabled on iOS. Please use email/password authentication.');
+      return false;
+    }
+    
+    // Available on all other platforms
     return true;
   }
 
@@ -66,6 +72,16 @@ class GoogleSignInService {
       console.log('🔍 Current platform:', Capacitor.getPlatform());
       
       const platform = Capacitor.getPlatform();
+      
+      // Explicitly prevent Google Sign-in on iOS
+      if (platform === 'ios') {
+        console.error('🚫 Google Sign-in is disabled on iOS. Please use email/password authentication instead.');
+        return {
+          success: false,
+          error: 'Google Sign-in is not supported on iOS. Please use email/password authentication.'
+        };
+      }
+      
       let userCredential: UserCredential;
 
       if (platform === 'android' || platform === 'ios') {
@@ -76,6 +92,13 @@ class GoogleSignInService {
           // Use Capacitor Firebase Authentication plugin
           const result = await FirebaseAuthentication.signInWithGoogle();
           console.log('✅ Capacitor Firebase Auth successful:', result);
+          console.log('🔍 Result details:', JSON.stringify(result, null, 2));
+          
+          // Check if we have idToken (required for credential)
+          if (!result.credential?.idToken) {
+            console.error('❌ Missing idToken in authentication result:', result);
+            throw new Error('Authentication response missing idToken. Please try again.');
+          }
           
           // Create Firebase credential from Capacitor result
           const credential = GoogleAuthProvider.credential(result.credential?.idToken);
@@ -85,11 +108,24 @@ class GoogleSignInService {
           }
           
           // Sign in to Firebase with the credential
+          console.log('🔥 Signing in to Firebase with credential...');
           userCredential = await signInWithCredential(auth, credential);
           console.log('✅ Firebase authentication successful:', userCredential.user.uid);
           
         } catch (capacitorError: any) {
           console.error('❌ Capacitor Firebase Auth failed:', capacitorError);
+          console.error('Error details:', JSON.stringify(capacitorError, null, 2));
+          
+          // For iOS, try to identify specific issues
+          if (platform === 'ios') {
+            if (capacitorError.message?.includes('cancelled') || 
+                capacitorError.message?.includes('canceled')) {
+              throw new Error('Sign in was cancelled by user');
+            }
+            if (capacitorError.message?.includes('keychain')) {
+              throw new Error('iOS keychain access issue. Try signing out and in again.');
+            }
+          }
           
           // Fallback to web-based auth for mobile if Capacitor fails
           console.log('🔄 Falling back to web-based authentication...');

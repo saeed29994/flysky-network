@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
 import { getPlanBonus, getPlanFeatures, getPlanPrice, PLAN_CONFIG, PlanType } from '../utils/planConstants';
-import { Capacitor } from '@capacitor/core';
 import { PurchasesPackage } from '@revenuecat/purchases-capacitor';
 import IAPService from '../services/IAPService';
 import { 
@@ -13,6 +12,7 @@ import {
   Zap,
   Crown,
   Star,
+  RotateCcw,
 } from 'lucide-react';
 
 interface Props {
@@ -28,6 +28,8 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
   const [loading, setLoading] = useState(false);
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  console.log(error);
 
   // Get plan details from constants as fallback
   const planDetails = PLAN_CONFIG[planId as PlanType];
@@ -47,10 +49,31 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
         
         // Get packages for this plan
         const pkgs = await IAPService.getPackagesForPlan(planId);
+        
+        if (pkgs.length === 0) {
+          setError('No purchase options available for this plan.');
+          return;
+        }
+        
         setPackages(pkgs);
-      } catch (err) {
+        
+      } catch (err: any) {
         console.error('Failed to initialize IAP:', err);
-        setError('Failed to load purchase options. Please try again later.');
+        
+        // Provide more specific error messages based on the error type
+        if (err.message?.includes('API key')) {
+          setError('Payment service configuration error. Please contact support.');
+        } else if (err.message?.includes('Network')) {
+          setError('Network error. Please check your internet connection and try again.');
+        } else if (err.message?.includes('offerings')) {
+          setError('Unable to load subscription options. Please try again later.');
+        } else if (err.message?.includes('No packages found')) {
+          setError('This subscription plan is not available. Please try a different plan.');
+        } else if (err.message?.includes('No product ID found')) {
+          setError('Subscription configuration error. Please contact support.');
+        } else {
+          setError('Failed to load purchase options. Please try again.');
+        }
       } finally {
         setLoading(false);
       }
@@ -60,67 +83,49 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
   }, [planId]);
 
   const handlePurchase = async () => {
-    const platform = Capacitor.getPlatform();
-    console.log(`🛒 ${platform} purchase button clicked`);
-    console.log('📦 Available packages:', packages.length);
-    console.log('📋 Packages:', packages);
-    
     if (packages.length === 0) {
-      console.log('❌ No packages available');
       toast.error('No purchase options available');
       return;
     }
 
     try {
-      console.log(`🚀 Starting ${platform} purchase process...`);
       setLoading(true);
       setError(null);
       
-      console.log('📦 Using package:', packages[0]);
-      console.log('📋 Plan ID:', planId);
-      console.log('📱 Platform:', platform);
-      
       // Use the first package for this plan
-      const customerInfo = await IAPService.purchasePackage(packages[0], planId);
-      
-      console.log('✅ Purchase completed successfully, closing modal');
-      console.log('🎉 Final customer info:', customerInfo);
-      
-      // Clear any previous errors
-      setError(null);
+      await IAPService.purchasePackage(packages[0], planId);
       
       // Close modal on successful purchase
       onClose();
       
-      // Success feedback is already handled by IAPService
-      console.log('🎉 Purchase flow completed successfully');
-      
     } catch (err: any) {
-      console.error('❌ Purchase failed:', err);
-      console.error('❌ Error details:', {
-        message: err.message,
-        code: err.code,
-        platform: platform
-      });
+      console.error('Purchase failed:', err);
       
       // Don't show error for user cancellation
       if (err.message === 'Purchase cancelled') {
-        console.log('User cancelled the purchase');
         return;
       }
       
-      // Show platform-specific error messages
-      if (platform === 'android') {
-        if (err.message?.includes('Google Play Store')) {
-          setError('Google Play Store is temporarily unavailable. Please try again.');
-        } else if (err.message?.includes('Network error')) {
-          setError('Network error. Please check your internet connection and try again.');
-        } else {
-          setError('Purchase failed. Please try again or contact support.');
-        }
-      } else {
-        setError('Purchase failed. Please try again.');
-      }
+      // Show error message
+      setError('Purchase failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRestorePurchases = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      await IAPService.restorePurchases();
+      
+      // Close modal on successful restore
+      onClose();
+      
+    } catch (err: any) {
+      console.error('Restore failed:', err);
+      setError(err.message || 'Failed to restore purchases. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -174,6 +179,31 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
             <div className="text-2xl sm:text-4xl font-bold text-gray-900 mb-1">${planPrice}</div>
             <div className="text-xs sm:text-sm text-gray-600">{planDetails?.priceLabel}</div>
           </div>
+
+          {/* Required Subscription Information for Apple Guidelines */}
+          <div className="bg-white/80 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4 border border-gray-200">
+            <h4 className="font-semibold text-gray-800 text-sm sm:text-base mb-2 text-center">Subscription Details</h4>
+            <div className="space-y-1 text-xs sm:text-sm text-gray-700">
+              <div className="flex justify-between">
+                <span className="font-medium">Subscription:</span>
+                <span>{planDetails?.name || planId}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium">Duration:</span>
+                <span>{getPlanDuration()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium">Price:</span>
+                <span>${planPrice} USD</span>
+              </div>
+              {planId !== 'first-lifetime' && (
+                <div className="flex justify-between">
+                  <span className="font-medium">Auto-renewal:</span>
+                  <span>Yes</span>
+                </div>
+              )}
+            </div>
+          </div>
           
           {/* Bonus Section */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg sm:rounded-xl p-3 sm:p-4 mb-3 sm:mb-4 border border-blue-200">
@@ -213,11 +243,11 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
         </div>
 
         {/* Error Message */}
-        {error && (
+        {/* {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 text-sm text-red-700">
             {error}
           </div>
-        )}
+        )} */}
 
         {/* Purchase Button */}
         <button
@@ -238,16 +268,46 @@ const SubscribeModal: React.FC<Props> = ({ planId, price, bonus, features, onClo
           )}
         </button>
 
+        {/* Restore Purchases Button */}
+        <button
+          onClick={handleRestorePurchases}
+          disabled={loading}
+          className={`w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 sm:py-3 rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
+        >
+          <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
+          {t('restorePurchases')}
+        </button>
 
-        {/* Terms */}
-        <p className="text-xs text-gray-500 text-center mt-3 sm:mt-4 leading-relaxed">
-          {t('purchaseTerms')}
-        </p>
+
+        {/* Terms and Links */}
+        <div className="text-center mt-3 sm:mt-4">
+          <p className="text-xs text-gray-500 leading-relaxed mb-2">
+            {t('purchaseTerms')}
+          </p>
+          <div className="flex justify-center gap-4 text-xs">
+            <a 
+              href="/terms" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline"
+            >
+              Terms of Use
+            </a>
+            <a 
+              href="/privacy-policy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline"
+            >
+              Privacy Policy
+            </a>
+          </div>
+        </div>
         
         {/* Platform Notice */}
-        <p className="text-xs text-gray-400 text-center mt-2">
+        {/* <p className="text-xs text-gray-400 text-center mt-2">
           {Capacitor.getPlatform() === 'ios' ? t('purchaseAppleNotice') : t('purchaseGoogleNotice')}
-        </p>
+        </p> */}
       </div>
     </div>
   );

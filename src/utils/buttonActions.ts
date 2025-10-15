@@ -12,6 +12,7 @@ export const useButtonActions = () => {
   const navigateToWallet = () => navigate('/wallet');
   const navigateToReferral = () => navigate('/referral-program');
   const navigateToMembership = () => navigate('/membership');
+  const navigateToMembershipPage = () => navigate('/membership-page');
 
   return {
     navigateToSignup,
@@ -22,6 +23,7 @@ export const useButtonActions = () => {
     navigateToWallet,
     navigateToReferral,
     navigateToMembership,
+    navigateToMembershipPage,
   };
 };
 

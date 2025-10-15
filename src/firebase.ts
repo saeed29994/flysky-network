@@ -38,6 +38,8 @@ const getFirebaseConfig = () => {
     'VITE_FIREBASE_STORAGE_BUCKET',
     'VITE_FIREBASE_MESSAGING_SENDER_ID',
     'VITE_FIREBASE_WEB_APP_ID'
+    // Note: VITE_FIREBASE_IOS_APP_ID and VITE_FIREBASE_ANDROID_APP_ID are optional
+    // They'll fall back to VITE_FIREBASE_WEB_APP_ID if not provided
   ];
 
   const missingVars = requiredEnvVars.filter(varName => !import.meta.env[varName]);
@@ -55,16 +57,24 @@ const getFirebaseConfig = () => {
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   };
 
-  // For Capacitor (mobile), always use web config to avoid URL scheme issues
+  // For Capacitor (mobile), use platform-specific configurations
   if (platform === 'ios' || platform === 'android') {
+    const mobileAppId = platform === 'ios' 
+      ? import.meta.env.VITE_FIREBASE_IOS_APP_ID || import.meta.env.VITE_FIREBASE_WEB_APP_ID
+      : import.meta.env.VITE_FIREBASE_ANDROID_APP_ID || import.meta.env.VITE_FIREBASE_WEB_APP_ID;
+    
     const config = {
       ...baseConfig,
-      appId: import.meta.env.VITE_FIREBASE_WEB_APP_ID, // Use web app ID for Capacitor
+      appId: mobileAppId,
     };
     
     // Only log in development and without sensitive data
     if (import.meta.env.DEV) {
-      console.log(`Firebase initialized for Capacitor (${platform})`);
+      console.log(`Firebase initialized for Capacitor (${platform}) with app ID type: ${
+        platform === 'ios' && import.meta.env.VITE_FIREBASE_IOS_APP_ID ? 'iOS-specific' : 
+        platform === 'android' && import.meta.env.VITE_FIREBASE_ANDROID_APP_ID ? 'Android-specific' : 
+        'Web fallback'
+      }`);
     }
     
     return config;
@@ -91,6 +101,16 @@ const getFirebaseConfig = () => {
 // Initialize Firebase with platform-specific config
 const firebaseConfig = getFirebaseConfig();
 const app = initializeApp(firebaseConfig);
+
+// Log the platform and authentication configuration (only in development)
+if (import.meta.env.DEV) {
+  const platform = getPlatform();
+  console.log(`🔥 Firebase initialized for platform: ${platform}`);
+  
+  if (platform === 'ios') {
+    console.log('📱 iOS authentication setup: Using email/password authentication only');
+  }
+}
 
 // Note: Using web config for Capacitor to avoid URL scheme blocking issues
 // Initialize services

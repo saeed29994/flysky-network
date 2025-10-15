@@ -1674,7 +1674,8 @@
       "about": "À propos",
       "features": "Fonctionnalités",
       "plans": "Offres",
-      "how-it-works": "Comment ça marche"
+      "how-it-works": "Comment ça marche",
+      "membership": "Adhésion"
     },
     "features": {
       "titleMobile": "NOS FONCTIONNALITÉS",
@@ -1749,7 +1750,7 @@
       "items": {
         "business": {
           "title": "Classe Affaires",
-          "price": "15",
+          "price": "14.99",
           "description": "Toutes les fonctionnalités de la classe Affaires pour augmenter vos récompenses FSN avec FlySky",
           "features": [
             "Bonus 100 000 FSN",
@@ -1761,7 +1762,7 @@
         },
         "first-6": {
           "title": "Première Classe",
-          "price": "120",
+          "price": "119.99",
           "description": "Toutes les fonctionnalités de la Première Classe pour augmenter vos récompenses FSN",
           "features": [
             "Bonus 500 000 FSN",
@@ -1773,7 +1774,7 @@
         },
         "firstLifetime": {
           "title": "Première Classe (à vie)",
-          "price": "199",
+          "price": "199.99",
           "description": "Toutes les fonctionnalités de la Première Classe (à vie) pour augmenter vos récompenses FSN",
           "features": [
             "Bonus 1 000 000 FSN",
@@ -1889,6 +1890,10 @@
     "create": "Créer",
     "view": "Voir",
     "edit": "Modifier"
-  }
+  },
+  "purchaseNow": "Acheter Maintenant",
+  "restorePurchases": "Restaurer les Achats",
+  "purchaseTerms": "En achetant, vous acceptez nos conditions d'utilisation et notre politique de confidentialité.",
+  "processing": "Traitement en cours..."
 }
 
