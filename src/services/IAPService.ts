@@ -324,7 +324,7 @@ class IAPService {
         console.log('🎉 Found active subscriptions/entitlements after restore!');
         
         // Find the most recent active subscription to determine the plan
-        let restoredPlanId = 'business'; // Default fallback
+        let restoredPlanId = 'economy'; // Default to free plan if detection fails
         
         // Try to determine the plan from active subscriptions
         const activeSubscriptions = Object.keys(customerInfo.activeSubscriptions);
@@ -337,24 +337,47 @@ class IAPService {
           const platform = Capacitor.getPlatform() === 'ios' ? 'ios' : 'android';
           const productIds = PRODUCT_IDS[platform as keyof typeof PRODUCT_IDS];
           
+          // Use exact matching instead of partial matching
           for (const [planId, productId] of Object.entries(productIds)) {
-            if (firstSubscription.includes(productId) || productId.includes(firstSubscription)) {
+            if (firstSubscription === productId) {
               restoredPlanId = planId;
+              console.log('✅ Exact match found:', { planId, productId, subscription: firstSubscription });
               break;
+            }
+          }
+          
+          // If no exact match, try partial matching as fallback
+          if (restoredPlanId === 'economy') {
+            for (const [planId, productId] of Object.entries(productIds)) {
+              if (firstSubscription.includes(productId) || productId.includes(firstSubscription)) {
+                restoredPlanId = planId;
+                console.log('⚠️ Partial match found:', { planId, productId, subscription: firstSubscription });
+                break;
+              }
             }
           }
         }
         
         console.log('🔍 Determined restored plan:', restoredPlanId);
         
-        // Update membership in Firebase
-        await this.updateMembershipInFirebase(restoredPlanId, customerInfo);
+        // Only update membership if we found a valid paid plan
+        if (restoredPlanId !== 'economy') {
+          // Update membership in Firebase
+          await this.updateMembershipInFirebase(restoredPlanId, customerInfo);
+          toast.success('🎉 Purchases restored successfully! Your membership has been activated.');
+        } else {
+          // If no valid subscription found, set to economy plan
+          console.log('⚠️ No valid subscription found, setting to economy plan');
+          await this.setUserToEconomyPlan();
+          toast('No active subscriptions found. You are now on the free plan.', { icon: 'ℹ️' });
+        }
         
-        toast.success('🎉 Purchases restored successfully! Your membership has been activated.');
         return customerInfo;
       } else {
         console.log('ℹ️ No active subscriptions found after restore');
-        toast('No previous purchases found to restore.', { icon: 'ℹ️' });
+        // Set user to economy plan if no active subscriptions found
+        await this.setUserToEconomyPlan();
+        toast('No previous purchases found to restore. You are now on the free plan.', { icon: 'ℹ️' });
         return customerInfo;
       }
     } catch (error: any) {
@@ -368,6 +391,37 @@ class IAPService {
       } else {
         throw new Error('Failed to restore purchases. Please try again.');
       }
+    }
+  }
+
+  /**
+   * Set user to economy (free) plan
+   */
+  private async setUserToEconomyPlan(): Promise<void> {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const now = Math.floor(Date.now() / 1000);
+      
+      await updateDoc(userRef, {
+        membership: {
+          planName: 'economy',
+          subscriptionStart: now,
+          subscriptionEnd: now + (365 * 24 * 60 * 60), // 1 year from now (effectively unlimited for free plan)
+          purchaseDate: serverTimestamp(),
+          platform: Capacitor.getPlatform() === 'ios' ? 'ios' : 'android',
+          isActive: true,
+        }
+      });
+      
+      console.log('✅ User set to economy plan successfully');
+    } catch (error) {
+      console.error('Failed to set user to economy plan:', error);
+      throw error;
     }
   }
 

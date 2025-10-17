@@ -1,7 +1,7 @@
 // 📁 src/firebase.ts
 
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, initializeAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getMessaging } from 'firebase/messaging';
 import { getFunctions } from 'firebase/functions';
@@ -102,19 +102,41 @@ const getFirebaseConfig = () => {
 const firebaseConfig = getFirebaseConfig();
 const app = initializeApp(firebaseConfig);
 
+// Initialize Firebase Auth with platform-specific configuration
+let auth: any;
+
+const platform = getPlatform();
+
 // Log the platform and authentication configuration (only in development)
 if (import.meta.env.DEV) {
-  const platform = getPlatform();
   console.log(`🔥 Firebase initialized for platform: ${platform}`);
   
   if (platform === 'ios') {
-    console.log('📱 iOS authentication setup: Using email/password authentication only');
+    console.log('📱 iOS authentication setup: Using initializeAuth for native iOS app');
+  } else {
+    console.log(`📱 ${platform} authentication setup: Using standard getAuth`);
   }
 }
+if (platform === 'ios') {
+  // For iOS, use initializeAuth with custom configuration
+  try {
+    auth = initializeAuth(app, {
+      // iOS-specific auth configuration
+      // This ensures proper initialization for iOS native apps
+    });
+    console.log('✅ Firebase Auth initialized for iOS with initializeAuth');
+  } catch (error) {
+    // If auth is already initialized, get the existing instance
+    auth = getAuth(app);
+    console.log('✅ Using existing Firebase Auth instance for iOS');
+  }
+} else {
+  // For web and Android, use standard getAuth
+  auth = getAuth(app);
+  console.log(`✅ Firebase Auth initialized for ${platform}`);
+}
 
-// Note: Using web config for Capacitor to avoid URL scheme blocking issues
-// Initialize services
-const auth = getAuth(app);
+// Initialize other Firebase services
 const db = getFirestore(app);
 const functions = getFunctions(app, 'us-central1');
 const storage = getStorage(app);

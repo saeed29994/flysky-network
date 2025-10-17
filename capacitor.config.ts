@@ -12,9 +12,9 @@ const config: CapacitorConfig = {
       androidScaleType: "CENTER_CROP"
     },
     StatusBar: {
-      style: "dark",
-      backgroundColor: "#FFFFFF",
-      overlaysWebView: false,
+      style: "light",
+      backgroundColor: "#000000",
+      overlaysWebView: true,
       show: true
     },
     FirebaseMessaging: {
@@ -41,7 +41,7 @@ const config: CapacitorConfig = {
     webContentsDebuggingEnabled: true
   },
   ios: {
-    contentInset: "always",
+    contentInset: "automatic",
     allowsLinkPreview: false,
     scrollEnabled: true,
     limitsNavigationsToAppBoundDomains: true

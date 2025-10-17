@@ -149,13 +149,16 @@ function AppContent() {
           // Hide the splash screen with a fade effect
           await SplashScreen.hide({ fadeOutDuration: 500 });
           
-          // Set status bar style for better Android compatibility
+          // Set status bar style for better compatibility
           if (Capacitor.getPlatform() === 'android') {
             StatusBar.setBackgroundColor({ color: '#00000000' }); // Transparent
             StatusBar.setStyle({ style: Style.Light });
             StatusBar.setOverlaysWebView({ overlay: false });
           } else if (Capacitor.getPlatform() === 'ios') {
-            StatusBar.setStyle({ style: Style.Dark });
+            // iOS: Black background with light content (white text)
+            StatusBar.setBackgroundColor({ color: '#000000' });
+            StatusBar.setStyle({ style: Style.Light });
+            StatusBar.setOverlaysWebView({ overlay: true });
           }
           
           // Register for push notifications on native platforms

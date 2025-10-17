@@ -16,7 +16,7 @@ export const PRODUCT_IDS = {
   },
   // iOS product IDs (App Store)
   ios: {
-    'first-lifetime': 'io.fsncrew.app.firstclass_lifetimee',
+    'first-lifetime': 'io.fsncrew.app.firstclass_lifetime',
     'first-6': 'io.fsncrew.app.first_6months_subscription',
     'business': 'io.fsncrew.app.business_monthly_subscription',
   }

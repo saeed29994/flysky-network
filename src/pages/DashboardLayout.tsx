@@ -231,7 +231,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 ${i18n.language === 'ar' ? 'md:pr-64' : 'md:pl-64'}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col ${i18n.language === 'ar' ? 'md:pr-64' : 'md:pl-64'}`}>
       {/* Enhanced Mobile Header */}
       <div className={`md:hidden fixed top-0 left-0 right-0 bg-gradient-to-r from-slate-800/95 to-purple-800/95 backdrop-blur-md border-b border-white/10 flex justify-between items-center px-4 py-3 z-50 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
         <div className={`flex items-center gap-3 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
@@ -460,14 +460,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       </div>
 
       {/* Enhanced Main Content */}
-      <main className="flex-1 pt-20 md:pt-0 px-4 md:px-6 pb-28 md:pb-8">
-        {children}
+      <main className="flex-1 pt-20 md:pt-0 px-4 md:px-6 pb-28 md:pb-8 overflow-y-auto mobile-scroll-container">
+        <div className="min-h-full mobile-content-with-nav">
+          {children}
+        </div>
       </main>
 
       {/* Enhanced Mobile Bottom Navigation */}
       {!hideFooter && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-slate-800/98 to-slate-900/98 backdrop-blur-xl border-t border-white/10 z-40">
-          <div className="grid grid-cols-5 gap-1 p-3">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-slate-800/98 to-slate-900/98 backdrop-blur-xl border-t border-white/10 z-40 safe-bottom">
+          <div className="grid grid-cols-5 gap-1 p-3 pb-safe">
             <Link
               to="/dashboard"
               className={`flex flex-col items-center py-3 px-2 rounded-xl transition-all duration-200 ${
