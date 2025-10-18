@@ -10,6 +10,7 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { formatTimestamp } from '../utils/formatTimestamp';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -467,7 +468,7 @@ const AdminDashboard = () => {
                                 <p className="text-white font-medium text-sm">{t('admin.payments.table.user')}: {p.uid}</p>
                                 <p className="text-gray-400 text-xs">{t('admin.payments.table.currency')}: {p.currency}</p>
                                 <p className="text-gray-400 text-xs">{t('admin.payments.table.fromAddress')}: {p.fromAddress.substring(0, 12)}...</p>
-                                <p className="text-gray-400 text-xs">{t('admin.payments.table.date')}: {p.timestamp?.toDate().toLocaleDateString()}</p>
+                                <p className="text-gray-400 text-xs">{t('admin.payments.table.date')}: {formatTimestamp(p.timestamp)}</p>
                               </div>
 
                               <div className="flex items-center justify-between">
@@ -587,7 +588,7 @@ const AdminDashboard = () => {
                                       {t('admin.payments.actions.download')}
                                     </a>
                                   </td>
-                                  <td className="py-4 px-4 text-gray-300 text-sm">{p.timestamp?.toDate().toLocaleString()}</td>
+                                  <td className="py-4 px-4 text-gray-300 text-sm">{formatTimestamp(p.timestamp)}</td>
                                   <td className="py-4 px-4">
                                     <div className="flex items-center gap-2">
                                       <button

@@ -60,10 +60,12 @@ const TermsPage = () => {
 
           <p><strong>18. Changes to the Terms:</strong> We reserve the right to modify these terms at any time without prior notice. Continued use of the Site after changes indicates acceptance of the updated terms.</p>
 
-          <p><strong>19. Contact Us:</strong> If you have any questions about these terms, you can reach us at: <span className="text-yellow-400 font-semibold">support@fsncrew.io</span></p>
+          <p><strong>19. Apple Terms of Use (EULA):</strong> This app is subject to Apple's standard End User License Agreement (EULA). You can view Apple's EULA at: <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:underline">https://www.apple.com/legal/internet-services/itunes/dev/stdeula/</a></p>
+
+          <p><strong>20. Contact Us:</strong> If you have any questions about these terms, you can reach us at: <span className="text-yellow-400 font-semibold">support@fsncrew.io</span></p>
 
           <p className="text-center font-bold mt-8">
-            By using the Site, you confirm that you have read, understood, and agree to be bound by these Terms and Conditions.
+            By using the Site, you confirm that you have read, understood, and agree to be bound by these Terms and Conditions and Apple's EULA.
           </p>
         </div>
 

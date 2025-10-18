@@ -8,6 +8,7 @@ import {
   collection,
   getDocs,
 } from 'firebase/firestore';
+import { formatTimestamp } from '../utils/formatTimestamp';
 
 const Inbox_Debug = () => {
   const auth = getAuth();
@@ -66,11 +67,7 @@ console.log("🔐 Current user UID:", user.uid);
               <h2 className="text-lg font-semibold text-yellow-300">{msg.title}</h2>
               <p className="text-gray-300">{msg.body}</p>
               <p className="text-sm text-gray-500 mt-1">
-                {new Date(
-                  typeof msg.timestamp === 'number'
-                    ? msg.timestamp
-                    : msg.timestamp?.toDate?.() || Date.now()
-                ).toLocaleString()}
+                {formatTimestamp(msg.timestamp || msg.createdAt || Date.now())}
               </p>
             </li>
           ))}

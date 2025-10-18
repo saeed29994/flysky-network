@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { doc, getDoc, collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { motion } from 'framer-motion';
+import { formatTimestamp } from '../utils/formatTimestamp';
 import {
   User, Crown, Camera, CheckCircle, Clock, AlertCircle,
   Star, Zap, Settings, Coins, Users, 
@@ -569,7 +570,7 @@ const Profile = () => {
                           {activity.description}
                         </p>
                         <p className="text-xs sm:text-sm text-gray-400">
-                          {new Date(activity.timestamp).toLocaleString()}
+                          {formatTimestamp(activity.timestamp)}
                         </p>
                       </div>
                     </div>

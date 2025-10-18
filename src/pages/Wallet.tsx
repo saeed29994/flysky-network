@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Wallet as WalletIcon, Coins, Lock, Gift, TrendingUp, Clock, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { useUserPlan } from '../contexts/UserPlanContext';
+import { formatTimestamp } from '../utils/formatTimestamp';
 
 const Wallet = () => {
   const { t } = useTranslation();
@@ -361,7 +362,7 @@ const Wallet = () => {
                           <div className="flex-1 min-w-0">
                             <p className="text-white font-medium text-sm truncate">{tx.description}</p>
                             <p className="text-gray-400 text-xs">
-                              {new Date(tx.timestamp).toLocaleString()}
+                              {formatTimestamp(tx.timestamp)}
                             </p>
                           </div>
                         </motion.div>
