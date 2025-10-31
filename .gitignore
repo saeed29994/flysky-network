@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+
+# Production builds
+dist/
+
+# Environment variables
+.env*
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+.nyc_output
+
+# Cache
+.cache
+.parcel-cache
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.temp
+
+# Backups
+*- Copy/
+data - Copy/
+
+# Development
+Developer/
+
+# Firebase local
+.firebase/
+
+# Capacitor builds
+android/
+ios/
+
+# Other
+.serverless/
+.fusebox/
+.dynamodb/
+.tern-port
+.vscode-test
+.npm
+.node_repl_history
+*.tgz
+.yarn-integrity

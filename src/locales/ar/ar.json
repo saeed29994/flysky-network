@@ -1,0 +1,2676 @@
+{
+
+"rewardmang": {
+  "RewardsManagement": "إدارة المكافآت",
+  "DataDeletion": "حذف البيانات",
+  "rewardsDescription": "إدارة المكافآت والنقاط وإعدادات الهدايا.",
+  "GiftManagement": "إدارة الهدايا",
+  "GiftDescription": "التحكم وتحديث جميع الهدايا المتاحة للمستخدمين."
+}
+,
+  "MessagePage": {
+    "spamMessages": "رسائل البريد المزعج",
+    "urgentMessages": "الرسائل العاجلة",
+    "unreadMessages": "الرسائل غير المقروءة",
+    "totalMessages": "إجمالي الرسائل",
+    "pageTitle": "رسائل الاتصال",
+    "pageSubtitle": "إدارة رسائل اتصال المستخدمين",
+    "filters": "الفلاتر",
+    "deleteAll": "حذف الكل",
+    "searchPlaceholder": "البحث بالاسم أو البريد الإلكتروني أو الرسالة...",
+    "statusAll": "جميع الحالات",
+    "statusUnread": "غير مقروء",
+    "statusRead": "مقروء",
+    "statusReplied": "تم الرد",
+    "priorityAll": "جميع الأولويات",
+    "priorityNormal": "عادي",
+    "priorityUrgent": "عاجل",
+    "prioritySpam": "مزعج",
+    "dateAll": "جميع الأوقات",
+    "dateToday": "اليوم",
+    "dateWeek": "هذا الأسبوع",
+    "dateMonth": "هذا الشهر",
+    "loading": "جاري تحميل الرسائل...",
+    "noMessages": "لا توجد رسائل",
+    "noMessagesDesc": "لم يتم العثور على رسائل اتصال تطابق فلاترك.",
+    "confirmDeleteTitle": "حذف الرسالة",
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه الرسالة؟ لا يمكن التراجع عن هذا الإجراء.",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "confirmDeleteAllTitle": "حذف جميع الرسائل",
+    "warning": "تحذير",
+    "confirmDeleteAll": "هل أنت متأكد من أنك تريد حذف جميع الرسائل؟ لا يمكن التراجع عن هذا الإجراء.",
+    "affectedMessages": "الرسائل المتأثرة",
+    "fetchError": "فشل في تحميل الرسائل",
+    "statusUpdated": "تم تحديث حالة الرسالة",
+    "statusUpdateError": "فشل في تحديث حالة الرسالة",
+    "priorityUpdated": "تم تحديث أولوية الرسالة",
+    "priorityUpdateError": "فشل في تحديث أولوية الرسالة",
+    "messageDeleted": "تم حذف الرسالة بنجاح",
+    "deleteError": "فشل في حذف الرسالة",
+    "allMessagesDeleted": "تم حذف جميع الرسائل بنجاح",
+    "deleteAllError": "فشل في حذف جميع الرسائل",
+    "deleteMessage": "حذف الرسالة",
+    "actions": "الإجراءات",
+    "apply": "تطبيق",
+    "deletingMessages": "جاري حذف الرسائل...",
+    "applyingChanges": "جاري تطبيق التغييرات...",
+    "selectall": "تحديد الكل",
+    "markAllUnread": "تعيين الكل كغير مقروء",
+    "markAllread": "تعيين الكل كمقروء",
+    "markAllReplied": "تعيين الكل كمجاب عليه",
+    "markAllNormal": "تعيين الكل كعادي",
+    "markAllUrgent": "تعيين الكل كعاجل",
+    "markAllSpam": "تعيين الكل كبريد مزعج"
+  },
+  "general": {
+    "welcome": "مرحبًا بك في شبكة فلاي سكاي",
+    "mining": "التعدين",
+    "claim": "تحصيل المكافأة",
+    "balance": "رصيدي",
+    "claimed": "تم التحصيل",
+    "newBalance": "الرصيد الجديد",
+    "readyToMine": "هل أنت مستعد لبدء التعدين؟",
+    "startMining": "ابدأ التعدين"
+  },
+  "plan": {
+    "title": "الدرجة الاقتصادية",
+    "startNew": "ابدأ عملية تخزين جديدة بناءً على خطتك",
+    "current": "الخطة الحالية:"
+  },
+  "form": {
+    "amount": "المبلغ المراد تخزينه"
+  },
+  "duration": {
+    "month": "شهر",
+    "months": "أشهر"
+  },
+  "followPopup": {
+    "title": "تابعنا على منصة X",
+    "message": "احصل على مكافأة! تابع حسابنا الرسمي على X (@fsncrew) واحصل على 100 FSN فورًا.",
+    "button": "تابعنا واحصل على 100 FSN",
+    "close": "لاحقًا"
+  },
+  "staking": "التخزين",
+  "startStaking": "ابدأ التخزين",
+  "stakingRecords": "سجل التخزين",
+  "activeStaking": "تخزين نشط",
+  "completedStaking": "تخزين مكتمل",
+  "noActiveStaking": "لا يوجد تخزين نشط.",
+  "noCompletedStaking": "لا يوجد تخزين مكتمل بعد.",
+  "claimed": "تم التحصيل ✅",
+  "plans": {
+    "title": "اختر خطتك",
+    "subtitle": "افتح الميزات المميزة واكسب مكافآت FSN مع خطط العضوية لدينا. رموز FSN هي عملة افتراضية داخل التطبيق لميزات محسّنة.",
+    "mostPopular": "الأكثر شيوعًا",
+    "items": {
+      "business": {
+        "title": "درجة الأعمال",
+        "price": "14.99",
+        "description": "جميع ميزات درجة الأعمال لتعزيز مكافآت FSN الخاصة بك مع فلاي سكاي",
+        "features": [
+          "مكافأة 100,000 FSN",
+          "تعدين متقدّم",
+          "دعم أولوية",
+          "وصول إلى التخزين"
+        ],
+        "buttonText": "اختر درجة الأعمال"
+      },
+      "first-6": {
+        "title": "الدرجة الأولى (6 أشهر)",
+        "price": "119.99",
+        "description": "جميع ميزات الدرجة الأولى لتعزيز مكافآت FSN الخاصة بك مع فلاي سكاي",
+        "features": [
+          "مكافأة 500,000 FSN",
+          "جميع ميزات الأعمال",
+          "تعدين أسرع",
+          "وصول للفعاليات"
+        ],
+        "buttonText": "اختر الدرجة الأولى"
+      },
+      "firstLifetime": {
+        "title": "الدرجة الأولى (مدى الحياة)",
+        "price": "199.99",
+        "description": "جميع ميزات الدرجة الأولى (مدى الحياة) لتعزيز مكافآت FSN الخاصة بك مع فلاي سكاي",
+        "features": [
+          "مكافأة 1,000,000 FSN",
+          "أعلى تعدين",
+          "وصول مدى الحياة",
+          "وصول للميزات المميزة"
+        ],
+        "buttonText": "اختر الأولى - مدى الحياة"
+      }
+    }
+  },
+  "fsnInfo": {
+    "title": "حول رموز FSN",
+    "description": "رموز FSN هي عملة افتراضية داخل التطبيق يمكن استخدامها فقط داخل التطبيق لميزات مثل التعدين والتخزين والترقيات. لا يمكن سحبها أو بيعها أو تداولها خارجيًا.",
+    "miningRewards": {
+      "title": "مكافآت التعدين",
+      "desc": "استخدم FSN لتعدين أسرع ومكافآت أعلى"
+    },
+    "stakingAccess": {
+      "title": "وصول إلى التخزين",
+      "desc": "قم بتخزين FSN لكسب مكافآت إضافية"
+    },
+    "premiumFeatures": {
+      "title": "ميزات مميزة",
+      "desc": "افتح ميزات ومكافآت حصرية"
+    }
+  },
+  "transactions": {
+    "membershipBonus": "تم استلام مكافأة العضوية لـ {{plan}} (+{{amount}} FSN)",
+    "miningReward": "تم استلام مكافأة التعدين (+{{amount}} FSN)",
+    "watchToEarnReward": "تم استلام مكافأة المشاهدة (+{{amount}} FSN)",
+    "stakingLock": "تم ربط {{amount}} FSN لمدة {{duration}} أشهر",
+    "stakingReward": "تم استلام مكافأة الربط (+{{amount}} FSN)"
+  },
+  "first6": "الدرجة الأولى (6 أشهر)",
+  "firstLifetime": "الدرجة الأولى (مدى الحياة)",
+  "stakingSection": {
+    "endsOn": "ينتهي في",
+    "expectedReturn": "العائد المتوقع",
+    "claimRewards": "تحصيل المكافآت",
+    "claimIn": "التحصيل خلال"
+  },
+  "loading": {
+    "user": "لم يتم تحميل المستخدم. يرجى تسجيل الدخول أولاً.",
+    "processing": "جارٍ المعالجة...",
+    "membershipData": "جارٍ تحميل بيانات العضوية..."
+  },
+  "error": {
+    "userNotLoaded": "لم يتم تحميل المستخدم.",
+    "invalidAmount": "يرجى إدخال مبلغ ومدة صحيحين.",
+    "exceedsBalance": "مبلغ التخزين يتجاوز رصيدك الحالي.",
+    "notAuthenticated": "يجب تسجيل الدخول لتحصيل المكافأة.",
+    "alreadyClaimed": "تم تحصيل هذه المكافأة مسبقاً.",
+    "notEndedYet": "فترة التخزين هذه لم تنتهِ بعد.",
+    "claimFailed": "فشل في تحصيل المكافأة.",
+    "stakeFailed": "فشل في إنشاء عملية تخزين."
+  },
+  "success": {
+    "stakeCreated": "تم إنشاء عملية التخزين بنجاح!",
+    "claimed": "تم تحصيل المكافأة بنجاح!"
+  },
+  "stakingCard": {
+    "title": "ملخص التخزين الخاص بك",
+    "lockedAmount": "المبلغ المُخزن",
+    "passiveIncome": "توليد الدخل السلبي",
+    "flexiblePeriods": "فترات تخزين مرنة",
+    "highApyReturns": "عوائد APY عالية",
+    "status": "الحالة",
+    "active": "نشط",
+    "currentlyLocked": "المبلغ المُخزن حالياً",
+    "economy": "تخزين أساسي بعوائد محدودة.",
+    "business": "خطة تخزين الأعمال بعوائد معتدلة.",
+    "first6": "خطة الدرجة الأولى لمدة 6 أشهر بعوائد عالية.",
+    "firstLifetime": "خطة مدى الحياة بأقصى عوائد."
+  },
+  "planNames": {
+    "economy": "الدرجة الاقتصادية",
+    "business": "درجة الأعمال",
+    "first-6": "الدرجة الأولى (6 أشهر)",
+    "first-lifetime": "الدرجة الأولى (مدى الحياة)"
+  },
+  "planFeatures": {
+    "advancedMining": "تعدين متقدم",
+    "prioritySupport": "دعم أولوية",
+    "stakingAccess": "الوصول للتخزين",
+    "allBusinessFeatures": "جميع ميزات الأعمال",
+    "fasterMining": "تعدين أسرع",
+    "eventAccess": "الوصول للفعاليات",
+    "highestMining": "أعلى معدل تعدين",
+    "lifetimeAccess": "الوصول مدى الحياة",
+    "accessToPremiumFeatures": "الوصول للميزات المميزة",
+    "Limited Staking": "التخزين المحدود",
+    "Everything unlocked forever": "جميع الميزات مفعلة إلى الأبد",
+    "Access to Premium Features": "الوصول للميزات المميزة"
+  },
+  "dashboard": {
+    "welcome": "مرحبًا بك في شبكة فلاي سكاي",
+    "tagline": "استكشف. اربح. نم.",
+    "loading": "جاري تحميل لوحة التحكم...",
+    "stats": {
+      "totalBalance": "الرصيد الإجمالي",
+      "availableBalance": "الرصيد المتاح",
+      "referrals": "الإحالات",
+      "miningLevel": "مستوى التعدين"
+    },
+    "quickActions": {
+      "title": "الإجراءات السريعة",
+      "mining": {
+        "title": "التعدين اليومي",
+        "description": "ابدأ في كسب المكافآت اليومية"
+      },
+      "staking": {
+        "title": "التخزين",
+        "description": "اربح دخلًا سلبيًا"
+      },
+      "wallet": {
+        "title": "المحفظة",
+        "description": "إدارة أموالك"
+      },
+      "referrals": {
+        "title": "الإحالات",
+        "description": "ادعُ الأصدقاء واربح"
+      }
+    },
+    "features": {
+      "title": "ميزات المنصة",
+      "popular": "شائع",
+      "membership": {
+        "title": "خطط العضوية",
+        "description": "قم بترقية خطتك للحصول على مكافآت أفضل"
+      },
+      "playToEarn": {
+        "title": "اللعب للربح",
+        "description": "العب الألعاب واربح الرموز"
+      },
+      "amazingRewards": {
+        "title": "المكافآت المثيرة",
+        "description": "تعدين، تخزين وإحالات للحصول على مكافآت إضافية"
+      },
+      "watchToEarn": {
+        "title": "المشاهدة للربح",
+        "description": "شاهد الإعلانات واربح المكافآت"
+      },
+      "inbox": {
+        "title": "صندوق الوارد",
+        "description": "الرسائل والإشعارات"
+      },
+      "kyc": {
+        "title": "التحقق من الهوية",
+        "description": "تحقق من هويتك"
+      },
+      "settings": {
+        "title": "الإعدادات",
+        "description": "تفضيلات الحساب"
+      }
+    },
+    "contactSupport": {
+      "title": "اتصل بالدعم",
+      "description": "احصل على المساعدة والدعم من فريقنا"
+    },
+    "aboutUs": {
+      "title": "من نحن",
+      "description": "تعرف على المزيد حول شبكة فلاي سكاي"
+    },
+    "contactModal": {
+      "title": "اتصل بالدعم",
+      "subtitle": "نحن هنا لمساعدتك",
+      "name": "الاسم",
+      "namePlaceholder": "اسمك",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "بريدك@الإلكتروني.com",
+      "message": "الرسالة",
+      "messagePlaceholder": "كيف يمكننا مساعدتك؟",
+      "send": "إرسال الرسالة",
+      "cancel": "إلغاء"
+    },
+    "miningTitle": "نظرة عامة على التعدين اليومي",
+    "miningDesc": "اكسب رموز FSN يومياً بناءً على خطتك. قم بالترقية لمزيد من المكافآت.",
+    "startMining": "ابدأ التعدين الآن",
+    "membershipTitle": "خطط العضوية",
+    "bonus": "المكافأة:",
+    "viewMembership": "عرض تفاصيل العضوية",
+    "referralTitle": "ادعُ واربح",
+    "referralDesc": "شارك رابط الإحالة الخاص بك واربح عندما ينضم أصدقاؤك إلى فلاي سكاي.",
+    "viewReferral": "عرض برنامج الإحالة",
+    "playTitle": "العب واربح",
+    "playDesc": "قريباً: ألعاب صغيرة ممتعة لربح المزيد من FSN!",
+    "playButton": "استكشف اللعب للربح",
+    "aboutTitle": "من نحن",
+    "aboutDesc": "شبكة فلاي سكاي هي منصة الاقتصاد الرقمي من الجيل الجديد تجمع بين التعدين والتخزين والألعاب والـNFTs.",
+    "aboutButton": "اعرف المزيد عنا",
+    "stakingTitle": "فرص التخزين",
+    "stakingDesc": "خزّن رموز FSN الخاصة بك واربح دخلاً سلبياً بخطط مرنة وعوائد عالية.",
+    "stakingButton": "اذهب لصفحة التخزين"
+  },
+  "auth": {
+    "loginTitle": "تسجيل الدخول",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "login": "تسجيل الدخول",
+    "loggingIn": "جاري تسجيل الدخول...",
+    "or": "أو",
+    "loginWithGoogle": "تسجيل الدخول باستخدام جوجل",
+    "loginWithApple": "المتابعة مع آبل",
+    "signUpWithApple": "التسجيل مع آبل",
+    "pleaseWait": "يرجى الانتظار...",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "سجل الآن",
+    "googlePopupError": "فشل تسجيل الدخول عبر جوجل. يرجى استخدام متصفح عادي مثل كروم.",
+    "googleGenericError": "فشل تسجيل الدخول عبر جوجل. يرجى المحاولة مرة أخرى.",
+    "createAccount": "إنشاء حساب",
+    "fullName": "الاسم الكامل",
+    "referralCode": "رمز الإحالة (اختياري)",
+    "agreeTo": "أوافق على",
+    "terms": "الشروط والأحكام",
+    "and": "و",
+    "privacy": "سياسة الخصوصية",
+    "signUpWithGoogle": "التسجيل باستخدام جوجل",
+    "haveAccount": "هل لديك حساب؟",
+    "bySigningUp": "بالتسجيل فإنك توافق على"
+  },
+  "kyc": {
+    "title": "التحقق من الهوية (KYC)",
+    "idsAccepted": {
+      "title": "وثائق الهوية المقبولة",
+      "option1": "الهوية الوطنية",
+      "option2": "جواز السفر",
+      "option3": "رخصة القيادة",
+      "option4": "تصريح الإقامة"
+    },
+    "idPhotos": {
+      "title": "متطلبات الصور للهوية",
+      "option1": "يجب أن تكون الصور واضحة وجميع الزوايا مرئية.",
+      "option2": "لا توهج ولا ظلال ولا ضبابية.",
+      "option3": "يجب ألا تكون الهوية منتهية الصلاحية.",
+      "option4": "يجب أن تكون جميع المعلومات قابلة للقراءة."
+    },
+    "samples": {
+      "front": "نموذج الجهة الأمامية",
+      "back": "نموذج الجهة الخلفية",
+      "selfie": "نموذج السيلفي"
+    },
+    "selfie": {
+      "title": "متطلبات السيلفي مع الهوية",
+      "option1": "امسك الهوية بجانب وجهك.",
+      "option2": "يجب أن يكون الوجه والهوية واضحين.",
+      "option3": "لا فلاتر ولا تعديل على الصورة.",
+      "option4": "إضاءة جيدة وخلفية محايدة.",
+      "option5": "لا تغطي أي جزء من الهوية."
+    },
+    "uploadSection": {
+      "title": "رفع المستندات",
+      "front": "رفع الجهة الأمامية للهوية",
+      "back": "رفع الجهة الخلفية للهوية",
+      "selfie": "رفع سيلفي مع الهوية"
+    },
+    "uploadAllDocuments": "يرجى رفع جميع المستندات المطلوبة.",
+    "uploadSuccess": "تم رفع المستندات بنجاح. التحقق قيد المراجعة.",
+    "uploadFailed": "فشل في رفع المستندات. يرجى المحاولة مرة أخرى.",
+    "uploading": "جاري الرفع...",
+    "submit": "إرسال للمراجعة",
+    "disclaimer": {
+      "title": "ملاحظة مهمة",
+      "content": "بياناتك الشخصية محفوظة بأمان وتُستخدم فقط لأغراض التحقق من الهوية. نحن لا نشارك بياناتك مع أي أطراف ثالثة."
+    },
+    "faq": {
+      "title": "الأسئلة الشائعة",
+      "q1": "لماذا أحتاج لإكمال KYC؟",
+      "a1": "لضمان الأمان والامتثال للوائح المالية.",
+      "q2": "كم من الوقت يستغرق التحقق؟",
+      "a2": "عادة خلال 24 إلى 72 ساعة.",
+      "q3": "ماذا يحدث إذا تم رفض KYC؟",
+      "a3": "سيتم إخطارك بالسبب ويمكنك إعادة تقديم المستندات.",
+      "q4": "هل يمكنني تحديث مستنداتي لاحقاً؟",
+      "a4": "نعم، يمكنك إعادة تقديم مستندات محدثة في أي وقت.",
+      "q5": "هل معلوماتي آمنة؟",
+      "a5": "نعم. جميع البيانات مشفرة ومحفوظة بأمان."
+    },
+    "subtitle": "أكمل التحقق من هويتك لفتح الميزات المميزة وضمان أمان الحساب",
+    "acceptedDocuments": "وثائق الهوية المقبولة",
+    "photoRequirements": "متطلبات الصور لوثائق الهوية",
+    "selfieRequirements": "متطلبات صورة السيلفي",
+    "uploadDocuments": "رفع مستندات التحقق الخاصة بك",
+    "commonQuestions": "الأسئلة الشائعة",
+    "processingTime": "وقت المعالجة",
+    "processingTimeValue": "24-48 ساعة",
+    "typicalProcessingTime": "وقت المعالجة المعتاد",
+    "processingDescription": "سيتم مراجعة مستنداتك من قبل فريق التحقق لدينا. ستتلقى إشعاراً بمجرد اكتمال العملية."
+  },
+  "watchToEarn": {
+    "title": "شاهد واربح",
+    "description": "شاهد {{count}} إعلاناً لتحصل على {{reward}} FSN يومياً.",
+    "fsnRewards": "مكافآت FSN",
+    "earnTokensByWatching": "اربح الرموز من خلال مشاهدة إعلانات الفيديو",
+    "watchProgress": "تقدم المشاهدة",
+    "trackDailyProgress": "تتبع تقدم مشاهدة إعلانات الفيديو اليومية",
+    "progress": "التقدم",
+    "complete": "مكتمل",
+    "videoAdsWatchedToday": "إعلانات الفيديو المشاهدة اليوم",
+    "currentBalanceFSN": "الرصيد الحالي (FSN)",
+    "waitTime": "وقت الانتظار",
+    "howItWorks": "كيف يعمل",
+    "simple3StepProcess": "عملية بسيطة من 3 خطوات",
+    "watchVideoAds": "شاهد إعلانات الفيديو",
+    "watchAdsDaily": "شاهد {{count}} إعلان فيديو يومياً",
+    "completeViewing": "إكمال المشاهدة",
+    "watchEachAdCompletely": "شاهد كل إعلان بالكامل (20 ثانية)",
+    "claimRewards": "تحصيل المكافآت",
+    "earnFSNTokens": "اربح {{amount}} رمز FSN",
+    "rewardsInfo": "معلومات المكافآت",
+    "dailyEarningStructure": "هيكل الربح اليومي",
+    "dailyLimit": "الحد اليومي",
+    "videoAds": "إعلانات الفيديو",
+    "watchAdsPerDay": "شاهد {{count}} إعلان فيديو يومياً",
+    "dailyReward": "المكافأة اليومية",
+    "completeAllAdsToClaim": "أكمل جميع الإعلانات للمطالبة",
+    "adDuration": "مدة الإعلان",
+    "twentySeconds": "20 ثانية",
+    "eachAdTwentySeconds": "كل إعلان فيديو مدته 20 ثانية",
+    "videoAd": "إعلان الفيديو",
+    "pleaseWatchCompleteAd": "يرجى مشاهدة الإعلان بالكامل",
+    "videoAdPlaceholder": "عنصر نائب لإعلان الفيديو",
+    "videoAdPlaceholderDescription": "هذا هو المكان الذي سيتم فيه عرض إعلان الفيديو الفعلي",
+    "pleaseWaitForAdComplete": "يرجى الانتظار حتى اكتمال الإعلان",
+    "processingAdCompletion": "معالجة اكتمال الإعلان...",
+    "watchVideoAdAndEarn": "شاهد إعلان الفيديو واربح المكافآت",
+    "watched": "الإعلانات المشاهدة",
+    "balance": "رصيدك الحالي",
+    "watchAd": "شاهد إعلان",
+    "rewardClaimed": "🎉 تم تحصيل {{amount}} FSN بنجاح!",
+    "adWatched": "✅ تم احتساب الإعلان!",
+    "waitMessage": "يرجى الانتظار حتى انتهاء العد التنازلي: {{time}}",
+    "note": "🎁 أكمل مشاهدة الإعلانات اليومية لتحصل على مكافأتك.",
+    "adModalTitle": "شاهد الإعلان وانتظر العد التنازلي",
+    "timer": "الوقت المتبقي:",
+    "seconds": "ثانية",
+    "openAd": "فتح الإعلان",
+    "stayOnPage": "تم فتح الإعلان في تبويب جديد. يرجى البقاء في هذه الصفحة حتى انتهاء العد التنازلي.",
+    "confirmAdWatched": "تأكيد مشاهدة الإعلان",
+    "shareAd": "📢 شارك الإعلان",
+    "shareBonusReceived": "✅ حصلت على 50 FSN لمشاركة البانر!",
+    "shareAlreadyClaimed": "❌ لقد حصلت على المكافأة بالفعل خلال الـ12 ساعة الماضية.",
+    "shareAdTitle": "شارك واربح",
+    "shareAdDesc": "شارك هذا البانر على X لتحصل على 50 FSN مرة واحدة يومياً.",
+    "shareOnX": "شارك على X"
+  },
+  "referralProgram": "برنامج الإحالة",
+  "inviteFriendsEarn": "ادعُ أصدقاءك واربح مكافآت عندما ينضمون ويتم التحقق منهم.",
+  "copied": "تم النسخ!",
+  "verifiedReferrals": "الإحالات المؤكدة",
+  "pendingReferrals": "الإحالات المعلقة",
+  "currentReward": "المكافأة الحالية لكل إحالة",
+  "rewardTiers": "مستويات المكافآت",
+  "bonusTier1": "أول 10 إحالات مؤكدة: 100 FSN لكل واحدة",
+  "bonusTier2": "10 التالية: 200 FSN لكل واحدة",
+  "bonusTier3": "أكثر من 20: 300 FSN لكل واحدة",
+  "yourReferralLink": "رابط الإحالة الخاص بك",
+  "downloadQR": "تحميل رمز QR",
+  "scanToShare": "امسح أو حمل لمشاركة الرابط",
+  "verifiedCount": "الإحالات المؤكدة",
+  "verifiedEmails": "البريد الإلكتروني المؤكد",
+  "yourReferrals": "إحالاتك",
+  "email": "البريد الإلكتروني",
+  "status": "الحالة",
+  "action": "الإجراء",
+  "noReferrals": "لا توجد إحالات بعد.",
+  "verified": "مؤكد",
+  "pending": "معلق",
+  "rejected": "مرفوض",
+  "claim": "تحصيل",
+  "referralBonus": {
+    "loading": "جارٍ التحميل...",
+    "claimButton": "تحصيل مكافأة الإحالة",
+    "noBonus": "لا توجد مكافآت متاحة للتحصيل.",
+    "claimedSuccess": "🎉 تم تحصيل مكافأة الإحالة بنجاح!",
+    "claimedError": "حدث خطأ أثناء تحصيل المكافأة.",
+    "fcmTitle": "🎁 مكافأة الإحالة جاهزة",
+    "fcmBody": "تم التحقق من إحالة جديدة. مكافأتك جاهزة للتحصيل!",
+    "verifiedTitle": "تم التحقق من مكافأة الإحالة",
+    "verifiedBody": "تهانينا! تم التحقق من إحالتك. لقد ربحت {{rewards}} رمز FSN."
+  },
+  "welcomeBonus": {
+    "title": "🎉 مرحبًا بك في شبكة فلاي سكاي!",
+    "body": "لقد حصلت على مكافأة ترحيبية بقيمة {{amount}} FSN. اضغط أدناه لتحصيل مكافأتك",
+    "fcmTitle": "🎁 مكافأة ترحيبية",
+    "fcmBody": "لقد تلقيت مكافأة ترحيبية بقيمة {{amount}} FSN!"
+  },
+  "pwa": {
+    "title": "تثبيت تطبيق فلاي سكاي نتورك",
+    "subtitle": {
+      "ios": "أضِف إلى الشاشة الرئيسية للوصول السريع",
+      "default": "ثبّت التطبيق لتجربة أفضل"
+    },
+    "buttons": {
+      "howToInstall": "كيفية التثبيت",
+      "install": "تثبيت"
+    },
+    "toast": {
+      "installed": "تم تثبيت التطبيق بنجاح!",
+      "installing": "جاري تثبيت التطبيق...",
+      "cancelled": "تم إلغاء التثبيت"
+    },
+    "ios": {
+      "title": "لتثبيت هذا التطبيق:",
+      "step1": "اضغط على زر المشاركة 📤",
+      "step2": "ثم اختر \"إضافة إلى الشاشة الرئيسية\" 🏠",
+      "step3": "اضغط \"إضافة\" للتأكيد"
+    }
+  },
+  "wallet": {
+    "walletOverview": "💼 نظرة عامة على المحفظة",
+    "totalBalance": "إجمالي الرصيد",
+    "availableBalance": "الرصيد المتاح",
+    "lockedInStaking": "مجمّد في التخزين",
+    "balanceDistribution": "💹 توزيع الرصيد",
+    "noBalanceData": "لا توجد بيانات رصيد متاحة.",
+    "transactionHistory": "📜 سجل المعاملات",
+    "noTransactions": "لا توجد معاملات للعرض.",
+    "loadingWallet": "جارٍ تحميل بيانات المحفظة...",
+    "description": "إدارة رموز FSN الخاصة بك، وتتبع رصيدك، وعرض سجل المعاملات",
+    "completePortfolio": "محفظة FSN الكاملة الخاصة بك",
+    "fsnTokens": "رموز FSN",
+    "readyToUse": "جاهز للاستخدام",
+    "inStakingPools": "في برك الستاكنج",
+    "fromReferrals": "من الإحالات",
+    "visualBreakdown": "تحليل مرئي لمحفظتك",
+    "fsn": "FSN",
+    "recentActivity": "النشاط الأخير",
+    "portfolioStats": "إحصائيات المحفظة",
+    "quickOverview": "نظرة سريعة",
+    "available": "متاح",
+    "staked": "مستثمر",
+    "referrals": "الإحالات",
+    "verifiedReferrals": "الإحالات المؤكدة",
+    "total": "المجموع"
+  },
+  "menu": {
+    "home": "الرئيسية",
+    "staking": "التخزين",
+    "mining": "التعدين",
+    "play": "العب",
+    "watch": "شاهد",
+    "referral": "الإحالة",
+    "wallet": "المحفظة",
+    "about": "من نحن",
+    "inbox": "صندوق الرسائل",
+    "contact": "اتصل بنا",
+    "profile": "الملف الشخصي",
+    "logout": "تسجيل الخروج",
+    "settings": "الإعدادات",
+    "kyc": "التحقق من الهوية",
+    "back": "رجوع",
+    "sections": {
+      "main": "الرئيسية",
+      "earning": "الربح",
+      "account": "الحساب",
+      "admin": "الإدارة"
+    },
+    "goToAdmin": "اذهب للإدارة"
+  },
+  "inboxPage": {
+    "description": "إدارة رسائلك ومكافآتك وإشعاراتك",
+    "fetchingMessages": "جاري جلب رسائل {{tab}}...",
+    "noMessagesInInbox": "لا توجد رسائل في صندوق الوارد",
+    "noArchivedMessages": "لا توجد رسائل مؤرشفة",
+    "noDeletedMessages": "لا توجد رسائل محذوفة",
+    "pageInfo": "{{current}} من {{total}}",
+    "rewardAvailable": "المكافأة متاحة",
+    "claimRewardToAdd": "تحصيل مكافأتك لإضافتها إلى رصيدك",
+    "claimReward": "تحصيل المكافأة",
+    "rewardClaimed": "تم تحصيل المكافأة"
+  },
+  "archived": "مؤرشف",
+  "trash": "سلة المحذوفات",
+  "loadingMessages": "جاري تحميل الرسائل...",
+  "noMessages": "لا توجد رسائل",
+  "archive": "أرشفة",
+  "delete": "حذف",
+  "close": "إغلاق",
+  "about": {
+    "title": "من نحن",
+    "intro": "شبكة فلاي سكاي هي منصة ترفيه رقمية تجمع بين التعدين الافتراضي والألعاب التفاعلية ومكافآت التطبيق في تجربة سلسة وممتعة.",
+    "visionTitle": "رؤيتنا",
+    "vision": "تقديم منصة ترفيه مبتكرة تقدم للمستخدمين تجربة ممتعة ومجزية مع التركيز على البساطة وسهولة الوصول.",
+    "missionTitle": "مهمتنا",
+    "mission": "نقدم للمستخدمين ألعاباً وتحديات مثيرة حيث يمكنهم جمع نقاط افتراضية واستخدامها لفتح ميزات إضافية في التطبيق.",
+    "featuresTitle": "ماذا نقدم",
+    "features": {
+      "earn": "اكسب نقاط FSN من خلال المشاركة في الأنشطة اليومية.",
+      "unlock": "استخدم نقاطك لفتح الميزات وتحسين تجربتك في التطبيق.",
+      "enjoy": "استمتع بألعاب تفاعلية ومكافآت متنوعة في التطبيق."
+    },
+    "fsnPoints": {
+      "title": "نقاط FSN",
+      "description": "نقاط FSN هي عملة افتراضية داخل التطبيق تُستخدم حصرياً لفتح الميزات والانضمام للألعاب والوصول للأنشطة. لا يمكن سحبها أو بيعها أو تداولها خارجياً."
+    },
+    "battleLegend": {
+      "title": "لعبة أسطورة المعركة",
+      "description": "استعد لمغامرات مثيرة في أسطورة المعركة، حيث يمكنك التنافس والفوز بمكافآت — كل ذلك داخل التطبيق."
+    },
+    "join": "انضم إلينا وكن جزءاً من مستقبل الترفيه الرقمي!",
+    "ourFutureVision": "رؤيتنا المستقبلية",
+    "ourPurpose": "هدفنا",
+    "discoverWhatMakesUnique": "اكتشف ما يجعل منصتنا فريدة",
+    "earnFSNPoints": "اكسب نقاط FSN",
+    "unlockFeatures": "افتح الميزات",
+    "interactiveGames": "ألعاب تفاعلية",
+    "virtualInAppCurrency": "عملة افتراضية داخل التطبيق",
+    "thrillingAdventuresAwait": "مغامرات مثيرة تنتظرك",
+    "competeWithOtherPlayers": "تنافس مع لاعبين آخرين",
+    "winExcitingRewards": "اربح مكافآت مثيرة",
+    "allWithinTheApp": "كل ذلك داخل التطبيق",
+    "comingSoon": "قريباً",
+    "safeAndSecure": "آمن ومأمون",
+    "yourDataAndRewardsProtected": "بياناتك ومكافآتك محمية",
+    "fastAndSmooth": "سريع وسلس",
+    "optimizedForBestExperience": "محسن لأفضل تجربة",
+    "community": "المجتمع",
+    "joinOurGrowingCommunity": "انضم إلى مجتمعنا المتنامي",
+    "rewards": "المكافآت",
+    "earnWhileHavingFun": "اكسب وأنت تستمتع",
+    "readyToGetStarted": "هل أنت مستعد للبدء؟",
+    "getStartedToday": "ابدأ اليوم",
+    "smartContract": "العقد الذكي",
+    "from": "من",
+    "p1": "فلاي سكاي هو نظام بيئي رقمي مدعوم بتقنية ويب3 مصمم لجعل العملات المشفرة في متناول الجميع.",
+    "p2": "يجمع منصتنا بين التعدين والتخزين والألعاب و NFTs في تجربة واحدة سلسة حيث يمكن للمستخدمين الكسب والنمو والمشاركة في مكان واحد.",
+    "scLabel": "SMART - CONTRACT ",
+    "scDesc": "- تطبيق تشفير لامركزي."
+  },
+  "who": {
+    "title": "من نحن",
+    "p1": "شبكة فلاي سكاي هي منصة اقتصاد رقمي من الجيل التالي تجمع بين التعدين والتخزين والألعاب و NFTs في تجربة واحدة.",
+    "p2": "نحن ملتزمون ببناء نظام بيئي نابض بالحياة حيث يمكن للمستخدمين الكسب والتداول وتنمية أصولهم من خلال تفاعلات ممتعة."
+  },
+  "profile": {
+    "loadingProfile": "جارٍ تحميل الملف الشخصي...",
+    "about": "حول",
+    "achievements": "الإنجازات",
+    "activity": "النشاط",
+    "stats": "الإحصائيات",
+    "memberSince": "عضو منذ",
+    "membershipPlan": "خطة العضوية",
+    "verificationStatus": "حالة التحقق",
+    "referralCode": "رمز الإحالة",
+    "quickActions": "إجراءات سريعة",
+    "editProfile": "تعديل الملف الشخصي",
+    "startMining": "ابدأ التعدين",
+    "viewStaking": "عرض التخزين",
+    "referralProgram": "برنامج الإحالة",
+    "yourAchievements": "إنجازاتك",
+    "progress": "التقدم",
+    "completedOn": "مكتمل في",
+    "recentActivity": "النشاط الأخير",
+    "balance": "الرصيد",
+    "availableForUse": "متاح للاستخدام",
+    "totalEarnings": "إجمالي الأرباح",
+    "lifetimeEarnings": "أرباح العمر",
+    "referrals": "الإحالات",
+    "totalReferrals": "إجمالي الإحالات",
+    "miningStatistics": "إحصائيات التعدين",
+    "miningLevel": "مستوى التعدين",
+    "miningEarnings": "أرباح التعدين",
+    "stakedAmount": "المبلغ المخزن",
+    "firstClass": "الدرجة الأولى",
+    "businessClass": "درجة الأعمال",
+    "economyClass": "الدرجة الاقتصادية"
+  },
+  "membershipPage": {
+    "title": "خطط العضوية",
+    "description": "افتح الميزات المتميزة واكسب مكافآت FSN مع خطط العضوية لدينا. رموز FSN هي عملة افتراضية داخل التطبيق للميزات المحسنة والمكافآت.",
+    "currentPlan": "الخطة الحالية",
+    "status": "الحالة",
+    "active": "نشط",
+    "expired": "منتهي الصلاحية",
+    "chooseYourPlan": "اختر خطتك",
+    "unlockPremiumFeatures": "افتح الميزات المتميزة مع خطط العضوية لدينا",
+    "activated": "مفعل",
+    "renew": "تجديد",
+    "subscribeNow": "اشترك الآن",
+    "bonus": "مكافأة",
+    "notSubscribed": "غير مشترك"
+  },
+  "feature": {
+    "Basic mining": "تعدين أساسي",
+    "Standard support": "دعم قياسي",
+    "Community access": "الوصول للمجتمع",
+    "Advanced mining": "تعدين متقدم",
+    "Priority support": "دعم أولوية",
+    "Staking access": "الوصول للتخزين",
+    "Faster mining": "تعدين أسرع",
+    "All business features": "جميع ميزات الأعمال",
+    "Event access": "الوصول للفعاليات",
+    "Highest mining": "أعلى معدل تعدين",
+    "Premium access": "الوصول المميز",
+    "Lifetime access": "الوصول مدى الحياة",
+    "Unlocked forever": "مفتوح للأبد",
+    "Lifetime perks": "مزايا مدى الحياة",
+    "Advanced Mining": "تعدين متقدم",
+    "Priority Support": "دعم أولوية",
+    "Highest Mining": "أعلى معدل تعدين",
+    "Lifetime Access": "الوصول مدى الحياة",
+    "Premium Access": "الوصول المميز",
+    "Event Access": "الوصول للفعاليات",
+    "Staking Access": "الوصول للتخزين",
+    "Faster Mining": "تعدين أسرع",
+    "Basic Mining": "تعدين أساسي",
+    "Standard Support": "دعم قياسي",
+    "Community Access": "الوصول للمجتمع",
+    "All Business Features": "جميع ميزات الأعمال",
+    "Unlocked Forever": "مفتوح للأبد",
+    "Lifetime Perks": "مزايا مدى الحياة",
+    "Access to Premium Features": "الوصول للميزات المميزة",
+    "Everything unlocked forever": "جميع الميزات مفعلة إلى الأبد",
+    "Limited Staking": "التخزين المحدود"
+  },
+  "features": {
+    "titleMobile": "مميزاتنا",
+    "titleDesktop": "مميزات قوية",
+    "subtitle": "كل ما تحتاجه لبدء كسب العملات الرقمية اليوم",
+    "alt": {
+      "border": "حدود القسم"
+    },
+    "items": {
+      "mining": {
+        "title": "التعدين اليومي",
+        "desc": "اكسب العملات يوميًا عبر عمليات تعدين مؤتمتة"
+      },
+      "membership": {
+        "title": "خطط العضوية",
+        "desc": "اختر من خطط الاقتصاد والأعمال أو الدرجة الأولى"
+      },
+      "staking": {
+        "title": "عائدات التخزين",
+        "desc": "قم بتخزين رموزك واكسب دخلًا سلبيًا بعوائد عالية"
+      },
+      "referral": {
+        "title": "برنامج الإحالة",
+        "desc": "ادعُ الأصدقاء واكسب عمولة من نشاطهم"
+      },
+      "watchToEarn": {
+        "title": "شاهد لتكسب",
+        "desc": "شاهد الإعلانات واكسب مقابل وقتك"
+      },
+      "playToEarn": {
+        "title": "العب لتكسب",
+        "desc": "العب الألعاب الصغيرة وأكمل التحديات لكسب رموز FSN"
+      },
+      "amazingRewards": {
+        "title": "المكافآت المثيرة",
+        "desc": "تعدين، تخزين وإحالات للحصول على مكافآت إضافية"
+      }
+    }
+  },
+  "settingsSection": {
+    "profileTitle": "معلومات الملف الشخصي",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "accountTitle": "حالة الحساب",
+    "currentPlan": "الخطة الحالية",
+    "subscriptionEnds": "ينتهي الاشتراك",
+    "upgrade": "ترقية الخطة",
+    "passwordTitle": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور الجديدة",
+    "changePassword": "تغيير كلمة المرور",
+    "languageTitle": "اللغة المفضلة",
+    "noImage": "لا توجد صورة متاحة",
+    "selectImage": "يرجى اختيار صورة",
+    "avatarUpdated": "✅ تم تحديث الصورة الشخصية بنجاح",
+    "uploadFailed": "❌ فشل في رفع الصورة",
+    "fillAllFields": "يرجى ملء جميع الحقول",
+    "passwordMismatch": "❌ كلمتا المرور غير متطابقتين",
+    "notAuthenticated": "❌ المستخدم غير مصادق",
+    "passwordUpdated": "✅ تم تحديث كلمة المرور بنجاح",
+    "updateFailed": "❌ فشل في تحديث كلمة المرور",
+    "saveAvatar": "حفظ الصورة الشخصية",
+    "title": "الإعدادات",
+    "subtitle": "إدارة إعدادات حسابك وتفضيلاتك",
+    "securityTitle": "الأمان والخصوصية",
+    "notificationsTitle": "الإشعارات",
+    "preferencesTitle": "التفضيلات",
+    "appearanceTitle": "المظهر",
+    "integrationTitle": "التكامل",
+    "activityTitle": "نشاط الحساب",
+    "selectLanguage": "اختر اللغة",
+    "profile": "الملف الشخصي",
+    "security": {
+      "title": "إعدادات الأمان",
+      "twoFactor": "المصادقة الثنائية",
+      "loginHistory": "سجل تسجيل الدخول",
+      "devices": "الأجهزة المتصلة",
+      "sessions": "الجلسات النشطة",
+      "passwordChange": "تغيير كلمة المرور",
+      "emailVerification": "التحقق من البريد الإلكتروني",
+      "setup": "إعداد",
+      "manage": "إدارة",
+      "view": "عرض"
+    },
+    "notifications": {
+      "title": "تفضيلات الإشعارات",
+      "emailNotifications": "إشعارات البريد الإلكتروني",
+      "pushNotifications": "الإشعارات الفورية",
+      "marketing": "الرسائل التسويقية",
+      "newsletter": "الاشتراك في النشرة الإخبارية",
+      "updates": "تحديثات المنتج",
+      "security": "تنبيهات الأمان",
+      "rewards": "المكافآت والمكافآت الإضافية",
+      "staking": "تحديثات التخزين",
+      "mining": "تنبيهات التعدين"
+    },
+    "appearance": {
+      "title": "إعدادات المظهر",
+      "theme": "المظهر",
+      "light": "فاتح",
+      "dark": "داكن",
+      "system": "افتراضي النظام",
+      "compact": "عرض مضغوط",
+      "fontSize": "حجم الخط",
+      "animations": "تفعيل الرسوم المتحركة"
+    },
+    "account": "الحساب",
+    "profileInformation": "معلومات الملف الشخصي",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "enterFullName": "أدخل اسمك الكامل",
+    "yourEmailAddress": "عنوان بريدك الإلكتروني",
+    "uploading": "جاري الرفع...",
+    "enterCurrentPassword": "أدخل كلمة المرور الحالية",
+    "enterNewPassword": "أدخل كلمة المرور الجديدة",
+    "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
+    "notificationPreferences": "تفضيلات الإشعارات",
+    "pushNotificationPermission": "إذن الإشعارات الفورية",
+    "inAppNotifications": "الإشعارات داخل التطبيق",
+    "showNotificationsInsideApp": "إظهار الإشعارات داخل التطبيق (التنبيهات وأيقونة الجرس)",
+    "emailNotifications": "إشعارات البريد الإلكتروني",
+    "receiveNotificationsViaEmail": "استلام الإشعارات عبر البريد الإلكتروني",
+    "pushNotifications": "الإشعارات الفورية",
+    "receivePushNotificationsOnDevice": "استلام الإشعارات الفورية على جهازك",
+    "marketingEmails": "رسائل البريد الإلكتروني التسويقية",
+    "receivePromotionalEmails": "استلام رسائل البريد الإلكتروني الترويجية والعروض",
+    "securityAlerts": "تنبيهات الأمان",
+    "getNotifiedAboutSecurityEvents": "الحصول على إشعارات حول أحداث الأمان",
+    "rewardNotifications": "إشعارات المكافآت",
+    "getNotifiedAboutNewRewards": "الحصول على إشعارات حول المكافآت والمكافآت الجديدة",
+    "themeSettings": "إعدادات المظهر",
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام",
+    "soundEffects": "المؤثرات الصوتية",
+    "enableSoundEffectsForInteractions": "تفعيل المؤثرات الصوتية للتفاعلات",
+    "accountInformation": "معلومات الحساب",
+    "planPrice": "سعر الخطة",
+    "language": "اللغة",
+    "upgradeYourPlan": "ترقية خطتك",
+    "unlockPremiumFeatures": "افتح الميزات المميزة والفوائد الحصرية مع عضوية الدرجة الأولى.",
+    "upgradeNow": "ترقية الآن",
+    "firstClass": "الدرجة الأولى",
+    "businessClass": "درجة رجال الأعمال",
+    "economyClass": "الدرجة الاقتصادية",
+    "pleaseSelectImageFirst": "يرجى اختيار صورة أولاً",
+    "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح",
+    "failedToUpdateProfile": "فشل في تحديث الملف الشخصي",
+    "passwordsDontMatch": "كلمتا المرور غير متطابقتين",
+    "failedToUpdatePassword": "فشل في تحديث كلمة المرور",
+    "preferences": {
+      "title": "تفضيلات المستخدم",
+      "theme": "المظهر",
+      "language": "اللغة",
+      "timezone": "المنطقة الزمنية",
+      "currency": "عملة العرض",
+      "dateFormat": "تنسيق التاريخ",
+      "autoplay": "تشغيل الفيديوهات تلقائياً",
+      "sound": "المؤثرات الصوتية"
+    },
+    "activity": {
+      "title": "النشاط الأخير",
+      "loginAttempts": "محاولات تسجيل الدخول",
+      "passwordChanges": "تغييرات كلمة المرور",
+      "emailUpdates": "تحديثات البريد الإلكتروني",
+      "deviceLogins": "تسجيلات دخول الأجهزة",
+      "viewAll": "عرض كل النشاط"
+    },
+    "privacy": {
+      "title": "الخصوصية والبيانات",
+      "dataDeletion": "حذف البيانات",
+      "requestDataDeletion": "طلب حذف البيانات",
+      "dataDeletionDescription": "يمكنك طلب حذف حسابك وجميع البيانات المرتبطة به نهائياً من نظامنا. لا يمكن التراجع عن هذا الإجراء.",
+      "whatWillBeDeleted": "ما سيتم حذفه:",
+      "deletionItems": [
+        "ملف حسابك الشخصي والمعلومات الشخصية",
+        "سجل جميع المعاملات والبيانات المالية",
+        "سجلات التعدين والرهان",
+        "تفضيلات الإشعارات والإعدادات",
+        "علاقات الإحالة والمكافآت",
+        "بيانات التحقق من الهوية",
+        "جميع تفضيلات التطبيق والإعدادات"
+      ],
+      "deletionWarning": "⚠️ تحذير: هذا الإجراء نهائي ولا يمكن التراجع عنه. ستفقد جميع بياناتك نهائياً.",
+      "deletionProcess": "عملية الحذف:",
+      "deletionSteps": [
+        "سيتم مراجعة طلبك خلال 30 يوماً",
+        "ستتلقى تأكيداً بالبريد الإلكتروني عند بدء المعالجة",
+        "سيتم إكمال حذف البيانات خلال 90 يوماً",
+        "ستتلقى التأكيد النهائي عند الانتهاء"
+      ],
+      "requestDeletion": "طلب حذف البيانات",
+      "cancelRequest": "إلغاء طلب الحذف",
+      "deletionRequested": "تم تقديم طلب الحذف",
+      "deletionRequestedMessage": "تم تقديم طلب حذف بياناتك. ستتلقى تأكيداً بالبريد الإلكتروني عند بدء المعالجة.",
+      "deletionInProgress": "الحذف قيد التنفيذ",
+      "deletionInProgressMessage": "حذف بياناتك قيد المعالجة حالياً. قد يستغرق هذا ما يصل إلى 90 يوماً لإكماله.",
+      "contactSupport": "اتصل بالدعم",
+      "contactSupportMessage": "للحصول على مساعدة فورية أو أسئلة حول طلب الحذف، يرجى الاتصال بفريق الدعم لدينا."
+    }
+  },
+  "whitepaper": {
+    "whitepaperTitle": "الورقة البيضاء",
+    "overview": "وثيقة شاملة توضح فلسفة مشروعنا والهندسة المعمارية التقنية والخطط المستقبلية.",
+    "introTitle": "مقدمة",
+    "intro": "تم تصميم شبكة فلاي سكاي لإعادة تعريف العلاقة بين المستخدم والتقنية من خلال دمج عدة عناصر رقمية في منظومة واحدة.",
+    "tokenTitle": "رمز FSN",
+    "tokenIntro": "FSN هو حجر الأساس للاقتصاد الافتراضي لفلاي سكاي، يُستخدم لكسب الرموز الافتراضية والتخزين والشراء داخل التطبيق والمكافآت.",
+    "phase": "نحن نتبع خطة تنفيذ تدريجية تشمل مراحل ما قبل البيع والبيع العام والإطلاق الكامل.",
+    "mainSale": "البيع الرئيسي يحدث على مراحل، مما يضمن التخصيص العادل والشفافية الكاملة.",
+    "uses": "يُستخدم الرمز الافتراضي في: كسب الرموز الافتراضية والمكافآت ورسوم السوق داخل التطبيق والحوكمة وتطوير الشخصيات داخل الألعاب.",
+    "gameTitle": "لعبة أسطورة المعركة",
+    "gameIntro": "أسطورة المعركة هي أول لعبة Survive-to-Earn تجمع بين الاستراتيجية والترفيه والمكافآت.",
+    "gameDetails": "توفر اللعبة مركبات وأسلحة ونظام موارد داخل اقتصاد متكامل بالكامل مبني على رمز BLT.",
+    "gameFeaturesTitle": "ميزات اللعبة",
+    "status": "حالياً في مرحلة الإعداد للبيع المسبق، مع خريطة طريق واضحة لكل مرحلة.",
+    "roadmap": "خريطة الطريق",
+    "roadmapDesc": "تشمل مراحل التطوير والشراكات والإطلاق وتوسيع المنظومة البيئية.",
+    "security": "الأمان والشفافية",
+    "securityDesc": "نستخدم العقود الذكية وتقنية البلوكتشين لضمان النزاهة وحماية المستخدمين.",
+    "conclusion": "الخاتمة",
+    "conclusionDesc": "شبكة فلاي سكاي تمثل المستقبل الموحد للتقنية والاقتصاد والترفيه. انضم إلينا الآن.",
+    "join": "كن جزءاً من الثورة الرقمية — انضم لشبكة فلاي سكاي الآن.",
+    "battleLegendTitle": "الألعاب التفاعلية",
+    "battleLegend": "جزء من منظومتنا هي الألعاب التفاعلية — تجمع بين التجارب الممتعة والميزات القابلة للتخصيص والاقتصاد الافتراضي المدعوم برموز FSN.",
+    "roadmapTitle": "خريطة الطريق",
+    "securityTitle": "الأمان والشفافية"
+  },
+  "stakingPage": {
+    "description": "أمن مستقبلك مع منصة التخزين المتقدمة لدينا. اربح دخلًا سلبيًا بشروط مرنة وعوائد تنافسية.",
+    "currentPlan": "الخطة الحالية",
+    "startNewStaking": "ابدأ تخزين جديد",
+    "chooseAmountDuration": "اختر المبلغ والمدة لبدء الربح",
+    "amountToStake": "المبلغ للتخزين",
+    "stakingDuration": "مدة التخزين",
+    "selectDuration": "اختر المدة",
+    "enterAmount": "أدخل المبلغ",
+    "stakedAmount": "المبلغ المُخزن",
+    "totalProfit": "إجمالي الربح",
+    "trackPerformance": "تتبع أداء التخزين والتاريخ",
+    "activePositions": "المراكز النشطة",
+    "completedPositions": "مراكز مكتملة",
+    "endDate": "تاريخ الانتهاء",
+    "progress": "التقدم",
+    "returned": "مُسترد",
+    "completeFirstStaking": "أكمل أول تخزين لرؤية التاريخ",
+    "availableBalance": "الرصيد المتاح",
+    "lockedAmount": "المبلغ المُخزن",
+    "stakingStats": "إحصائيات التخزين",
+    "performanceOverview": "نظرة عامة على الأداء",
+    "completed": "مكتمل",
+    "expectedReturn": "العائد المتوقع",
+    "startStakingToSee": "ابدأ التخزين لرؤية مراكزك النشطة",
+    "fsn": "FSN"
+  },
+  "referralPage": {
+    "title": "برنامج الإحالة",
+    "description": "ادعُ الأصدقاء واربح المكافآت معًا. شارك رابط الإحالة الخاص بك وابدأ في كسب رموز FSN!",
+    "loading": "جاري تحميل بيانات الإحالة...",
+    "overview": "نظرة عامة على الإحالة",
+    "performance": "أداء الإحالة الخاص بك",
+    "totalReferrals": "إجمالي الإحالات",
+    "allTime": "طوال الوقت",
+    "referrals": "الإحالات",
+    "verified": "مُتحقق",
+    "confirmed": "مؤكد",
+    "readyToClaim": "جاهز للمطالبة",
+    "pending": "قيد الانتظار",
+    "awaiting": "في انتظار",
+    "inReview": "قيد المراجعة",
+    "yourReferralLink": "رابط الإحالة الخاص بك",
+    "shareLinkToEarn": "شارك هذا الرابط مع الأصدقاء لربح المكافآت",
+    "yourReferrals": "إحالاتك",
+    "trackProgress": "تتبع تقدم الإحالة",
+    "email": "البريد الإلكتروني",
+    "status": "الحالة",
+    "action": "الإجراء",
+    "noReferralsYet": "لا توجد إحالات بعد",
+    "shareLinkToStart": "شارك رابط الإحالة الخاص بك للبدء!",
+    "claim": "مطالبة",
+    "claimed": "مُطالب به",
+    "bonusTiers": "مستويات المكافآت",
+    "rewardStructure": "هيكل المكافآت",
+    "tier1": "المستوى 1",
+    "tier1Description": "1-10 إحالة مُتحققة",
+    "tier2": "المستوى 2",
+    "tier2Description": "11-20 إحالة مُتحققة",
+    "tier3": "المستوى 3",
+    "tier3Description": "21+ إحالة مُتحققة",
+    "referralSummary": "ملخص الإحالة",
+    "performanceOverview": "نظرة عامة على الأداء",
+    "rejected": "مرفوض",
+    "verifiedEmails": "البريد الإلكتروني المُتحقق",
+    "downloadQR": "تحميل QR",
+    "scanToShare": "امسح للمشاركة",
+    "bonus": "مكافأة الإحالة",
+    "claimBonuses": "تحصيل المكافآت المتاحة"
+  },
+  "playToEarnPage": {
+    "title": "العب لتربح",
+    "description": "حول مهاراتك في الألعاب إلى مكافآت حقيقية! العب ألعابًا مثيرة، أكمل المهام، واربح رموز FSN.",
+    "comingSoon": "قريبًا",
+    "workingHard": "نحن نعمل بجد لتقديم تجارب ألعاب مذهلة لك",
+    "stayTuned": "ترقبوا!",
+    "underDevelopment": "منصة الألعاب الخاصة بنا قيد التطوير. استعد لتحويل مهاراتك في الألعاب إلى مكافآت FSN حقيقية!",
+    "gamingPlatform": "منصة الألعاب",
+    "whatToExpect": "ما يمكن توقعه",
+    "dailyRewards": "المكافآت اليومية",
+    "dailyRewardsDescription": "اربح رموز FSN يوميًا من خلال إكمال المهام والتحديات",
+    "tokenRewards": "مكافآت الرموز",
+    "tokenRewardsDescription": "حول إنجازاتك في الألعاب إلى رموز FSN حقيقية",
+    "startPlaying": "ابدأ اللعب",
+    "beginJourney": "ابدأ رحلتك في الألعاب",
+    "chooseGame": "اختر اللعبة",
+    "selectGameModes": "اختر من أوضاع اللعب المختلفة",
+    "playAndEarn": "العب واربح",
+    "completeMissions": "أكمل المهام واربح FSN",
+    "rewardsPreview": "معاينة المكافآت",
+    "earningStructure": "هيكل الربح",
+    "dailyLogin": "تسجيل الدخول اليومي",
+    "dailyLoginDescription": "سجل دخولك يوميًا لربح المكافآت",
+    "gameWins": "انتصارات اللعبة",
+    "gameWinsDescription": "اربح الألعاب لربح الرموز",
+    "achievements": "الإنجازات",
+    "achievementsDescription": "افتح الإنجازات الخاصة"
+  },
+  "planComparison": {
+    "title": "مقارنة الخطط",
+    "subtitle": "الحدود اليومية حسب الخطة",
+    "current": "الحالية",
+    "perDay": "في اليوم",
+    "upgradePlan": "ترقية الخطة"
+  },
+  "miningPage": {
+    "earningsTableTitle": "العائدات المتوقعة للتعدين",
+    "earningsTableSubtitle": "العائدات بقيمة 0.01 دولار لكل FSN",
+    "per12hMonthly": "كل 12 ساعة / شهرياً {{monthly}} FSN",
+    "earningsAtPrice": "العائدات بقيمة 0.01 دولار/FSN",
+    "expectedReturns": "العائدات المتوقعة",
+    "boostMiningTitle": "💎🚀 عزز قوة التعدين الخاصة بك!",
+    "boostMiningDesc": "ابدأ في الكسب كل 12 ساعة — كل FSN تقوم بتعدينه مقدر بالفعل بـ 0.01 دولار",
+    "publicSaleSoon": "سيتم الإعلان عن البيع العام قريباً — ابق على اطلاع واستمر في التعدين!",
+    "balance": "الرصيد",
+    "available": "متاح",
+    "fsn": "FSN",
+    "currentPlan": "الخطة الحالية",
+    "currentCycle": "الدورة الحالية",
+    "complete": "مكتمل",
+    "day": "يوم",
+    "progress": "التقدم",
+    "dailyMiningRewards": "مكافآت التعدين اليومية",
+    "miningCycles": "دورات التعدين لمدة 12 ساعة",
+    "manualClaimSystem": "نظام التحصيل اليدوي",
+    "miningStats": "إحصائيات التعدين",
+    "performanceOverview": "نظرة عامة على الأداء",
+    "currentMined": "المُعدن حالياً",
+    "fsnDailyMining": "تعدين FSN اليومي",
+    "readyToMine": "هل أنت مستعد لبدء التعدين؟",
+    "startMining": "ابدأ التعدين",
+    "dailyLimit": "الحد اليومي",
+    "cycle": "الدورة",
+    "hours": "ساعات",
+    "claimType": "نوع التحصيل",
+    "manual": "يدوي",
+    "dailyLimitLabel": "الحد اليومي",
+    "timeRemaining": "الوقت المتبقي",
+    "readyToClaim": "⏳ جاهز لتحصيل مكافأة التعدين!",
+    "unlockRewards": "فتح المكافآت",
+    "claim": "تحصيل المكافأة",
+    "miningInProgress": "التعدين قيد التقدم",
+    "planNames": {
+      "economy": "الدرجة الاقتصادية",
+      "business": "درجة الأعمال",
+      "first": "الدرجة الأولى",
+      "first-6": "الدرجة الأولى (6 أشهر)",
+      "first-lifetime": "الدرجة الأولى (مدى الحياة)"
+    },
+    "miningHistory": "سجل التعدين",
+    "loading": "جاري التحميل...",
+    "loadingPlanData": "جاري تحميل بيانات الخطة...",
+    "planNotFound": "الخطة غير موجودة",
+    "planNotFoundDesc": "تعذر تحميل معلومات الخطة. يرجى المحاولة مرة أخرى لاحقاً."
+  },
+  "subscribeToPlan": "الاشتراك في الخطة",
+  "selectedPlan": "الخطة المختارة",
+  "price": "السعر",
+  "bonus": "المكافأة",
+  "planFeaturesTitle": "ميزات الخطة",
+  "paymentMethod": "طريقة الدفع",
+  "inAppPurchase": "الشراء داخل التطبيق",
+  "securePayment": "دفع آمن",
+  "importantNotice": "ملاحظة مهمة",
+  "fsnVirtualCurrency": "رموز FSN هي عملة افتراضية داخل التطبيق",
+  "fsnUsageDescription": "يمكن استخدامها فقط داخل التطبيق لميزات مثل التعدين والتخزين والترقيات. لا يمكن سحبها أو بيعها أو تداولها خارجياً.",
+  "purchaseNow": "اشتر الآن",
+  "restorePurchases": "استعادة المشتريات",
+  "purchaseTerms": "بالشراء، أنت توافق على شروط الخدمة وسياسة الخصوصية.",
+  "purchaseFailed": "فشل الشراء. يرجى المحاولة مرة أخرى.",
+  "bonusReceived": "تم استلام المكافأة",
+  "oneTimePayment": "دفعة واحدة",
+  "bonusDescription": "عملة افتراضية داخل التطبيق للميزات المحسنة",
+  "processing": "جارٍ المعالجة...",
+  "paymentCompleted": "تم إكمال الدفع",
+  "subscriptionProcessed": "تمت معالجة اشتراكك بنجاح.",
+  "subscriptionBonusTitle": "🎁 تم استلام مكافأة الاشتراك",
+  "subscriptionBonusBody": "لقد حصلت على {{amount}} FSN كمكافأة للاشتراك في {{plan}}!",
+  "subscriptionBonusToast": "🎉 تم إضافة {{amount}} FSN مكافأة لرصيدك!",
+  "contact": {
+    "title": "اتصل بنا",
+    "description": "هل لديك أسئلة أو ملاحظات؟ نود أن نسمع منك.",
+    "name": "اسمك",
+    "namePlaceholder": "أدخل اسمك الكامل",
+    "email": "بريدك الإلكتروني",
+    "emailPlaceholder": "أدخل عنوان بريدك الإلكتروني",
+    "message": "رسالتك",
+    "messagePlaceholder": "أخبرنا كيف يمكننا مساعدتك...",
+    "send": "إرسال الرسالة",
+    "sendMessage": "أرسل لنا رسالة",
+    "sending": "جاري الإرسال...",
+    "thankYou": "شكراً لك! سنرد عليك قريباً.",
+    "fillAllFields": "يرجى ملء جميع الحقول.",
+    "getInTouch": "تواصل معنا",
+    "phone": "الهاتف",
+    "address": "العنوان",
+    "faq": "الأسئلة الشائعة",
+    "faq1": {
+      "question": "كيف أبدأ التعدين؟",
+      "answer": "ببساطة انتقل لصفحة التعدين واضغط 'ابدأ التعدين' لبدء كسب المكافآت اليومية."
+    },
+    "faq2": {
+      "question": "كيف تعمل مكافآت الإحالة؟",
+      "answer": "ادعُ أصدقاءك باستخدام رابط الإحالة الخاص بك واكسب مكافآت عندما ينضمون ويشتركون في الخطط."
+    },
+    "faq3": {
+      "question": "ما هي خطط العضوية المختلفة؟",
+      "answer": "نقدم خطط الاقتصاد والأعمال والدرجة الأولى مع فوائد ومكافآت متزايدة."
+    },
+    "getInTouchViaEmail": "تواصل معنا عبر البريد الإلكتروني",
+    "callUsDirectly": "اتصل بنا مباشرة",
+    "ourMainOffice": "مكتبنا الرئيسي",
+    "supportFeatures": "لماذا تختار دعمنا؟",
+    "support247": "دعم على مدار الساعة",
+    "roundTheClockAssistance": "مساعدة على مدار الساعة",
+    "secureCommunication": "تواصل آمن",
+    "yourDataIsProtected": "بياناتك محمية",
+    "quickResponse": "استجابة سريعة",
+    "weReplyWithin24Hours": "نرد خلال 24 ساعة"
+  },
+  "fillAllFields": "يرجى ملء جميع الحقول.",
+  "notAuthenticated": "المستخدم غير مصادق.",
+  "walletOverview": "💼 نظرة عامة على المحفظة",
+  "totalBalance": "إجمالي الرصيد",
+  "availableBalance": "الرصيد المتاح",
+  "lockedInStaking": "مجمّد في التخزين",
+  "referralRewards": "مكافآت الإحالة (المؤكدة فقط)",
+  "balanceDistribution": "💹 توزيع الرصيد",
+  "noBalanceData": "لا توجد بيانات رصيد متاحة.",
+  "transactionHistory": "📜 سجل المعاملات",
+  "noTransactions": "لا توجد معاملات للعرض.",
+  "loadingWallet": "جارٍ تحميل بيانات المحفظة...",
+  "statusMsg": {
+    "kyc": "⚠️ أكمل KYC للوصول لجميع الميزات.",
+    "economy": "🚀 أنت في الخطة المجانية. قم بالترقية لفتح المزيد من المزايا.",
+    "business": "🎯 درجة الأعمال تمنحك وصولاً محسناً. الدرجة الأولى تفتح الإمكانات الكاملة.",
+    "first": "👑 أنت تستمتع بالوصول الكامل مع عضوية الدرجة الأولى."
+  },
+  "kycApproved": "تمت الموافقة",
+  "kycPending": "معلق",
+  "notVerified": "غير مؤكد",
+  "membership": "العضوية",
+  "kycStatus": "حالة KYC",
+  "expiresOn": "ينتهي في",
+  "upgrade": "ترقية",
+  "notifications": {
+    "title": "الإشعارات",
+    "unread": "غير مقروء",
+    "markAllAsRead": "تحديد الكل كمقروء",
+    "noNotifications": "لا توجد إشعارات",
+    "viewAll": "عرض جميع الإشعارات",
+    "empty": "لا توجد إشعارات لديك",
+    "loading": "جاري تحميل الإشعارات...",
+    "unreadNotifications": "إشعارات غير مقروءة",
+    "youHaveNoNotifications": "ليس لديك أي إشعارات بعد",
+    "noFilteredNotifications": "لا توجد إشعارات تطابق هذا الفلتر",
+    "markAllRead": "تحديد الكل كمقروء",
+    "filter": "فلتر",
+    "all": "الكل",
+    "rewards": "المكافآت",
+    "messages": "الرسائل",
+    "referrals": "الإحالات",
+    "mining": "التعدين",
+    "staking": "التخزين",
+    "types": {
+      "claim_reward": "المكافأة جاهزة",
+      "inbox_message": "رسالة جديدة",
+      "referral_bonus": "مكافأة الإحالة",
+      "mining_reminder": "تذكير التعدين",
+      "staking_reminder": "تذكير التخزين"
+    },
+    "templates": {
+      "welcome": {
+        "title": "🎉 مرحباً بك في شبكة فلاي سكاي!",
+        "message": "نحن متحمسون لوجودك معنا. ابدأ رحلتك اليوم مع التعدين والتخزين والإحالات لربح مكافآت FSN."
+      },
+      "dailyMiningReminder": {
+        "title": "⛏️ لا تنس التعدين اليومي!",
+        "message": "قم بالتعدين اليوم واحصل على مكافآت FSN اليومية قبل انتهاء اليوم!"
+      },
+      "stakingOpportunity": {
+        "title": "💰 عزز أرباحك مع التخزين",
+        "message": "قم بتخزين رموز FSN اليوم واستمتع بمكافآت تصل إلى 100% APY."
+      },
+      "referralProgram": {
+        "title": "👥 اربح المزيد مع الإحالات",
+        "message": "شارك رابط الإحالة الخاص بك مع الأصدقاء واربح رموز FSN عندما ينضمون ويحققون حساباتهم."
+      },
+      "newFeature": {
+        "title": "🚀 ميزة جديدة متاحة!",
+        "message": "اكتشف أحدث الميزات المضافة إلى شبكة فلاي سكاي وجربها اليوم."
+      },
+      "premiumExclusive": {
+        "title": "💎 عرض حصري للمميزين",
+        "message": "استمتع بعروض خاصة متاحة فقط لأعضاء المميزين."
+      },
+      "inactiveReminder": {
+        "title": "🔔 نفتقدك!",
+        "message": "عد إلى فلاي سكاي اليوم ولا تفوت مكافآتك اليومية وفرص الربح."
+      },
+      "maintenance": {
+        "title": "🛠️ صيانة مجدولة",
+        "message": "ستتم صيانة النظام في [أدخل التاريخ/الوقت]. قد تحدث بعض الانقطاعات."
+      }
+    }
+  },
+  "pushNotifications": "الإشعارات الفورية",
+  "enableNotifications": "تفعيل الإشعارات",
+  "enablePushNotifications": "فعّل الإشعارات الفورية للحصول على التحديثات حتى عندما لا تستخدم التطبيق",
+  "notificationsDenied": "الإشعارات محظورة. يرجى تفعيلها في إعدادات المتصفح.",
+  "notificationsDeniedHelp": "لقد حظرت الإشعارات. لتفعيلها، يرجى تحديث إعدادات المتصفح.",
+  "notificationsEnabled": "ستتلقى إشعارات فورية عند حدوث تحديثات مهمة.",
+  "notificationsDescription": "فعّل الإشعارات الفورية لتلقي تحديثات حول المكافآت والرسائل والأحداث المهمة الأخرى.",
+  "admin": {
+    "common": {
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "view": "عرض",
+      "close": "إغلاق",
+      "confirm": "تأكيد",
+      "loading": "جاري التحميل...",
+      "search": "بحث",
+      "filter": "تصفية",
+      "sort": "ترتيب",
+      "actions": "الإجراءات",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "amount": "المبلغ",
+      "details": "التفاصيل",
+      "noResults": "لم يتم العثور على نتائج",
+      "selectAll": "تحديد الكل",
+      "bulkActions": "الإجراءات المجمعة",
+      "exportData": "تصدير البيانات",
+      "refresh": "تحديث"
+    },
+    "route": {
+      "checking": "جاري التحقق من صلاحيات المشرف..."
+    },
+    "dataDeletion": {
+      "title": "إدارة حذف البيانات",
+      "description": "مراجعة وإدارة طلبات حذف بيانات المستخدمين. هذه عملية حرجة تقوم بحذف بيانات المستخدمين بشكل دائم.",
+      "stats": {
+        "pending": "في الانتظار",
+        "approved": "تمت الموافقة",
+        "inProgress": "قيد المعالجة",
+        "completed": "مكتمل",
+        "cancelled": "ملغي"
+      },
+      "requests": {
+        "title": "طلبات الحذف",
+        "total": "الإجمالي: {{count}} طلب",
+        "noRequests": "لم يتم العثور على طلبات حذف",
+        "loading": "جاري تحميل طلبات الحذف..."
+      },
+      "badges": {
+        "webRequest": "طلب ويب",
+        "existingUser": "مستخدم موجود"
+      },
+      "fields": {
+        "email": "البريد الإلكتروني",
+        "requested": "تم الطلب",
+        "source": "المصدر",
+        "reviewed": "تم المراجعة",
+        "started": "تم البدء",
+        "completed": "مكتمل"
+      },
+      "actions": {
+        "viewDetails": "عرض التفاصيل",
+        "approve": "موافقة",
+        "reject": "رفض",
+        "startProcessing": "بدء المعالجة",
+        "completeDeletion": "إكمال الحذف",
+        "processing": "قيد المعالجة..."
+      },
+      "adminNotes": {
+        "title": "ملاحظات المشرف",
+        "placeholder": "أضف ملاحظات حول طلب الحذف...",
+        "description": "سيتم حفظ الملاحظات عند تحديث حالة طلب الحذف."
+      },
+      "details": {
+        "title": "تفاصيل طلب الحذف",
+        "userName": "اسم المستخدم",
+        "email": "البريد الإلكتروني",
+        "status": "الحالة",
+        "requestDate": "تاريخ الطلب",
+        "reviewDate": "تاريخ المراجعة",
+        "processingStartDate": "تاريخ بدء المعالجة",
+        "completionDate": "تاريخ الإكمال",
+        "estimatedCompletion": "تاريخ الإكمال المتوقع",
+        "adminNotes": "ملاحظات المشرف",
+        "userReason": "سبب المستخدم"
+      },
+      "messages": {
+        "statusUpdated": "تم تحديث الحالة إلى {{status}}",
+        "userDataDeleted": "تم حذف بيانات المستخدم بنجاح",
+        "failedToLoad": "فشل في تحميل طلبات الحذف",
+        "failedToUpdate": "فشل في تحديث الحالة",
+        "failedToProcess": "فشل في معالجة الحذف"
+      }
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "description": "إدارة وإرسال الإشعارات للمستخدمين",
+      "header": {
+        "title": "الإشعارات",
+        "subtitle": "إدارة وإرسال الإشعارات للمستخدمين"
+      },
+      "actions": {
+        "sendNotification": "إرسال إشعار",
+        "editResend": "تعديل وإعادة إرسال الإشعار",
+        "refresh": "تحديث",
+        "clearAll": "مسح الكل",
+        "useTemplate": "استخدام قالب",
+        "close": "إغلاق",
+        "cancel": "إلغاء",
+        "send": "إرسال",
+        "schedule": "جدولة",
+        "sendNow": "إرسال الآن",
+        "resend": "إعادة إرسال",
+        "delete": "حذف",
+        "view": "عرض",
+        "edit": "تعديل",
+        "dismissError": "إغلاق الخطأ"
+      },
+      "form": {
+        "title": "العنوان",
+        "titlePlaceholder": "أدخل عنوان الإشعار",
+        "message": "الرسالة",
+        "messagePlaceholder": "أدخل رسالة الإشعار",
+        "targetAudience": "الجمهور المستهدف",
+        "platforms": "المنصات",
+        "schedule": "الجدولة (اختياري)",
+        "schedulePlaceholder": "اتركه فارغاً للإرسال الفوري"
+      },
+      "targetAudience": {
+          "all": "جميع المستخدمين",
+          "new": "المستخدمون الجدد (آخر 7 أيام)",
+          "inactive": "المستخدمون غير النشطون (30+ يوم)",
+          "plans": "خطط الاشتراك",
+          "custom": "مستخدمون مخصصون",
+          "selectPlans": "اختر خطط الاشتراك",
+          "customUserSelection": "اختيار المستخدمين المخصصين",
+          "searchUsers": "البحث عن المستخدمين بالبريد الإلكتروني...",
+          "searchUsersPlaceholder": "البحث عن المستخدمين بالبريد الإلكتروني أو الاسم...",
+          "selectedUsers": "المستخدمون المحددون",
+          "usersFound": "مستخدم تم العثور عليهم",
+          "targetUsers": "المستخدمون المستهدفون",
+          "selectPlansToSeeCount": "اختر الخطط لرؤية عدد المستخدمين",
+          "customUserSearch": "البحث عن المستخدمين المخصصين",
+          "customUserSearchPlaceholder": "البحث عن المستخدمين بالبريد الإلكتروني أو الاسم...",
+          "customUserSelectionPlaceholder": "اختر مستخدمين محددين للاستهداف",
+          "customUserCount": "عدد المستخدمين المخصصين",
+          "customUserCountDescription": "عدد المستخدمين المحددين للاستهداف المخصص"
+      },
+      "platforms": {
+        "mobile": "الجوال",
+        "web": "الويب",
+        "inbox": "صندوق الوارد",
+        "email": "البريد الإلكتروني"
+      },
+      "stats": {
+        "totalSent": "إجمالي المرسل",
+        "scheduled": "المجدول",
+        "draft": "المسودة",
+        "failed": "الفاشل",
+        "loading": "جاري تحميل الإشعارات...",
+        "noNotifications": "لا توجد إشعارات بعد",
+        "noNotificationsSubtitle": "أرسل أول إشعار لك للبدء",
+        "avgOpenRate": "متوسط معدل الفتح",
+        "avgClickRate": "متوسط معدل النقر",
+        "fromLastWeek": "من الأسبوع الماضي",
+        "nextScheduled": "التالي: 25 ديسمبر، 2:00 صباحاً"
+      },
+      "table": {
+        "title": "العنوان",
+        "status": "الحالة",
+        "audience": "الجمهور",
+        "sent": "مرسل",
+        "recipients": "المستقبلون",
+        "actions": "الإجراءات",
+        "viewDetails": "عرض التفاصيل",
+        "editResend": "تعديل وإعادة إرسال",
+        "delete": "حذف",
+        "notification": "الإشعار",
+        "type": "النوع",
+        "platforms": "المنصات",
+        "performance": "الأداء",
+        "created": "تاريخ الإنشاء",
+        "message": "الرسالة",
+        "opened": "مفتوح",
+        "clicked": "نقر",
+        "openRate": "معدل الفتح",
+        "clickRate": "معدل النقر"
+      },
+      "status": {
+        "sent": "مرسل",
+        "scheduled": "مجدول",
+        "draft": "مسودة",
+        "failed": "فشل",
+        "processing": "قيد المعالجة"
+      },
+      "deliveryStatus": {
+        "delivered": "تم التسليم",
+        "partial_success": "نجح جزئياً",
+        "failed": "fشل",
+        "pending": "قيد الانتظار"
+      },
+      "audience": {
+        "premium": "مميز",
+        "new": "جديد",
+        "inactive": "غير نشط",
+        "all": "الكل"
+      },
+      "messages": {
+        "sentSuccessfully": "تم إرسال الإشعار بنجاح!",
+        "failedToSend": "فشل في إرسال الإشعار",
+        "deletedSuccessfully": "تم حذف الإشعار بنجاح!",
+        "failedToDelete": "فشل في حذف الإشعار",
+        "resentSuccessfully": "تم إعادة إرسال الإشعار بنجاح!",
+        "failedToResend": "فشل في إعادة إرسال الإشعار",
+        "clearedSuccessfully": "تم مسح جميع الإشعارات بنجاح!",
+        "failedToClear": "فشل في مسح جميع الإشعارات",
+        "pleaseEnterBoth": "يرجى إدخال العنوان والمحتوى.",
+        "unexpectedError": "حدث خطأ غير متوقع أثناء إرسال الإشعار",
+        "errorDeleting": "حدث خطأ غير متوقع أثناء حذف الإشعار",
+        "errorResending": "حدث خطأ غير متوقع أثناء إعادة إرسال الإشعار"
+      },
+      "modals": {
+        "sendNotification": "إرسال إشعار",
+        "notificationDetails": "تفاصيل الإشعار",
+        "editResendNotification": "تعديل وإعادة إرسال الإشعار",
+        "deleteNotification": "حذف الإشعار",
+        "clearAllNotifications": "مسح جميع الإشعارات"
+      },
+      "deleteConfirm": {
+        "title": "حذف الإشعار",
+        "message": "هل أنت متأكد من حذف \"{title}\"؟",
+        "subtitle": "لا يمكن التراجع عن هذا الإجراء وسيقوم بحذف الإشعار وجميع البيانات المرتبطة به بما في ذلك السجلات ومدخلات صندوق الوارد بشكل دائم.",
+        "genericMessage": "هل أنت متأكد من حذف هذا الإشعار؟ لا يمكن التراجع عن هذا الإجراء."
+      },
+      "clearAllConfirm": {
+        "title": "مسح جميع الإشعارات",
+        "message": "هل أنت متأكد تماماً من مسح جميع الإشعارات؟",
+        "warning": "⚠️ سيقوم هذا الإجراء بحذف ما يلي بشكل دائم:",
+        "items": [
+          "جميع {count} سجل إشعار",
+          "جميع سجلات الإشعارات والتحليلات",
+          "جميع إشعارات صندوق الوارد للمستخدمين",
+          "جميع البيانات والبيانات الوصفية المرتبطة"
+        ],
+        "cannotUndone": "لا يمكن التراجع عن هذا الإجراء! يرجى التأكد من وجود نسخة احتياطية إذا لزم الأمر."
+      },
+      "details": {
+        "status": "الحالة",
+        "targetAudience": "الجمهور المستهدف",
+        "sentAt": "تاريخ الإرسال",
+        "createdAt": "تاريخ الإنشاء",
+        "recipients": "المستقبلون",
+        "platforms": "المنصات",
+        "opened": "مفتوح",
+        "clicked": "نقر",
+        "errorDetails": "تفاصيل الخطأ:",
+        "deliveryInformation": "معلومات التسليم:",
+        "totalRecipients": "إجمالي المستقبلين",
+        "successful": "نجح",
+        "failed": "فشل",
+        "errorMessage": "رسالة الخطأ"
+      },
+      "loading": {
+        "sending": "جاري الإرسال...",
+        "deleting": "جاري الحذف...",
+        "clearing": "جاري المسح...",
+        "refreshing": "جاري التحديث...",
+        "loadingPlans": "جاري تحميل الخطط المتاحة...",
+        "loadingUsers": "جاري تحميل المستخدمين..."
+      },
+      "errors": {
+        "noNotificationsToClear": "لا توجد إشعارات للمسح",
+        "noTokensFound": "لم يتم العثور على رموز. لا يوجد مستخدمين مسجلين للإشعارات.",
+        "serverError": "فشل في إرسال الإشعارات. يقول الخادم: {error}"
+      },
+      "templates": {
+        "title": "قوالب الإشعارات",
+        "description": "استخدم القوالب المعرفة مسبقاً لأنواع الإشعارات الشائعة",
+        "modalTitle": "اختر القالب",
+        "modalDescription": "اختر قالباً لملء إشعارك بسرعة",
+        "noTemplates": "لا توجد قوالب متاحة",
+        "noTemplatesDescription": "ستكون القوالب متاحة هنا لأنواع الإشعارات الشائعة",
+        "useTemplate": "استخدم القالب",
+        "previewTemplate": "معاينة القالب",
+        "templateCategories": {
+          "welcome": "الترحيب والتوجيه",
+          "reminders": "التذكيرات والتنبيهات",
+          "promotional": "التسويق والترويج",
+          "system": "النظام والصيانة",
+          "rewards": "المكافآت والمكافآت"
+        },
+        "templates": {
+          "welcome": {
+            "name": "رسالة الترحيب",
+            "title": "🎉 مرحباً بك في شبكة فلاي سكاي!",
+            "description": "نحن متحمسون لوجودك معنا. ابدأ رحلتك اليوم مع التعدين والتخزين والإحالات لربح مكافآت FSN.",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "تذكير التعدين اليومي",
+            "title": "⛏️ لا تنس التعدين اليومي!",
+            "description": "قم بالتعدين اليوم واحصل على مكافآت FSN اليومية قبل انتهاء اليوم!",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "فرصة الستاكنج",
+            "title": "💰 عزز أرباحك مع الستاكنج",
+            "description": "قم بتخزين رموز FSN الخاصة بك اليوم واستمتع بمكافآت تصل إلى 100% سنوياً.",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "برنامج الإحالة",
+            "title": "👥 اربح المزيد مع الإحالات",
+            "description": "شارك رابط الإحالة الخاص بك مع الأصدقاء واربح رموز FSN عندما ينضمون ويحققون حساباتهم.",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "إعلان الميزة الجديدة",
+            "title": "🚀 ميزة جديدة متاحة!",
+            "description": "اكتشف أحدث الميزات المضافة إلى شبكة فلاي سكاي وجربها اليوم.",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "عرض مميز حصري",
+            "title": "💎 عرض مميز حصري",
+            "description": "استمتع بعروض خاصة متاحة فقط لأعضاء الدرجة المميزة.",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "تذكير المستخدم غير النشط",
+            "title": "🔔 نشتاق لك!",
+            "description": "عد إلى فلاي سكاي اليوم ولا تفوت مكافآتك اليومية وفرص الربح.",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "الصيانة المجدولة",
+            "title": "🛠️ صيانة مجدولة",
+            "description": "ستتم صيانة النظام في [أدخل التاريخ/الوقت]. قد يحدث بعض التوقف.",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "اختر",
+          "preview": "معاينة",
+          "close": "إغلاق",
+          "search": "البحث في القوالب...",
+          "filterByCategory": "تصفية حسب الفئة",
+          "allCategories": "جميع الفئات"
+        },
+        "preview": {
+          "title": "معاينة القالب",
+          "templateName": "اسم القالب",
+          "category": "الفئة",
+          "description": "الوصف",
+          "content": "معاينة المحتوى",
+          "useThisTemplate": "استخدم هذا القالب"
+        },
+        "createNew": {
+          "title": "إنشاء قالب جديد",
+          "description": "إنشاء قالب إشعار مخصص",
+          "templateName": "اسم القالب",
+          "templateNamePlaceholder": "أدخل اسم القالب",
+          "notificationTitle": "عنوان الإشعار",
+          "notificationTitlePlaceholder": "أدخل عنوان الإشعار",
+          "notificationMessage": "رسالة الإشعار",
+          "notificationMessagePlaceholder": "أدخل رسالة الإشعار",
+          "category": "الفئة",
+          "targetAudience": "الجمهور المستهدف",
+          "platforms": "المنصات",
+          "mobile": "الجوال",
+          "web": "الويب",
+          "inbox": "صندوق الوارد",
+          "cancel": "إلغاء",
+          "createTemplate": "إنشاء القالب",
+          "allUsers": "جميع المستخدمين",
+          "premiumUsers": "المستخدمون المميزون",
+          "newUsers": "المستخدمون الجدد",
+          "inactiveUsers": "المستخدمون غير النشطون",
+          "marketing": "التسويق",
+          "system": "النظام",
+          "announcement": "الإعلان",
+          "custom": "مخصص"
+        }
+      },
+      "types": {
+        "info": "معلومات",
+        "success": "نجح",
+        "warning": "تحذير",
+        "error": "خطأ"
+      },
+      "filters": {
+        "searchPlaceholder": "البحث في الإشعارات...",
+        "allTypes": "جميع الأنواع",
+        "allStatus": "جميع الحالات",
+        "allAudiences": "جميع الجماهير",
+        "info": "معلومات",
+        "success": "نجح",
+        "warning": "تحذير",
+        "error": "خطأ",
+        "sent": "مرسل",
+        "scheduled": "مجدول",
+        "draft": "مسودة",
+        "failed": "فشل",
+        "allUsers": "جميع المستخدمين",
+        "premium": "مميز",
+        "newUsers": "مستخدمين جدد",
+        "inactive": "غير نشط",
+        "sortBy": {
+          "newestFirst": "الأحدث أولاً",
+          "oldestFirst": "الأقدم أولاً",
+          "titleAZ": "العنوان أ-ي",
+          "titleZA": "العنوان ي-أ",
+          "mostRecipients": "الأكثر استقبالاً",
+          "mostOpened": "الأكثر فتحاً"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "{{count}} إشعار(ات) محدد(ة)",
+        "resend": "إعادة إرسال",
+        "duplicate": "نسخ",
+        "delete": "حذف",
+        "confirmDelete": "هل أنت متأكد من حذف {{count}} إشعار(ات)؟"
+      },
+      "mobile": {
+        "notifications": "الإشعارات",
+        "sent": "مرسل",
+        "open": "فتح",
+        "click": "نقر"
+      },
+      "sendModal": {
+        "title": "إرسال إشعار",
+        "notificationTitle": "عنوان الإشعار",
+        "titlePlaceholder": "أدخل عنوان الإشعار...",
+        "notificationMessage": "رسالة الإشعار",
+        "messagePlaceholder": "أدخل رسالة الإشعار...",
+        "cancel": "إلغاء",
+        "send": "إرسال",
+        "sending": "جارٍ الإرسال...",
+        "pleaseEnterBoth": "يرجى إدخال العنوان والمحتوى.",
+        "noTokensFound": "لم يتم العثور على رموز. لا يوجد مستخدمين مسجلين للإشعارات.",
+        "notificationSent": "تم إرسال الإشعار بنجاح!",
+        "failedToSend": "فشل في إرسال الإشعارات. يقول الخادم: {{error}}",
+        "errorSending": "خطأ في إرسال الإشعار."
+      },
+      "pagination": {
+        "showing": "عرض {{current}} من {{total}} إشعار",
+        "previous": "السابق",
+        "next": "التالي"
+      },
+      "empty": {
+        "noNotifications": "لم يتم العثور على إشعارات",
+        "loading": "جارٍ تحميل الإشعارات..."
+      },
+      "error": {
+        "failedToLoad": "فشل في تحميل الإشعارات",
+        "failedToSend": "فشل في إرسال الإشعار",
+        "failedToDelete": "فشل في حذف الإشعار",
+        "failedToUpdate": "فشل في تحديث الإشعار"
+      }
+    },
+    "rewards": {
+      "title": "إدارة المكافآت",
+      "description": "إنشاء وإدارة برامج المكافآت",
+      "staking": {
+        "title": "التخزين",
+        "description": "تكوين مدة التخزين والمكافآت",
+        "duration": "المدة",
+        "reward": "المكافأة",
+        "status": "الحالة",
+        "addDuration": "إضافة مدة",
+        "plan": "الخطة",
+        "units": {
+          "days": "أيام",
+          "weeks": "أسابيع",
+          "months": "أشهر",
+          "years": "سنوات"
+        },
+        "apy": "APY"
+      },
+      "referrals": {
+        "title": "الإحالات",
+        "description": "إدارة مستويات الإحالة والمكافآت",
+        "tier": "المستوى",
+        "referralRange": "نطاق الإحالة",
+        "referrals": "الإحالات",
+        "reward": "المكافأة",
+        "status": "الحالة",
+        "addTier": "إضافة مستوى",
+        "name": "الاسم",
+        "range": "النطاق",
+        "bonus": "المكافأة الإضافية"
+      },
+      "watchAds": {
+        "title": "مشاهدة الإعلانات",
+        "description": "تكوين مكافآت مشاهدة الإعلانات",
+        "adsCount": "عدد الإعلانات",
+        "ads": "إعلانات",
+        "reward": "المكافأة",
+        "status": "الحالة",
+        "addReward": "إضافة مكافأة",
+        "dailyLimit": "الحد اليومي",
+        "collectBonus": "مكافأة الجمع"
+      },
+      "stats": {
+        "totalRewards": "إجمالي المكافآت",
+        "activeRewards": "المكافآت النشطة",
+        "totalValue": "القيمة الإجمالية",
+        "totalClaims": "إجمالي المطالبات"
+      },
+      "createNew": "إنشاء مكافأة جديدة",
+      "searchPlaceholder": "البحث عن المكافآت...",
+      "filters": {
+        "allTypes": "جميع الأنواع",
+        "allStatus": "جميع الحالات",
+        "active": "نشطة",
+        "inactive": "غير نشطة",
+        "daily": "يومي",
+        "weekly": "أسبوعي",
+        "monthly": "شهري",
+        "achievement": "إنجاز",
+        "referral": "الإحالة",
+        "bonus": "مكافأة إضافية",
+        "special": "خاص"
+      },
+      "table": {
+        "name": "اسم المكافأة",
+        "type": "النوع",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "claims": "المطالبات",
+        "dates": "فترة النشاط",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "name": "اسم المكافأة",
+        "description": "الوصف",
+        "type": "النوع",
+        "amount": "المبلغ",
+        "currency": "العملة",
+        "maxClaims": "الحد الأقصى للمطالبات",
+        "startDate": "تاريخ البداية",
+        "endDate": "تاريخ النهاية",
+        "requirements": "المتطلبات",
+        "addRequirement": "إضافة متطلب"
+      },
+      "actions": {
+        "edit": "تعديل",
+        "delete": "حذف",
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل",
+        "viewDetails": "عرض التفاصيل",
+        "view": "عرض",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "active": "نشطة",
+        "inactive": "غير نشطة "
+      },
+      "noData": "لا توجد بيانات {{section}} بعد",
+      "startAdding": "ابدأ في إضافة أول تكوين {{section}} الخاص بك",
+      "clickToExpand": "انقر للتوسيع",
+      "clickToCollapse": "انقر للطي",
+      "quickActions": "إجراءات سريعة",
+      "quickActions.addStaking": "إضافة مدة تخزين",
+      "quickActions.addReferral": "إضافة مستوى إحالة",
+      "quickActions.addWatchAd": "إضافة مكافأة مشاهدة إعلان",
+      "noRewards": "لم يتم العثور على مكافآت",
+      "loading": "جاري تحميل المكافآت...",
+      "rewardTypes": {
+        "daily": "يومي",
+        "weekly": "أسبوعي",
+        "monthly": "شهري",
+        "achievement": "إنجاز",
+        "referral": "الإحالة",
+        "bonus": "مكافأة إضافية",
+        "special": "خاص"
+      },
+      "details": {
+        "title": "تفاصيل المكافأة",
+        "basicInformation": "المعلومات الأساسية",
+        "statistics": "الإحصائيات",
+        "requirements": "المتطلبات",
+        "id": "الرقم التعريفي",
+        "type": "النوع",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "claims": "المطالبات",
+        "period": "الفترة"
+      },
+      "createModal": {
+        "title": "إنشاء مكافأة جديدة",
+        "namePlaceholder": "اسم المكافأة",
+        "descriptionPlaceholder": "الوصف",
+        "selectType": "اختر النوع",
+        "amountPlaceholder": "المبلغ",
+        "maxClaimsPlaceholder": "الحد الأقصى للمطالبات"
+      },
+      "sampleRewards": {
+        "dailyLogin": {
+          "name": "مكافأة تسجيل الدخول اليومي",
+          "description": "مكافأة لتسجيل الدخول يومياً"
+        },
+        "weeklyMining": {
+          "name": "مكافأة التعدين الأسبوعية",
+          "description": "مكافأة إضافية للنشاط المستمر في التعدين"
+        },
+        "referralChampion": {
+          "name": "بطل الإحالة",
+          "description": "مكافأة لجلب مستخدمين جدد"
+        },
+        "firstClassAchievement": {
+          "name": "إنجاز الدرجة الأولى",
+          "description": "مكافأة خاصة للأعضاء المميزين"
+        },
+        "monthlyStaking": {
+          "name": "مكافأة الرهان الشهرية",
+          "description": "مكافأة للرهان طويل الأمد"
+        },
+        "specialEvent": {
+          "name": "مكافأة الحدث الخاص",
+          "description": "مكافأة حدث محدودة الوقت"
+        }
+      },
+      "requirements": {
+        "loginDaily": "تسجيل الدخول يومياً",
+        "completeProfile": "إكمال الملف الشخصي",
+        "mineConsecutiveDays": "التعدين لمدة 7 أيام متتالية",
+        "minimumMined": "الحد الأدنى 100 FSN معدنة",
+        "referActiveUsers": "إحالة 10 مستخدمين نشطين",
+        "usersCompleteKYC": "يجب على المستخدمين إكمال التحقق من الهوية",
+        "upgradeToFirstClass": "الترقية إلى الدرجة الأولى",
+        "maintainForDays": "الحفاظ لمدة 30 يوماً",
+        "stakeMinimum": "الرهان بحد أدنى 1000 FSN",
+        "holdForDays": "الاحتفاظ لمدة 30 يوماً",
+        "participateInEvent": "المشاركة في الحدث",
+        "completeAllChallenges": "إكمال جميع التحديات"
+      }
+    },
+
+    "dashboard": {
+      "title": "لوحة تحكم المشرف",
+      "subtitle": "إدارة المستخدمين والتحقق من الهوية والمدفوعات",
+      "quickStatistics": "إحصائيات سريعة",
+      "detailedStatistics": "إحصائيات مفصلة",
+      "totalUsers": "إجمالي المستخدمين",
+      "totalAdmins": "إجمالي المشرفين",
+      "pendingKYC": "KYC معلق",
+      "verifiedKYC": "KYC مُتحقق",
+      "premiumPlans": "الخطط المميزة",
+      "totalBalance": "إجمالي الرصيد",
+      "totalFSN": "إجمالي FSN",
+      "businessPlans": "الخطط التجارية",
+      "firstClassPlans": "خطط الدرجة الأولى"
+    },
+    "goToDashboard": "اذهب للوحة التحكم",
+    "goToDashboardShort": "الرئيسية",
+    "tabs": {
+      "dashboard": "لوحة التحكم",
+      "users": "إدارة المستخدمين",
+      "kyc": "التحقق من الهوية",
+      "payments": "المدفوعات اليدوية",
+      "transactions": "المعاملات",
+      "rewards": "المكافآت",
+      "notifications": "الإشعارات",
+      "content": "المحتوى",
+          "memberships": "العضويات",
+          "referralsAndBalances": "الإحالات و الأرصدة",
+          "sendNotification": "إرسال إشعار",
+          "messages": "الرسائل",
+      "short": {
+        "dashboard": "الرئيسية",
+        "users": "المستخدمين",
+        "kyc": "التحقق",
+        "payments": "المدفوعات",
+        "transactions": "المعاملات",
+        "rewards": "المكافآت",
+        "notifications": "الإشعارات",
+        "content": "المحتوى",
+        "memberships": "العضويات",
+        "referralsAndBalances": "الإحالات والأرصدة",
+        "messages": "رسائل"
+      }
+    },
+      "messages": "الرسائل",
+  "short": {
+    "messages": "مسج"
+  },
+    "kyc": {
+      "title": "التحقق من الهوية",
+      "description": "مراجعة وإدارة طلبات التحقق من هوية المستخدمين",
+      "pendingRequests": "الطلبات المعلقة",
+      "approvedToday": "تمت الموافقة اليوم",
+      "rejectedToday": "تم الرفض اليوم",
+      "pendingKycRequests": "طلبات التحقق من الهوية المعلقة",
+      "reviewDocuments": "مراجعة وثائق التحقق من المستخدم",
+      "loading": "جاري تحميل طلبات التحقق من الهوية...",
+      "noPendingRequests": "لا توجد طلبات معلقة",
+      "allProcessed": "تمت معالجة جميع طلبات التحقق من الهوية",
+      "verificationInfo": "معلومات التحقق من الهوية",
+      "documents": "وثائق التحقق من الهوية",
+      "noDocuments": "لم يتم رفع وثائق التحقق من الهوية",
+      "documentUploaded": "تم رفع المستند",
+      "viewDocument": "عرض المستند",
+      "approve": "الموافقة على التحقق من الهوية",
+      "reject": "رفض التحقق من الهوية",
+      "viewDetails": "عرض التفاصيل",
+      "unknownUser": "مستخدم غير معروف",
+      "noEmail": "لا يوجد بريد إلكتروني",
+      "userDetails": "تفاصيل المستخدم",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "userId": "معرف المستخدم",
+      "registrationDate": "تاريخ التسجيل",
+      "notProvided": "غير مُقدم",
+      "unknown": "غير معروف",
+      "totalKYC": "إجمالي التحقق من الهوية",
+      "pending": "معلق",
+      "approved": "موافق",
+      "rejected": "مرفوض",
+      "all": "الكل",
+      "noKYCUsers": "لا يوجد مستخدمين للتحقق من الهوية",
+      "noApprovedUsers": "لا يوجد مستخدمين موافق عليهم",
+      "noRejectedUsers": "لا يوجد مستخدمين مرفوضين",
+      "noKYCUsersDesc": "لم يقم أي مستخدم برفع مستندات التحقق من الهوية بعد",
+      "noApprovedUsersDesc": "لم يتم الموافقة على أي مستخدم بعد",
+      "noRejectedUsersDesc": "لم يتم رفض أي مستخدم بعد",
+      "refresh": "تحديث",
+      "refreshing": "جاري التحديث...",
+      "rejectionReason": "سبب الرفض",
+      "provideReason": "يرجى تقديم سبب لرفض طلب التحقق من الهوية هذا.",
+      "rejectionReasonPlaceholder": "أدخل سبب الرفض...",
+      "rejectionReasonRequired": "يرجى تقديم سبب الرفض",
+      "cancel": "إلغاء",
+      "rejectedOn": "تم الرفض في",
+      "alreadyApproved": "تمت الموافقة على هذا التحقق من الهوية بالفعل",
+      "alreadyRejected": "تم رفض هذا التحقق من الهوية بالفعل"
+    },
+    "users": {
+      "title": "إدارة المستخدمين",
+      "description": "إدارة حسابات المستخدمين والخطط والحالة",
+      "searchPlaceholder": "البحث عن المستخدمين...",
+      "loading": "جاري تحميل المستخدمين...",
+      "confirmDelete": "هل أنت متأكد من حذف هذا المستخدم؟",
+      "deleteUser": "حذف المستخدم",
+      "deleteWarning": "تحذير: لا يمكن التراجع عن هذا الإجراء",
+      "deleteWarningDescription": "حذف هذا المستخدم سيؤدي إلى إزالة حسابه ورصيده وجميع البيانات المرتبطة به من النظام بشكل دائم.",
+      "userToDelete": "المستخدم المراد حذفه",
+      "updatePlan": "تحديث خطة المستخدم",
+      "location": "الموقع",
+      "referrals": "الإحالات",
+      "lastDevice": "آخر جهاز",
+      "membership": "الاشتراك والخطة",
+      "planStartDate": "تاريخ بدء الخطة",
+      "planEndDate": "تاريخ انتهاء الخطة",
+      "paymentMethod": "طريقة الدفع",
+      "paymentMethods": {
+        "in_app_purchase": "شراء داخل التطبيق"
+      },
+      "referralCode": "رمز الإحالة",
+      "referredBy": "أحاله",
+      "financialInformation": "المعلومات المالية",
+      "totalRewardsClaimed": "إجمالي المكافآت المسحوبة",
+      "totalDeposits": "إجمالي الإيداعات",
+      "totalWithdrawals": "إجمالي السحوبات",
+      "stakingEarnings": "أرباح الستيكنج",
+      "activeStakes": "الستيكات النشطة",
+      "totalStaked": "إجمالي الستيك",
+      "tabs": {
+        "basicInfo": "معلومات أساسية",
+        "accountInfo": "الحساب",
+        "financialInfo": "المالية"
+      },
+      "plans": {
+        "economy": "اقتصادية",
+        "business": "تجارية",
+        "first6": "الدرجة الأولى-6",
+        "firstLifetime": "الدرجة الأولى-مدى الحياة"
+      },
+      "stats": {
+        "activeUsers": "المستخدمون النشطون",
+        "premiumPlans": "الخطط المميزة",
+        "totalBalance": "إجمالي الرصيد"
+      },
+      "filters": {
+        "all": "الكل",
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "verified": "مُتحقق",
+        "pending": "معلق",
+        "rejected": "مرفوض",
+        "allStatus": "جميع الحالات",
+        "allPlans": "جميع الخطط",
+        "economy": "الاقتصادية",
+        "business": "التجارية",
+        "first6": "الدرجة الأولى-6",
+        "firstLifetime": "الدرجة الأولى-مدى الحياة"
+      },
+      "sort": {
+        "newestFirst": "الأحدث أولاً",
+        "oldestFirst": "الأقدم أولاً",
+        "nameAZ": "الاسم أ-ي",
+        "nameZA": "الاسم ي-أ",
+        "balanceHighLow": "الرصيد عالي-منخفض",
+        "balanceLowHigh": "الرصيد منخفض-عالي"
+      },
+      "bulk": {
+        "selectedUsers": "{{count}} مستخدم محدد",
+        "pleaseSelectUsers": "يرجى تحديد المستخدمين أولاً",
+        "confirmDelete": "هل أنت متأكد من حذف {{count}} مستخدمين؟"
+      },
+      "table": {
+        "user": "المستخدم",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "kyc": "حالة التحقق",
+        "kycStatus": "حالة التحقق",
+        "plan": "الخطة",
+        "balance": "الرصيد",
+        "staking": "الستيكنج",
+        "status": "الحالة",
+        "created": "تاريخ الإنشاء",
+        "joined": "تاريخ الانضمام",
+        "lastLogin": "آخر تسجيل دخول",
+        "actions": "الإجراءات",
+        "id": "الهوية"
+      },
+      "modal": {
+        "updatePlan": "تحديث خطة المستخدم",
+        "selectPlan": "اختر الخطة"
+      },
+      "userInformation": "معلومات المستخدم",
+      "selectNewPlan": "اختر خطة جديدة",
+      "actions": {
+        "edit": "تعديل",
+        "delete": "حذف",
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل",
+        "viewDetails": "عرض التفاصيل"
+      },
+      "status": {
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "suspended": "موقوف",
+        "verified": "مُتحقق",
+        "pending": "معلق",
+        "rejected": "مرفوض",
+        "notActivated": "غير مفعل"
+      },
+      "noUsers": "لم يتم العثور على مستخدمين"
+    },
+    "transactions": {
+      "title": "إدارة المعاملات",
+      "noTransactions": "لا توجد بيانات معاملات",
+      "description": "ستتم عرض بيانات المعاملات هنا عند توفرها."
+    },
+    "content": {
+      "title": "إدارة المحتوى",
+      "description": "إدارة محتوى المنصة والإعلانات",
+      "createNew": "إنشاء محتوى جديد",
+      "searchPlaceholder": "البحث عن المحتوى...",
+      "stats": {
+        "totalContent": "إجمالي المحتوى",
+        "activeContent": "المحتوى النشط",
+        "totalViews": "إجمالي المشاهدات",
+        "totalClicks": "إجمالي النقرات"
+      },
+      "actions": {
+        "createContent": "إنشاء محتوى",
+        "view": "عرض",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "create": "إنشاء",
+        "cancel": "إلغاء",
+        "close": "إغلاق"
+      },
+      "search": {
+        "placeholder": "البحث عن المحتوى..."
+      },
+      "filters": {
+        "allTypes": "جميع الأنواع",
+        "allStatus": "جميع الحالات"
+      },
+      "types": {
+        "banner": "لافتة",
+        "announcement": "إعلان",
+        "promotion": "ترويج",
+        "video": "فيديو",
+        "news": "أخبار"
+      },
+      "status": {
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "draft": "مسودة"
+      },
+      "priority": "الأولوية",
+      "views": "المشاهدات",
+      "clicks": "النقرات",
+      "details": {
+        "title": "تفاصيل المحتوى",
+        "basicInformation": "المعلومات الأساسية",
+        "description": "الوصف",
+        "performance": "الأداء",
+        "schedule": "الجدول الزمني",
+        "id": "الرقم التعريفي",
+        "type": "النوع",
+        "status": "الحالة",
+        "priority": "الأولوية"
+      },
+      "createModal": {
+        "title": "إنشاء محتوى جديد",
+        "titlePlaceholder": "عنوان المحتوى",
+        "descriptionPlaceholder": "الوصف",
+        "selectType": "اختر النوع",
+        "priorityPlaceholder": "الأولوية (1-10)"
+      },
+      "sampleData": {
+        "welcomeTitle": "مرحبًا بك في شبكة فلاي سكاي",
+        "welcomeDescription": "انضم إلى مستقبل التعدين اللامركزي",
+        "miningRewardsTitle": "مكافآت التعدين الجديدة متاحة",
+        "miningRewardsDescription": "اكسب حتى 3000 FSN يوميًا مع نظام التعدين الجديد",
+        "referralProgramTitle": "إطلاق برنامج الإحالة",
+        "referralProgramDescription": "ادع أصدقاءك واكسب 1000 FSN لكل إحالة",
+        "tutorialVideoTitle": "فيديو تعليمي للمنصة",
+        "tutorialVideoDescription": "تعلم كيفية تعظيم كفاءة التعدين",
+        "holidayEventTitle": "فعالية العطلات الخاصة",
+        "holidayEventDescription": "مكافآت مضاعفة خلال موسم العطلات"
+      },
+      "table": {
+        "title": "العنوان",
+        "type": "النوع",
+        "status": "الحالة",
+        "views": "المشاهدات",
+        "clicks": "النقرات",
+        "created": "تاريخ الإنشاء",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "title": "العنوان",
+        "content": "المحتوى",
+        "type": "النوع",
+        "status": "الحالة",
+        "image": "الصورة",
+        "link": "الرابط"
+      },
+      "noContent": "لم يتم العثور على محتوى",
+      "loading": "جاري تحميل المحتوى..."
+    },
+    "memberships": {
+      "title": "إدارة العضويات",
+      "description": "الوصف",
+      "planId": "معرّف الخطة (مثال: economy, business)",
+      "durationDays": "المدة (بالأيام)",
+      "days": "أيام",
+      "dailyMiningReward": "مكافأة التعدين اليومية (FSN)",
+      "createdAt": "تاريخ الإنشاء",
+      "featurePlaceholder": "اكتب ميزة ثم اضغط إضافة",
+      "addFeature": "إضافة ميزة",
+      "featuresHelper": "أضف كل ميزة بشكل منفصل. يمكنك إزالة العناصر أدناه.",
+      "createNew": "إنشاء خطة جديدة",
+      "searchPlaceholder": "البحث عن العضويات...",
+      "filters": {
+        "all": "جميع الخطط",
+        "economy": "الاقتصادية",
+        "business": "التجارية",
+        "first-6": "الدرجة الأولى (6 أشهر)",
+        "first-lifetime": "الدرجة الأولى (مدى الحياة)"
+      },
+      "table": {
+        "user": "المستخدم",
+        "plan": "الخطة",
+        "status": "الحالة",
+        "startDate": "تاريخ البداية",
+        "endDate": "تاريخ النهاية",
+        "amount": "المبلغ",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "user": "المستخدم",
+        "plan": "الخطة",
+        "duration": "المدة",
+        "amount": "المبلغ",
+        "status": "الحالة"
+      },
+      "actions": {
+        "edit": "تعديل",
+        "cancel": "إلغاء",
+        "extend": "تمديد",
+        "viewDetails": "عرض التفاصيل"
+      },
+      "status": "الحالة",
+      "noMemberships": "لم يتم العثور على عضويات",
+      "loading": "جاري تحميل العضويات...",
+      "createPlan": "إنشاء خطة",
+      "loadingPlans": "جاري تحميل خطط العضوية...",
+      "mostPopular": "الأكثر شعبية",
+      "subscribers": "المشتركين",
+      "revenue": "الإيرادات",
+      "view": "عرض",
+      "edit": "تعديل",
+      "disable": "تعطيل",
+      "enable": "تفعيل",
+      "delete": "حذف",
+      "createNewPlan": "إنشاء خطة جديدة",
+      "planName": "اسم الخطة (مثال: economy)",
+      "displayName": "اسم العرض",
+      "price": "السعر",
+      "bonusFSN": "مكافأة FSN",
+      "miningRate": "معدل التعدين (مثال: 600 FSN / 12 ساعة)",
+      "duration": "المدة",
+      "icon": "الأيقونة",
+      "color": "اللون",
+      "monthly": "شهري",
+      "yearly": "سنوي",
+      "6months": "6 أشهر",
+      "lifetime": "مدى الحياة",
+      "coins": "عملات",
+      "gem": "جوهرة",
+      "star": "نجمة",
+      "crown": "تاج",
+      "green": "أخضر",
+      "purple": "بنفسجي",
+      "blue": "أزرق",
+      "yellow": "أصفر",
+      "create": "إنشاء",
+      "cancel": "إلغاء",
+      "planDetails": "تفاصيل الخطة",
+      "basicInformation": "المعلومات الأساسية",
+      "name": "الاسم",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "features": "الميزات",
+      "statistics": "الإحصائيات",
+      "close": "إغلاق",
+      "editPlan": "تعديل الخطة",
+      "update": "تحديث",
+      "fillRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
+      "createPlanFailed": "فشل في إنشاء الخطة. يرجى المحاولة مرة أخرى.",
+      "updatePlanFailed": "فشل في تحديث الخطة. يرجى المحاولة مرة أخرى.",
+      "deletePlanFailed": "فشل في حذف الخطة. يرجى المحاولة مرة أخرى.",
+      "confirmDelete": "هل أنت متأكد من حذف هذه الخطة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "defaultPlans": {
+        "economy": {
+          "name": "الخطة الاقتصادية",
+          "description": "خطة مجانية للمستخدمين الأساسيين"
+        },
+        "business": {
+          "name": "الخطة التجارية",
+          "description": "خطة احترافية للمستخدمين التجاريين"
+        },
+        "first6": {
+          "name": "الدرجة الأولى 6 أشهر",
+          "description": "خطة متميزة للمستخدمين الجادين"
+        },
+        "firstLifetime": {
+          "name": "الدرجة الأولى مدى الحياة",
+          "description": "الخطة النهائية مع الوصول مدى الحياة"
+        }
+      }
+    },
+    "payments": {
+      "title": "المدفوعات اليدوية",
+      "description": "مراجعة والموافقة على طلبات الدفع",
+      "searchPlaceholder": "البحث بالاسم أو البريد الإلكتروني أو معرف المستخدم",
+      "loading": "جاري تحميل المدفوعات...",
+      "noPayments": "لم يتم العثور على مدفوعات يدوية.",
+      "table": {
+        "user": "المستخدم",
+        "currency": "العملة",
+        "txLink": "رابط المعاملة",
+        "fromAddress": "من العنوان",
+        "status": "الحالة",
+        "proof": "الإثبات",
+        "date": "التاريخ",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "approved": "موافق عليه",
+        "rejected": "مرفوض",
+        "pending": "معلق"
+      },
+      "actions": {
+        "approve": "موافقة",
+        "reject": "رفض",
+        "view": "عرض",
+        "download": "تحميل"
+      },
+      "confirmDelete": "هل أنت متأكد من حذف هذه المدفوعات؟",
+      "updateSuccess": "تم تحديث حالة الدفع بنجاح",
+      "updateError": "فشل في تحديث حالة الدفع"
+    }
+  },
+  "enable": "تفعيل",
+  "enabled": "مفعّل",
+  "requesting": "جاري الطلب...",
+  "landing": {
+    "hero": {
+      "brand": "شبكة فلاي سكاي",
+      "tagline": "انقب. اكسب. نمُ.",
+      "desc": "فلاي سكاي منصة ويب3 حيث يكسب المستخدمون العملات المشفرة من خلال التعدين اليومي، والتخزين، والإحالات والمزيد.",
+      "alt": {
+        "heroBanner": "لافتة فلاي سكاي الرئيسية",
+        "heroBannerMobile": "لافتة فلاي سكاي الرئيسية (الهاتف)"
+      }
+    },
+    "cta": {
+      "joinNow": "انضم الآن",
+      "openDashboard": "افتح لوحة التحكم",
+      "getStarted": "ابدأ الآن",
+      "createEarning": "ابدأ الكسب",
+      "readMore": "اقرأ المزيد",
+      "tryForFree": "جرّب مجانًا"
+    },
+    "store": {
+      "appStoreTop": "حمّل من",
+      "appStore": "App Store",
+      "getItOn": "احصل عليه عبر",
+      "googlePlay": "Google Play"
+    },
+    "header": {
+      "toggleMenu": "تبديل القائمة",
+      "closeMenu": "إغلاق القائمة"
+    },
+    "menu": {
+      "about": "من نحن",
+      "features": "الميزات",
+      "plans": "الخطط",
+      "how-it-works": "كيف تعمل",
+      "membership": "العضوية"
+    },
+    "features": {
+      "titleMobile": "مميزاتنا",
+      "titleDesktop": "مميزات قوية",
+      "subtitle": "كل ما تحتاجه لبدء كسب العملات الرقمية اليوم",
+      "alt": {
+        "border": "حدود القسم"
+      },
+      "items": {
+        "mining": {
+          "title": "التعدين اليومي",
+          "desc": "اكسب العملات يوميًا عبر عمليات تعدين مؤتمتة"
+        },
+        "membership": {
+          "title": "خطط العضوية",
+          "desc": "اختر من خطط الاقتصاد والأعمال أو الدرجة الأولى"
+        },
+        "staking": {
+          "title": "عائدات التخزين",
+          "desc": "قم بتخزين رموزك واكسب دخلًا سلبيًا بعوائد عالية"
+        },
+        "referral": {
+          "title": "برنامج الإحالة",
+          "desc": "ادعُ الأصدقاء واكسب عمولة من نشاطهم"
+        },
+        "watchToEarn": {
+          "title": "شاهد لتكسب",
+          "desc": "شاهد الإعلانات واكسب مقابل وقتك"
+        },
+        "playToEarn": {
+          "title": "العب لتكسب",
+          "desc": "العب الألعاب الصغيرة وأكمل التحديات لكسب رموز FSN"
+        },
+        "amazingRewards": {
+          "title": "المكافآت المثيرة",
+          "desc": "تعدين، تخزين وإحالات للحصول على مكافآت إضافية"
+        }
+      }
+    },
+    "getStarted": {
+      "titlePart1": "ابدأ الكسب مع",
+      "titleEmphasis": "فلاي سكاي الآن!",
+      "subtitle": "انضم إلى آلاف المستخدمين الذين يكسبون العملات يوميًا",
+      "alt": "ابدأ الكسب مع فلاي سكاي"
+    },
+    "who": {
+      "title": "من نحن",
+      "p1": "شبكة فلاي سكاي هي منصة اقتصاد رقمي من الجيل التالي تجمع بين التعدين والتخزين والألعاب و NFTs في تجربة واحدة.",
+      "p2": "نحن ملتزمون ببناء نظام بيئي نابض بالحياة حيث يمكن للمستخدمين الكسب والتداول وتنمية أصولهم من خلال تفاعلات ممتعة."
+    },
+    "hiw": {
+      "title": "كيف تعمل",
+      "subtitle": "انضم إلى آلاف المستخدمين الذين يكسبون العملات من خلال منصتنا المبتكرة",
+      "steps": {
+        "1": {
+          "title": "سجّل",
+          "desc": "أنشئ حسابك وتحقق من هويتك لبدء رحلتك في كسب العملات",
+          "cta": "سجّل الآن"
+        },
+        "2": {
+          "title": "ابدأ التعدين",
+          "desc": "ابدأ عملية التعدين المؤتمتة",
+          "cta": "ابدأ التعدين"
+        },
+        "3": {
+          "title": "تحصيل المكافآت",
+          "desc": "اسحب مكافآتك المكتسبة مباشرة إلى محفظتك",
+          "cta": "حصّل الآن"
+        }
+      }
+    },
+    "footer": {
+      "tagline": "انقب. اكسب. نمُ.",
+      "language": "اللغة",
+      "rights": "جميع الحقوق محفوظة.",
+      "links": {
+        "terms": "الشروط",
+        "privacy": "الخصوصية",
+        "contact": "اتصل بنا"
+      }
+    }
+  },
+  "hiw": {
+    "title": "كيف تعمل",
+    "subtitle": "انضم إلى آلاف المستخدمين الذين يكسبون العملات من خلال منصتنا المبتكرة",
+    "steps": {
+      "1": {
+        "title": "سجّل",
+        "desc": "أنشئ حسابك وتحقق من هويتك لبدء رحلتك في كسب العملات",
+        "cta": "سجّل الآن"
+      },
+      "2": {
+        "title": "ابدأ التعدين",
+        "desc": "ابدأ عملية التعدين المؤتمتة",
+        "cta": "ابدأ التعدين"
+      },
+      "3": {
+        "title": "تحصيل المكافآت",
+        "desc": "اسحب مكافآتك المكتسبة مباشرة إلى محفظتك",
+        "cta": "حصّل الآن"
+      }
+    }
+  },
+  "footer": {
+    "tagline": "انقب. اكسب. نمُ.",
+    "language": "اللغة",
+    "rights": "جميع الحقوق محفوظة.",
+    "links": {
+      "terms": "الشروط",
+      "privacy": "الخصوصية",
+      "contact": "اتصل بنا"
+    }
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "create": "إنشاء",
+    "view": "عرض",
+    "edit": "تعديل"
+  },
+  "ApprovalLog": {
+    "title": "سجل الموافقات",
+    "searchTerm": "مصطلح البحث",
+    "searchType": "البحث في",
+    "approvedUser": "المستخدم المعتمد",
+    "referrer": "المرجع",
+    "selectSearchType": "اختر نوع البحث",
+    "refresh": "تحديث",
+    "deleteAll": "حذف الكل",
+    "tableApprovedUser": "المستخدم المعتمد",
+    "tableReferrer": "المرجع",
+    "reward": "المكافأة",
+    "date": "التاريخ",
+    "claimStatus": "حالة المطالبة",
+    "actions": "الإجراءات",
+    "claimed": "تم المطالبة",
+    "notClaimed": "لم يتم المطالبة",
+    "noLogs": "لا توجد سجلات موافقات",
+    "noLogsDesc": "لم يتم تسجيل أي موافقات KYC للمستخدمين المرجعين بعد.",
+    "deleteLog": "حذف السجل",
+    "confirmDeleteLog": "هل أنت متأكد من أنك تريد حذف سجل الموافقة هذا؟",
+    "confirmDeleteAllLogs": "هل أنت متأكد من أنك تريد حذف جميع سجلات الموافقات؟ لا يمكن التراجع عن هذا الإجراء.",
+    "logDeleted": "تم حذف سجل الموافقة بنجاح",
+    "deleteLogFailed": "فشل في حذف سجل الموافقة",
+    "allLogsDeleted": "تم حذف جميع سجلات الموافقات بنجاح",
+    "deleteAllLogsFailed": "فشل في حذف جميع سجلات الموافقات"
+  },
+  "mainNotifications": {
+    "title": "الإشعارات",
+    "unread": "غير مقروء",
+    "markAllAsRead": "تحديد الكل كمقروء",
+    "noNotifications": "لا توجد إشعارات",
+    "viewAll": "عرض جميع الإشعارات",
+    "empty": "لا توجد إشعارات لديك",
+    "loading": "جاري تحميل الإشعارات...",
+    "unreadNotifications": "إشعارات غير مقروءة",
+    "youHaveNoNotifications": "ليس لديك أي إشعارات بعد",
+    "noFilteredNotifications": "لا توجد إشعارات تطابق هذا الفلتر",
+    "markAllRead": "تحديد الكل كمقروء",
+    "filter": "فلتر",
+    "all": "الكل",
+    "rewards": "المكافآت",
+    "messages": "الرسائل",
+    "referrals": "الإحالات",
+    "mining": "التعدين",
+    "staking": "التخزين",
+    "types": {
+      "claim_reward": "المكافأة جاهزة",
+      "inbox_message": "رسالة جديدة",
+      "referral_bonus": "مكافأة الإحالة",
+      "mining_reminder": "تذكير التعدين",
+      "staking_reminder": "تذكير التخزين"
+    }
+  },
+  "userBlocked": {
+    "title": "الحساب محظور",
+    "subtitle": "تم تعليق حسابك",
+    "reason": "سبب الحظر",
+    "whatToDoTitle": "ماذا تفعل بعد ذلك",
+    "contactSupport": "اتصل بالدعم",
+    "reviewTerms": "مراجعة شروط الخدمة",
+    "autoUnblock": "انتظر الإلغاء التلقائي",
+    "checkingStatus": "جاري التحقق من حالة الحساب..."
+  },
+  "gifttabtexts": {
+    "tabs": {
+      "allUsers": "جميع المستخدمين",
+      "singleUser": "مستخدم واحد",
+      "multipleUsers": "مستخدمون متعددون",
+      "byPlan": "حسب الخطة",
+      "giftHistory": "تاريخ الهدايا والتقارير"
+    },
+    "form": {
+      "giftTitle": "عنوان الهدية *",
+      "amount": "المبلغ (FSN) *",
+      "message": "الرسالة *",
+      "reason": "السبب *",
+      "searchUser": "البحث عن المستخدم (البريد الإلكتروني أو الاسم)",
+      "searchPlaceholder": "اكتب للبحث عن المستخدمين...",
+      "selectedUser": "تم اختيار: {{email}}",
+      "searchUsers": "البحث عن المستخدمين",
+      "usersSelected": "{{count}} مستخدم{{plural}} تم اختيارهم",
+      "tableHeaders": {
+        "select": "اختيار",
+        "email": "البريد الإلكتروني",
+        "name": "الاسم",
+        "balance": "الرصيد"
+      },
+      "buttons": {
+        "cancel": "إلغاء",
+        "sendGifts": "إرسال الهدايا",
+        "processing": "جاري المعالجة...",
+        "sending": "جاري الإرسال..."
+      },
+      "selectPlan": "اختر خطة...",
+      "fsn": "FSN"
+    },
+    "history": {
+      "stats": {
+        "totalGifts": "إجمالي الهدايا",
+        "totalDistributed": "إجمالي الموزع",
+        "totalRecipients": "إجمالي المستلمين",
+        "successRate": "معدل النجاح"
+      },
+      "title": "تاريخ توزيع الهدايا",
+      "subtitle": "عرض وإدارة جميع توزيعات الهدايا",
+      "tableHeaders": {
+        "giftDetails": "تفاصيل الهدية",
+        "recipients": "المستلمون",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "date": "التاريخ",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "viewDetails": "عرض التفاصيل",
+        "deleteGift": "حذف توزيع الهدية"
+      },
+      "details": {
+        "message": "الرسالة",
+        "target": "الهدف:",
+        "plan": "الخطة:",
+        "createdBy": "أنشأها:",
+        "failures": "الفشل:",
+        "recentLogs": "السجلات الأخيرة",
+        "status": "نجح"
+      },
+      "deleteModal": {
+        "title": "حذف توزيع الهدية",
+        "message": "هل أنت متأكد من حذف توزيع الهدية \"{{title}}\"؟",
+        "warning": "لا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "delete": "حذف"
+      },
+      "empty": {
+        "title": "لم يتم العثور على توزيعات هدايا",
+        "subtitle": "ستظهر توزيعات الهدايا هنا عند إنشائها"
+      }
+    }
+  }
+}
