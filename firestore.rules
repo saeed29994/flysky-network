@@ -1,0 +1,540 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =====================================================
+    // ✅ Helper functions (FSN + FSA)
+    // =====================================================
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return request.auth.token.role == "admin";
+    }
+    function isGlobalAdmin() {
+      // Check if user is in admins collection
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function isOwner() {
+      return request.auth.token.role == "owner";
+    }
+    function isCustomer() {
+      return request.auth.token.role == "customer";
+    }
+    function isUserSelf(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    function getUserId() {
+      return request.auth.uid;
+    }
+    function isNotBanned(allianceId) {
+      return isAllianceMember(allianceId) &&
+             get(/databases/$(database)/documents/alliances/$(allianceId)/members/$(getUserId())).data.banned != true;
+    }
+    function isAllianceMember(allianceId) {
+      return isSignedIn() && exists(/databases/$(database)/documents/alliances/$(allianceId)/members/$(getUserId()));
+    }
+
+    function isAllianceAdmin(allianceId) {
+      return isSignedIn() && get(/databases/$(database)/documents/alliances/$(allianceId)/members/$(getUserId())).data.role in ['leader', 'admin'];
+    }
+    function isAllianceLeader(allianceId) {
+      return isNotBanned(allianceId) &&
+             get(/databases/$(database)/documents/alliances/$(allianceId)/members/$(getUserId())).data.role == 'leader';
+    }
+    function canModerateContent(allianceId, authorUid) {
+      return (getUserId() == authorUid) || isAllianceAdmin(allianceId);
+    }
+
+
+    // =====================================================
+    // ✅ FSN Collections (ما غيرتها)
+    // =====================================================
+      match /users/{userId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true; // TEMP for testing
+      allow delete: if isAdmin();
+
+      match /inbox/{messageId} {
+        allow read, write: if isUserSelf(userId) || isAdmin();
+      }
+
+      match /notifications/{notificationId} {
+        allow read, write: if isUserSelf(userId) || isAdmin();
+        allow read: if isSignedIn();
+        allow delete: if isAdmin();
+      }
+
+      // --- Alliance Notifications subcollection (for profit distributions) ---
+      match /allianceNotifications/{notificationId} {
+        allow read: if isUserSelf(userId);
+        allow create: if isSignedIn();
+        allow update: if isUserSelf(userId);
+        allow delete: if isUserSelf(userId) || isAdmin();
+      }
+
+      // --- Transactions subcollection (for user's donation history) ---
+      match /transactions/{transactionId} {
+        allow read: if isUserSelf(userId);
+        allow create: if isSignedIn();
+        allow update, delete: if false; // Transactions are immutable
+      }
+
+      match /invoices/{invoiceId} {
+        allow read, write: if isUserSelf(userId) || isAdmin();
+      }
+
+      match /staking/{stakingId} {
+        allow read, write: if isUserSelf(userId) || isAdmin();
+      }
+
+      match /messages/{messageId} {
+        allow read, write: if isUserSelf(userId) || isAdmin();
+      }
+
+      match /miningHistory/{historyId} {
+        allow read, write: if isUserSelf(userId) || isAdmin();
+      }
+    }
+
+    match /mining/{userId} {
+      allow read, write: if isUserSelf(userId) || isAdmin();
+    }
+
+    match /userTokens/{userId} {
+      allow read, write: if isUserSelf(userId) || isAdmin();
+    }
+
+    match /prices/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /ads/{adId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /plans/{planId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /dataDeletionRequests/{requestId} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.existingUserId == request.auth.uid);
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /publicDeletionRequests/{requestId} {
+      allow read: if isAdmin();
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /broadcasts/{broadcastId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /manualPayments/{paymentId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /rewards/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+    match /rewards/{docId}/{sub=**} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+    match /rewards/staking/items/{itemId} {
+      allow read, write: if isAdmin();
+    }
+    match /rewards/referrals/items/{itemId} {
+      allow read, write: if isAdmin();
+    }
+    match /rewards/watchAds/items/{itemId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+match /notificationLogs/{logId} {
+  // المستخدم يرى فقط إشعاراته الخاصة، والأدمن يرى كل شيء
+  allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+
+  // المستخدم يعدل أو يحذف إشعاراته الخاصة فقط
+  allow update, delete: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+
+  // الإنشاء فقط للأدمن (عبر لوحة التحكم أو Cloud Function)
+  allow create: if isAdmin();
+
+  // للسماح بالاستعلام من لوحة الأدمن
+  allow list: if isAdmin();
+}
+
+
+
+    match /purchases/{purchaseId} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+       // KYC Approval Logs permissions
+    match /kycApprovalLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /contactMessages/{messageId} {
+      allow read, write: if isAdmin();
+      allow create: if request.auth != null;
+
+      // Replies subcollection for admin replies
+      match /replies/{replyId} {
+        allow read: if isAdmin();
+        allow create: if isAdmin();
+        allow update: if isAdmin();
+        allow delete: if isAdmin();
+      }
+    }
+    
+    // ✅ Balance and Referral Logs permissions
+match /balanceReferralLogs/{logId} {
+  allow read: if isAdmin();
+  allow write: if isAdmin();
+}
+
+// ✅ User Deletion Logs permissions
+match /userDeletionLogs/{logId} {
+  allow read, write: if isAdmin();
+}
+
+// clipboard
+match /clipboard/{itemId} {
+  allow read, write: if isAdmin();
+}
+
+
+// =====================================================
+    // ✅ FSA Collections
+    // =====================================================
+
+    match /{path=**}/members/{memberId} {
+      allow read: if true;
+    }
+
+// للسماح بإنشاء مستند التحالف الرئيسي
+match /alliances/{allianceId} {
+  allow create: if request.auth != null
+  && request.resource.data.ownerUid == request.auth.uid;
+
+  // للسماح بإنشاء مستند العضوية للقائد
+  match /members/{userId} {
+    allow create: if request.auth != null && request.auth.uid == userId;
+  }
+}
+
+    // للسماح بالتحقق من أن اسم التحالف (slug) فريد
+match /allianceSlugs/{slug} {
+  allow get: if request.auth != null;
+  allow create: if request.auth != null;
+}
+
+
+    // --- Alliance Invitations (standalone collection) ---
+    match /allianceInvitations/{invitationId} {
+      // Allow read if:
+      // 1. You are the invited user
+      // 2. You are the inviter
+      // 3. You are a leader/co-leader/owner of the alliance (to see sent invitations)
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (
+        resource.data.invitedUserUid == getUserId() || 
+        resource.data.inviterUid == getUserId()
+      );
+      allow delete: if isSignedIn() && (
+        resource.data.invitedUserUid == getUserId() || 
+        resource.data.inviterUid == getUserId()
+      );
+    }
+
+    // --- Global Community Posts (Public for all) ---
+    match /globalPosts/{postId} {
+      // Anyone can read posts
+      allow read: if true;
+      
+      // Any signed-in user can create posts
+      allow create: if isSignedIn() && 
+                      getUserId() == request.resource.data.authorUid;
+      
+      // Allow update for:
+      // 1. Author updating their own post
+      // 2. System updating commentCount/reactionCounts (transaction)
+      allow update: if isSignedIn() && (
+        resource.data.authorUid == getUserId() ||
+        // Allow commentCount/reactionCounts updates during reactions/comments
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['commentCount', 'updatedAt'])) ||
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reactionCounts', 'updatedAt']))
+      );
+      
+      // Only author can delete their own posts
+      allow delete: if isSignedIn() && 
+                      resource.data.authorUid == getUserId();
+      
+      // Reactions on posts
+      match /reactions/{userId} {
+        allow read: if true;
+        allow write: if isSignedIn() && userId == getUserId();
+      }
+    }
+
+    // --- Global Community Comments ---
+    match /globalPosts/{postId}/comments/{commentId} {
+      // Anyone can read comments
+      allow read: if true;
+      
+      // Any signed-in user can create comments
+      allow create: if isSignedIn() && 
+                      getUserId() == request.resource.data.authorUid;
+      
+      // Only author can update/delete their own comments
+      allow update, delete: if isSignedIn() && 
+                              resource.data.authorUid == getUserId();
+      
+      // Reactions on comments
+      match /reactions/{userId} {
+        allow read: if true;
+        allow write: if isSignedIn() && userId == getUserId();
+      }
+    }
+
+    // --- Old Posts Collection (Keep for backward compatibility) ---
+    match /posts/{postId} {
+      allow read: if isNotBanned(resource.data.allianceId);
+      allow create: if isNotBanned(request.resource.data.allianceId) && getUserId() == request.resource.data.authorUid;
+      allow update, delete: if canModerateContent(resource.data.allianceId, resource.data.authorUid);
+    }
+
+    match /posts/{postId}/comments/{commentId} {
+      allow read: if isNotBanned(resource.data.allianceId);
+      allow create: if isNotBanned(request.resource.data.allianceId) && getUserId() == request.resource.data.authorUid;
+      allow update, delete: if canModerateContent(resource.data.allianceId, resource.data.authorUid);
+    }
+
+    match /allianceListings/{listingId} {
+      // MODIFIED FOR CROSS-PROJECT AUTH: Validate data instead of checking auth token
+      allow create: if request.resource.data.allianceId != null;
+      allow read: if true;
+      allow list: if true;
+      allow update: if isAllianceAdmin(request.resource.data.allianceId);
+      allow delete: if isSignedIn() && exists(/databases/$(database)/documents/alliances/$(request.resource.data.allianceId)) 
+                   && get(/databases/$(database)/documents/alliances/$(request.resource.data.allianceId)).data.ownerUid == request.auth.uid;
+    }
+
+    // match /allianceSlugs/{slug} {
+    //   // MODIFIED FOR CROSS-PROJECT AUTH: Allow public reads for uniqueness check, validate data on create.
+    //   allow get: if true;
+    //   allow create: if request.resource.data.allianceId != null;
+    //   allow list: if isSignedIn();
+    //   allow update, delete: if false;
+    // }
+    
+
+
+    // =====================================================
+    // ✅ Community Features (Events, Polls, Quests)
+    // =====================================================
+    
+    // Alliance Events
+    match /alliances/{allianceId}/events/{eventId} {
+      allow read: if true; // Public read access
+      allow create: if isAllianceMember(allianceId);
+      allow update, delete: if isAllianceAdmin(allianceId) || 
+                              resource.data.creatorUid == getUserId();
+    }
+    
+    // Alliance Polls
+    match /alliances/{allianceId}/polls/{pollId} {
+      allow read: if true; // Public read access
+      allow create: if isAllianceMember(allianceId);
+      allow update, delete: if isAllianceAdmin(allianceId) || 
+                              resource.data.creatorUid == getUserId();
+      
+      // Poll votes
+      match /votes/{userId} {
+        allow read: if isAllianceMember(allianceId);
+        allow write: if isAllianceMember(allianceId) && userId == getUserId();
+      }
+    }
+    
+    // Alliance Posts (Community Feed)
+    match /alliances/{allianceId}/posts/{postId} {
+      allow read: if true; // Public read access
+      allow create: if isAllianceMember(allianceId) && 
+                      request.resource.data.authorUid == getUserId();
+      allow update: if isAllianceMember(allianceId) && (
+        resource.data.authorUid == getUserId() ||
+        isAllianceAdmin(allianceId)
+      );
+      allow delete: if isAllianceMember(allianceId) && (
+        resource.data.authorUid == getUserId() ||
+        isAllianceAdmin(allianceId)
+      );
+      
+      // Post comments
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if isAllianceMember(allianceId) && 
+                        request.resource.data.authorUid == getUserId();
+        allow update, delete: if resource.data.authorUid == getUserId() ||
+                                isAllianceAdmin(allianceId);
+      }
+      
+      // Post reactions
+      match /reactions/{userId} {
+        allow read: if true;
+        allow write: if isAllianceMember(allianceId) && userId == getUserId();
+      }
+    }
+    
+    // Global Quests (Admin creates, everyone can read)
+    match /globalQuests/{questId} {
+      allow read: if true; // Public read access
+      allow create: if isAdmin() || isGlobalAdmin();
+      allow update, delete: if isAdmin() || isGlobalAdmin();
+      
+      // Quest submissions by alliances
+      match /submissions/{submissionId} {
+        allow read: if isAdmin() || isGlobalAdmin() || 
+                      (isSignedIn() && resource.data.allianceId != null && 
+                       isAllianceMember(resource.data.allianceId));
+        allow create: if isSignedIn() && 
+                        request.resource.data.submitterUid == getUserId() &&
+                        request.resource.data.allianceId != null &&
+                        isAllianceMember(request.resource.data.allianceId);
+        allow update: if isAdmin() || isGlobalAdmin();
+        allow delete: if isAdmin() || isGlobalAdmin();
+      }
+    }
+    
+    // Admins collection (for global admin check)
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+    
+    // User Badges collection
+    match /alliances/{allianceId}/userBadges/{userId} {
+      allow read: if true;
+      allow write: if isAdmin() || isGlobalAdmin();
+      
+      match /badges/{badgeId} {
+        allow read: if true;
+        allow write: if isAdmin() || isGlobalAdmin();
+      }
+    }
+
+    // =====================================================
+    // ✅ Private Chat Collections (shared collection)
+    // =====================================================
+    
+    // Private chats shared collection
+    match /privateChats/{chatId} {
+      // chatId format: "uid1_uid2" (sorted alphabetically)
+      function isParticipant() {
+        return isSignedIn() && (
+          chatId.matches('.*' + getUserId() + '_.*') ||
+          chatId.matches('.*_' + getUserId())
+        );
+      }
+      
+      allow read: if isParticipant();
+      allow create: if isParticipant();
+      allow update: if isParticipant();
+      allow delete: if false; // Chats cannot be deleted
+      
+      // Messages subcollection
+      match /messages/{messageId} {
+        allow read: if isParticipant();
+        allow create: if isParticipant() && 
+                        request.resource.data.senderUid == getUserId() &&
+                        request.resource.data.participants.hasAll([getUserId()]);
+        allow update: if isParticipant();
+        allow delete: if isParticipant() && resource.data.senderUid == getUserId();
+      }
+    }
+    
+    // =====================================================
+    // ✅ Alliance System (Public Room)
+    // =====================================================
+    match /allianceSystem/publicRoom {
+      allow read: if isSignedIn();
+      
+      // Public room messages
+      match /messages/{messageId} {
+        function isInAnyAlliance() {
+          // User must be a member of at least one alliance
+          return isSignedIn();
+        }
+        
+        allow read: if isInAnyAlliance();
+        allow create: if isInAnyAlliance() && 
+                        request.resource.data.senderUid == getUserId();
+        allow update: if resource.data.senderUid == getUserId();
+        allow delete: if resource.data.senderUid == getUserId();
+      }
+    }
+    
+    // =====================================================
+    // ✅ Gift Distributions Collection
+    // =====================================================
+    match /giftDistributions/{giftId} {
+      allow read: if isAdmin() || isGlobalAdmin();
+      allow write: if isAdmin() || isGlobalAdmin();
+    }
+
+    // =====================================================
+    // ✅ CollectionGroup queries for messages
+    // =====================================================
+// Allow listing messages for collectionGroup queries
+match /{path=**}/messages {
+  allow list: if isSignedIn();
+}
+
+// Allow admin operations on contact message replies
+match /contactMessages/{messageId}/replies/{replyId} {
+  allow read: if isAdmin();
+  allow create: if isAdmin();
+  allow update: if isAdmin();
+  allow delete: if isAdmin();
+}
+
+    match /{path=**}/messages/{messageId} {
+      allow read: if isSignedIn() &&
+                     (resource.data.recipientUid == getUserId() ||
+                      resource.data.senderUid == getUserId());
+    }
+
+    match /{path=**}/roomMessages/{messageId} {
+      allow read: if isSignedIn();
+    }
+}
+}
+
+

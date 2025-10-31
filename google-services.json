@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "3676998780",
+    "project_id": "flysky-site",
+    "storage_bucket": "flysky-site.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3676998780:android:6d18cd417d4512bb550df9",
+        "android_client_info": {
+          "package_name": "io.fsncrew.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3676998780-8c4d459vk8jok1j24d718ou9rcdsrsr0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.fsncrew.app",
+            "certificate_hash": "2194b527e108bfc8c5aaa68c2184c5eba9bec4bc"
+          }
+        },
+        {
+          "client_id": "3676998780-oueb191djkpj7brto975gt9lda78safl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.fsncrew.app",
+            "certificate_hash": "423ef6aea921dbd99f45132558da550e60f3a202"
+          }
+        },
+        {
+          "client_id": "3676998780-vsuubvsa4mr2rsb3c4jtvidq0c871j9t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.fsncrew.app",
+            "certificate_hash": "b5554097a8ef4190fd4fff3efd705960c786bcd6"
+          }
+        },
+        {
+          "client_id": "3676998780-bqji2eb54j6vu3mgp1898akih6gv44p7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAZVhYRgRjt_dtKS_QmuDKoyn--efnna8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3676998780-bqji2eb54j6vu3mgp1898akih6gv44p7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "3676998780-bcc01ipqat369sulpn2m1g9m2kg1jkbn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "GoogleService-Info.plist"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,48 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "functions": {
+    "source": "function-source",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "*.local"
+    ],
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint"
+    ],
+    "httpOptions": {
+      "cors": {
+        "origin": ["http://localhost:5173", "http://localhost:3000", "https://fsncrew.io", "https://www.fsncrew.io"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allowHeaders": ["Content-Type", "Authorization", "Accept"],
+        "maxAge": 3600
+      }
+    }
+  },
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "**",
+        "destination": "https://www.fsncrew.io",
+        "type": 301,
+        "excludes": ["app-ads.txt"]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
