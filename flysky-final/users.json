@@ -1,0 +1,14 @@
+[
+  {
+    "uid": "user1UID",
+    "fullName": "Test User One",
+    "email": "user1@example.com",
+    "balance": 5000
+  },
+  {
+    "uid": "user2UID",
+    "fullName": "Test User Two",
+    "email": "user2@example.com",
+    "balance": 3000
+  }
+]
