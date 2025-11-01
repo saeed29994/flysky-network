@@ -1,0 +1,2612 @@
+{
+  "rewardmang": {
+  "RewardsManagement": "奖励管理",
+  "DataDeletion": "删除数据",
+  "rewardsDescription": "管理奖励、积分和礼品配置。",
+  "GiftManagement": "礼品管理",
+  "GiftDescription": "控制并更新所有可供用户使用的礼品。"
+}
+,
+  "MessagePage": {
+    "spamMessages": "垃圾消息",
+    "urgentMessages": "紧急消息",
+    "unreadMessages": "未读消息",
+    "totalMessages": "总消息数",
+    "pageTitle": "联系消息",
+    "pageSubtitle": "管理用户联系消息",
+    "filters": "筛选",
+    "deleteAll": "删除全部",
+    "searchPlaceholder": "按姓名、邮箱或消息搜索...",
+    "statusAll": "全部状态",
+    "statusUnread": "未读",
+    "statusRead": "已读",
+    "statusReplied": "已回复",
+    "priorityAll": "全部优先级",
+    "priorityNormal": "正常",
+    "priorityUrgent": "紧急",
+    "prioritySpam": "垃圾",
+    "dateAll": "全部时间",
+    "dateToday": "今天",
+    "dateWeek": "本周",
+    "dateMonth": "本月",
+    "loading": "正在加载消息...",
+    "noMessages": "无消息",
+    "noMessagesDesc": "未找到符合筛选条件的联系消息。",
+    "confirmDeleteTitle": "删除消息",
+    "confirmDelete": "您确定要删除此消息吗？此操作无法撤销。",
+    "cancel": "取消",
+    "delete": "删除",
+    "confirmDeleteAllTitle": "删除全部消息",
+    "warning": "警告",
+    "confirmDeleteAll": "您确定要删除全部消息吗？此操作无法撤销。",
+    "affectedMessages": "受影响的消息",
+    "fetchError": "加载消息失败",
+    "statusUpdated": "消息状态已更新",
+    "statusUpdateError": "更新消息状态失败",
+    "priorityUpdated": "消息优先级已更新",
+    "priorityUpdateError": "更新消息优先级失败",
+    "messageDeleted": "消息删除成功",
+    "deleteError": "删除消息失败",
+    "allMessagesDeleted": "全部消息删除成功",
+    "deleteAllError": "删除全部消息失败",
+    "deleteMessage": "删除消息",
+    "actions": "操作",
+    "apply": "应用",
+    "deletingMessages": "正在删除消息...",
+    "applyingChanges": "正在应用更改...",
+    "selectall": "全选",
+    "markAllUnread": "标记所有为未读",
+    "markAllread": "标记所有为已读",
+    "markAllReplied": "标记所有为已回复",
+    "markAllNormal": "标记所有为普通",
+    "markAllUrgent": "标记所有为紧急",
+    "markAllSpam": "标记所有为垃圾邮件"
+  },
+  "general": {
+    "welcome": "欢迎来到 FlySky Network",
+    "mining": "挖矿",
+    "claim": "领取奖励",
+    "balance": "我的余额",
+    "claimed": "已领取",
+    "newBalance": "新余额",
+    "readyToMine": "准备开始挖矿了吗？",
+    "startMining": "开始挖矿"
+  },
+  "plan": {
+    "title": "经济舱",
+    "startNew": "根据您的计划开始新的质押周期",
+    "current": "当前计划："
+  },
+  "form": {
+    "amount": "质押金额"
+  },
+  "duration": {
+    "month": "月",
+    "months": "个月"
+  },
+  "followPopup": {
+    "title": "在 X 上关注我们",
+    "message": "获取奖励！关注我们在 X（@fsncrew）上的官方账号，即可立即领取 100 FSN。",
+    "button": "关注我们并领取 100 FSN",
+    "close": "稍后再说"
+  },
+  "staking": "质押",
+  "startStaking": "开始质押",
+  "stakingRecords": "质押记录",
+  "activeStaking": "进行中的质押",
+  "completedStaking": "已完成的质押",
+  "noActiveStaking": "没有进行中的质押。",
+  "noCompletedStaking": "尚无已完成的质押。",
+  "claimed": "已领取 ✅",
+  "plans": {
+    "title": "选择您的套餐",
+    "subtitle": "通过我们的会员计划解锁高级功能并赚取 FSN。FSN 是应用内使用的虚拟代币，适用于更多功能。",
+    "mostPopular": "最受欢迎",
+    "items": {
+      "business": {
+        "title": "商务舱",
+        "price": "14.99",
+        "description": "包含所有商务舱功能，助力提升您的 FSN 奖励",
+        "features": [
+          "100,000 FSN 奖励",
+          "高级挖矿",
+          "优先支持",
+          "质押访问"
+        ],
+        "buttonText": "选择商务舱"
+      },
+      "first-6": {
+        "title": "头等舱（6个月）",
+        "price": "119.99",
+        "description": "包含所有头等舱功能，助力提升您的 FSN 奖励",
+        "features": [
+          "500,000 FSN 奖励",
+          "包含所有商务功能",
+          "更快的挖矿",
+          "活动访问"
+        ],
+        "buttonText": "选择头等舱"
+      },
+      "firstLifetime": {
+        "title": "头等舱（终身）",
+        "price": "199.99",
+        "description": "包含头等舱（终身）功能，助力提升您的 FSN 奖励",
+        "features": [
+          "1,000,000 FSN 奖励",
+          "最高挖矿",
+          "终身访问",
+          "高级功能访问"
+        ],
+        "buttonText": "选择终身套餐"
+      }
+    }
+  },
+  "fsnInfo": {
+    "title": "关于 FSN 代币",
+    "description": "FSN 是仅能在应用内使用的虚拟代币，可用于挖矿、质押和升级等功能。不可提现、出售或外部交易。",
+    "miningRewards": {
+      "title": "挖矿奖励",
+      "desc": "使用 FSN 实现更快的挖矿和更高的奖励"
+    },
+    "stakingAccess": {
+      "title": "质押访问",
+      "desc": "质押 FSN 以获得额外奖励"
+    },
+    "premiumFeatures": {
+      "title": "高级功能",
+      "desc": "解锁专属功能与奖励"
+    }
+  },
+  "transactions": {
+    "membershipBonus": "收到 {{plan}} 会员奖励 (+{{amount}} FSN)",
+    "miningReward": "领取挖矿奖励 (+{{amount}} FSN)",
+    "watchToEarnReward": "领取观看奖励 (+{{amount}} FSN)",
+    "stakingLock": "质押 {{amount}} FSN {{duration}} 个月",
+    "stakingReward": "领取质押奖励 (+{{amount}} FSN)"
+  },
+  "first6": "头等舱（6个月）",
+  "firstLifetime": "头等舱（终身）",
+  "stakingSection": {
+    "endsOn": "结束时间",
+    "expectedReturn": "预期收益",
+    "claimRewards": "领取奖励",
+    "claimIn": "领取时间"
+  },
+  "loading": {
+    "user": "用户未加载。请先登录。",
+    "processing": "处理中...",
+    "membershipData": "正在加载会员数据..."
+  },
+  "error": {
+    "userNotLoaded": "用户未加载。",
+    "invalidAmount": "请输入有效的金额和期限。",
+    "exceedsBalance": "质押金额超过您当前的余额。",
+    "notAuthenticated": "您必须登录才能领取。",
+    "alreadyClaimed": "此奖励已被领取。",
+    "notEndedYet": "此质押期尚未结束。",
+    "claimFailed": "领取奖励失败。",
+    "stakeFailed": "创建质押条目失败。"
+  },
+  "success": {
+    "stakeCreated": "质押条目创建成功！",
+    "claimed": "奖励领取成功！"
+  },
+  "stakingCard": {
+    "title": "您的质押摘要",
+    "lockedAmount": "锁定金额",
+    "passiveIncome": "被动收入生成",
+    "flexiblePeriods": "灵活的质押期限",
+    "highApyReturns": "高APY回报",
+    "status": "状态",
+    "active": "活跃",
+    "currentlyLocked": "当前锁定",
+    "economy": "有限回报的基础质押。",
+    "business": "中等回报的商务质押计划。",
+    "first6": "高回报的6个月高级计划。",
+    "firstLifetime": "最大回报的终身计划。"
+  },
+  "planNames": {
+    "economy": "经济舱",
+    "business": "商务舱",
+    "first-6": "头等舱（6个月）",
+    "first-lifetime": "头等舱（终身）"
+  },
+  "planFeatures": {
+    "advancedMining": "高级挖矿",
+    "prioritySupport": "优先支持",
+    "stakingAccess": "质押访问",
+    "allBusinessFeatures": "所有商务功能",
+    "fasterMining": "更快挖矿",
+    "eventAccess": "活动访问",
+    "highestMining": "最高挖矿",
+    "lifetimeAccess": "终身访问",
+    "accessToPremiumFeatures": "访问高级功能"
+  },
+  "dashboard": {
+    "welcome": "欢迎来到 FlySky Network",
+    "tagline": "探索。赚取。成长。",
+    "loading": "正在加载仪表板...",
+    "stats": {
+      "totalBalance": "总余额",
+      "availableBalance": "可用余额",
+      "referrals": "推荐",
+      "miningLevel": "挖矿等级"
+    },
+    "quickActions": {
+      "title": "快速操作",
+      "mining": {
+        "title": "每日挖矿",
+        "description": "开始赚取每日奖励"
+      },
+      "staking": {
+        "title": "质押",
+        "description": "赚取被动收入"
+      },
+      "wallet": {
+        "title": "钱包",
+        "description": "管理您的资金"
+      },
+      "referrals": {
+        "title": "推荐",
+        "description": "邀请朋友并赚取"
+      }
+    },
+    "features": {
+      "title": "平台功能",
+      "popular": "热门",
+      "membership": {
+        "title": "会员计划",
+        "description": "升级您的计划以获得更好的奖励"
+      },
+      "playToEarn": {
+        "title": "玩赚",
+        "description": "玩游戏并赚取代币"
+      },
+      "amazingRewards": {
+        "title": "惊人奖励",
+        "description": "挖矿、质押和推荐赚取奖励"
+      },
+      "watchToEarn": {
+        "title": "看赚",
+        "description": "观看广告并赚取奖励"
+      },
+      "inbox": {
+        "title": "收件箱",
+        "description": "消息和通知"
+      },
+      "kyc": {
+        "title": "KYC 验证",
+        "description": "验证您的身份"
+      },
+      "settings": {
+        "title": "设置",
+        "description": "账户偏好"
+      }
+    },
+    "contactSupport": {
+      "title": "联系支持",
+      "description": "从我们的团队获得帮助和支持"
+    },
+    "aboutUs": {
+      "title": "关于我们",
+      "description": "了解更多关于 FlySky Network"
+    },
+    "contactModal": {
+      "title": "联系支持",
+      "subtitle": "我们在这里帮助您",
+      "name": "姓名",
+      "namePlaceholder": "您的姓名",
+      "email": "邮箱",
+      "emailPlaceholder": "您的@邮箱.com",
+      "message": "消息",
+      "messagePlaceholder": "我们如何帮助您？",
+      "send": "发送消息",
+      "cancel": "取消"
+    },
+    "miningTitle": "每日挖矿概览",
+    "miningDesc": "根据您的计划每日赚取 FSN 代币。升级以获得更多奖励。",
+    "startMining": "立即开始挖矿",
+    "membershipTitle": "会员计划",
+    "bonus": "奖励：",
+    "viewMembership": "查看会员详情",
+    "referralTitle": "邀请赚取",
+    "referralDesc": "分享您的邀请链接，好友加入 FlySky 后可获得奖励。",
+    "viewReferral": "查看邀请计划",
+    "playTitle": "边玩边赚",
+    "playDesc": "即将上线：有趣的小游戏让您赚取更多 FSN！",
+    "playButton": "探索边玩边赚",
+    "aboutTitle": "关于我们",
+    "aboutDesc": "FlySky Network 是一个融合挖矿、质押、游戏和 NFT 的下一代数字经济平台。",
+    "aboutButton": "了解更多关于我们",
+    "stakingTitle": "质押机会",
+    "stakingDesc": "质押您的 FSN 代币，通过灵活的计划和高收益获取被动收入。",
+    "stakingButton": "前往质押页面"
+  },
+  "auth": {
+    "loginTitle": "登录",
+    "email": "电子邮箱",
+    "password": "密码",
+    "forgotPassword": "忘记密码？",
+    "login": "登录",
+    "loggingIn": "登录中...",
+    "or": "或",
+    "loginWithGoogle": "使用 Google 登录",
+    "loginWithApple": "使用 Apple 继续",
+    "signUpWithApple": "使用 Apple 注册",
+    "pleaseWait": "请稍候...",
+    "noAccount": "没有账户？",
+    "signUp": "注册",
+    "googlePopupError": "Google 登录失败。请使用 Chrome 等常规浏览器。",
+    "googleGenericError": "Google 登录失败。请重试。",
+    "createAccount": "创建账户",
+    "fullName": "全名",
+    "referralCode": "推荐码（可选）",
+    "agreeTo": "我同意",
+    "terms": "条款和条件",
+    "and": "和",
+    "privacy": "隐私政策",
+    "signUpWithGoogle": "使用 Google 注册",
+    "haveAccount": "已有账户？",
+    "bySigningUp": "注册即表示您同意我们的"
+  },
+  "kyc": {
+    "title": "身份验证 (KYC)",
+    "idsAccepted": {
+      "title": "接受的身份文件",
+      "option1": "身份证",
+      "option2": "护照",
+      "option3": "驾驶证",
+      "option4": "居留许可"
+    },
+    "idPhotos": {
+      "title": "身份证照片要求",
+      "option1": "照片必须清晰，所有角落可见。",
+      "option2": "无眩光、阴影或模糊。",
+      "option3": "身份证不能过期。",
+      "option4": "所有信息必须可读。"
+    },
+    "samples": {
+      "front": "正面示例",
+      "back": "背面示例",
+      "selfie": "自拍示例"
+    },
+    "selfie": {
+      "title": "身份证自拍要求",
+      "option1": "将身份证放在脸旁边。",
+      "option2": "脸和身份证必须清晰可见。",
+      "option3": "无滤镜或图像编辑。",
+      "option4": "良好的光线和中性背景。",
+      "option5": "不要遮挡身份证的任何部分。"
+    },
+    "uploadSection": {
+      "title": "上传文件",
+      "front": "上传身份证正面",
+      "back": "上传身份证背面",
+      "selfie": "上传身份证自拍"
+    },
+    "uploadAllDocuments": "请上传所有必需的文件。",
+    "uploadSuccess": "文件上传成功。验证正在审核中。",
+    "uploadFailed": "文件上传失败。请重试。",
+    "uploading": "上传中...",
+    "submit": "提交审核",
+    "disclaimer": {
+      "title": "重要说明",
+      "content": "您的个人数据安全存储，仅用于身份验证目的。我们不会与任何第三方共享您的数据。"
+    },
+    "faq": {
+      "title": "常见问题",
+      "q1": "为什么我需要完成 KYC？",
+      "a1": "确保安全并遵守金融法规。",
+      "q2": "验证需要多长时间？",
+      "a2": "通常在24至72小时内。",
+      "q3": "如果我的 KYC 被拒绝怎么办？",
+      "a3": "您将收到拒绝原因通知，并可以重新提交文件。",
+      "q4": "我可以稍后更新文件吗？",
+      "a4": "是的，您可以随时重新提交更新的文件。",
+      "q5": "我的信息安全吗？",
+      "a5": "是的。所有数据都经过加密并安全存储。"
+    },
+    "subtitle": "完成身份验证以解锁高级功能并确保账户安全",
+    "acceptedDocuments": "接受的身份文件",
+    "photoRequirements": "身份证照片要求",
+    "selfieRequirements": "自拍照片要求",
+    "uploadDocuments": "上传验证文件",
+    "commonQuestions": "常见问题",
+    "processingTime": "处理时间",
+    "processingTimeValue": "24-48小时",
+    "typicalProcessingTime": "典型处理时间",
+    "processingDescription": "您的文件将由我们的验证团队审核。流程完成后您将收到通知。"
+  },
+  "watchToEarn": {
+    "title": "观看赚取",
+    "description": "观看 {{count}} 个广告，每日赚取 {{reward}} FSN。",
+    "fsnRewards": "FSN 奖励",
+    "earnTokensByWatching": "通过观看视频广告赚取代币",
+    "watchProgress": "观看进度",
+    "trackDailyProgress": "跟踪您的每日视频广告观看进度",
+    "progress": "进度",
+    "complete": "完成",
+    "videoAdsWatchedToday": "今日观看的视频广告",
+    "currentBalanceFSN": "当前余额 (FSN)",
+    "waitTime": "等待时间",
+    "howItWorks": "工作原理",
+    "simple3StepProcess": "简单的3步流程",
+    "watchVideoAds": "观看视频广告",
+    "watchAdsDaily": "每日观看 {{count}} 个视频广告",
+    "completeViewing": "完成观看",
+    "watchEachAdCompletely": "完整观看每个广告（20秒）",
+    "claimRewards": "领取奖励",
+    "earnFSNTokens": "赚取 {{amount}} FSN 代币",
+    "rewardsInfo": "奖励信息",
+    "dailyEarningStructure": "每日收益结构",
+    "dailyLimit": "每日限制",
+    "videoAds": "视频广告",
+    "watchAdsPerDay": "每日观看 {{count}} 个视频广告",
+    "dailyReward": "每日奖励",
+    "completeAllAdsToClaim": "完成所有广告即可领取",
+    "adDuration": "广告时长",
+    "twentySeconds": "20秒",
+    "eachAdTwentySeconds": "每个视频广告时长为20秒",
+    "videoAd": "视频广告",
+    "pleaseWatchCompleteAd": "请完整观看广告",
+    "videoAdPlaceholder": "视频广告占位符",
+    "videoAdPlaceholderDescription": "这里将显示实际的视频广告",
+    "pleaseWaitForAdComplete": "请等待广告完成",
+    "processingAdCompletion": "处理广告完成中...",
+    "watchVideoAdAndEarn": "观看视频广告并赚取奖励",
+    "watched": "已观看广告",
+    "balance": "您当前的余额",
+    "watchAd": "观看广告",
+    "rewardClaimed": "🎉 您成功领取了 {{amount}} FSN！",
+    "adWatched": "✅ 广告已计入！",
+    "waitMessage": "请等待倒计时结束：{{time}}",
+    "note": "🎁 完成每日广告观看以赚取您的奖励。",
+    "adModalTitle": "观看广告并等待倒计时",
+    "timer": "剩余时间：",
+    "seconds": "秒",
+    "openAd": "打开广告",
+    "stayOnPage": "广告已在新标签页中打开。请在此页面停留直到倒计时结束。",
+    "confirmAdWatched": "确认已观看广告",
+    "shareAd": "📢 分享广告",
+    "shareBonusReceived": "✅ 您因分享横幅获得了 50 FSN！",
+    "shareAlreadyClaimed": "❌ 您在过去12小时内已经领取了奖励。",
+    "shareAdTitle": "分享赚取",
+    "shareAdDesc": "在 X 上分享此横幅，每日一次获得 50 FSN。",
+    "shareOnX": "在 X 上分享"
+  },
+  "referralProgram": "推荐计划",
+  "inviteFriendsEarn": "邀请您的朋友，当他们加入并验证时赚取奖励。",
+  "copied": "已复制！",
+  "verifiedReferrals": "已验证推荐",
+  "pendingReferrals": "待处理推荐",
+  "currentReward": "每次推荐当前奖励",
+  "rewardTiers": "奖励等级",
+  "bonusTier1": "前10个已验证推荐：每个100 FSN",
+  "bonusTier2": "接下来10个推荐：每个200 FSN",
+  "bonusTier3": "超过20个推荐：每个300 FSN",
+  "yourReferralLink": "您的推荐链接",
+  "downloadQR": "下载二维码",
+  "scanToShare": "扫描或下载以分享链接",
+  "verifiedCount": "已验证推荐",
+  "verifiedEmails": "已验证邮箱",
+  "yourReferrals": "您的推荐",
+  "email": "邮箱",
+  "status": "状态",
+  "action": "操作",
+  "noReferrals": "尚无推荐。",
+  "verified": "已验证",
+  "pending": "待处理",
+  "rejected": "已拒绝",
+  "claim": "领取",
+  "referralBonus": {
+    "loading": "加载中...",
+    "claimButton": "领取推荐奖励",
+    "noBonus": "暂无可领取的奖励。",
+    "claimedSuccess": "🎉 推荐奖励领取成功！",
+    "claimedError": "领取奖励时发生错误。",
+    "fcmTitle": "🎁 推荐奖励已就绪",
+    "fcmBody": "有新的推荐已验证，您的奖励可以领取了！",
+    "verifiedTitle": "推荐奖励已验证",
+    "verifiedBody": "恭喜！您的推荐已验证。您获得了 {{rewards}} 枚 FSN 代币。"
+  },
+  "welcomeBonus": {
+    "title": "🎉 欢迎加入 FlySky Network！",
+    "body": "您已获得 {{amount}} FSN 欢迎奖励。点击下方领取您的奖励",
+    "fcmTitle": "🎁 欢迎奖励",
+    "fcmBody": "您收到了 {{amount}} FSN 欢迎奖励！"
+  },
+  "mainNotifications": {
+    "title": "通知",
+    "unread": "未读",
+    "markAllAsRead": "全部标记为已读",
+    "noNotifications": "没有通知",
+    "viewAll": "查看所有通知",
+    "empty": "您没有通知",
+    "loading": "正在加载通知...",
+    "unreadNotifications": "未读通知",
+    "youHaveNoNotifications": "您还没有任何通知",
+    "noFilteredNotifications": "没有通知匹配此筛选器",
+    "markAllRead": "全部标记为已读",
+    "filter": "筛选",
+    "all": "全部",
+    "rewards": "奖励",
+    "messages": "消息",
+    "referrals": "推荐",
+    "mining": "挖矿",
+    "staking": "质押",
+    "types": {
+      "claim_reward": "奖励就绪",
+      "inbox_message": "新消息",
+      "referral_bonus": "推荐奖励",
+      "mining_reminder": "挖矿提醒",
+      "staking_reminder": "质押提醒"
+    }
+  },
+  "pwa": {
+    "title": "安装 FlySky Network 应用",
+    "subtitle": {
+      "ios": "添加到主屏幕以便快速访问",
+      "default": "安装应用以获得更好体验"
+    },
+    "buttons": {
+      "howToInstall": "如何安装",
+      "install": "安装"
+    },
+    "toast": {
+      "installed": "应用安装成功！",
+      "installing": "正在安装应用...",
+      "cancelled": "已取消安装"
+    },
+    "ios": {
+      "title": "安装此应用：",
+      "step1": "点击分享按钮 📤",
+      "step2": "下拉并点击\"添加到主屏幕\" 🏠",
+      "step3": "点击\"添加\"以确认"
+    }
+  },
+  "wallet": {
+    "walletOverview": "💼 钱包概览",
+    "totalBalance": "总余额",
+    "availableBalance": "可用余额",
+    "lockedInStaking": "质押中锁定",
+    "referralRewards": "推荐奖励（仅已验证）",
+    "balanceDistribution": "💹 余额分布",
+    "noBalanceData": "没有余额数据显示。",
+    "transactionHistory": "📜 交易历史",
+    "noTransactions": "尚无交易记录。",
+    "loadingWallet": "加载钱包数据中...",
+    "description": "管理您的 FSN 代币，跟踪余额并查看交易历史",
+    "completePortfolio": "您的完整 FSN 投资组合",
+    "fsnTokens": "FSN 代币",
+    "readyToUse": "随时可用",
+    "inStakingPools": "在质押池中",
+    "fromReferrals": "来自推荐",
+    "visualBreakdown": "投资组合的可视化分解",
+    "fsn": "FSN",
+    "recentActivity": "最近活动",
+    "portfolioStats": "投资组合统计",
+    "quickOverview": "快速概览",
+    "available": "可用",
+    "staked": "已质押",
+    "referrals": "推荐",
+    "total": "总计"
+  },
+  "menu": {
+    "home": "首页",
+    "staking": "质押",
+    "mining": "挖矿",
+    "play": "游戏",
+    "watch": "观看",
+    "referral": "推荐",
+    "wallet": "钱包",
+    "about": "关于",
+    "inbox": "收件箱",
+    "contact": "联系",
+    "profile": "个人资料",
+    "logout": "退出登录",
+    "settings": "设置",
+    "kyc": "KYC 验证",
+    "back": "返回",
+    "sections": {
+      "main": "主要",
+      "earning": "赚取",
+      "account": "账户",
+      "admin": "管理"
+    },
+    "goToAdmin": "前往管理"
+  },
+  "inboxPage": {
+    "description": "管理您的消息、奖励和通知",
+    "fetchingMessages": "正在获取{{tab}}消息...",
+    "noMessagesInInbox": "收件箱中没有消息",
+    "noArchivedMessages": "没有已归档消息",
+    "noDeletedMessages": "没有已删除消息",
+    "pageInfo": "第{{current}}页，共{{total}}页",
+    "rewardAvailable": "奖励可用",
+    "claimRewardToAdd": "领取您的奖励并将其添加到余额中",
+    "claimReward": "领取奖励",
+    "rewardClaimed": "奖励已领取"
+  },
+  "archived": "已归档",
+  "trash": "垃圾箱",
+  "loadingMessages": "正在加载消息...",
+  "noMessages": "没有消息",
+  "archive": "归档",
+  "delete": "删除",
+  "close": "关闭",
+  "about": {
+    "smartContract": "智能合约",
+    "from": "来自",
+    "title": "关于我们",
+    "p1": "FlySky 是一个基于 Web3 的数字生态系统，旨在让每个人都能便捷接触加密世界。",
+    "p2": "我们的平台集成了挖矿、质押、游戏和 NFT，打造一体化的体验，让用户可以在同一个地方赚取、成长并参与。",
+    "scLabel": "SMART - CONTRACT ",
+    "scDesc": "- 去中心化加密应用。"
+  },
+  "profile": {
+    "loadingProfile": "正在加载个人资料...",
+    "about": "关于",
+    "achievements": "成就",
+    "activity": "活动",
+    "stats": "统计",
+    "memberSince": "会员时间",
+    "membershipPlan": "会员计划",
+    "verificationStatus": "验证状态",
+    "referralCode": "推荐码",
+    "quickActions": "快速操作",
+    "editProfile": "编辑个人资料",
+    "startMining": "开始挖矿",
+    "viewStaking": "查看质押",
+    "referralProgram": "推荐计划",
+    "yourAchievements": "您的成就",
+    "progress": "进度",
+    "completedOn": "完成于",
+    "recentActivity": "最近活动",
+    "balance": "余额",
+    "availableForUse": "可供使用",
+    "totalEarnings": "总收入",
+    "lifetimeEarnings": "终身收入",
+    "referrals": "推荐",
+    "totalReferrals": "总推荐数",
+    "miningStatistics": "挖矿统计",
+    "miningLevel": "挖矿等级",
+    "miningEarnings": "挖矿收入",
+    "stakedAmount": "质押金额",
+    "firstClass": "头等舱",
+    "businessClass": "商务舱",
+    "economyClass": "经济舱"
+  },
+  "membershipPage": {
+    "title": "会员计划",
+    "description": "通过我们的会员计划解锁高级功能并赚取 FSN 奖励。FSN 代币是用于增强功能和奖励的虚拟应用内货币。",
+    "currentPlan": "当前计划",
+    "status": "状态",
+    "active": "活跃",
+    "expired": "已过期",
+    "chooseYourPlan": "选择您的计划",
+    "unlockPremiumFeatures": "通过我们的会员计划解锁高级功能",
+    "activated": "已激活",
+    "renew": "续费",
+    "subscribeNow": "立即订阅",
+    "bonus": "奖励",
+    "notSubscribed": "未订阅"
+  },
+  "feature": {
+    "Basic mining": "基础挖矿",
+    "Standard support": "标准支持",
+    "Community access": "社区访问",
+    "Advanced mining": "高级挖矿",
+    "Priority support": "优先支持",
+    "Staking access": "质押访问",
+    "Faster mining": "更快挖矿",
+    "All business features": "所有商业功能",
+    "Event access": "活动访问",
+    "Highest mining": "最高挖矿",
+    "Premium access": "高级访问",
+    "Lifetime access": "终身访问",
+    "Unlocked forever": "永久解锁",
+    "Lifetime perks": "终身特权",
+    "Advanced Mining": "高级挖矿",
+    "Priority Support": "优先支持",
+    "Highest Mining": "最高挖矿",
+    "Lifetime Access": "终身访问",
+    "Premium Access": "高级访问",
+    "Event Access": "活动访问",
+    "Staking Access": "质押访问",
+    "Faster Mining": "更快挖矿",
+    "Basic Mining": "基础挖矿",
+    "Standard Support": "标准支持",
+    "Community Access": "社区访问",
+    "All Business Features": "所有商业功能",
+    "Unlocked Forever": "永久解锁",
+    "Lifetime Perks": "终身特权",
+    "Access to Premium Features": "访问高级功能",
+    "Everything unlocked forever": "永久解锁所有功能",
+    "Limited Staking": "有限质押"
+  },
+  "features": {
+    "titleMobile": "我们的功能",
+    "titleDesktop": "强大的功能",
+    "subtitle": "开始赚取加密货币所需的一切",
+    "alt": {
+      "border": "功能分隔线"
+    },
+    "items": {
+      "mining": {
+        "title": "每日挖矿",
+        "desc": "通过自动化挖矿每天赚取加密货币"
+      },
+      "membership": {
+        "title": "会员计划",
+        "desc": "从经济舱、商务舱或头等舱计划中选择"
+      },
+      "staking": {
+        "title": "质押奖励",
+        "desc": "质押您的代币，以较高 APY 获得被动收入"
+      },
+      "referral": {
+        "title": "推荐计划",
+        "desc": "邀请好友，获得他们活跃贡献的奖励"
+      },
+      "watchToEarn": {
+        "title": "看广告赚取",
+        "desc": "观看广告并获得时间奖励"
+      },
+      "playToEarn": {
+        "title": "玩游戏赚取",
+        "desc": "玩迷你游戏并完成挑战以赚取 FSN"
+      },
+      "amazingRewards": {
+        "title": "惊人奖励",
+        "desc": "挖矿、质押和推荐赚取奖励"
+      }
+    }
+  },
+  "settingsSection": {
+    "profileTitle": "个人资料信息",
+    "fullName": "全名",
+    "email": "电子邮箱",
+    "accountTitle": "账户状态",
+    "currentPlan": "当前计划",
+    "subscriptionEnds": "订阅结束",
+    "upgrade": "升级计划",
+    "passwordTitle": "更改密码",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认新密码",
+    "changePassword": "更改密码",
+    "languageTitle": "首选语言",
+    "noImage": "无可用图片",
+    "selectImage": "请选择图片",
+    "avatarUpdated": "✅ 头像更新成功",
+    "uploadFailed": "❌ 图片上传失败",
+    "fillAllFields": "请填写所有字段",
+    "passwordMismatch": "❌ 密码不匹配",
+    "notAuthenticated": "❌ 用户未认证",
+    "passwordUpdated": "✅ 密码更新成功",
+    "updateFailed": "❌ 密码更新失败",
+    "saveAvatar": "保存头像",
+    "title": "设置",
+    "subtitle": "管理您的账户设置和偏好",
+    "securityTitle": "安全和隐私",
+    "notificationsTitle": "通知",
+    "preferencesTitle": "偏好",
+    "appearanceTitle": "外观",
+    "integrationTitle": "集成",
+    "activityTitle": "账户活动",
+    "selectLanguage": "选择语言",
+    "profile": "个人资料",
+    "security": {
+      "title": "安全设置",
+      "twoFactor": "双因素认证",
+      "loginHistory": "登录历史",
+      "devices": "连接的设备",
+      "sessions": "活跃会话",
+      "passwordChange": "密码更改",
+      "emailVerification": "电子邮件验证",
+      "setup": "设置",
+      "manage": "管理",
+      "view": "查看"
+    },
+    "notifications": {
+      "title": "通知偏好",
+      "emailNotifications": "电子邮件通知",
+      "pushNotifications": "推送通知",
+      "marketing": "营销通讯",
+      "newsletter": "新闻通讯订阅",
+      "updates": "产品更新",
+      "security": "安全警报",
+      "rewards": "奖励和奖金",
+      "staking": "质押更新",
+      "mining": "挖矿警报"
+    },
+    "appearance": {
+      "title": "外观设置",
+      "theme": "主题",
+      "light": "浅色",
+      "dark": "深色",
+      "system": "系统默认",
+      "compact": "紧凑视图",
+      "fontSize": "字体大小",
+      "animations": "启用动画"
+    },
+    "account": "账户",
+    "profileInformation": "个人资料信息",
+    "emailAddress": "电子邮件地址",
+    "enterFullName": "输入您的全名",
+    "yourEmailAddress": "您的电子邮件地址",
+    "uploading": "上传中...",
+    "enterCurrentPassword": "输入当前密码",
+    "enterNewPassword": "输入新密码",
+    "confirmNewPassword": "确认新密码",
+    "notificationPreferences": "通知偏好",
+    "pushNotificationPermission": "推送通知权限",
+    "inAppNotifications": "应用内通知",
+    "showNotificationsInsideApp": "在应用内显示通知（提示和铃铛图标）",
+    "emailNotifications": "电子邮件通知",
+    "receiveNotificationsViaEmail": "通过电子邮件接收通知",
+    "pushNotifications": "推送通知",
+    "receivePushNotificationsOnDevice": "在您的设备上接收推送通知",
+    "marketingEmails": "营销电子邮件",
+    "receivePromotionalEmails": "接收促销电子邮件和优惠",
+    "securityAlerts": "安全警报",
+    "getNotifiedAboutSecurityEvents": "获取安全事件通知",
+    "rewardNotifications": "奖励通知",
+    "getNotifiedAboutNewRewards": "获取新奖励和奖金通知",
+    "themeSettings": "主题设置",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "系统",
+    "soundEffects": "音效",
+    "enableSoundEffectsForInteractions": "为交互启用音效",
+    "accountInformation": "账户信息",
+    "planPrice": "计划价格",
+    "language": "语言",
+    "upgradeYourPlan": "升级您的计划",
+    "unlockPremiumFeatures": "通过我们的头等舱会员资格解锁高级功能和专属福利。",
+    "upgradeNow": "立即升级",
+    "firstClass": "头等舱",
+    "businessClass": "商务舱",
+    "economyClass": "经济舱",
+    "pleaseSelectImageFirst": "请先选择图片",
+    "profileUpdatedSuccessfully": "个人资料更新成功",
+    "failedToUpdateProfile": "更新个人资料失败",
+    "passwordsDontMatch": "密码不匹配",
+    "failedToUpdatePassword": "更新密码失败",
+    "preferences": {
+      "title": "用户偏好",
+      "theme": "主题",
+      "language": "语言",
+      "timezone": "时区",
+      "currency": "显示货币",
+      "dateFormat": "日期格式",
+      "autoplay": "自动播放视频",
+      "sound": "音效"
+    },
+    "activity": {
+      "title": "最近活动",
+      "loginAttempts": "登录尝试",
+      "passwordChanges": "密码更改",
+      "emailUpdates": "电子邮件更新",
+      "deviceLogins": "设备登录",
+      "viewAll": "查看所有活动"
+    },
+    "privacy": {
+      "title": "隐私与数据",
+      "dataDeletion": "数据删除",
+      "requestDataDeletion": "请求数据删除",
+      "dataDeletionDescription": "您可以请求从我们的系统中永久删除您的账户和所有相关数据。此操作无法撤销。",
+      "whatWillBeDeleted": "将被删除的内容：",
+      "deletionItems": [
+        "您的账户档案和个人信息",
+        "所有交易历史和财务数据",
+        "挖矿和质押记录",
+        "通知偏好和设置",
+        "推荐关系和奖励",
+        "KYC验证数据",
+        "所有应用程序偏好和设置"
+      ],
+      "deletionWarning": "⚠️ 警告：此操作是永久性的，无法撤销。您将永久丢失所有数据。",
+      "deletionProcess": "删除过程：",
+      "deletionSteps": [
+        "您的请求将在30天内被审核",
+        "处理开始时您将收到电子邮件确认",
+        "数据删除将在90天内完成",
+        "完成后您将收到最终确认"
+      ],
+      "requestDeletion": "请求数据删除",
+      "cancelRequest": "取消删除请求",
+      "deletionRequested": "删除请求已提交",
+      "deletionRequestedMessage": "您的数据删除请求已提交。您将在24小时内收到电子邮件确认。",
+      "deletionInProgress": "删除进行中",
+      "deletionInProgressMessage": "您的数据删除目前正在处理中。这可能需要长达90天才能完成。",
+      "contactSupport": "联系支持",
+      "contactSupportMessage": "如需即时帮助或有关删除请求的问题，请联系我们的支持团队。"
+    }
+  },
+  "whitepaper": {
+    "whitepaperTitle": "白皮书",
+    "overview": "概述我们项目理念、技术架构和未来计划的综合文档。",
+    "introTitle": "介绍",
+    "intro": "FlySky Network 旨在通过将多个数字元素整合到一个生态系统中来重新定义用户与技术的关系。",
+    "tokenTitle": "FSN 代币",
+    "tokenIntro": "FSN 是 FlySky 虚拟经济的基石，用于虚拟代币赚取、质押、应用内购买和奖励。",
+    "phase": "我们遵循包括预售、公售和全面启动阶段的阶段性执行计划。",
+    "mainSale": "主售分阶段进行，确保公平分配和完全透明。",
+    "uses": "虚拟代币用于：虚拟代币赚取、奖励、应用内市场费用、治理和游戏内角色发展。",
+    "gameTitle": "互动游戏",
+    "gameIntro": "互动游戏结合娱乐和虚拟奖励，提供有趣的游戏体验。",
+    "gameDetails": "我们的游戏提供有趣的体验，奖励虚拟 FSN 代币。",
+    "gameFeaturesTitle": "游戏功能",
+    "status": "目前处于预售准备阶段，每个阶段都有明确的路线图。",
+    "roadmap": "路线图",
+    "roadmapDesc": "包括开发阶段、合作伙伴关系、启动和生态系统扩展。",
+    "security": "安全和透明",
+    "securityDesc": "我们使用智能合约和区块链技术来确保完整性并保护用户。",
+    "conclusion": "结论",
+    "conclusionDesc": "FlySky Network 代表技术、经济和娱乐的统一未来。立即加入我们。",
+    "join": "成为数字革命的一部分 — 立即加入 FlySky Network。",
+    "battleLegendTitle": "互动游戏",
+    "battleLegend": "我们生态系统的一部分是互动游戏 — 结合有趣体验、可定制功能和由 FSN 代币驱动的虚拟经济的娱乐游戏。",
+    "roadmapTitle": "路线图",
+    "securityTitle": "安全和透明"
+  },
+  "stakingPage": {
+    "description": "通过我们先进的质押平台保护您的未来。通过灵活的条款和具有竞争力的回报赚取被动收入。",
+    "currentPlan": "当前计划",
+    "startNewStaking": "开始新质押",
+    "chooseAmountDuration": "选择金额和期限开始赚取收益",
+    "amountToStake": "质押金额",
+    "stakingDuration": "质押期限",
+    "selectDuration": "选择期限",
+    "enterAmount": "输入金额",
+    "stakedAmount": "质押金额",
+    "totalProfit": "总利润",
+    "trackPerformance": "跟踪您的质押表现和历史",
+    "activePositions": "活跃头寸",
+    "completedPositions": "已完成头寸",
+    "endDate": "结束日期",
+    "progress": "进度",
+    "returned": "已返还",
+    "completeFirstStaking": "完成您的第一次质押以查看历史",
+    "availableBalance": "可用余额",
+    "lockedAmount": "锁定金额",
+    "stakingStats": "质押统计",
+    "performanceOverview": "性能概览",
+    "completed": "已完成",
+    "expectedReturn": "预期收益",
+    "startStakingToSee": "开始质押以查看您的活跃头寸",
+    "fsn": "FSN"
+  },
+  "referralPage": {
+    "title": "推荐计划",
+    "description": "邀请朋友一起赚取奖励。分享您的推荐链接并开始赚取 FSN 代币！",
+    "loading": "正在加载推荐数据...",
+    "overview": "推荐概览",
+    "performance": "您的推荐表现",
+    "totalReferrals": "总推荐数",
+    "allTime": "所有时间",
+    "referrals": "推荐",
+    "verified": "已验证",
+    "confirmed": "已确认",
+    "readyToClaim": "准备领取",
+    "pending": "待处理",
+    "awaiting": "等待中",
+    "inReview": "审核中",
+    "yourReferralLink": "您的推荐链接",
+    "shareLinkToEarn": "与朋友分享此链接以赚取奖励",
+    "yourReferrals": "您的推荐",
+    "trackProgress": "跟踪推荐进度",
+    "email": "邮箱",
+    "status": "状态",
+    "action": "操作",
+    "noReferralsYet": "暂无推荐",
+    "shareLinkToStart": "分享您的推荐链接开始！",
+    "claim": "领取",
+    "claimed": "已领取",
+    "bonusTiers": "奖励等级",
+    "rewardStructure": "奖励结构",
+    "tier1": "等级1",
+    "tier1Description": "1-10个已验证推荐",
+    "tier2": "等级2",
+    "tier2Description": "11-20个已验证推荐",
+    "tier3": "等级3",
+    "tier3Description": "21+个已验证推荐",
+    "referralSummary": "推荐摘要",
+    "performanceOverview": "表现概览",
+    "rejected": "已拒绝",
+    "verifiedEmails": "已验证邮箱",
+    "downloadQR": "下载二维码",
+    "scanToShare": "扫描分享",
+    "bonus": "推荐奖励",
+    "claimBonuses": "领取可用奖励"
+  },
+  "playToEarnPage": {
+    "title": "边玩边赚",
+    "description": "将您的游戏技能转化为真实奖励！玩刺激的游戏，完成任务，赚取 FSN 代币。",
+    "comingSoon": "即将推出",
+    "workingHard": "我们正在努力为您带来精彩的游戏体验",
+    "stayTuned": "敬请期待！",
+    "underDevelopment": "我们的边玩边赚游戏平台正在开发中。准备好将您的游戏技能转化为真实的 FSN 奖励！",
+    "gamingPlatform": "游戏平台",
+    "whatToExpect": "期待什么",
+    "dailyRewards": "每日奖励",
+    "dailyRewardsDescription": "通过完成任务和挑战每日赚取 FSN 代币",
+    "tokenRewards": "代币奖励",
+    "tokenRewardsDescription": "将您的游戏成就转化为真实的 FSN 代币",
+    "startPlaying": "开始游戏",
+    "beginJourney": "开始您的游戏之旅",
+    "chooseGame": "选择游戏",
+    "selectGameModes": "从各种游戏模式中选择",
+    "playAndEarn": "边玩边赚",
+    "completeMissions": "完成任务并赚取 FSN",
+    "rewardsPreview": "奖励预览",
+    "earningStructure": "收益结构",
+    "dailyLogin": "每日登录",
+    "dailyLoginDescription": "每日登录赚取奖励",
+    "gameWins": "游戏胜利",
+    "gameWinsDescription": "赢得游戏赚取代币",
+    "achievements": "成就",
+    "achievementsDescription": "解锁特殊成就"
+  },
+  "planComparison": {
+    "title": "计划比较",
+    "subtitle": "按计划的每日限额",
+    "current": "当前",
+    "perDay": "每天",
+    "upgradePlan": "升级计划"
+  },
+  "miningPage": {
+    "earningsTableTitle": "预期挖矿收益",
+    "earningsTableSubtitle": "每 FSN 0.01 美元收益",
+    "per12hMonthly": "每12小时 / 月度 {{monthly}} FSN",
+    "earningsAtPrice": "每 FSN 0.01 美元收益",
+    "expectedReturns": "预期回报",
+    "boostMiningTitle": "💎🚀 提升您的挖矿能力！",
+    "boostMiningDesc": "每12小时开始赚取收益 — 您挖到的每个FSN已经价值0.01美元",
+    "publicSaleSoon": "公开销售即将宣布 — 请保持关注并继续挖矿！",
+    "balance": "余额",
+    "available": "可用",
+    "fsn": "FSN",
+    "currentPlan": "当前计划",
+    "currentCycle": "当前周期",
+    "complete": "完成",
+    "day": "天",
+    "progress": "进度",
+    "dailyMiningRewards": "每日挖矿奖励",
+    "miningCycles": "12小时挖矿周期",
+    "manualClaimSystem": "手动领取系统",
+    "miningStats": "挖矿统计",
+    "performanceOverview": "性能概览",
+    "currentMined": "当前已挖",
+    "fsnDailyMining": "每日 FSN 挖矿",
+    "readyToMine": "准备开始挖矿了吗？",
+    "startMining": "开始挖矿",
+    "dailyLimit": "每日限额",
+    "cycle": "周期",
+    "hours": "小时",
+    "claimType": "领取类型",
+    "manual": "手动",
+    "dailyLimitLabel": "每日限额",
+    "timeRemaining": "剩余时间",
+    "readyToClaim": "⏳ 准备领取您的挖矿奖励！",
+    "unlockRewards": "解锁奖励",
+    "claim": "领取奖励",
+    "miningInProgress": "挖矿进行中",
+    "planNames": {
+      "economy": "经济舱",
+      "business": "商务舱",
+      "first": "头等舱",
+      "first-6": "头等舱（6个月）",
+      "first-lifetime": "头等舱（终身）"
+    },
+    "miningHistory": "挖矿历史",
+    "loading": "加载中...",
+    "loadingPlanData": "正在加载计划数据...",
+    "planNotFound": "未找到计划",
+    "planNotFoundDesc": "无法加载计划信息。请稍后重试。"
+  },
+  "subscribeToPlan": "订阅计划",
+  "selectedPlan": "选定计划",
+  "price": "价格",
+  "bonus": "奖励",
+  "planFeaturesTitle": "计划功能",
+  "paymentMethod": "付款方式",
+  "inAppPurchase": "应用内购买",
+  "securePayment": "安全付款",
+  "importantNotice": "重要通知",
+  "fsnVirtualCurrency": "FSN 代币是虚拟应用内货币",
+  "fsnUsageDescription": "只能在应用内用于挖矿、质押和升级等功能。不能在外部提取、出售或交易。",
+  "purchaseNow": "立即购买",
+  "restorePurchases": "恢复购买",
+  "purchaseTerms": "购买即表示您同意我们的服务条款和隐私政策。",
+  "purchaseFailed": "购买失败。请重试。",
+  "bonusReceived": "收到奖励",
+  "oneTimePayment": "一次性付款",
+  "bonusDescription": "用于增强功能的虚拟应用内货币",
+  "processing": "处理中...",
+  "paymentCompleted": "付款完成",
+  "subscriptionProcessed": "您的订阅已成功处理。",
+  "subscriptionBonusTitle": "🎁 收到订阅奖励",
+  "subscriptionBonusBody": "您因订阅 {{plan}} 获得了 {{amount}} FSN 奖励！",
+  "subscriptionBonusToast": "🎉 {{amount}} FSN 奖励已添加到您的余额！",
+  "contact": {
+    "title": "联系我们",
+    "description": "有疑问或反馈？我们很乐意听取您的意见。",
+    "name": "您的姓名",
+    "namePlaceholder": "输入您的全名",
+    "email": "您的邮箱",
+    "emailPlaceholder": "输入您的邮箱地址",
+    "message": "您的消息",
+    "messagePlaceholder": "告诉我们如何帮助您...",
+    "send": "发送消息",
+    "sendMessage": "给我们发送消息",
+    "sending": "发送中...",
+    "thankYou": "谢谢！我们会尽快回复您。",
+    "fillAllFields": "请填写所有字段。",
+    "getInTouch": "联系我们",
+    "phone": "电话",
+    "address": "地址",
+    "faq": "常见问题",
+    "faq1": {
+      "question": "如何开始挖矿？",
+      "answer": "只需导航到挖矿页面并点击\"开始挖矿\"即可开始赚取每日奖励。"
+    },
+    "faq2": {
+      "question": "推荐奖励如何运作？",
+      "answer": "使用您的推荐链接邀请朋友，当他们加入并订阅计划时您将获得奖励。"
+    },
+    "faq3": {
+      "question": "有哪些不同的会员计划？",
+      "answer": "我们提供经济舱、商务舱和头等舱计划，具有递增的福利和奖励。"
+    },
+    "getInTouchViaEmail": "通过电子邮件联系我们",
+    "callUsDirectly": "直接致电我们",
+    "ourMainOffice": "我们的主要办公室",
+    "supportFeatures": "为什么选择我们的支持？",
+    "support247": "24/7 支持",
+    "roundTheClockAssistance": "全天候协助",
+    "secureCommunication": "安全通信",
+    "yourDataIsProtected": "您的数据受到保护",
+    "quickResponse": "快速响应",
+    "weReplyWithin24Hours": "我们在24小时内回复"
+  },
+  "notAuthenticated": "用户未认证。",
+  "walletOverview": "💼 钱包概览",
+  "totalBalance": "总余额",
+  "availableBalance": "可用余额",
+  "lockedInStaking": "质押中锁定",
+  "referralRewards": "推荐奖励（仅已验证）",
+  "balanceDistribution": "💹 余额分布",
+  "noBalanceData": "没有余额数据可用。",
+  "transactionHistory": "📜 交易历史",
+  "noTransactions": "没有要显示的交易。",
+  "loadingWallet": "加载钱包数据中...",
+  "statusMsg": {
+    "kyc": "⚠️ 完成您的 KYC 以访问所有功能。",
+    "economy": "🚀 您正在使用免费计划。升级以解锁更多福利。",
+    "business": "🎯 商务舱为您提供增强访问权限。头等舱解锁全部潜力。",
+    "first": "👑 您正在享受头等舱会员的完全访问权限。"
+  },
+  "kycApproved": "已批准",
+  "kycPending": "待处理",
+  "notVerified": "未验证",
+  "membership": "会员资格",
+  "kycStatus": "KYC 状态",
+  "rejectionTitle": "KYC 申请被拒绝",
+  "rejectionBody": "您的 KYC 申请已被拒绝。请查看原因并重新提交。",
+  "rejectionReason": "拒绝原因",
+  "expiresOn": "到期时间",
+  "upgrade": "升级",
+  "notifications": {
+    "title": "通知",
+    "unread": "未读",
+    "markAllAsRead": "全部标记为已读",
+    "noNotifications": "无通知",
+    "viewAll": "查看所有通知",
+    "empty": "您没有通知",
+    "loading": "加载通知中...",
+    "unreadNotifications": "未读通知",
+    "youHaveNoNotifications": "您还没有任何通知",
+    "noFilteredNotifications": "没有通知匹配此过滤器",
+    "markAllRead": "全部标记为已读",
+    "filter": "过滤器",
+    "all": "全部",
+    "rewards": "奖励",
+    "messages": "消息",
+    "referrals": "推荐",
+    "mining": "挖矿",
+    "staking": "质押",
+    "types": {
+      "claim_reward": "奖励就绪",
+      "inbox_message": "新消息",
+      "referral_bonus": "推荐奖励",
+      "mining_reminder": "挖矿提醒",
+      "staking_reminder": "质押提醒"
+    },
+    "templates": {
+      "welcome": {
+        "title": "🎉 欢迎来到 FlySky Network！",
+        "message": "我们很高兴您加入我们。今天就开始您的挖矿、质押和推荐之旅，赚取 FSN 奖励。"
+      },
+      "dailyMiningReminder": {
+        "title": "⛏️ 别忘了每日挖矿！",
+        "message": "今天挖矿并在一天结束前领取您的每日 FSN 奖励！"
+      },
+      "stakingOpportunity": {
+        "title": "💰 通过质押提升您的收益",
+        "message": "今天质押您的 FSN 代币，享受高达 100% APY 的奖励。"
+      },
+      "referralProgram": {
+        "title": "👥 通过推荐赚取更多",
+        "message": "与朋友分享您的推荐链接，当他们加入并验证账户时赚取 FSN 代币。"
+      },
+      "newFeature": {
+        "title": "🚀 新功能可用！",
+        "message": "探索添加到 FlySky Network 的最新功能，今天就试试吧。"
+      },
+      "premiumExclusive": {
+        "title": "💎 专属高级优惠",
+        "message": "享受仅限高级会员的特殊优惠和机会。"
+      },
+      "inactiveReminder": {
+        "title": "🔔 我们想念您！",
+        "message": "今天就回到 FlySky，不要错过您的每日奖励和赚钱机会。"
+      },
+      "maintenance": {
+        "title": "🛠️ 计划维护",
+        "message": "系统维护将在 [插入日期/时间] 进行。可能会出现一些停机时间。"
+      }
+    }
+  },
+  "pushNotifications": "推送通知",
+  "enableNotifications": "启用通知",
+  "enablePushNotifications": "启用推送通知以在您不使用应用时也能获得更新",
+  "notificationsDenied": "通知被阻止。请在浏览器设置中启用它们。",
+  "notificationsDeniedHelp": "您已阻止通知。要启用它们，请更新浏览器设置。",
+  "notificationsEnabled": "当重要更新发生时，您将收到推送通知。",
+  "notificationsDescription": "启用推送通知以接收有关奖励、消息和其他重要事件的更新。",
+  "admin": {
+    "common": {
+      "save": "保存",
+      "cancel": "取消",
+      "delete": "删除",
+      "edit": "编辑",
+      "view": "查看",
+      "close": "关闭",
+      "confirm": "确认",
+      "loading": "加载中...",
+      "search": "搜索",
+      "filter": "筛选",
+      "sort": "排序",
+      "actions": "操作",
+      "status": "状态",
+      "date": "日期",
+      "amount": "金额",
+      "details": "详情",
+      "noResults": "未找到结果",
+      "selectAll": "全选",
+      "bulkActions": "批量操作",
+      "exportData": "导出数据",
+      "refresh": "刷新"
+    },
+    "route": {
+      "checking": "正在检查管理员权限..."
+    },
+    "dataDeletion": {
+      "title": "数据删除管理",
+      "description": "审查和管理用户数据删除请求。这是一项关键操作，将永久删除用户数据。",
+      "stats": {
+        "pending": "待处理",
+        "approved": "已批准",
+        "inProgress": "处理中",
+        "completed": "已完成",
+        "cancelled": "已取消"
+      },
+      "requests": {
+        "title": "删除请求",
+        "total": "总计：{{count}} 个请求",
+        "noRequests": "未找到删除请求",
+        "loading": "正在加载删除请求..."
+      },
+      "badges": {
+        "webRequest": "网络请求",
+        "existingUser": "现有用户"
+      },
+      "fields": {
+        "email": "邮箱",
+        "requested": "请求时间",
+        "source": "来源",
+        "reviewed": "审核时间",
+        "started": "开始时间",
+        "completed": "完成时间"
+      },
+      "actions": {
+        "viewDetails": "查看详情",
+        "approve": "批准",
+        "reject": "拒绝",
+        "startProcessing": "开始处理",
+        "completeDeletion": "完成删除",
+        "processing": "处理中..."
+      },
+      "adminNotes": {
+        "title": "管理员备注",
+        "placeholder": "添加关于删除请求的备注...",
+        "description": "当您更新删除请求状态时，备注将被保存。"
+      },
+      "details": {
+        "title": "删除请求详情",
+        "userName": "用户名",
+        "email": "邮箱",
+        "status": "状态",
+        "requestDate": "请求日期",
+        "reviewDate": "审核日期",
+        "processingStartDate": "处理开始日期",
+        "completionDate": "完成日期",
+        "estimatedCompletion": "预计完成时间",
+        "adminNotes": "管理员备注",
+        "userReason": "用户原因"
+      },
+      "messages": {
+        "statusUpdated": "状态已更新为 {{status}}",
+        "userDataDeleted": "用户数据已成功删除",
+        "failedToLoad": "加载删除请求失败",
+        "failedToUpdate": "更新状态失败",
+        "failedToProcess": "处理删除失败"
+      }
+    },
+    "notifications": {
+      "title": "通知",
+      "description": "管理和发送通知给用户",
+      "header": {
+        "title": "通知",
+        "subtitle": "管理和发送通知给用户"
+      },
+      "actions": {
+        "sendNotification": "发送通知",
+        "editResend": "编辑并重新发送通知",
+        "refresh": "刷新",
+        "clearAll": "清除全部",
+        "useTemplate": "使用模板",
+        "close": "关闭",
+        "cancel": "取消",
+        "send": "发送",
+        "schedule": "安排",
+        "sendNow": "立即发送",
+        "resend": "重新发送",
+        "delete": "删除",
+        "view": "查看",
+        "edit": "编辑"
+      },
+      "form": {
+        "title": "标题",
+        "titlePlaceholder": "输入通知标题",
+        "message": "消息",
+        "messagePlaceholder": "输入通知消息",
+        "targetAudience": "目标受众",
+        "platforms": "平台",
+        "schedule": "安排（可选）",
+        "schedulePlaceholder": "留空以立即发送"
+      },
+      "targetAudience": {
+        "all": "所有用户",
+        "new": "新用户（最近7天）",
+        "inactive": "非活跃用户（30+天）",
+        "plans": "订阅计划",
+        "custom": "自定义用户",
+        "selectPlans": "选择订阅计划",
+        "customUserSelection": "自定义用户选择",
+        "searchUsers": "通过邮箱搜索用户...",
+        "searchUsersPlaceholder": "通过邮箱或姓名搜索用户...",
+        "selectedUsers": "已选用户",
+        "usersFound": "个用户",
+        "targetUsers": "目标用户",
+        "selectPlansToSeeCount": "选择计划以查看用户数量",
+        "customUserSearch": "自定义用户搜索",
+        "customUserSearchPlaceholder": "通过邮箱或姓名搜索用户...",
+        "customUserSelectionPlaceholder": "选择特定用户进行目标定位",
+        "customUserCount": "自定义用户数量",
+        "customUserCountDescription": "为自定义目标定位选择的用户数量"
+      },
+      "platforms": {
+        "mobile": "移动端",
+        "web": "网页",
+        "inbox": "收件箱",
+        "email": "邮件"
+      },
+      "stats": {
+        "totalSent": "总发送数",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败",
+        "loading": "正在加载通知...",
+        "noNotifications": "暂无通知",
+        "noNotificationsSubtitle": "发送您的第一个通知开始使用",
+        "avgOpenRate": "平均打开率",
+        "avgClickRate": "平均点击率",
+        "fromLastWeek": "较上周",
+        "nextScheduled": "下一个：12月25日 02:00"
+      },
+      "table": {
+        "notification": "通知",
+        "title": "标题",
+        "message": "消息",
+        "type": "类型",
+        "status": "状态",
+        "audience": "受众",
+        "sent": "已发送",
+        "recipients": "接收者",
+        "platforms": "平台",
+        "performance": "性能",
+        "created": "创建时间",
+        "actions": "操作",
+        "opened": "打开",
+        "clicked": "点击",
+        "openRate": "打开率",
+        "clickRate": "点击率",
+        "viewDetails": "查看详情",
+        "editResend": "编辑并重新发送",
+        "delete": "删除"
+      },
+      "status": {
+        "sent": "已发送",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败",
+        "processing": "处理中",
+        "sendNotification": "发送通知",
+        "send": "发送",
+        "refresh": "刷新通知",
+        "view": "查看通知",
+        "edit": "编辑通知",
+        "delete": "删除通知",
+        "dismissError": "关闭错误",
+        "close": "关闭"
+      },
+      "deliveryStatus": {
+        "delivered": "已送达",
+        "partial_success": "部分成功",
+        "failed": "失败",
+        "pending": "待处理"
+      },
+      "audience": {
+        "premium": "高级",
+        "new": "新",
+        "inactive": "非活跃",
+        "all": "全部",
+        "allUsers": "所有用户",
+        "newUsers": "新用户"
+      },
+      "types": {
+        "info": "信息",
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误"
+      },
+      "messages": {
+        "sentSuccessfully": "通知发送成功！",
+        "failedToSend": "通知发送失败",
+        "deletedSuccessfully": "通知删除成功！",
+        "failedToDelete": "通知删除失败",
+        "resentSuccessfully": "通知重新发送成功！",
+        "failedToResend": "通知重新发送失败",
+        "clearedSuccessfully": "所有通知清除成功！",
+        "failedToClear": "所有通知清除失败",
+        "pleaseEnterBoth": "请输入标题和内容。",
+        "unexpectedError": "发送通知时发生意外错误",
+        "errorDeleting": "删除通知时发生意外错误",
+        "errorResending": "重新发送通知时发生意外错误",
+        "notificationSent": "通知发送成功！"
+      },
+      "modals": {
+        "sendNotification": "发送通知",
+        "notificationDetails": "通知详情",
+        "editResendNotification": "编辑并重新发送通知",
+        "deleteNotification": "删除通知",
+        "clearAllNotifications": "清除所有通知"
+      },
+      "deleteConfirm": {
+        "title": "删除通知",
+        "message": "确定要删除\"{title}\"通知吗？",
+        "subtitle": "此操作无法撤销，将永久删除通知和所有相关数据，包括日志和收件箱条目。",
+        "genericMessage": "确定要删除此通知吗？此操作无法撤销。"
+      },
+      "clearAllConfirm": {
+        "title": "清除所有通知",
+        "message": "您确定要清除所有通知吗？",
+        "warning": "⚠️ 此操作将永久删除：",
+        "items": [
+          "所有{count}个通知记录",
+          "所有通知日志和分析",
+          "所有用户收件箱通知",
+          "所有相关数据和元数据"
+        ],
+        "cannotUndone": "此操作无法撤销！请确保在需要时有备份。"
+      },
+      "details": {
+        "status": "状态",
+        "targetAudience": "目标受众",
+        "sentAt": "发送时间",
+        "createdAt": "创建时间",
+        "recipients": "接收者",
+        "platforms": "平台",
+        "opened": "已打开",
+        "clicked": "已点击",
+        "errorDetails": "错误详情：",
+        "deliveryInformation": "发送信息：",
+        "totalRecipients": "总接收者",
+        "successful": "成功",
+        "failed": "失败",
+        "errorMessage": "错误消息"
+      },
+      "loading": {
+        "sending": "发送中...",
+        "deleting": "删除中...",
+        "clearing": "清除中...",
+        "refreshing": "刷新中...",
+        "loadingPlans": "正在加载可用计划...",
+        "loadingUsers": "正在加载用户..."
+      },
+      "errors": {
+        "noNotificationsToClear": "没有通知可清除",
+        "noTokensFound": "未找到令牌。没有用户注册通知。",
+        "serverError": "发送通知失败。服务器说：{error}",
+        "failedToLoad": "加载通知失败",
+        "failedToSend": "发送通知失败",
+        "failedToDelete": "删除通知失败",
+        "failedToUpdate": "更新通知失败",
+        "errorSending": "发送通知时出错。"
+      },
+      "templates": {
+        "title": "通知模板",
+        "description": "使用预定义模板处理常见通知类型",
+        "modalTitle": "选择模板",
+        "modalDescription": "选择一个模板来快速填充您的通知",
+        "noTemplates": "暂无可用模板",
+        "noTemplatesDescription": "常见通知类型的模板将在此处提供",
+        "useTemplate": "使用模板",
+        "previewTemplate": "预览模板",
+        "templateCategories": {
+          "welcome": "欢迎和入门",
+          "reminders": "提醒和警告",
+          "promotional": "促销和营销",
+          "system": "系统和维护",
+          "rewards": "奖励和奖金"
+        },
+        "templates": {
+          "welcome": {
+            "name": "欢迎消息",
+            "title": "🎉 欢迎来到 FlySky Network！",
+            "description": "我们很高兴您加入我们。今天就开始您的挖矿、质押和推荐之旅，赚取 FSN 奖励。",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "每日挖矿提醒",
+            "title": "⛏️ 别忘了您的每日挖矿！",
+            "description": "今天挖矿并在一天结束前领取您的每日 FSN 奖励！",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "质押机会",
+            "title": "💰 通过质押提升您的收益",
+            "description": "今天质押您的 FSN 代币，享受高达 100% 年化收益的奖励。",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "推荐计划",
+            "title": "👥 通过推荐赚取更多",
+            "description": "与朋友分享您的推荐链接，当他们加入并验证账户时赚取 FSN 代币。",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "新功能公告",
+            "title": "🚀 新功能可用！",
+            "description": "探索添加到 FlySky Network 的最新功能，今天就试试吧。",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "高级专属优惠",
+            "title": "💎 专属高级优惠",
+            "description": "享受仅限高级会员的特殊优惠和机会。",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "非活跃用户提醒",
+            "title": "🔔 我们想念您！",
+            "description": "今天就回到 FlySky，不要错过您的每日奖励和赚钱机会。",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "计划维护",
+            "title": "🛠️ 计划维护",
+            "description": "系统维护将在 [插入日期/时间] 进行。可能会出现一些停机时间。",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "选择",
+          "preview": "预览",
+          "close": "关闭",
+          "search": "搜索模板...",
+          "filterByCategory": "按类别筛选",
+          "allCategories": "所有类别"
+        },
+        "preview": {
+          "title": "模板预览",
+          "templateName": "模板名称",
+          "category": "类别",
+          "description": "描述",
+          "content": "内容预览",
+          "useThisTemplate": "使用此模板"
+        },
+        "createNew": {
+          "title": "创建新模板",
+          "description": "创建自定义通知模板",
+          "templateName": "模板名称",
+          "templateNamePlaceholder": "输入模板名称",
+          "notificationTitle": "通知标题",
+          "notificationTitlePlaceholder": "输入通知标题",
+          "notificationMessage": "通知消息",
+          "notificationMessagePlaceholder": "输入通知消息",
+          "category": "类别",
+          "targetAudience": "目标受众",
+          "platforms": "平台",
+          "mobile": "移动端",
+          "web": "网页",
+          "inbox": "收件箱",
+          "cancel": "取消",
+          "createTemplate": "创建模板",
+          "allUsers": "所有用户",
+          "premiumUsers": "高级用户",
+          "newUsers": "新用户",
+          "inactiveUsers": "非活跃用户",
+          "marketing": "营销",
+          "system": "系统",
+          "announcement": "公告",
+          "custom": "自定义"
+        }
+      },
+      "filters": {
+        "searchPlaceholder": "搜索通知...",
+        "allTypes": "所有类型",
+        "allStatus": "所有状态",
+        "allAudiences": "所有受众",
+        "info": "信息",
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误",
+        "sent": "已发送",
+        "scheduled": "已安排",
+        "draft": "草稿",
+        "failed": "失败",
+        "allUsers": "所有用户",
+        "premium": "高级",
+        "newUsers": "新用户",
+        "inactive": "非活跃",
+        "sortBy": {
+          "newestFirst": "最新优先",
+          "oldestFirst": "最旧优先",
+          "titleAZ": "标题A-Z",
+          "titleZA": "标题Z-A",
+          "mostRecipients": "最多接收者",
+          "mostOpened": "最多打开"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "已选择{{count}}个通知",
+        "resend": "重新发送",
+        "duplicate": "复制",
+        "delete": "删除",
+        "confirmDelete": "确定要删除{{count}}个通知吗？"
+      },
+      "mobile": {
+        "notifications": "通知",
+        "sent": "已发送",
+        "open": "打开",
+        "click": "点击"
+      },
+      "sendModal": {
+        "title": "发送通知",
+        "notificationTitle": "通知标题",
+        "titlePlaceholder": "输入通知标题...",
+        "notificationMessage": "通知消息",
+        "messagePlaceholder": "输入通知消息...",
+        "cancel": "取消",
+        "send": "发送",
+        "sending": "发送中...",
+        "pleaseEnterBoth": "请输入标题和内容。",
+        "noTokensFound": "未找到令牌。没有用户注册通知。",
+        "notificationSent": "通知发送成功！",
+        "failedToSend": "发送通知失败。服务器说：{{error}}",
+        "errorSending": "发送通知时出错。"
+      },
+      "pagination": {
+        "showing": "显示{{current}}/{{total}}个通知",
+        "previous": "上一页",
+        "next": "下一页"
+      },
+      "empty": {
+        "noNotifications": "未找到通知",
+        "loading": "正在加载通知..."
+      }
+    },
+    "rewards": {
+      "title": "奖励管理",
+      "description": "创建和管理奖励计划",
+      "staking": {
+        "title": "质押",
+        "description": "配置质押期限和奖励",
+        "duration": "期限",
+        "reward": "奖励",
+        "status": "状态",
+        "addDuration": "添加期限",
+        "plan": "计划",
+        "units": {
+          "days": "天",
+          "weeks": "周",
+          "months": "月",
+          "years": "年"
+        },
+        "apy": "APY"
+      },
+      "referrals": {
+        "title": "推荐",
+        "description": "管理推荐等级和奖励",
+        "tier": "等级",
+        "referralRange": "推荐范围",
+        "referrals": "推荐",
+        "reward": "奖励",
+        "status": "状态",
+        "addTier": "添加等级",
+        "name": "名称",
+        "range": "范围",
+        "bonus": "奖金"
+      },
+      "watchAds": {
+        "title": "观看广告",
+        "description": "配置观看广告奖励",
+        "adsCount": "广告数量",
+        "ads": "广告",
+        "reward": "奖励",
+        "status": "状态",
+        "addReward": "添加奖励",
+        "dailyLimit": "每日限制",
+        "collectBonus": "收集奖金"
+      },
+      "stats": {
+        "totalRewards": "总奖励数",
+        "activeRewards": "活跃奖励",
+        "totalValue": "总价值",
+        "totalClaims": "总申领数"
+      },
+      "createReward": "创建奖励",
+      "searchPlaceholder": "搜索奖励...",
+      "filters": {
+        "allTypes": "所有类型",
+        "allStatus": "所有状态",
+        "active": "活跃",
+        "inactive": "非活跃",
+        "daily": "每日",
+        "weekly": "每周",
+        "monthly": "每月",
+        "achievement": "成就",
+        "referral": "推荐",
+        "bonus": "奖金",
+        "special": "特殊"
+      },
+      "rewardTypes": {
+        "daily": "每日",
+        "weekly": "每周",
+        "monthly": "每月",
+        "achievement": "成就",
+        "referral": "推荐",
+        "bonus": "奖金",
+        "special": "特殊"
+      },
+      "status": {
+        "active": "活跃",
+        "inactive": "非活跃"
+      },
+      "noData": "暂无{{section}}数据",
+      "startAdding": "开始添加您的第一个{{section}}配置",
+      "loading": "正在加载奖励...",
+      "clickToExpand": "点击展开",
+      "clickToCollapse": "点击收起",
+      "quickActions": "快速操作",
+      "quickActions.addStaking": "添加质押期限",
+      "quickActions.addReferral": "添加推荐等级",
+      "quickActions.addWatchAd": "添加观看广告奖励",
+      "actions": {
+        "create": "创建",
+        "cancel": "取消",
+        "view": "查看",
+        "edit": "编辑",
+        "close": "关闭",
+        "actions": "操作"
+      },
+      "details": {
+        "title": "奖励详情",
+        "basicInformation": "基本信息",
+        "statistics": "统计",
+        "requirements": "要求",
+        "id": "ID",
+        "type": "类型",
+        "amount": "金额",
+        "status": "状态",
+        "claims": "申领",
+        "period": "期间"
+      },
+      "form": {
+        "description": "描述"
+      },
+      "createModal": {
+        "title": "创建新奖励",
+        "namePlaceholder": "奖励名称",
+        "descriptionPlaceholder": "描述",
+        "selectType": "选择类型",
+        "amountPlaceholder": "金额",
+        "maxClaimsPlaceholder": "最大申领数"
+      },
+      "sampleRewards": {
+        "dailyLogin": {
+          "name": "每日登录奖励",
+          "description": "每日登录的奖励"
+        },
+        "weeklyMining": {
+          "name": "每周挖矿奖励",
+          "description": "持续挖矿活动的奖励"
+        },
+        "referralChampion": {
+          "name": "推荐冠军",
+          "description": "带来新用户的奖励"
+        },
+        "firstClassAchievement": {
+          "name": "头等舱成就",
+          "description": "高级会员的特殊奖励"
+        },
+        "monthlyStaking": {
+          "name": "每月质押奖励",
+          "description": "长期质押的奖励"
+        },
+        "specialEvent": {
+          "name": "特殊活动奖励",
+          "description": "限时活动奖励"
+        }
+      },
+      "requirements": {
+        "loginDaily": "每日登录",
+        "completeProfile": "完善个人资料",
+        "mineConsecutiveDays": "连续挖矿7天",
+        "minimumMined": "最少挖矿100 FSN",
+        "referActiveUsers": "推荐10个活跃用户",
+        "usersCompleteKYC": "用户必须完成KYC",
+        "upgradeToFirstClass": "升级到头等舱",
+        "maintainForDays": "维持30天",
+        "stakeMinimum": "最少质押1000 FSN",
+        "holdForDays": "持有30天",
+        "participateInEvent": "参与活动",
+        "completeAllChallenges": "完成所有挑战"
+      }
+    },
+
+    "dashboard": {
+      "title": "管理员仪表板",
+      "subtitle": "管理用户、KYC 和付款",
+      "quickStatistics": "快速统计",
+      "detailedStatistics": "详细统计",
+      "totalUsers": "总用户数",
+      "totalAdmins": "总管理员数",
+      "pendingKYC": "待处理 KYC",
+      "verifiedKYC": "已验证 KYC",
+      "premiumPlans": "高级计划",
+      "totalBalance": "总余额",
+      "totalFSN": "总 FSN",
+      "businessPlans": "商务计划",
+      "firstClassPlans": "头等舱计划"
+    },
+    "goToDashboard": "前往仪表板",
+    "goToDashboardShort": "仪表板",
+    "tabs": {
+      "dashboard": "仪表板",
+      "users": "用户管理",
+      "kyc": "KYC 验证",
+      "payments": "手动支付",
+      "transactions": "交易",
+      "rewards": "奖励",
+      "notifications": "通知",
+      "content": "内容",
+      "memberships": "会员",
+      "sendNotification": "发送通知",
+      "short": {
+        "dashboard": "仪表板",
+        "users": "用户",
+        "kyc": "KYC",
+        "payments": "支付",
+        "transactions": "交易",
+        "rewards": "奖励",
+        "notifications": "通知",
+        "content": "内容",
+        "memberships": "会员"
+      }
+    },
+    "kyc": {
+      "title": "KYC 验证",
+      "description": "审查和管理用户身份验证请求",
+      "pendingRequests": "待处理请求",
+      "approvedToday": "今日已批准",
+      "rejectedToday": "今日已拒绝",
+      "pendingKycRequests": "待处理 KYC 请求",
+      "reviewDocuments": "审查用户验证文档",
+      "loading": "正在加载 KYC 请求...",
+      "noPendingRequests": "无待处理请求",
+      "allProcessed": "所有 KYC 验证请求已处理完毕",
+      "verificationInfo": "KYC 验证信息",
+      "documents": "KYC 文档",
+      "noDocuments": "未上传 KYC 文档",
+      "approve": "批准 KYC",
+      "reject": "拒绝 KYC",
+      "viewDetails": "查看详情",
+      "unknownUser": "未知用户",
+      "noEmail": "无邮箱",
+      "userDetails": "用户详情",
+      "fullName": "全名",
+      "email": "邮箱",
+      "userId": "用户ID",
+      "registrationDate": "注册日期",
+      "notProvided": "未提供",
+      "unknown": "未知",
+      "documentUploaded": "文档已上传",
+      "viewDocument": "查看文档",
+      "totalKYC": "总 KYC",
+      "pending": "待处理",
+      "approved": "已批准",
+      "rejected": "已拒绝",
+      "all": "全部",
+      "noKYCUsers": "无 KYC 用户",
+      "noApprovedUsers": "无已批准用户",
+      "noRejectedUsers": "无已拒绝用户",
+      "noKYCUsersDesc": "还没有用户提交 KYC 文档",
+      "noApprovedUsersDesc": "还没有用户被批准",
+      "noRejectedUsersDesc": "还没有用户被拒绝",
+      "refresh": "刷新",
+      "refreshing": "正在刷新...",
+      "rejectionReason": "拒绝原因",
+      "rejectReason": "拒绝原因",
+      "provideReason": "请提供拒绝此 KYC 申请的原因。",
+      "rejectionReasonPlaceholder": "输入拒绝原因...",
+      "rejectionReasonRequired": "请提供拒绝原因",
+      "cancel": "取消",
+      "rejectedOn": "拒绝于",
+      "alreadyApproved": "此 KYC 已被批准",
+      "alreadyRejected": "此 KYC 已被拒绝"
+    },
+    "users": {
+      "title": "用户管理",
+      "description": "管理用户账户、计划和状态",
+      "searchPlaceholder": "搜索用户...",
+      "loading": "正在加载用户...",
+      "confirmDelete": "确定要删除这个用户吗？",
+      "deleteUser": "删除用户",
+      "deleteWarning": "警告：此操作无法撤销",
+      "deleteWarningDescription": "删除此用户将永久从系统中移除其账户、余额和所有相关数据。",
+      "userToDelete": "要删除的用户",
+      "updatePlan": "更新用户计划",
+      "planUpdated": "计划更新成功",
+      "pleaseSelectPlan": "请选择新计划！",
+      "kycVerified": "KYC 验证成功",
+      "detailedInformation": "详细的用户信息和统计",
+      "location": "位置",
+      "referrals": "推荐人数",
+      "lastDevice": "最后设备",
+      "membership": "会员与计划",
+      "planStartDate": "计划开始日期",
+      "planEndDate": "计划结束日期",
+      "paymentMethod": "支付方式",
+      "paymentMethods": {
+        "in_app_purchase": "应用内购买"
+      },
+      "referralCode": "推荐码",
+      "referredBy": "推荐人",
+      "financialInformation": "财务信息",
+      "totalRewardsClaimed": "已领取总奖励",
+      "totalDeposits": "总存入",
+      "totalWithdrawals": "总取出",
+      "stakingEarnings": "质押收益",
+      "activeStakes": "活跃质押",
+      "totalStaked": "总质押量",
+      "tabs": {
+        "basicInfo": "基本信息",
+        "accountInfo": "账户",
+        "financialInfo": "财务"
+      },
+      "stats": {
+        "activeUsers": "活跃用户",
+        "premiumPlans": "高级计划",
+        "totalBalance": "总余额"
+      },
+      "filters": {
+        "all": "全部",
+        "active": "活跃",
+        "inactive": "非活跃",
+        "verified": "已验证",
+        "pending": "待处理",
+        "rejected": "已拒绝",
+        "allStatus": "所有状态",
+        "allPlans": "所有计划",
+        "economy": "经济舱",
+        "business": "商务舱",
+        "first6": "头等舱-6",
+        "firstLifetime": "头等舱-终身"
+      },
+      "sort": {
+        "newestFirst": "最新优先",
+        "oldestFirst": "最旧优先",
+        "nameAZ": "姓名A-Z",
+        "nameZA": "姓名Z-A",
+        "balanceHighLow": "余额高-低",
+        "balanceLowHigh": "余额低-高"
+      },
+      "bulk": {
+        "selectedUsers": "已选择{{count}}个用户",
+        "pleaseSelectUsers": "请先选择用户",
+        "confirmDelete": "确定要删除{{count}}个用户吗？"
+      },
+      "table": {
+        "user": "用户",
+        "name": "姓名",
+        "email": "邮箱",
+        "kyc": "KYC 状态",
+        "kycStatus": "KYC 状态",
+        "verifyKYC": "验证 KYC",
+        "plan": "计划",
+        "balance": "余额",
+        "staking": "质押",
+        "status": "状态",
+        "created": "创建时间",
+        "joined": "加入时间",
+        "lastLogin": "最后登录",
+        "actions": "操作",
+        "id": "ID"
+      },
+      "modal": {
+        "updatePlan": "更新用户计划",
+        "selectPlan": "选择计划"
+      },
+      "userInformation": "用户信息",
+      "selectNewPlan": "选择新计划",
+      "actions": {
+        "edit": "编辑",
+        "delete": "删除",
+        "activate": "激活",
+        "deactivate": "停用",
+        "viewDetails": "查看详情"
+      },
+      "status": {
+        "active": "活跃",
+        "inactive": "非活跃",
+        "suspended": "已停用",
+        "verified": "已验证",
+        "pending": "待处理",
+        "rejected": "已拒绝",
+        "notActivated": "未激活"
+      },
+      "noUsers": "未找到用户"
+    },
+    "transactions": {
+      "title": "交易管理",
+      "noTransactions": "无交易数据",
+      "description": "交易数据将在可用时显示在此处。"
+    },
+    "content": {
+      "title": "内容管理",
+      "description": "管理平台内容和公告",
+      "createNew": "创建新内容",
+      "searchPlaceholder": "搜索内容...",
+      "stats": {
+        "totalContent": "总内容",
+        "activeContent": "活跃内容",
+        "totalViews": "总浏览量",
+        "totalClicks": "总点击量"
+      },
+      "actions": {
+        "createContent": "创建内容",
+        "view": "查看",
+        "edit": "编辑",
+        "delete": "删除",
+        "create": "创建",
+        "cancel": "取消",
+        "close": "关闭"
+      },
+      "search": {
+        "placeholder": "搜索内容..."
+      },
+      "filters": {
+        "allTypes": "所有类型",
+        "allStatus": "所有状态"
+      },
+      "types": {
+        "banner": "横幅",
+        "announcement": "公告",
+        "promotion": "推广",
+        "video": "视频",
+        "news": "新闻"
+      },
+      "status": {
+        "active": "活跃",
+        "inactive": "非活跃",
+        "draft": "草稿"
+      },
+      "priority": "优先级",
+      "views": "浏览量",
+      "clicks": "点击量",
+      "details": {
+        "title": "内容详情",
+        "basicInformation": "基本信息",
+        "description": "描述",
+        "performance": "性能",
+        "schedule": "时间安排",
+        "id": "ID",
+        "type": "类型",
+        "status": "状态",
+        "priority": "优先级"
+      },
+      "createModal": {
+        "title": "创建新内容",
+        "titlePlaceholder": "内容标题",
+        "descriptionPlaceholder": "描述",
+        "selectType": "选择类型",
+        "priorityPlaceholder": "优先级 (1-10)"
+      },
+      "sampleData": {
+        "welcomeTitle": "欢迎来到FlySky网络",
+        "welcomeDescription": "加入去中心化挖矿的未来",
+        "miningRewardsTitle": "新的挖矿奖励可用",
+        "miningRewardsDescription": "使用我们的新挖矿系统每天赚取高达3000 FSN",
+        "referralProgramTitle": "推荐计划启动",
+        "referralProgramDescription": "邀请朋友，每个推荐赚取1000 FSN",
+        "tutorialVideoTitle": "平台教程视频",
+        "tutorialVideoDescription": "学习如何最大化您的挖矿效率",
+        "holidayEventTitle": "节日特别活动",
+        "holidayEventDescription": "节日期间双倍奖励"
+      },
+      "table": {
+        "title": "标题",
+        "type": "类型",
+        "status": "状态",
+        "views": "浏览量",
+        "clicks": "点击量",
+        "created": "创建时间",
+        "actions": "操作"
+      },
+      "form": {
+        "title": "标题",
+        "content": "内容",
+        "type": "类型",
+        "status": "状态",
+        "image": "图片",
+        "link": "链接"
+      },
+      "noContent": "未找到内容",
+      "loading": "正在加载内容..."
+    },
+    "memberships": {
+      "title": "会员管理",
+      "description": "描述",
+      "createNew": "创建新计划",
+      "searchPlaceholder": "搜索会员...",
+      "filters": {
+        "all": "所有计划",
+        "economy": "经济舱",
+        "business": "商务舱",
+        "first-6": "头等舱（6个月）",
+        "first-lifetime": "头等舱（终身）"
+      },
+      "table": {
+        "user": "用户",
+        "plan": "计划",
+        "status": "状态",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "amount": "金额",
+        "actions": "操作"
+      },
+      "form": {
+        "user": "用户",
+        "plan": "计划",
+        "duration": "期限",
+        "amount": "金额",
+        "status": "状态"
+      },
+      "actions": {
+        "edit": "编辑",
+        "cancel": "取消",
+        "extend": "延期",
+        "viewDetails": "查看详情"
+      },
+      "status": "状态",
+      "noMemberships": "未找到会员",
+      "loading": "正在加载会员...",
+      "createPlan": "创建计划",
+      "loadingPlans": "正在加载会员计划...",
+      "mostPopular": "最受欢迎",
+      "subscribers": "订阅者",
+      "revenue": "收入",
+      "view": "查看",
+      "edit": "编辑",
+      "disable": "禁用",
+      "enable": "启用",
+      "delete": "删除",
+      "createNewPlan": "创建新计划",
+      "planName": "计划名称（例如：economy）",
+      "displayName": "显示名称",
+      "price": "价格",
+      "bonusFSN": "FSN奖励",
+      "miningRate": "挖矿速率（例如：600 FSN / 12小时）",
+      "duration": "期限",
+      "icon": "图标",
+      "color": "颜色",
+      "monthly": "月付",
+      "yearly": "年付",
+      "6months": "6个月",
+      "lifetime": "终身",
+      "coins": "金币",
+      "gem": "宝石",
+      "star": "星星",
+      "crown": "皇冠",
+      "green": "绿色",
+      "purple": "紫色",
+      "blue": "蓝色",
+      "yellow": "黄色",
+      "create": "创建",
+      "cancel": "取消",
+      "planDetails": "计划详情",
+      "basicInformation": "基本信息",
+      "name": "名称",
+      "active": "活跃",
+      "inactive": "非活跃",
+      "features": "功能",
+      "statistics": "统计",
+      "close": "关闭",
+      "editPlan": "编辑计划",
+      "update": "更新",
+      "fillRequiredFields": "请填写所有必填字段",
+      "createPlanFailed": "创建计划失败。请重试。",
+      "updatePlanFailed": "更新计划失败。请重试。",
+      "deletePlanFailed": "删除计划失败。请重试。",
+      "confirmDelete": "您确定要删除此计划吗？此操作无法撤销。",
+      "defaultPlans": {
+        "economy": {
+          "name": "经济计划",
+          "description": "基础用户的免费计划"
+        },
+        "business": {
+          "name": "商务计划",
+          "description": "商务用户的专业计划"
+        },
+        "first6": {
+          "name": "头等舱6个月",
+          "description": "严肃用户的优质计划"
+        },
+        "firstLifetime": {
+          "name": "头等舱终身",
+          "description": "终身访问的终极计划"
+        }
+      },
+      "planId": "计划 ID（例如：economy、business）",
+      "durationDays": "期限（天）",
+      "days": "天",
+      "dailyMiningReward": "每日挖矿奖励（FSN）",
+      "createdAt": "创建时间",
+      "featurePlaceholder": "输入功能后点击添加",
+      "addFeature": "添加功能",
+      "featuresHelper": "请分别添加每个功能。可以在下方删除条目。"
+    },
+    "payments": {
+      "title": "手动支付",
+      "description": "审查和批准支付请求",
+      "searchPlaceholder": "按姓名、电子邮件或用户ID搜索",
+      "loading": "正在加载支付...",
+      "noPayments": "未找到手动支付。",
+      "table": {
+        "user": "用户",
+        "currency": "货币",
+        "txLink": "交易链接",
+        "fromAddress": "来源地址",
+        "status": "状态",
+        "proof": "证明",
+        "date": "日期",
+        "actions": "操作"
+      },
+      "status": {
+        "approved": "已批准",
+        "rejected": "已拒绝",
+        "pending": "待处理"
+      },
+      "actions": {
+        "approve": "批准",
+        "reject": "拒绝",
+        "view": "查看",
+        "download": "下载"
+      },
+      "confirmDelete": "您确定要删除此支付吗？",
+      "updateSuccess": "支付状态更新成功",
+      "updateError": "更新支付状态失败"
+    }
+  },
+  "enable": "启用",
+  "enabled": "已启用",
+  "requesting": "请求中...",
+  "landing": {
+    "hero": {
+      "brand": "FlySky Network",
+      "tagline": "挖矿·赚取·成长",
+      "desc": "FlySky 是一个 Web3 平台，用户可通过每日挖矿、质押、推荐等方式赚取加密货币。",
+      "alt": {
+        "heroBanner": "FlySky Network 主横幅",
+        "heroBannerMobile": "FlySky Network 主横幅（移动端）"
+      }
+    },
+    "cta": {
+      "joinNow": "立即加入",
+      "openDashboard": "打开控制台",
+      "getStarted": "开始使用",
+      "createEarning": "开始赚钱",
+      "readMore": "了解更多",
+      "tryForFree": "免费试用"
+    },
+    "store": {
+      "appStoreTop": "下载自",
+      "appStore": "App Store",
+      "getItOn": "获取途径",
+      "googlePlay": "Google Play"
+    },
+    "header": {
+      "toggleMenu": "切换菜单",
+      "closeMenu": "关闭菜单"
+    },
+    "menu": {
+      "about": "关于我们",
+      "features": "功能",
+      "plans": "方案",
+      "how-it-works": "工作原理",
+      "membership": "会员"
+    },
+    "features": {
+      "titleMobile": "我们的功能",
+      "titleDesktop": "强大的功能",
+      "subtitle": "开始赚取加密货币所需的一切",
+      "alt": {
+        "border": "功能分隔线"
+      },
+      "items": {
+        "mining": {
+          "title": "每日挖矿",
+          "desc": "通过自动化挖矿每天赚取加密货币"
+        },
+        "membership": {
+          "title": "会员计划",
+          "desc": "从经济舱、商务舱或头等舱计划中选择"
+        },
+        "staking": {
+          "title": "质押奖励",
+          "desc": "质押您的代币，以较高 APY 获得被动收入"
+        },
+        "referral": {
+          "title": "推荐计划",
+          "desc": "邀请好友，获得他们活跃贡献的奖励"
+        },
+        "watchToEarn": {
+          "title": "看广告赚取",
+          "desc": "观看广告并获得时间奖励"
+        },
+        "playToEarn": {
+          "title": "玩游戏赚取",
+          "desc": "玩迷你游戏并完成挑战以赚取 FSN"
+        },
+        "amazingRewards": {
+          "title": "惊人奖励",
+          "desc": "挖矿、质押和推荐赚取奖励"
+        }
+      }
+    },
+    "getStarted": {
+      "titlePart1": "开始与",
+      "titleEmphasis": "FlySky 一起赚钱！",
+      "subtitle": "加入每日赚取加密货币的数千名用户",
+      "alt": "开始与 FlySky 一起赚钱"
+    },
+    "who": {
+      "title": "我们是谁",
+      "p1": "FlySky Network 是新一代数字经济平台，将挖矿、质押、游戏和 NFT 融为一体，打造无缝体验。",
+      "p2": "我们致力于构建一个充满活力的生态系统，让用户通过有趣的互动赚取、交易并增长资产。"
+    },
+    "hiw": {
+      "title": "如何运作",
+      "subtitle": "加入数千名通过我们创新平台赚取加密货币的用户",
+      "steps": {
+        "1": {
+          "title": "注册",
+          "desc": "创建账号并完成身份验证，开始加密收益之旅",
+          "cta": "立即注册"
+        },
+        "2": {
+          "title": "开始挖矿",
+          "desc": "启动自动化挖矿流程",
+          "cta": "开始挖矿"
+        },
+        "3": {
+          "title": "领取奖励",
+          "desc": "将赚取的加密奖励直接提取到钱包",
+          "cta": "立即领取"
+        }
+      }
+    },
+    "footer": {
+      "tagline": "挖矿·赚取·成长",
+      "language": "语言",
+      "rights": "版权所有。",
+      "links": {
+        "terms": "条款",
+        "privacy": "隐私",
+        "contact": "联系我们"
+      }
+    }
+  },
+  "hiw": {
+    "title": "如何运作",
+    "subtitle": "加入数千名通过我们创新平台赚取加密货币的用户",
+    "steps": {
+      "1": {
+        "title": "注册",
+        "desc": "创建账号并完成身份验证，开始加密收益之旅",
+        "cta": "立即注册"
+      },
+      "2": {
+        "title": "开始挖矿",
+        "desc": "启动自动化挖矿流程",
+        "cta": "开始挖矿"
+      },
+      "3": {
+        "title": "领取奖励",
+        "desc": "将赚取的加密奖励直接提取到钱包",
+        "cta": "立即领取"
+      }
+    }
+  },
+  "who": {
+    "title": "我们是谁",
+    "p1": "FlySky Network 是新一代数字经济平台，将挖矿、质押、游戏和 NFT 融为一体。",
+    "p2": "我们致力于构建一个充满活力的生态系统，让用户通过有趣的互动赚取、交易并增长资产。"
+  },
+  "userBlocked": {
+    "title": "账户已封禁",
+    "subtitle": "您的账户已被管理员封禁",
+    "reason": "原因",
+    "contactSupport": "联系支持",
+    "whatToDoTitle": "您可以做什么",
+    "reviewTerms": "查看服务条款",
+    "autoUnblock": "等待自动解封",
+    "checkingStatus": "正在检查账户状态..."
+  },
+  "common": {
+    "loading": "加载中...",
+    "cancel": "取消",
+    "delete": "删除",
+    "confirm": "确认",
+    "create": "创建",
+    "view": "查看",
+    "edit": "编辑"
+  },
+  "ApprovalLog": {
+    "title": "批准日志",
+    "searchTerm": "搜索词",
+    "searchType": "搜索范围",
+    "approvedUser": "批准用户",
+    "referrer": "推荐人",
+    "selectSearchType": "选择搜索类型",
+    "refresh": "刷新",
+    "deleteAll": "删除全部",
+    "tableApprovedUser": "批准用户",
+    "tableReferrer": "推荐人",
+    "reward": "奖励",
+    "date": "日期",
+    "claimStatus": "领取状态",
+    "actions": "操作",
+    "claimed": "已领取",
+    "notClaimed": "未领取",
+    "noLogs": "无批准日志",
+    "noLogsDesc": "尚未记录任何推荐用户的 KYC 批准。",
+    "deleteLog": "删除日志",
+    "confirmDeleteLog": "您确定要删除此批准日志吗？",
+    "confirmDeleteAllLogs": "您确定要删除所有批准日志吗？此操作无法撤销。",
+    "logDeleted": "批准日志删除成功",
+    "deleteLogFailed": "删除批准日志失败",
+    "allLogsDeleted": "所有批准日志删除成功",
+    "deleteAllLogsFailed": "删除所有批准日志失败"
+  },
+  "gifttabtexts": {
+    "rewardsTitle": "奖励管理",
+    "giftTitle": "礼物管理",
+    "addGift": "添加礼物",
+    "editGift": "编辑礼物",
+    "deleteGift": "删除礼物",
+    "giftList": "礼物列表",
+    "giftDescription": "描述",
+    "giftPoints": "所需积分",
+    "saveChanges": "保存更改",
+    "tabs": {
+      "allUsers": "所有用户",
+      "singleUser": "单个用户",
+      "multipleUsers": "多个用户",
+      "byPlan": "按计划",
+      "giftHistory": "礼物历史和报告"
+    },
+    "form": {
+      "giftTitle": "礼物标题 *",
+      "amount": "金额 (FSN) *",
+      "message": "消息 *",
+      "reason": "原因 *",
+      "searchUser": "搜索用户（邮箱或姓名）",
+      "searchPlaceholder": "输入以搜索用户...",
+      "selectedUser": "已选择：{{email}}",
+      "searchUsers": "搜索用户",
+      "usersSelected": "{{count}} 个用户{{plural}}已选择",
+      "tableHeaders": {
+        "select": "选择",
+        "email": "邮箱",
+        "name": "姓名",
+        "balance": "余额"
+      },
+      "buttons": {
+        "cancel": "取消",
+        "sendGifts": "发送礼物",
+        "processing": "处理中...",
+        "sending": "发送中..."
+      },
+      "selectPlan": "选择计划...",
+      "fsn": "FSN"
+    },
+    "history": {
+      "stats": {
+        "totalGifts": "总礼物数",
+        "totalDistributed": "总分发量",
+        "totalRecipients": "总接收者",
+        "successRate": "成功率"
+      },
+      "title": "礼物分发历史",
+      "subtitle": "查看和管理所有礼物分发",
+      "tableHeaders": {
+        "giftDetails": "礼物详情",
+        "recipients": "接收者",
+        "amount": "金额",
+        "status": "状态",
+        "date": "日期",
+        "actions": "操作"
+      },
+      "actions": {
+        "viewDetails": "查看详情",
+        "deleteGift": "删除礼物分发"
+      },
+      "details": {
+        "message": "消息",
+        "target": "目标：",
+        "plan": "计划：",
+        "createdBy": "创建者：",
+        "failures": "失败：",
+        "recentLogs": "最近日志",
+        "status": "成功"
+      },
+      "deleteModal": {
+        "title": "删除礼物分发",
+        "message": "您确定要删除\"{{title}}\"礼物分发吗？",
+        "warning": "此操作无法撤销。",
+        "cancel": "取消",
+        "delete": "删除"
+      },
+      "empty": {
+        "title": "未找到礼物分发",
+        "subtitle": "创建礼物分发后，它们将显示在这里"
+      }
+    }
+  }
+}

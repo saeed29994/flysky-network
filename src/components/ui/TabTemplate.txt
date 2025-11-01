@@ -1,0 +1,93 @@
+{/* KYC Requests with Tabs */}
+<div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl overflow-hidden">
+  {/* Tab Headers */}
+  <div className="border-b border-white/10">
+    <div className="flex flex-wrap">
+      <button
+        onClick={() => setActiveTab('all')}
+        className={`px-6 py-4 text-sm font-medium transition-colors ${
+          activeTab === 'all'
+            ? 'text-white border-b-2 border-yellow-500 bg-white/5'
+            : 'text-gray-400 hover:text-white hover:bg-white/5'
+        }`}
+      >
+        {t('admin.kyc.all', 'All')} ({counts.all})
+      </button>
+      <button
+        onClick={() => setActiveTab('pending')}
+        className={`px-6 py-4 text-sm font-medium transition-colors ${
+          activeTab === 'pending'
+            ? 'text-white border-b-2 border-yellow-500 bg-white/5'
+            : 'text-gray-400 hover:text-white hover:bg-white/5'
+        }`}
+      >
+        {t('admin.kyc.pending', 'Pending')} ({counts.pending})
+      </button>
+      <button
+        onClick={() => setActiveTab('approved')}
+        className={`px-6 py-4 text-sm font-medium transition-colors ${
+          activeTab === 'approved'
+            ? 'text-white border-b-2 border-yellow-500 bg-white/5'
+            : 'text-gray-400 hover:text-white hover:bg-white/5'
+        }`}
+      >
+        {t('admin.kyc.approved', 'Approved')} ({counts.approved})
+      </button>
+      <button
+        onClick={() => setActiveTab('rejected')}
+        className={`px-6 py-4 text-sm font-medium transition-colors ${
+          activeTab === 'rejected'
+            ? 'text-white border-b-2 border-yellow-500 bg-white/5'
+            : 'text-gray-400 hover:text-white hover:bg-white/5'
+        }`}
+      >
+        {t('admin.kyc.rejected', 'Rejected')} ({counts.rejected})
+      </button>
+      <button
+        onClick={() => setActiveTab('log')}
+        className={`px-6 py-4 text-sm font-medium transition-colors ${
+          activeTab === 'log'
+            ? 'text-white border-b-2 border-yellow-500 bg-white/5'
+            : 'text-gray-400 hover:text-white hover:bg-white/5'
+        }`}
+      >
+        {t('admin.kyc.approvalLog', 'Approval Log')} ({filteredLogs.length})
+      </button>
+    </div>
+  </div>
+
+  {/* Tab Content */}
+  <div className="p-4 sm:p-6">
+    {loading ? (
+      <div className="text-center py-8 sm:py-12">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-gray-400 text-sm sm:text-base">
+          {t('admin.kyc.loading', 'Loading KYC data...')}
+        </p>
+      </div>
+    ) : (
+      <>
+        {activeTab === 'all' && (
+          // 🟡 هنا ضع مكونات تبويب "All"
+          <div>{/* Components for "All" tab go here */}</div>
+        )}
+        {activeTab === 'pending' && (
+          // 🟡 هنا ضع مكونات تبويب "Pending"
+          <div>{/* Components for "Pending" tab go here */}</div>
+        )}
+        {activeTab === 'approved' && (
+          // 🟡 هنا ضع مكونات تبويب "Approved"
+          <div>{/* Components for "Approved" tab go here */}</div>
+        )}
+        {activeTab === 'rejected' && (
+          // 🟡 هنا ضع مكونات تبويب "Rejected"
+          <div>{/* Components for "Rejected" tab go here */}</div>
+        )}
+        {activeTab === 'log' && (
+          // 🟡 هنا ضع مكونات تبويب "Approval Log"
+          <div>{/* Components for "Approval Log" tab go here */}</div>
+        )}
+      </>
+    )}
+  </div>
+</div>

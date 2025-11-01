@@ -1,0 +1,2633 @@
+{
+  "rewardmang": {
+  "RewardsManagement": "Ödül Yönetimi",
+  "DataDeletion": "Verileri Sil",
+  "rewardsDescription": "Ödülleri, puanları ve hediye yapılandırmalarını yönetin.",
+  "GiftManagement": "Hediye Yönetimi",
+  "GiftDescription": "Kullanıcılar için mevcut tüm hediyeleri kontrol edin ve güncelleyin."
+}
+,
+  "MessagePage": {
+    "spamMessages": "Spam Mesajları",
+    "urgentMessages": "Acil Mesajlar",
+    "unreadMessages": "Okunmamış Mesajlar",
+    "totalMessages": "Toplam Mesajlar",
+    "pageTitle": "İletişim Mesajları",
+    "pageSubtitle": "Kullanıcı iletişim mesajlarını yönetin",
+    "filters": "Filtreler",
+    "searchPlaceholder": "İsim, e-posta veya mesaj ile ara...",
+    "statusAll": "Tüm Durum",
+    "statusUnread": "Okunmamış",
+    "statusRead": "Okundu",
+    "statusReplied": "Yanıtlandı",
+    "priorityAll": "Tüm Öncelik",
+    "priorityNormal": "Normal",
+    "priorityUrgent": "Acil",
+    "prioritySpam": "Spam",
+    "dateAll": "Tüm Zaman",
+    "dateToday": "Bugün",
+    "dateWeek": "Bu Hafta",
+    "dateMonth": "Bu Ay",
+    "loading": "Mesajlar yükleniyor...",
+    "noMessages": "Mesaj Yok",
+    "noMessagesDesc": "Filtrelerinize uyan iletişim mesajı bulunamadı.",
+    "confirmDeleteTitle": "Mesajı Sil",
+    "confirmDelete": "Bu mesajı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "confirmDeleteAllTitle": "Tüm Mesajları Sil",
+    "warning": "Uyarı",
+    "confirmDeleteAll": "TÜM mesajları silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "affectedMessages": "Etkilenen mesajlar",
+    "deleteAll": "Tümünü Sil",
+    "fetchError": "Mesajlar yüklenemedi",
+    "statusUpdated": "Mesaj durumu güncellendi",
+    "statusUpdateError": "Mesaj durumu güncellenemedi",
+    "priorityUpdated": "Mesaj önceliği güncellendi",
+    "priorityUpdateError": "Mesaj önceliği güncellenemedi",
+    "messageDeleted": "Mesaj başarıyla silindi",
+    "deleteError": "Mesaj silinemedi",
+    "allMessagesDeleted": "Tüm mesajlar başarıyla silindi",
+    "deleteAllError": "Tüm mesajlar silinemedi",
+    "deleteMessage": "Mesajı Sil",
+    "actions": "İşlemler",
+    "apply": "Uygula",
+    "deletingMessages": "Mesajlar siliniyor...",
+    "applyingChanges": "Değişiklikler uygulanıyor...",
+    "selectall": "Tümünü Seç",
+    "markAllUnread": "Tümünü okunmadı olarak işaretle",
+    "markAllread": "Tümünü okundu olarak işaretle",
+    "markAllReplied": "Tümünü yanıtlandı olarak işaretle",
+    "markAllNormal": "Tümünü normal olarak işaretle",
+    "markAllUrgent": "Tümünü acil olarak işaretle",
+    "markAllSpam": "Tümünü spam olarak işaretle"
+  },
+  "general": {
+    "welcome": "FlySky Network'e Hoş Geldiniz",
+    "mining": "Madencilik",
+    "claim": "Ödül Talep Et",
+    "balance": "Bakiyem",
+    "claimed": "Talep Edildi",
+    "newBalance": "Yeni Bakiye",
+    "readyToMine": "Madenciliğe başlamaya hazır mısınız?",
+    "startMining": "Madenciliği Başlat"
+  },
+  "plan": {
+    "title": "Ekonomi Sınıfı",
+    "startNew": "Planınıza göre yeni bir staking oturumu başlatın",
+    "current": "Mevcut Plan:"
+  },
+  "form": {
+    "amount": "Stake Edilecek Miktar"
+  },
+  "duration": {
+    "month": "Ay",
+    "months": "Ay"
+  },
+  "followPopup": {
+    "title": "X'te Bizi Takip Edin",
+    "message": "Ödül kazanın! X'teki (@fsncrew) resmi hesabımızı takip edin ve anında 100 FSN kazanın.",
+    "button": "Bizi takip edin ve 100 FSN kazanın",
+    "close": "Belki daha sonra"
+  },
+  "staking": "Staking",
+  "startStaking": "Staking'i Başlat",
+  "stakingRecords": "Staking Kayıtları",
+  "activeStaking": "Aktif Staking",
+  "completedStaking": "Tamamlanan Staking",
+  "noActiveStaking": "Aktif staking girişiniz yok.",
+  "noCompletedStaking": "Henüz tamamlanan staking girişiniz yok.",
+  "claimed": "Talep Edildi ✅",
+  "plans": {
+    "title": "Planınızı Seçin",
+    "subtitle": "Üyelik planlarımızla premium özelliklerin kilidini açın ve FSN ödülleri kazanın. FSN, uygulama içi avantajlar için kullanılan sanal bir para birimidir.",
+    "mostPopular": "En Popüler",
+    "items": {
+      "business": {
+        "title": "İş Sınıfı",
+        "price": "14.99",
+        "description": "FlySky ile FSN ödüllerinizi artırmak için İş Sınıfı özelliklerinin tümü",
+        "features": [
+          "100.000 FSN Bonus",
+          "Gelişmiş madencilik",
+          "Öncelikli destek",
+          "Staking erişimi"
+        ],
+        "buttonText": "İş Sınıfını Seç"
+      },
+      "first-6": {
+        "title": "Birinci Sınıf (6 Ay)",
+        "price": "119.99",
+        "description": "FSN ödüllerinizi artırmak için Birinci Sınıf özelliklerinin tümü",
+        "features": [
+          "500.000 FSN Bonus",
+          "Tüm iş sınıfı özellikleri",
+          "Daha hızlı madencilik",
+          "Etkinlik erişimi"
+        ],
+        "buttonText": "Birinci Sınıfı Seç"
+      },
+      "firstLifetime": {
+        "title": "Birinci Sınıf (Ömür Boyu)",
+        "price": "199.99",
+        "description": "FSN ödüllerinizi artırmak için Birinci Sınıf (Ömür Boyu) özelliklerinin tümü",
+        "features": [
+          "1.000.000 FSN Bonus",
+          "En yüksek madencilik",
+          "Ömür boyu erişim",
+          "Premium özelliklere erişim"
+        ],
+        "buttonText": "Ömür Boyu Planı Seç"
+      }
+    }
+  },
+  "first6": "Birinci Sınıf (6 Ay)",
+  "firstLifetime": "Birinci Sınıf (Ömür Boyu)",
+  "stakingSection": {
+    "endsOn": "Biter",
+    "expectedReturn": "Beklenen Getiri",
+    "claimRewards": "Ödülleri Talep Et",
+    "claimIn": "Talep et"
+  },
+  "loading": {
+    "user": "Kullanıcı yüklenmedi. Lütfen önce giriş yapın.",
+    "processing": "İşleniyor...",
+    "membershipData": "Üyelik verileri yükleniyor..."
+  },
+  "error": {
+    "userNotLoaded": "Kullanıcı yüklenmedi.",
+    "invalidAmount": "Lütfen geçerli bir miktar ve süre girin.",
+    "exceedsBalance": "Staking miktarı mevcut bakiyenizi aşıyor.",
+    "notAuthenticated": "Talep etmek için giriş yapmalısınız.",
+    "alreadyClaimed": "Bu ödül zaten talep edildi.",
+    "notEndedYet": "Bu staking dönemi henüz bitmedi.",
+    "claimFailed": "Ödül talep edilemedi.",
+    "stakeFailed": "Staking girişi oluşturulamadı."
+  },
+  "success": {
+    "stakeCreated": "Staking girişi başarıyla oluşturuldu!",
+    "claimed": "Ödül başarıyla talep edildi!"
+  },
+  "stakingCard": {
+    "title": "Staking Özetiniz",
+    "lockedAmount": "Kilitli Miktar",
+    "passiveIncome": "Pasif gelir üretimi",
+    "flexiblePeriods": "Esnek staking dönemleri",
+    "highApyReturns": "Yüksek APY getirileri",
+    "status": "Durum",
+    "active": "Aktif",
+    "currentlyLocked": "Şu Anda Kilitli",
+    "economy": "Sınırlı getiri ile temel staking.",
+    "business": "Orta getiri ile iş staking planı.",
+    "first6": "Yüksek getiri ile 6 aylık premium plan.",
+    "firstLifetime": "Maksimum getiri ile ömür boyu plan."
+  },
+  "planNames": {
+    "economy": "Ekonomi Sınıfı",
+    "business": "İş Sınıfı",
+    "first-6": "Birinci Sınıf (6 Ay)",
+    "first-lifetime": "Birinci Sınıf (Ömür Boyu)"
+  },
+  "planFeatures": {
+    "advancedMining": "Gelişmiş Madencilik",
+    "prioritySupport": "Öncelikli Destek",
+    "stakingAccess": "Staking Erişimi",
+    "allBusinessFeatures": "Tüm İş Özellikleri",
+    "fasterMining": "Daha Hızlı Madencilik",
+    "eventAccess": "Etkinlik Erişimi",
+    "highestMining": "En Yüksek Madencilik",
+    "lifetimeAccess": "Ömür Boyu Erişim",
+    "accessToPremiumFeatures": "Premium Özelliklere Erişim"
+  },
+  "dashboard": {
+    "welcome": "FlySky Network'e Hoş Geldiniz",
+    "tagline": "Keşfet. Kazan. Büyü.",
+    "loading": "Gösterge paneli yükleniyor...",
+    "stats": {
+      "totalBalance": "Toplam Bakiye",
+      "availableBalance": "Kullanılabilir Bakiye",
+      "referrals": "Referanslar",
+      "miningLevel": "Madencilik Seviyesi"
+    },
+    "quickActions": {
+      "title": "Hızlı İşlemler",
+      "mining": {
+        "title": "Günlük Madencilik",
+        "description": "Günlük ödüller kazanmaya başlayın"
+      },
+      "staking": {
+        "title": "Staking",
+        "description": "Pasif gelir kazanın"
+      },
+      "wallet": {
+        "title": "Cüzdan",
+        "description": "Fonlarınızı yönetin"
+      },
+      "referrals": {
+        "title": "Referanslar",
+        "description": "Arkadaşlarınızı davet edin ve kazanın"
+      }
+    },
+    "features": {
+      "title": "Platform Özellikleri",
+      "popular": "Popüler",
+      "membership": {
+        "title": "Üyelik Planları",
+        "description": "Daha iyi ödüller için planınızı yükseltin"
+      },
+      "playToEarn": {
+        "title": "Oyna ve Kazan",
+        "description": "Oyun oynayın ve token kazanın"
+      },
+      "amazingRewards": {
+        "title": "Harika Ödüller",
+        "description": "Madencilik, staking ve referanslarla ödül kazanın"
+      },
+      "watchToEarn": {
+        "title": "İzle ve Kazan",
+        "description": "Reklamları izleyin ve ödül kazanın"
+      },
+      "inbox": {
+        "title": "Gelen Kutusu",
+        "description": "Mesajlar ve bildirimler"
+      },
+      "kyc": {
+        "title": "KYC Doğrulama",
+        "description": "Kimliğinizi doğrulayın"
+      },
+      "settings": {
+        "title": "Ayarlar",
+        "description": "Hesap tercihleri"
+      }
+    },
+    "contactSupport": {
+      "title": "Destek ile İletişim",
+      "description": "Ekibimizden yardım ve destek alın"
+    },
+    "aboutUs": {
+      "title": "Hakkımızda",
+      "description": "FlySky Network hakkında daha fazla bilgi edinin"
+    },
+    "contactModal": {
+      "title": "Destek ile İletişim",
+      "subtitle": "Size yardım etmek için buradayız",
+      "name": "Ad",
+      "namePlaceholder": "Adınız",
+      "email": "E-posta",
+      "emailPlaceholder": "e-posta@adresiniz.com",
+      "message": "Mesaj",
+      "messagePlaceholder": "Size nasıl yardımcı olabiliriz?",
+      "send": "Mesaj Gönder",
+      "cancel": "İptal"
+    },
+    "miningTitle": "Günlük Madencilik Genel Bakışı",
+    "miningDesc": "Planınıza göre günlük FSN tokenları kazanın. Daha fazla ödül için yükseltin.",
+    "startMining": "Şimdi Madenciliği Başlat",
+    "membershipTitle": "Üyelik Planları",
+    "bonus": "Bonus:",
+    "viewMembership": "Üyelik Detaylarını Görüntüle",
+    "referralTitle": "Davet Et ve Kazan",
+    "referralDesc": "Referans linkinizi paylaşın ve arkadaşlarınız FlySky'e katıldığında kazanın.",
+    "viewReferral": "Referans Programını Görüntüle",
+    "playTitle": "Oyna ve Kazan",
+    "playDesc": "Yakında: Daha fazla FSN kazanmak için eğlenceli mini oyunlar!",
+    "playButton": "Oyna ve Kazan'ı Keşfet",
+    "aboutTitle": "Hakkımızda",
+    "aboutDesc": "FlySky Network, madencilik, staking, oyun ve NFT'leri birleştiren yeni nesil dijital ekonomi platformudur.",
+    "aboutButton": "Hakkımızda Daha Fazla Bilgi",
+    "stakingTitle": "Staking Fırsatları",
+    "stakingDesc": "FSN tokenlarınızı stake edin ve esnek planlar ve yüksek getirilerle pasif gelir kazanın.",
+    "stakingButton": "Staking Sayfasına Git"
+  },
+  "auth": {
+    "loginTitle": "Giriş Yap",
+    "email": "E-posta",
+    "password": "Şifre",
+    "forgotPassword": "Şifremi Unuttum?",
+    "login": "Giriş Yap",
+    "loggingIn": "Giriş yapılıyor...",
+    "or": "VEYA",
+    "loginWithGoogle": "Google ile Giriş Yap",
+    "loginWithApple": "Apple ile Devam Et",
+    "signUpWithApple": "Apple ile Kayıt Ol",
+    "pleaseWait": "Lütfen bekleyin...",
+    "noAccount": "Hesabınız yok mu?",
+    "signUp": "Kayıt Ol",
+    "googlePopupError": "Google girişi başarısız. Lütfen Chrome gibi normal bir tarayıcı kullanın.",
+    "googleGenericError": "Google girişi başarısız. Lütfen tekrar deneyin.",
+    "createAccount": "Hesap Oluştur",
+    "fullName": "Tam Ad",
+    "referralCode": "Referans Kodu (isteğe bağlı)",
+    "agreeTo": "Şunları kabul ediyorum:",
+    "terms": "şartlar ve koşullar",
+    "and": "ve",
+    "privacy": "gizlilik politikası",
+    "signUpWithGoogle": "Google ile Kayıt Ol",
+    "haveAccount": "Zaten hesabınız var mı?",
+    "bySigningUp": "Kaydolarak şartlarımızı kabul etmiş olursunuz"
+  },
+  "kyc": {
+    "title": "Kimlik Doğrulama (KYC)",
+    "idsAccepted": {
+      "title": "Kabul Edilen Kimlik Belgeleri",
+      "option1": "Ulusal Kimlik",
+      "option2": "Pasaport",
+      "option3": "Sürücü Belgesi",
+      "option4": "İkamet İzni"
+    },
+    "idPhotos": {
+      "title": "Kimlik için Fotoğraf Gereksinimleri",
+      "option1": "Fotoğraflar net olmalı ve tüm köşeler görünür olmalı.",
+      "option2": "Parlama, gölge veya bulanıklık olmamalı.",
+      "option3": "Kimlik süresi dolmamış olmalı.",
+      "option4": "Tüm bilgiler okunabilir olmalı."
+    },
+    "samples": {
+      "front": "Ön Örnek",
+      "back": "Arka Örnek",
+      "selfie": "Selfie Örneği"
+    },
+    "selfie": {
+      "title": "Kimlik ile Selfie Gereksinimleri",
+      "option1": "Kimliği yüzünüzün yanında tutun.",
+      "option2": "Yüz ve kimlik net görünmeli.",
+      "option3": "Filtre veya görüntü düzenleme yok.",
+      "option4": "İyi aydınlatma ve nötr arka plan.",
+      "option5": "Kimliğin hiçbir kısmını kapatmayın."
+    },
+    "uploadSection": {
+      "title": "Belgeleri Yükle",
+      "front": "Kimliğin Önünü Yükle",
+      "back": "Kimliğin Arkasını Yükle",
+      "selfie": "Kimlik ile Selfie Yükle"
+    },
+    "uploadAllDocuments": "Lütfen tüm gerekli belgeleri yükleyin.",
+    "uploadSuccess": "Belgeler başarıyla yüklendi. Doğrulama inceleme altında.",
+    "uploadFailed": "Belgeler yüklenemedi. Lütfen tekrar deneyin.",
+    "uploading": "Yükleniyor...",
+    "submit": "İnceleme için Gönder",
+    "disclaimer": {
+      "title": "Önemli Not",
+      "content": "Kişisel verileriniz güvenli bir şekilde saklanır ve sadece kimlik doğrulama amaçları için kullanılır. Verilerinizi üçüncü taraflarla paylaşmıyoruz."
+    },
+    "faq": {
+      "title": "Sık Sorulan Sorular",
+      "q1": "Neden KYC'yi tamamlamam gerekiyor?",
+      "a1": "Güvenlik ve finansal düzenlemelere uyum sağlamak için.",
+      "q2": "Doğrulama ne kadar sürer?",
+      "a2": "Genellikle 24 ila 72 saat içinde.",
+      "q3": "KYC'm reddedilirse ne olur?",
+      "a3": "Sebep ile bilgilendirileceksiniz ve belgelerinizi yeniden gönderebilirsiniz.",
+      "q4": "Belgelerimi daha sonra güncelleyebilir miyim?",
+      "a4": "Evet, güncellenmiş belgeleri istediğiniz zaman yeniden gönderebilirsiniz.",
+      "q5": "Bilgilerim güvenli mi?",
+      "a5": "Evet. Tüm veriler şifrelenir ve güvenli bir şekilde saklanır."
+    },
+    "subtitle": "Premium özellikleri açmak ve hesap güvenliğini sağlamak için kimlik doğrulamanızı tamamlayın",
+    "acceptedDocuments": "Kabul edilen kimlik belgeleri",
+    "photoRequirements": "Kimlik belgeleri için fotoğraf gereksinimleri",
+    "selfieRequirements": "Selfie fotoğraf gereksinimleri",
+    "uploadDocuments": "Doğrulama belgelerinizi yükleyin",
+    "commonQuestions": "Yaygın sorular",
+    "processingTime": "İşlem Süresi",
+    "processingTimeValue": "24-48 Saat",
+    "typicalProcessingTime": "Tipik işlem süresi",
+    "processingDescription": "Belgeleriniz doğrulama ekibimiz tarafından incelenecektir. İşlem tamamlandığında bir bildirim alacaksınız."
+  },
+  "watchToEarn": {
+    "title": "İzle ve Kazan",
+    "description": "Günlük {{reward}} FSN kazanmak için {{count}} reklam izleyin.",
+    "fsnRewards": "FSN Ödülleri",
+    "earnTokensByWatching": "Video reklamları izleyerek token kazanın",
+    "watchProgress": "İzleme İlerlemesi",
+    "trackDailyProgress": "Günlük video reklam izleme ilerlemenizi takip edin",
+    "progress": "İlerleme",
+    "complete": "Tamamlandı",
+    "videoAdsWatchedToday": "Bugün İzlenen Video Reklamları",
+    "currentBalanceFSN": "Mevcut Bakiye (FSN)",
+    "waitTime": "Bekleme Süresi",
+    "howItWorks": "Nasıl Çalışır",
+    "simple3StepProcess": "Basit 3 adımlı süreç",
+    "watchVideoAds": "Video Reklamları İzle",
+    "watchAdsDaily": "Günlük {{count}} video reklam izleyin",
+    "completeViewing": "İzlemeyi Tamamla",
+    "watchEachAdCompletely": "Her reklamı tamamen izleyin (20 saniye)",
+    "claimRewards": "Ödül Talep Et",
+    "earnFSNTokens": "{{amount}} FSN token kazanın",
+    "rewardsInfo": "Ödül Bilgileri",
+    "dailyEarningStructure": "Günlük kazanç yapısı",
+    "dailyLimit": "Günlük Limit",
+    "videoAds": "Video Reklamları",
+    "watchAdsPerDay": "Günde {{count}} video reklam izleyin",
+    "dailyReward": "Günlük Ödül",
+    "completeAllAdsToClaim": "Talep etmek için tüm reklamları tamamlayın",
+    "adDuration": "Reklam Süresi",
+    "twentySeconds": "20 Saniye",
+    "eachAdTwentySeconds": "Her video reklam 20 saniye uzunluğunda",
+    "videoAd": "Video Reklamı",
+    "pleaseWatchCompleteAd": "Lütfen reklamı tamamen izleyin",
+    "videoAdPlaceholder": "Video Reklam Yer Tutucusu",
+    "videoAdPlaceholderDescription": "Gerçek video reklamının gösterileceği yer",
+    "pleaseWaitForAdComplete": "Lütfen reklamın tamamlanmasını bekleyin",
+    "processingAdCompletion": "Reklam tamamlanması işleniyor...",
+    "watchVideoAdAndEarn": "Video reklamını izleyin ve ödül kazanın",
+    "watched": "İzlenen reklamlar",
+    "balance": "Mevcut bakiyeniz",
+    "watchAd": "Reklam İzle",
+    "rewardClaimed": "🎉 {{amount}} FSN başarıyla talep edildi!",
+    "adWatched": "✅ Reklam sayıldı!",
+    "waitMessage": "Lütfen geri sayım bitene kadar bekleyin: {{time}}",
+    "note": "🎁 Günlük reklam görüntülemelerini tamamlayarak ödülünüzü kazanın.",
+    "adModalTitle": "Reklamı izleyin ve geri sayımı bekleyin",
+    "timer": "Kalan süre:",
+    "seconds": "saniye",
+    "openAd": "Reklamı Aç",
+    "stayOnPage": "Reklam yeni sekmede açıldı. Geri sayım bitene kadar bu sayfada kalın.",
+    "confirmAdWatched": "Reklam İzlendiğini Onayla",
+    "shareAd": "📢 Reklamı Paylaş",
+    "shareBonusReceived": "✅ Banner paylaşımı için 50 FSN aldınız!",
+    "shareAlreadyClaimed": "❌ Son 12 saat içinde bonus zaten talep edildi.",
+    "shareAdTitle": "Paylaş ve Kazan",
+    "shareAdDesc": "Bu banner'ı X'te paylaşarak günde bir kez 50 FSN kazanın.",
+    "shareOnX": "X'te Paylaş"
+  },
+  "referralProgram": "Referans Programı",
+  "inviteFriendsEarn": "Arkadaşlarınızı davet edin ve katıldıklarında ve doğrulandıklarında ödül kazanın.",
+  "copied": "Kopyalandı!",
+  "verifiedReferrals": "Doğrulanmış Referanslar",
+  "pendingReferrals": "Bekleyen Referanslar",
+  "currentReward": "Referans Başına Mevcut Ödül",
+  "rewardTiers": "Ödül Seviyeleri",
+  "bonusTier1": "İlk 10 doğrulanmış referans: her biri 100 FSN",
+  "bonusTier2": "Sonraki 10 referans: her biri 200 FSN",
+  "bonusTier3": "20'den fazla referans: her biri 300 FSN",
+  "yourReferralLink": "Referans Linkiniz",
+  "downloadQR": "QR Kodu İndir",
+  "scanToShare": "Linki paylaşmak için tara veya indir",
+  "verifiedCount": "Doğrulanmış Referanslar",
+  "verifiedEmails": "Doğrulanmış E-postalar",
+  "yourReferrals": "Referanslarınız",
+  "email": "E-posta",
+  "status": "Durum",
+  "action": "Eylem",
+  "noReferrals": "Henüz referans yok.",
+  "verified": "Doğrulanmış",
+  "pending": "Bekliyor",
+  "rejected": "Reddedildi",
+  "claim": "Talep Et",
+  "referralBonus": {
+    "loading": "Yükleniyor...",
+    "claimButton": "Yönlendirme Bonusunu Talep Et",
+    "noBonus": "Talep edilebilecek bonus yok.",
+    "claimedSuccess": "🎉 Yönlendirme bonusu başarıyla talep edildi!",
+    "claimedError": "Bonus talep edilirken bir hata oluştu.",
+    "fcmTitle": "🎁 Yönlendirme Bonusu Hazır",
+    "fcmBody": "Yeni bir yönlendirme doğrulandı. Bonusunuz talep edilmeye hazır!",
+    "verifiedTitle": "Yönlendirme Bonusu Doğrulandı",
+    "verifiedBody": "Tebrikler! Yönlendirmeniz doğrulandı. {{rewards}} FSN kazandınız."
+  },
+  "welcomeBonus": {
+    "title": "🎉 FlySky Network'e Hoş Geldiniz!",
+    "body": "{{amount}} FSN hoş geldin bonusu kazandınız. Ödülünüzü almak için aşağıya tıklayın",
+    "fcmTitle": "🎁 Hoş Geldin Bonusu",
+    "fcmBody": "{{amount}} FSN hoş geldin ödülü aldınız!"
+  },
+  "mainNotifications": {
+    "title": "Bildirimler",
+    "unread": "Okunmamış",
+    "markAllAsRead": "Tümünü okundu olarak işaretle",
+    "noNotifications": "Bildirim yok",
+    "viewAll": "Tüm bildirimleri görüntüle",
+    "empty": "Bildiriminiz yok",
+    "loading": "Bildirimler yükleniyor...",
+    "unreadNotifications": "okunmamış bildirimler",
+    "youHaveNoNotifications": "Henüz bildiriminiz yok",
+    "noFilteredNotifications": "Bu filtreye uygun bildirim yok",
+    "markAllRead": "Tümünü okundu olarak işaretle",
+    "filter": "Filtre",
+    "all": "Tümü",
+    "rewards": "Ödüller",
+    "messages": "Mesajlar",
+    "referrals": "Referanslar",
+    "mining": "Madencilik",
+    "staking": "Staking",
+    "types": {
+      "claim_reward": "Ödül hazır",
+      "inbox_message": "Yeni mesaj",
+      "referral_bonus": "Referans bonusu",
+      "mining_reminder": "Madencilik hatırlatıcısı",
+      "staking_reminder": "Staking hatırlatıcısı"
+    }
+  },
+  "wallet": {
+    "walletOverview": "💼 Cüzdan Genel Bakışı",
+    "totalBalance": "Toplam Bakiye",
+    "availableBalance": "Kullanılabilir Bakiye",
+    "lockedInStaking": "Staking'de Kilitli",
+    "referralRewards": "Referans Ödülleri (Sadece Doğrulanmış)",
+    "balanceDistribution": "💹 Bakiye Dağılımı",
+    "noBalanceData": "Gösterilecek bakiye verisi yok.",
+    "transactionHistory": "📜 İşlem Geçmişi",
+    "noTransactions": "Henüz kayıtlı işlem yok.",
+    "loadingWallet": "Cüzdan verileri yükleniyor...",
+    "description": "FSN tokenlerinizi yönetin, bakiyenizi takip edin ve işlem geçmişini görüntüleyin",
+    "completePortfolio": "Tam FSN portföyünüz",
+    "fsnTokens": "FSN Tokenleri",
+    "readyToUse": "Kullanıma hazır",
+    "inStakingPools": "Staking havuzlarında",
+    "fromReferrals": "Referanslardan",
+    "visualBreakdown": "Portföyünüzün görsel analizi",
+    "fsn": "FSN",
+    "recentActivity": "Son aktiviteler",
+    "portfolioStats": "Portföy İstatistikleri",
+    "quickOverview": "Hızlı genel bakış",
+    "available": "Mevcut",
+    "staked": "Stake edilmiş",
+    "referrals": "Referanslar",
+    "total": "Toplam"
+  },
+  "menu": {
+    "home": "Ana Sayfa",
+    "staking": "Staking",
+    "mining": "Madencilik",
+    "play": "Oyna",
+    "watch": "İzle",
+    "referral": "Referans",
+    "wallet": "Cüzdan",
+    "about": "Hakkında",
+    "inbox": "Gelen Kutusu",
+    "contact": "İletişim",
+    "profile": "Profil",
+    "logout": "Çıkış Yap",
+    "settings": "Ayarlar",
+    "kyc": "KYC Doğrulama",
+    "back": "Geri",
+    "sections": {
+      "main": "Ana",
+      "earning": "Kazanç",
+      "account": "Hesap",
+      "admin": "Yönetici"
+    },
+    "goToAdmin": "Yönetici Paneline Git"
+  },
+  "inboxPage": {
+    "description": "Mesajlarınızı, ödüllerinizi ve bildirimlerinizi yönetin",
+    "fetchingMessages": "{{tab}} mesajları getiriliyor...",
+    "noMessagesInInbox": "Gelen kutunuzda mesaj yok",
+    "noArchivedMessages": "Arşivlenmiş mesaj yok",
+    "noDeletedMessages": "Silinmiş mesaj yok",
+    "pageInfo": "{{current}} / {{total}}",
+    "rewardAvailable": "Ödül Mevcut",
+    "claimRewardToAdd": "Ödülünüzü talep ederek bakiyenize ekleyin",
+    "claimReward": "Ödülü Talep Et",
+    "rewardClaimed": "Ödül Talep Edildi"
+  },
+  "archived": "Arşivlenmiş",
+  "trash": "Çöp Kutusu",
+  "loadingMessages": "Mesajlar yükleniyor...",
+  "noMessages": "Mesaj yok",
+  "archive": "Arşivle",
+  "delete": "Sil",
+  "close": "Kapat",
+  "about": {
+    "title": "Hakkımızda",
+    "intro": "FlySky Network, sanal madencilik, interaktif oyunlar ve uygulama içi ödülleri tek bir akıcı ve etkileyici deneyimde birleştiren dijital eğlence platformudur.",
+    "visionTitle": "Vizyonumuz",
+    "vision": "Kullanıcılara eğlenceli ve ödüllendirici bir deneyim sunan, basitlik ve erişilebilirliğe odaklanan yenilikçi bir eğlence platformu sunmak.",
+    "missionTitle": "Misyonumuz",
+    "mission": "Kullanıcılara sanal puanlar toplayabilecekleri ve bunları uygulama içi ek faydaların kilidini açmak için kullanabilecekleri heyecan verici oyunlar ve zorluklar sunuyoruz.",
+    "featuresTitle": "Neler Sunuyoruz",
+    "features": {
+      "earn": "Günlük aktivitelere katılarak FSN puanları kazanın.",
+      "unlock": "Puanlarınızı özelliklerin kilidini açmak ve uygulama içi deneyiminizi geliştirmek için kullanın.",
+      "enjoy": "İnteraktif oyunların ve çeşitli uygulama içi ödüllerin keyfini çıkarın."
+    },
+    "fsnPoints": {
+      "title": "FSN Puanları",
+      "description": "FSN puanları tamamen sanal uygulama içi para birimidir, yalnızca özelliklerin kilidini açmak, oyunlara katılmak ve aktivitelere erişmek için kullanılır. Uygulama dışında çekilemez, satılamaz veya takas edilemez."
+    },
+    "battleLegend": {
+      "title": "Battle Legend Oyunu",
+      "description": "Battle Legend'da heyecan verici maceralara hazır olun, rekabet edebilir ve ödüller kazanabilirsiniz — hepsi uygulama içinde."
+    },
+    "join": "Bize katılın ve dijital eğlencenin geleceğinin bir parçası olun!",
+    "ourFutureVision": "Gelecek vizyonumuz",
+    "ourPurpose": "Amacımız",
+    "discoverWhatMakesUnique": "Platformumuzu benzersiz kılan şeyleri keşfedin",
+    "earnFSNPoints": "FSN Puanları Kazanın",
+    "unlockFeatures": "Özellikleri Açın",
+    "interactiveGames": "İnteraktif Oyunlar",
+    "virtualInAppCurrency": "Sanal uygulama içi para birimi",
+    "thrillingAdventuresAwait": "Heyecan verici maceralar bekliyor",
+    "competeWithOtherPlayers": "Diğer oyuncularla rekabet edin",
+    "winExcitingRewards": "Heyecan verici ödüller kazanın",
+    "allWithinTheApp": "Hepsi uygulama içinde",
+    "comingSoon": "Yakında",
+    "safeAndSecure": "Güvenli ve Güvenli",
+    "yourDataAndRewardsProtected": "Verileriniz ve ödülleriniz korunur",
+    "fastAndSmooth": "Hızlı ve Akıcı",
+    "optimizedForBestExperience": "En iyi deneyim için optimize edilmiş",
+    "community": "Topluluk",
+    "joinOurGrowingCommunity": "Büyüyen topluluğumuza katılın",
+    "rewards": "Ödüller",
+    "earnWhileHavingFun": "Eğlenirken kazanın",
+    "readyToGetStarted": "Başlamaya Hazır mısınız?",
+    "getStartedToday": "Bugün Başlayın",
+    "about": {
+      "smartContract": "AKILLI SÖZLEŞME",
+      "from": "tarafından",
+      "title": "HAKKIMIZDA",
+      "p1": "FlySky, kriptoyu herkes için erişilebilir kılmak üzere tasarlanmış Web3 tabanlı bir dijital ekosistemdir.",
+      "p2": "Platformumuz; madencilik, staking, oyun ve NFT'leri tek bir deneyimde birleştirerek kullanıcıların aynı yerde kazanmasını, büyümesini ve etkileşime geçmesini sağlar.",
+      "scLabel": "SMART - CONTRACT ",
+      "scDesc": "- merkeziyetsiz bir kripto uygulamasıdır."
+    },
+    "who": {
+      "title": "BİZ KİMİZ",
+      "p1": "FlySky Network, madencilik, staking, oyun ve NFT'leri bir araya getiren yeni nesil dijital ekonomi platformudur.",
+      "p2": "Kullanıcıların keyifli etkileşimlerle kazanç sağlayıp varlıklarını büyütebilecekleri canlı bir ekosistem inşa etmeye kararlıyız."
+    }
+  },
+  "profile": {
+    "loadingProfile": "Profil yükleniyor...",
+    "about": "Hakkında",
+    "achievements": "Başarılar",
+    "activity": "Aktivite",
+    "stats": "İstatistikler",
+    "memberSince": "Üye Olma Tarihi",
+    "membershipPlan": "Üyelik Planı",
+    "verificationStatus": "Doğrulama Durumu",
+    "referralCode": "Referans Kodu",
+    "quickActions": "Hızlı İşlemler",
+    "editProfile": "Profili Düzenle",
+    "startMining": "Madenciliği Başlat",
+    "viewStaking": "Staking'i Görüntüle",
+    "referralProgram": "Referans Programı",
+    "yourAchievements": "Başarılarınız",
+    "progress": "İlerleme",
+    "completedOn": "Tamamlandı",
+    "recentActivity": "Son Aktiviteler",
+    "balance": "Bakiye",
+    "availableForUse": "Kullanım için mevcut",
+    "totalEarnings": "Toplam Kazanç",
+    "lifetimeEarnings": "Yaşam boyu kazanç",
+    "referrals": "Referanslar",
+    "totalReferrals": "Toplam referans",
+    "miningStatistics": "Madencilik İstatistikleri",
+    "miningLevel": "Madencilik Seviyesi",
+    "miningEarnings": "Madencilik Kazancı",
+    "stakedAmount": "Stake Edilen Miktar",
+    "firstClass": "Birinci Sınıf",
+    "businessClass": "İş Sınıfı",
+    "economyClass": "Ekonomi Sınıfı"
+  },
+  "membershipPage": {
+    "title": "Üyelik Planları",
+    "description": "Üyelik planlarımızla premium özellikleri açın ve FSN ödülleri kazanın. FSN tokenları gelişmiş özellikler ve ödüller için sanal uygulama içi para birimidir.",
+    "currentPlan": "Mevcut Plan",
+    "status": "Durum",
+    "active": "Aktif",
+    "expired": "Süresi Dolmuş",
+    "chooseYourPlan": "Planınızı Seçin",
+    "unlockPremiumFeatures": "Üyelik planlarımızla premium özellikleri açın",
+    "activated": "Etkinleştirildi",
+    "renew": "Yenile",
+    "subscribeNow": "Şimdi Abone Ol",
+    "bonus": "Bonus",
+    "notSubscribed": "Abone Değil"
+  },
+  "feature": {
+    "Basic mining": "Temel madencilik",
+    "Standard support": "Standart destek",
+    "Community access": "Topluluk erişimi",
+    "Advanced mining": "Gelişmiş madencilik",
+    "Priority support": "Öncelikli destek",
+    "Staking access": "Staking erişimi",
+    "Faster mining": "Daha hızlı madencilik",
+    "All business features": "Tüm iş özellikleri",
+    "Event access": "Etkinlik erişimi",
+    "Highest mining": "En yüksek madencilik",
+    "Premium access": "Premium erişim",
+    "Lifetime access": "Yaşam boyu erişim",
+    "Unlocked forever": "Sonsuza dek açık",
+    "Lifetime perks": "Yaşam boyu avantajlar",
+    "Advanced Mining": "Gelişmiş madencilik",
+    "Priority Support": "Öncelikli destek",
+    "Highest Mining": "En yüksek madencilik",
+    "Lifetime Access": "Yaşam boyu erişim",
+    "Premium Access": "Premium erişim",
+    "Event Access": "Etkinlik erişimi",
+    "Staking Access": "Staking erişimi",
+    "Faster Mining": "Daha hızlı madencilik",
+    "Basic Mining": "Temel madencilik",
+    "Standard Support": "Standart destek",
+    "Community Access": "Topluluk erişimi",
+    "All Business Features": "Tüm iş özellikleri",
+    "Unlocked Forever": "Sonsuza dek açık",
+    "Lifetime Perks": "Yaşam boyu avantajlar",
+    "Access to Premium Features": "Premium özelliklere erişim",
+    "Everything unlocked forever": "Sonsuza dek tüm özellikler açık",
+    "Limited Staking": "Sınırlı Staking"
+  },
+  "features": {
+    "mining": "Enerji verimli proof-of-activity modelimiz aracılığıyla FSN tokenları kazanmaya başlayın.",
+    "staking": "Dijital tokenlarınızı stake edin ve ağları desteklerken varlıklarınızın büyümesini izleyin.",
+    "gaming": "Becerilerinizi gerçek dijital varlıklarla ödüllendiren heyecan verici oyunların keyfini çıkarın.",
+    "nft": "Benzersiz NFT'ler ticareti yapın ve oyunlar içinde özel öğeler ve koleksiyonların kilidini açın."
+  },
+  "settingsSection": {
+    "profileTitle": "Profil Bilgileri",
+    "fullName": "Tam Ad",
+    "email": "E-posta",
+    "accountTitle": "Hesap Durumu",
+    "currentPlan": "Mevcut Plan",
+    "subscriptionEnds": "Abonelik Biter",
+    "upgrade": "Planı Yükselt",
+    "passwordTitle": "Şifre Değiştir",
+    "currentPassword": "Mevcut Şifre",
+    "newPassword": "Yeni Şifre",
+    "confirmPassword": "Yeni Şifreyi Onayla",
+    "changePassword": "Şifre Değiştir",
+    "languageTitle": "Tercih Edilen Dil",
+    "noImage": "Resim mevcut değil",
+    "selectImage": "Lütfen bir resim seçin",
+    "avatarUpdated": "✅ Avatar başarıyla güncellendi",
+    "uploadFailed": "❌ Resim yüklenemedi",
+    "fillAllFields": "Lütfen tüm alanları doldurun",
+    "passwordMismatch": "❌ Şifreler eşleşmiyor",
+    "notAuthenticated": "❌ Kullanıcı kimlik doğrulaması yapılmadı",
+    "passwordUpdated": "✅ Şifre başarıyla güncellendi",
+    "updateFailed": "❌ Şifre güncellenemedi",
+    "saveAvatar": "Avatar'ı Kaydet",
+    "title": "Ayarlar",
+    "subtitle": "Hesap ayarlarınızı ve tercihlerinizi yönetin",
+    "securityTitle": "Güvenlik ve Gizlilik",
+    "notificationsTitle": "Bildirimler",
+    "preferencesTitle": "Tercihler",
+    "appearanceTitle": "Görünüm",
+    "integrationTitle": "Entegrasyonlar",
+    "activityTitle": "Hesap Aktivitesi",
+    "selectLanguage": "Dil Seçin",
+    "profile": "Profil",
+    "security": {
+      "title": "Güvenlik Ayarları",
+      "twoFactor": "İki Faktörlü Kimlik Doğrulama",
+      "loginHistory": "Giriş Geçmişi",
+      "devices": "Bağlı Cihazlar",
+      "sessions": "Aktif Oturumlar",
+      "passwordChange": "Şifre Değişikliği",
+      "emailVerification": "E-posta Doğrulama",
+      "setup": "Kurulum",
+      "manage": "Yönet",
+      "view": "Görüntüle"
+    },
+    "notifications": {
+      "title": "Bildirim Tercihleri",
+      "emailNotifications": "E-posta Bildirimleri",
+      "pushNotifications": "Push Bildirimleri",
+      "marketing": "Pazarlama İletişimleri",
+      "newsletter": "Bülten Aboneliği",
+      "updates": "Ürün Güncellemeleri",
+      "security": "Güvenlik Uyarıları",
+      "rewards": "Ödüller ve Bonuslar",
+      "staking": "Staking Güncellemeleri",
+      "mining": "Madencilik Uyarıları"
+    },
+    "appearance": {
+      "title": "Görünüm Ayarları",
+      "theme": "Tema",
+      "light": "Açık",
+      "dark": "Koyu",
+      "system": "Sistem Varsayılanı",
+      "compact": "Kompakt Görünüm",
+      "fontSize": "Yazı Boyutu",
+      "animations": "Animasyonları Etkinleştir"
+    },
+    "account": "Hesap",
+    "profileInformation": "Profil Bilgileri",
+    "emailAddress": "E-posta Adresi",
+    "enterFullName": "Tam adınızı girin",
+    "yourEmailAddress": "E-posta adresiniz",
+    "uploading": "Yükleniyor...",
+    "enterCurrentPassword": "Mevcut şifreyi girin",
+    "enterNewPassword": "Yeni şifreyi girin",
+    "confirmNewPassword": "Yeni şifreyi onaylayın",
+    "notificationPreferences": "Bildirim Tercihleri",
+    "pushNotificationPermission": "Push Bildirim İzni",
+    "inAppNotifications": "Uygulama İçi Bildirimler",
+    "showNotificationsInsideApp": "Uygulama içinde bildirimleri göster (toast ve zil simgesi)",
+    "emailNotifications": "E-posta Bildirimleri",
+    "receiveNotificationsViaEmail": "E-posta yoluyla bildirim alın",
+    "pushNotifications": "Push Bildirimler",
+    "receivePushNotificationsOnDevice": "Cihazınızda push bildirimleri alın",
+    "marketingEmails": "Pazarlama E-postaları",
+    "receivePromotionalEmails": "Promosyon e-postaları ve teklifler alın",
+    "securityAlerts": "Güvenlik Uyarıları",
+    "getNotifiedAboutSecurityEvents": "Güvenlik olayları hakkında bilgilendiril",
+    "rewardNotifications": "Ödül Bildirimleri",
+    "getNotifiedAboutNewRewards": "Yeni ödüller ve bonuslar hakkında bilgilendiril",
+    "themeSettings": "Tema Ayarları",
+    "light": "Açık",
+    "dark": "Koyu",
+    "system": "Sistem",
+    "soundEffects": "Ses Efektleri",
+    "enableSoundEffectsForInteractions": "Etkileşimler için ses efektlerini etkinleştir",
+    "accountInformation": "Hesap Bilgileri",
+    "planPrice": "Plan Fiyatı",
+    "language": "Dil",
+    "upgradeYourPlan": "Planınızı Yükseltin",
+    "unlockPremiumFeatures": "Birinci Sınıf üyeliğimizle premium özellikleri ve özel faydaları açın.",
+    "upgradeNow": "Şimdi Yükselt",
+    "firstClass": "Birinci Sınıf",
+    "businessClass": "İş Sınıfı",
+    "economyClass": "Ekonomi Sınıfı",
+    "pleaseSelectImageFirst": "Lütfen önce bir resim seçin",
+    "profileUpdatedSuccessfully": "Profil başarıyla güncellendi",
+    "failedToUpdateProfile": "Profil güncellenemedi",
+    "passwordsDontMatch": "Şifreler eşleşmiyor",
+    "failedToUpdatePassword": "Şifre güncellenemedi",
+    "preferences": {
+      "title": "Kullanıcı Tercihleri",
+      "theme": "Tema",
+      "language": "Dil",
+      "timezone": "Saat Dilimi",
+      "currency": "Görüntüleme Para Birimi",
+      "dateFormat": "Tarih Formatı",
+      "autoplay": "Videoları Otomatik Oynat",
+      "sound": "Ses Efektleri"
+    },
+    "activity": {
+      "title": "Son Aktivite",
+      "loginAttempts": "Giriş Denemeleri",
+      "passwordChanges": "Şifre Değişiklikleri",
+      "emailUpdates": "E-posta Güncellemeleri",
+      "deviceLogins": "Cihaz Girişleri",
+      "viewAll": "Tüm Aktiviteyi Görüntüle"
+    },
+    "privacy": {
+      "title": "Gizlilik ve Veri",
+      "dataDeletion": "Veri Silme",
+      "requestDataDeletion": "Veri Silme Talebi",
+      "dataDeletionDescription": "Hesabınızın ve tüm ilişkili verilerin sistemimizden kalıcı olarak silinmesini talep edebilirsiniz. Bu işlem geri alınamaz.",
+      "whatWillBeDeleted": "Silinecek olanlar:",
+      "deletionItems": [
+        "Hesap profiliniz ve kişisel bilgileriniz",
+        "Tüm işlem geçmişi ve finansal veriler",
+        "Madencilik ve staking kayıtları",
+        "Bildirim tercihleri ve ayarları",
+        "Referans ilişkileri ve ödülleri",
+        "KYC doğrulama verileri",
+        "Tüm uygulama tercihleri ve ayarları"
+      ],
+      "deletionWarning": "⚠️ Uyarı: Bu işlem kalıcıdır ve geri alınamaz. Tüm verileriniz kalıcı olarak kaybolacaktır.",
+      "deletionProcess": "Silme Süreci:",
+      "deletionSteps": [
+        "Talebiniz 30 gün içinde incelenecektir",
+        "İşlem başladığında e-posta onayı alacaksınız",
+        "Veri silme işlemi 90 gün içinde tamamlanacaktır",
+        "Tamamlandığında nihai onay alacaksınız"
+      ],
+      "requestDeletion": "Veri Silme Talebi",
+      "cancelRequest": "Silme Talebini İptal Et",
+      "deletionRequested": "Silme Talebi Gönderildi",
+      "deletionRequestedMessage": "Veri silme talebiniz gönderildi. 24 saat içinde e-posta onayı alacaksınız.",
+      "deletionInProgress": "Silme İşlemi Devam Ediyor",
+      "deletionInProgressMessage": "Veri silme işleminiz şu anda işleniyor. Bu işlem tamamlanması 90 güne kadar sürebilir.",
+      "contactSupport": "Destek ile İletişim",
+      "contactSupportMessage": "Acil yardım veya silme talebiniz hakkında sorular için lütfen destek ekibimizle iletişime geçin."
+    }
+  },
+  "whitepaper": {
+    "whitepaperTitle": "Beyaz Kitap",
+    "overview": "Projemizin felsefesini, teknik mimarisini ve gelecek planlarını açıklayan kapsamlı bir belge.",
+    "introTitle": "Giriş",
+    "intro": "FlySky Network, birden fazla dijital unsuru tek bir ekosistemde birleştirerek kullanıcı-teknoloji ilişkisini yeniden tanımlamak için tasarlanmıştır.",
+    "tokenTitle": "FSN Token",
+    "tokenIntro": "FSN, sanal token kazanma, staking, uygulama içi satın alma ve ödüller için kullanılan FlySky sanal ekonomisinin temel taşıdır.",
+    "phase": "Ön satış, halka satış ve tam lansman aşamalarını içeren aşamalı bir yürütme planı izliyoruz.",
+    "mainSale": "Ana satış aşamalar halinde gerçekleşir, adil tahsis ve tam şeffaflık sağlar.",
+    "uses": "Sanal token şunlar için kullanılır: sanal token kazanma, ödüller, uygulama içi pazar yeri ücretleri, yönetişim ve oyunlar içinde karakter geliştirme.",
+    "gameTitle": "İnteraktif Oyunlar",
+    "gameIntro": "İnteraktif oyunlar, eğlence ve sanal ödülleri birleştiren eğlenceli deneyimler sunar.",
+    "gameDetails": "Oyunlarımız, sanal FSN token'ları ile ödüller sunan eğlenceli bir deneyim sunar.",
+    "gameFeaturesTitle": "Oyun Özellikleri",
+    "status": "Şu anda ön satış hazırlık aşamasında, her aşama için net bir yol haritası ile.",
+    "roadmap": "Yol Haritası",
+    "roadmapDesc": "Geliştirme aşamalarını, ortaklıkları, lansmanı ve ekosistem genişlemesini içerir.",
+    "security": "Güvenlik ve Şeffaflık",
+    "securityDesc": "Bütünlüğü sağlamak ve kullanıcıları korumak için akıllı sözleşmeler ve blockchain teknolojisi kullanıyoruz.",
+    "conclusion": "Sonuç",
+    "conclusionDesc": "FlySky Network, teknoloji, ekonomi ve eğlencenin birleşik geleceğini temsil eder. Şimdi bize katılın.",
+    "join": "Dijital devrimin bir parçası olun — Şimdi FlySky Network'e katılın.",
+    "battleLegendTitle": "İnteraktif Oyunlar",
+    "battleLegend": "Ekosistemimizin bir parçası interaktif oyunlar — eğlenceli deneyimler, özelleştirilebilir özellikler ve FSN token'ları ile desteklenen sanal ekonomi birleştiren eğlenceli oyunlardır.",
+    "roadmapTitle": "Yol Haritası",
+    "securityTitle": "Güvenlik ve Şeffaflık"
+  },
+  "stakingPage": {
+    "description": "Gelişmiş staking platformumuzla geleceğinizi güvence altına alın. Esnek şartlar ve rekabetçi getirilerle pasif gelir kazanın.",
+    "currentPlan": "Mevcut Plan",
+    "startNewStaking": "Yeni Staking Başlat",
+    "chooseAmountDuration": "Kazanmaya başlamak için miktarınızı ve sürenizi seçin",
+    "amountToStake": "Stake Edilecek Miktar",
+    "stakingDuration": "Staking Süresi",
+    "selectDuration": "Süre Seçin",
+    "enterAmount": "Miktar girin",
+    "stakedAmount": "Stake Edilen Miktar",
+    "totalProfit": "Toplam Kar",
+    "trackPerformance": "Staking performansınızı ve geçmişini takip edin",
+    "activePositions": "Aktif Pozisyonlar",
+    "completedPositions": "tamamlanmış pozisyon",
+    "endDate": "Bitiş Tarihi",
+    "progress": "İlerleme",
+    "returned": "İade Edildi",
+    "completeFirstStaking": "Geçmişi görmek için ilk staking'inizi tamamlayın",
+    "availableBalance": "Kullanılabilir Bakiye",
+    "lockedAmount": "Kilitli Miktar",
+    "stakingStats": "Staking İstatistikleri",
+    "performanceOverview": "Performans Genel Bakış",
+    "completed": "Tamamlandı",
+    "expectedReturn": "Beklenen Getiri",
+    "startStakingToSee": "Aktif pozisyonlarınızı görmek için staking'e başlayın",
+    "fsn": "FSN"
+  },
+  "referralPage": {
+    "title": "Referans Programı",
+    "description": "Arkadaşlarınızı davet edin ve birlikte ödül kazanın. Referans linkinizi paylaşın ve FSN token kazanmaya başlayın!",
+    "loading": "Referans verileri yükleniyor...",
+    "overview": "Referans Genel Bakış",
+    "performance": "Referans performansınız",
+    "totalReferrals": "Toplam Referans",
+    "allTime": "Tüm zamanlar",
+    "referrals": "Referanslar",
+    "verified": "Doğrulanmış",
+    "confirmed": "Onaylanmış",
+    "readyToClaim": "Talep Etmeye Hazır",
+    "pending": "Beklemede",
+    "awaiting": "Bekleniyor",
+    "inReview": "İncelemede",
+    "yourReferralLink": "Referans Bağlantınız",
+    "shareLinkToEarn": "Bu bağlantıyı arkadaşlarınızla paylaşarak ödül kazanın",
+    "yourReferrals": "Referanslarınız",
+    "trackProgress": "Referans ilerlemenizi takip edin",
+    "email": "E-posta",
+    "status": "Durum",
+    "action": "Eylem",
+    "noReferralsYet": "Henüz referans yok",
+    "shareLinkToStart": "Başlamak için referans bağlantınızı paylaşın!",
+    "claim": "Talep Et",
+    "claimed": "Talep Edildi",
+    "bonusTiers": "Bonus Seviyeleri",
+    "rewardStructure": "Ödül yapısı",
+    "tier1": "Seviye 1",
+    "tier1Description": "1-10 Doğrulanmış Referans",
+    "tier2": "Seviye 2",
+    "tier2Description": "11-20 Doğrulanmış Referans",
+    "tier3": "Seviye 3",
+    "tier3Description": "21+ Doğrulanmış Referans",
+    "referralSummary": "Referans Özeti",
+    "performanceOverview": "Performans genel bakış",
+    "rejected": "Reddedildi",
+    "verifiedEmails": "Doğrulanmış E-postalar",
+    "downloadQR": "QR İndir",
+    "scanToShare": "Paylaşmak için tara",
+    "bonus": "Referans Bonusu",
+    "claimBonuses": "Mevcut bonuslarınızı talep edin"
+  },
+  "playToEarnPage": {
+    "title": "Oyna ve Kazan",
+    "description": "Oyun becerilerinizi gerçek ödüllere dönüştürün! Heyecan verici oyunlar oynayın, görevleri tamamlayın ve FSN token kazanın.",
+    "comingSoon": "Yakında",
+    "workingHard": "Size harika oyun deneyimleri sunmak için çok çalışıyoruz",
+    "stayTuned": "Bizi takip edin!",
+    "underDevelopment": "Oyna ve Kazan oyun platformumuz geliştirme aşamasında. Oyun becerilerinizi gerçek FSN ödüllerine dönüştürmeye hazır olun!",
+    "gamingPlatform": "Oyun Platformu",
+    "whatToExpect": "Ne beklenir",
+    "dailyRewards": "Günlük Ödüller",
+    "dailyRewardsDescription": "Görevleri ve meydan okumaları tamamlayarak günlük FSN token kazanın",
+    "tokenRewards": "Token Ödülleri",
+    "tokenRewardsDescription": "Oyun başarılarınızı gerçek FSN token'larına dönüştürün",
+    "startPlaying": "Oynamaya Başla",
+    "beginJourney": "Oyun yolculuğunuza başlayın",
+    "chooseGame": "Oyun Seç",
+    "selectGameModes": "Çeşitli oyun modlarından seçin",
+    "playAndEarn": "Oyna ve Kazan",
+    "completeMissions": "Görevleri tamamlayın ve FSN kazanın",
+    "rewardsPreview": "Ödül Önizlemesi",
+    "earningStructure": "Kazanç yapısı",
+    "dailyLogin": "Günlük Giriş",
+    "dailyLoginDescription": "Ödül kazanmak için günlük giriş yapın",
+    "gameWins": "Oyun Zaferleri",
+    "gameWinsDescription": "Token kazanmak için oyunları kazanın",
+    "achievements": "Başarılar",
+    "achievementsDescription": "Özel başarıları açın"
+  },
+  "planComparison": {
+    "title": "Plan Karşılaştırması",
+    "subtitle": "Plana göre günlük limitler",
+    "current": "Mevcut",
+    "perDay": "günde",
+    "upgradePlan": "Planı Yükselt"
+  },
+  "miningPage": {
+    "earningsTableTitle": "Beklenen Madencilik Kazançları",
+    "earningsTableSubtitle": "FSN başına 0.01$ kazanç",
+    "per12hMonthly": "12 saatte / aylık {{monthly}} FSN",
+    "earningsAtPrice": "FSN başına 0.01$ kazanç",
+    "expectedReturns": "Beklenen Getiriler",
+    "boostMiningTitle": "💎🚀 Madencilik Gücünüzü Artırın!",
+    "boostMiningDesc": "Her 12 saatte bir kazanmaya başlayın — kazdığınız her FSN zaten 0.01$ değerinde",
+    "publicSaleSoon": "Halka arz yakında duyurulacak — takipte kalın ve madencilik yapmaya devam edin!",
+    "balance": "Bakiye",
+    "available": "Kullanılabilir",
+    "fsn": "FSN",
+    "currentPlan": "Mevcut Plan",
+    "currentCycle": "Mevcut Döngü",
+    "complete": "Tamamlandı",
+    "day": "Gün",
+    "progress": "İlerleme",
+    "dailyMiningRewards": "Günlük madencilik ödülleri",
+    "miningCycles": "12 saatlik madencilik döngüleri",
+    "manualClaimSystem": "Manuel talep sistemi",
+    "miningStats": "Madencilik İstatistikleri",
+    "performanceOverview": "Performans Genel Bakış",
+    "currentMined": "Mevcut Madencilik",
+    "fsnDailyMining": "Günlük FSN Madenciliği",
+    "readyToMine": "Madenciliğe başlamaya hazır mısınız?",
+    "startMining": "Madenciliği Başlat",
+    "dailyLimit": "Günlük Limit",
+    "cycle": "Döngü",
+    "hours": "saat",
+    "claimType": "Talep Türü",
+    "manual": "Manuel",
+    "dailyLimitLabel": "Günlük Limit",
+    "timeRemaining": "Kalan Süre",
+    "readyToClaim": "⏳ Madencilik ödülünüzü talep etmeye hazır!",
+    "unlockRewards": "Ödülleri Aç",
+    "claim": "Ödül Talep Et",
+    "miningInProgress": "Madencilik Devam Ediyor",
+    "planNames": {
+      "economy": "Ekonomi Sınıfı",
+      "business": "İş Sınıfı",
+      "first": "Birinci Sınıf",
+      "first-6": "Birinci Sınıf (6 Ay)",
+      "first-lifetime": "Birinci Sınıf (Ömür Boyu)"
+    },
+    "miningHistory": "Madencilik Geçmişi",
+    "loading": "Yükleniyor...",
+    "loadingPlanData": "Plan verileri yükleniyor...",
+    "planNotFound": "Plan Bulunamadı",
+    "planNotFoundDesc": "Plan bilgileri yüklenemedi. Lütfen daha sonra tekrar deneyin."
+  },
+  "subscribeToPlan": "Plana Abone Ol",
+  "selectedPlan": "Seçilen Plan",
+  "price": "Fiyat",
+  "bonus": "Bonus",
+  "planFeaturesTitle": "Plan Özellikleri",
+  "paymentMethod": "Ödeme Yöntemi",
+  "inAppPurchase": "Uygulama İçi Satın Alma",
+  "securePayment": "Güvenli Ödeme",
+  "importantNotice": "Önemli Uyarı",
+  "fsnVirtualCurrency": "FSN tokenları sanal uygulama içi para birimidir",
+  "fsnUsageDescription": "sadece uygulama içinde Madencilik, Staking ve Yükseltmeler gibi özellikler için kullanılabilir. Dışarıda çekilemez, satılamaz veya takas edilemez.",
+  "purchaseNow": "Şimdi Satın Al",
+  "restorePurchases": "Satın Alımları Geri Yükle",
+  "purchaseTerms": "Satın alarak hizmet şartlarımızı ve gizlilik politikamızı kabul etmiş olursunuz.",
+  "purchaseFailed": "Satın alma başarısız. Lütfen tekrar deneyin.",
+  "bonusReceived": "Bonus Alındı",
+  "oneTimePayment": "Tek seferlik ödeme",
+  "bonusDescription": "Gelişmiş özellikler için sanal uygulama içi para birimi",
+  "processing": "İşleniyor...",
+  "paymentCompleted": "Ödeme Tamamlandı",
+  "subscriptionProcessed": "Aboneliğiniz başarıyla işlendi.",
+  "subscriptionBonusTitle": "🎁 Abonelik Bonusu Alındı",
+  "subscriptionBonusBody": "{{plan}} planına abone olduğunuz için {{amount}} FSN bonus aldınız!",
+  "subscriptionBonusToast": "🎉 {{amount}} FSN bonus bakiyenize eklendi!",
+  "contact": {
+    "title": "Bize Ulaşın",
+    "description": "Sorularınız veya geri bildirimleriniz mi var? Sizden duymak isteriz.",
+    "name": "Adınız",
+    "namePlaceholder": "Tam adınızı girin",
+    "email": "E-postanız",
+    "emailPlaceholder": "E-posta adresinizi girin",
+    "message": "Mesajınız",
+    "messagePlaceholder": "Size nasıl yardımcı olabileceğimizi söyleyin...",
+    "send": "Mesaj Gönder",
+    "sendMessage": "Bize Mesaj Gönderin",
+    "sending": "Gönderiliyor...",
+    "thankYou": "Teşekkürler! Yakında size geri döneceğiz.",
+    "fillAllFields": "Lütfen tüm alanları doldurun.",
+    "getInTouch": "İletişime Geçin",
+    "phone": "Telefon",
+    "address": "Adres",
+    "faq": "Sık Sorulan Sorular",
+    "faq1": {
+      "question": "Madenciliğe nasıl başlarım?",
+      "answer": "Sadece Madencilik sayfasına gidin ve günlük ödüller kazanmaya başlamak için 'Madenciliği Başlat'ı tıklayın."
+    },
+    "faq2": {
+      "question": "Referans ödülleri nasıl çalışır?",
+      "answer": "Referans linkinizi kullanarak arkadaşlarınızı davet edin ve katıldıklarında ve planlara abone olduklarında bonus kazanın."
+    },
+    "faq3": {
+      "question": "Farklı üyelik planları nelerdir?",
+      "answer": "Artan faydalar ve ödüllerle Ekonomi, İş ve Birinci Sınıf planları sunuyoruz."
+    },
+    "getInTouchViaEmail": "E-posta yoluyla bizimle iletişime geçin",
+    "callUsDirectly": "Bizi doğrudan arayın",
+    "ourMainOffice": "Ana ofisimiz",
+    "supportFeatures": "Neden Desteğimizi Seçmelisiniz?",
+    "support247": "7/24 Destek",
+    "roundTheClockAssistance": "Günün her saati yardım",
+    "secureCommunication": "Güvenli İletişim",
+    "yourDataIsProtected": "Verileriniz korunur",
+    "quickResponse": "Hızlı Yanıt",
+    "weReplyWithin24Hours": "24 saat içinde yanıt veriyoruz"
+  },
+  "fillAllFields": "Lütfen tüm alanları doldurun.",
+  "notAuthenticated": "Kullanıcı kimlik doğrulaması yapılmadı.",
+  "walletOverview": "💼 Cüzdan Genel Bakışı",
+  "totalBalance": "Toplam Bakiye",
+  "availableBalance": "Kullanılabilir Bakiye",
+  "lockedInStaking": "Staking'de Kilitli",
+  "referralRewards": "Referans Ödülleri (Sadece Doğrulanmış)",
+  "balanceDistribution": "💹 Bakiye Dağılımı",
+  "noBalanceData": "Gösterilecek bakiye verisi yok.",
+  "transactionHistory": "📜 İşlem Geçmişi",
+  "noTransactions": "Gösterilecek işlem yok.",
+  "loadingWallet": "Cüzdan verileri yükleniyor...",
+  "statusMsg": {
+    "kyc": "⚠️ Tam özelliklere erişmek için KYC'nizi tamamlayın.",
+    "economy": "🚀 Ücretsiz plandasınız. Daha fazla fayda için yükseltin.",
+    "business": "🎯 İş Sınıfı size gelişmiş erişim sağlar. Birinci Sınıf tam potansiyeli açar.",
+    "first": "👑 Birinci Sınıf üyelikle tam erişimin keyfini çıkarıyorsunuz."
+  },
+  "kycApproved": "Onaylandı",
+  "kycPending": "Bekliyor",
+  "notVerified": "Doğrulanmamış",
+  "membership": "Üyelik",
+  "kycStatus": "KYC Durumu",
+  "expiresOn": "Biter",
+  "upgrade": "Yükselt",
+  "notifications": {
+    "title": "Bildirimler",
+    "unread": "Okunmamış",
+    "markAllAsRead": "Tümünü okundu olarak işaretle",
+    "noNotifications": "Bildirim yok",
+    "viewAll": "Tüm bildirimleri görüntüle",
+    "empty": "Bildiriminiz yok",
+    "loading": "Bildirimler yükleniyor...",
+    "unreadNotifications": "okunmamış bildirim",
+    "youHaveNoNotifications": "Henüz bildiriminiz yok",
+    "noFilteredNotifications": "Bu filtreye uyan bildirim yok",
+    "markAllRead": "Tümünü okundu olarak işaretle",
+    "filter": "Filtre",
+    "all": "Tümü",
+    "rewards": "Ödüller",
+    "messages": "Mesajlar",
+    "referrals": "Referanslar",
+    "mining": "Madencilik",
+    "staking": "Staking",
+    "types": {
+      "claim_reward": "Ödül Hazır",
+      "inbox_message": "Yeni Mesaj",
+      "referral_bonus": "Referans Bonusu",
+      "mining_reminder": "Madencilik Hatırlatıcısı",
+      "staking_reminder": "Staking Hatırlatıcısı"
+    },
+    "templates": {
+      "welcome": {
+        "title": "🎉 FlySky Network'e Hoş Geldiniz!",
+        "message": "Sizi aramızda görmekten heyecan duyuyoruz. Bugün madencilik, staking ve referanslarla FSN ödüllerini kazanmaya başlayın."
+      },
+      "dailyMiningReminder": {
+        "title": "⛏️ Günlük madenciliğinizi unutmayın!",
+        "message": "Bugün madencilik yapın ve günlük FSN ödüllerinizi gün bitmeden talep edin!"
+      },
+      "stakingOpportunity": {
+        "title": "💰 Staking ile Kazançlarınızı Artırın",
+        "message": "FSN tokenlarınızı bugün stake edin ve %100'e kadar APY ödüllerinden yararlanın."
+      },
+      "referralProgram": {
+        "title": "👥 Referanslarla Daha Fazla Kazanın",
+        "message": "Referans linkinizi arkadaşlarınızla paylaşın ve katıldıklarında hesaplarını doğruladıklarında FSN tokenları kazanın."
+      },
+      "newFeature": {
+        "title": "🚀 Yeni Özellik Mevcut!",
+        "message": "FlySky Network'e eklenen en son özellikleri keşfedin ve bugün deneyin."
+      },
+      "premiumExclusive": {
+        "title": "💎 Özel Premium Teklif",
+        "message": "Sadece Premium üyeler için mevcut olan özel tekliflerden ve fırsatlardan yararlanın."
+      },
+      "inactiveReminder": {
+        "title": "🔔 Sizi Özledik!",
+        "message": "Bugün FlySky'e geri dönün ve günlük ödüllerinizi ve kazanç fırsatlarınızı kaçırmayın."
+      },
+      "maintenance": {
+        "title": "🛠️ Planlı Bakım",
+        "message": "Sistem bakımı [tarih/saat ekleyin] tarihinde gerçekleşecektir. Bazı kesintiler olabilir."
+      }
+    }
+  },
+  "pushNotifications": "Push Bildirimleri",
+  "enableNotifications": "Bildirimleri Etkinleştir",
+  "enablePushNotifications": "Uygulamayı kullanmadığınızda bile güncellemeler almak için push bildirimlerini etkinleştirin",
+  "notificationsDenied": "Bildirimler engellendi. Lütfen tarayıcı ayarlarınızda etkinleştirin.",
+  "notificationsDeniedHelp": "Bildirimleri engellediniz. Etkinleştirmek için lütfen tarayıcı ayarlarınızı güncelleyin.",
+  "notificationsEnabled": "Önemli güncellemeler olduğunda push bildirimleri alacaksınız.",
+  "notificationsDescription": "Ödüller, mesajlar ve diğer önemli olaylar hakkında güncellemeler almak için push bildirimlerini etkinleştirin.",
+  "admin": {
+    "common": {
+      "save": "Kaydet",
+      "cancel": "İptal",
+      "delete": "Sil",
+      "edit": "Düzenle",
+      "view": "Görüntüle",
+      "close": "Kapat",
+      "confirm": "Onayla",
+      "loading": "Yükleniyor...",
+      "search": "Ara",
+      "filter": "Filtrele",
+      "sort": "Sırala",
+      "actions": "İşlemler",
+      "status": "Durum",
+      "date": "Tarih",
+      "amount": "Miktar",
+      "details": "Detaylar",
+      "noResults": "Sonuç bulunamadı",
+      "selectAll": "Tümünü Seç",
+      "bulkActions": "Toplu İşlemler",
+      "exportData": "Veri Dışa Aktar",
+      "refresh": "Yenile"
+    },
+    "route": {
+      "checking": "Yönetici izinleri kontrol ediliyor..."
+    },
+    "dataDeletion": {
+      "title": "Veri Silme Yönetimi",
+      "description": "Kullanıcı veri silme isteklerini inceleyin ve yönetin. Bu, kullanıcı verilerini kalıcı olarak kaldıran kritik bir işlemdir.",
+      "stats": {
+        "pending": "beklemede",
+        "approved": "onaylandı",
+        "inProgress": "işleniyor",
+        "completed": "tamamlandı",
+        "cancelled": "iptal edildi"
+      },
+      "requests": {
+        "title": "Silme İstekleri",
+        "total": "Toplam: {{count}} istek",
+        "noRequests": "Silme isteği bulunamadı",
+        "loading": "Silme istekleri yükleniyor..."
+      },
+      "badges": {
+        "webRequest": "Web İsteği",
+        "existingUser": "Mevcut Kullanıcı"
+      },
+      "fields": {
+        "email": "E-posta",
+        "requested": "Talep Edildi",
+        "source": "Kaynak",
+        "reviewed": "İncelendi",
+        "started": "Başladı",
+        "completed": "Tamamlandı"
+      },
+      "actions": {
+        "viewDetails": "Detayları Görüntüle",
+        "approve": "Onayla",
+        "reject": "Reddet",
+        "startProcessing": "İşlemeyi Başlat",
+        "completeDeletion": "Silme İşlemini Tamamla",
+        "processing": "İşleniyor..."
+      },
+      "adminNotes": {
+        "title": "Yönetici Notları",
+        "placeholder": "Silme isteği hakkında not ekleyin...",
+        "description": "Notlar, bir silme isteğinin durumunu güncellediğinizde kaydedilecektir."
+      },
+      "details": {
+        "title": "Silme İsteği Detayları",
+        "userName": "Kullanıcı Adı",
+        "email": "E-posta",
+        "status": "Durum",
+        "requestDate": "Talep Tarihi",
+        "reviewDate": "İnceleme Tarihi",
+        "processingStartDate": "İşleme Başlangıç Tarihi",
+        "completionDate": "Tamamlanma Tarihi",
+        "estimatedCompletion": "Tahmini Tamamlanma",
+        "adminNotes": "Yönetici Notları",
+        "userReason": "Kullanıcı Nedeni"
+      },
+      "messages": {
+        "statusUpdated": "Durum {{status}} olarak güncellendi",
+        "userDataDeleted": "Kullanıcı verileri başarıyla silindi",
+        "failedToLoad": "Silme istekleri yüklenemedi",
+        "failedToUpdate": "Durum güncellenemedi",
+        "failedToProcess": "Silme işlenemedi"
+      }
+    },
+    "notifications": {
+      "title": "Bildirimler",
+      "description": "Kullanıcılara bildirim gönderin ve yönetin",
+      "header": {
+        "title": "Bildirimler",
+        "subtitle": "Kullanıcılara bildirim gönderin ve yönetin"
+      },
+      "actions": {
+        "sendNotification": "Bildirim Gönder",
+        "editResend": "Bildirimi Düzenle ve Yeniden Gönder",
+        "refresh": "Yenile",
+        "clearAll": "Tümünü Temizle",
+        "useTemplate": "Şablon Kullan",
+        "close": "Kapat",
+        "cancel": "İptal",
+        "send": "Gönder",
+        "schedule": "Zamanla",
+        "sendNow": "Şimdi Gönder",
+        "resend": "Yeniden Gönder",
+        "delete": "Sil",
+        "view": "Görüntüle",
+        "edit": "Düzenle",
+        "refreshNotifications": "Bildirimleri yenile",
+        "viewNotification": "Bildirimi görüntüle",
+        "editNotification": "Bildirimi düzenle",
+        "deleteNotification": "Bildirimi sil",
+        "dismissError": "Hatayı kapat"
+      },
+      "form": {
+        "title": "Başlık",
+        "titlePlaceholder": "Bildirim başlığını girin",
+        "message": "Mesaj",
+        "messagePlaceholder": "Bildirim mesajını girin",
+        "targetAudience": "Hedef Kitle",
+        "platforms": "Platformlar",
+        "schedule": "Zamanlama (İsteğe Bağlı)",
+        "schedulePlaceholder": "Anında göndermek için boş bırakın"
+      },
+      "targetAudience": {
+        "all": "Tüm Kullanıcılar",
+        "new": "Yeni Kullanıcılar (Son 7 gün)",
+        "inactive": "Pasif Kullanıcılar (30+ gün)",
+        "plans": "Abonelik Planları",
+        "custom": "Özel Kullanıcılar",
+        "selectPlans": "Abonelik Planlarını Seçin",
+        "customUserSelection": "Özel Kullanıcı Seçimi",
+        "searchUsers": "E-posta ile kullanıcı ara...",
+        "searchUsersPlaceholder": "E-posta veya isim ile kullanıcı ara...",
+        "selectedUsers": "Seçilen Kullanıcılar",
+        "usersFound": "kullanıcı bulundu",
+        "targetUsers": "Hedef Kullanıcılar",
+        "selectPlansToSeeCount": "Kullanıcı sayısını görmek için planları seçin",
+        "customUserSearch": "Özel Kullanıcı Arama",
+        "customUserSearchPlaceholder": "E-posta veya isim ile kullanıcı ara...",
+        "customUserSelectionPlaceholder": "Hedeflemek için belirli kullanıcıları seçin",
+        "customUserCount": "Özel Kullanıcı Sayısı",
+        "customUserCountDescription": "Özel hedefleme için seçilen kullanıcı sayısı"
+      },
+      "platforms": {
+        "mobile": "Mobil",
+        "web": "Web",
+        "inbox": "Gelen Kutusu",
+        "email": "E-posta"
+      },
+      "stats": {
+        "totalSent": "Toplam Gönderilen",
+        "scheduled": "Zamanlanmış",
+        "draft": "Taslak",
+        "failed": "Başarısız",
+        "loading": "Bildirimler yükleniyor...",
+        "noNotifications": "Henüz bildirim yok",
+        "noNotificationsSubtitle": "Başlamak için ilk bildiriminizi gönderin",
+        "avgOpenRate": "Ort. Açılma Oranı",
+        "avgClickRate": "Ort. Tıklama Oranı",
+        "fromLastWeek": "geçen haftadan",
+        "nextScheduled": "Sonraki: 25 Ara, 02:00"
+      },
+      "table": {
+        "notification": "Bildirim",
+        "title": "Başlık",
+        "message": "Mesaj",
+        "type": "Tür",
+        "status": "Durum",
+        "audience": "Kitle",
+        "sent": "Gönderildi",
+        "recipients": "Alıcılar",
+        "platforms": "Platformlar",
+        "performance": "Performans",
+        "created": "Oluşturuldu",
+        "actions": "İşlemler",
+        "opened": "açıldı",
+        "clicked": "tıklandı",
+        "openRate": "açılma oranı",
+        "clickRate": "tıklama oranı",
+        "viewDetails": "Detayları Görüntüle",
+        "editResend": "Düzenle ve Yeniden Gönder",
+        "delete": "Sil"
+      },
+      "status": {
+        "sent": "Gönderildi",
+        "scheduled": "Zamanlandı",
+        "draft": "Taslak",
+        "failed": "Başarısız",
+        "processing": "işleniyor"
+      },
+      "deliveryStatus": {
+        "delivered": "teslim edildi",
+        "partial_success": "kısmen başarılı",
+        "failed": "başarısız",
+        "pending": "beklemede"
+      },
+      "audience": {
+        "premium": "Premium",
+        "new": "Yeni",
+        "inactive": "Pasif",
+        "all": "Tümü",
+        "allUsers": "Tüm Kullanıcılar",
+        "newUsers": "Yeni Kullanıcılar"
+      },
+      "types": {
+        "info": "Bilgi",
+        "success": "Başarı",
+        "warning": "Uyarı",
+        "error": "Hata"
+      },
+      "messages": {
+        "sentSuccessfully": "Bildirim başarıyla gönderildi!",
+        "failedToSend": "Bildirim gönderilemedi",
+        "deletedSuccessfully": "Bildirim başarıyla silindi!",
+        "failedToDelete": "Bildirim silinemedi",
+        "resentSuccessfully": "Bildirim başarıyla yeniden gönderildi!",
+        "failedToResend": "Bildirim yeniden gönderilemedi",
+        "clearedSuccessfully": "Tüm bildirimler başarıyla temizlendi!",
+        "failedToClear": "Tüm bildirimler temizlenemedi",
+        "pleaseEnterBoth": "Lütfen hem başlık hem de içerik girin.",
+        "unexpectedError": "Bildirim gönderilirken beklenmeyen bir hata oluştu",
+        "errorDeleting": "Bildirim silinirken beklenmeyen bir hata oluştu",
+        "errorResending": "Bildirim yeniden gönderilirken beklenmeyen bir hata oluştu",
+        "notificationSent": "Bildirim başarıyla gönderildi!"
+      },
+      "modals": {
+        "sendNotification": "Bildirim Gönder",
+        "notificationDetails": "Bildirim Detayları",
+        "editResendNotification": "Bildirimi Düzenle ve Yeniden Gönder",
+        "deleteNotification": "Bildirimi Sil",
+        "clearAllNotifications": "Tüm Bildirimleri Temizle"
+      },
+      "deleteConfirm": {
+        "title": "Bildirimi Sil",
+        "message": "\"{title}\" bildirimini silmek istediğinizden emin misiniz?",
+        "subtitle": "Bu işlem geri alınamaz ve bildirimi, günlükleri ve gelen kutusu girişlerini içeren tüm ilgili verileri kalıcı olarak kaldıracaktır.",
+        "genericMessage": "Bu bildirimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+      },
+      "clearAllConfirm": {
+        "title": "Tüm Bildirimleri Temizle",
+        "message": "TÜM bildirimleri temizlemek istediğinizden kesinlikle emin misiniz?",
+        "warning": "⚠️ Bu işlem aşağıdakileri kalıcı olarak silecektir:",
+        "items": [
+          "Tüm {count} bildirim kaydı",
+          "Tüm bildirim günlükleri ve analizleri",
+          "Tüm kullanıcı gelen kutusu bildirimleri",
+          "Tüm ilgili veriler ve meta veriler"
+        ],
+        "cannotUndone": "Bu işlem geri alınamaz! Gerekirse yedek aldığınızdan emin olun."
+      },
+      "details": {
+        "status": "Durum",
+        "targetAudience": "Hedef Kitle",
+        "sentAt": "Gönderildi",
+        "createdAt": "Oluşturuldu",
+        "recipients": "Alıcılar",
+        "platforms": "Platformlar",
+        "opened": "Açıldı",
+        "clicked": "Tıklandı",
+        "errorDetails": "Hata Detayları:",
+        "deliveryInformation": "Teslimat Bilgileri:",
+        "totalRecipients": "Toplam Alıcı",
+        "successful": "Başarılı",
+        "failed": "Başarısız",
+        "errorMessage": "Hata Mesajı"
+      },
+      "loading": {
+        "sending": "Gönderiliyor...",
+        "deleting": "Siliniyor...",
+        "clearing": "Temizleniyor...",
+        "refreshing": "Yenileniyor...",
+        "loadingPlans": "Mevcut planlar yükleniyor...",
+        "loadingUsers": "Kullanıcılar yükleniyor..."
+      },
+      "errors": {
+        "noNotificationsToClear": "Temizlenecek bildirim yok",
+        "noTokensFound": "Token bulunamadı. Bildirimler için kayıtlı kullanıcı yok.",
+        "serverError": "Bildirimler gönderilemedi. Sunucu diyor: {error}",
+        "failedToLoad": "Bildirimler yüklenemedi",
+        "failedToSend": "Bildirim gönderilemedi",
+        "failedToDelete": "Bildirim silinemedi",
+        "failedToUpdate": "Bildirim güncellenemedi",
+        "errorSending": "Bildirim gönderilirken hata oluştu."
+      },
+      "templates": {
+        "title": "Bildirim Şablonları",
+        "description": "Yaygın bildirim türleri için önceden tanımlanmış şablonları kullanın",
+        "modalTitle": "Şablon Seç",
+        "modalDescription": "Bildiriminizi hızlıca doldurmak için bir şablon seçin",
+        "noTemplates": "Şablon mevcut değil",
+        "noTemplatesDescription": "Yaygın bildirim türleri için şablonlar burada mevcut olacak",
+        "useTemplate": "Şablonu Kullan",
+        "previewTemplate": "Şablonu Önizle",
+        "templateCategories": {
+          "welcome": "Hoş Geldiniz ve Tanıtım",
+          "reminders": "Hatırlatıcılar ve Uyarılar",
+          "promotional": "Promosyon ve Pazarlama",
+          "system": "Sistem ve Bakım",
+          "rewards": "Ödüller ve Bonuslar"
+        },
+        "templates": {
+          "welcome": {
+            "name": "Hoş Geldin Mesajı",
+            "title": "🎉 FlySky Network'e Hoş Geldiniz!",
+            "description": "Sizi aramızda görmekten heyecan duyuyoruz. Bugün madencilik, staking ve referanslarla FSN ödüllerini kazanmaya başlayın.",
+            "category": "welcome"
+          },
+          "dailyMiningReminder": {
+            "name": "Günlük Madencilik Hatırlatması",
+            "title": "⛏️ Günlük madenciliğinizi unutmayın!",
+            "description": "Bugün madencilik yapın ve günlük FSN ödüllerinizi gün bitmeden talep edin!",
+            "category": "reminders"
+          },
+          "stakingOpportunity": {
+            "name": "Staking Fırsatı",
+            "title": "💰 Staking ile Kazançlarınızı Artırın",
+            "description": "FSN tokenlarınızı bugün stake edin ve %100'e kadar APY ödüllerinden yararlanın.",
+            "category": "rewards"
+          },
+          "referralProgram": {
+            "name": "Referans Programı",
+            "title": "👥 Referanslarla Daha Fazla Kazanın",
+            "description": "Referans linkinizi arkadaşlarınızla paylaşın ve katıldıklarında hesaplarını doğruladıklarında FSN tokenları kazanın.",
+            "category": "promotional"
+          },
+          "newFeature": {
+            "name": "Yeni Özellik Duyurusu",
+            "title": "🚀 Yeni Özellik Mevcut!",
+            "description": "FlySky Network'e eklenen en son özellikleri keşfedin ve bugün deneyin.",
+            "category": "system"
+          },
+          "premiumExclusive": {
+            "name": "Premium Özel Teklif",
+            "title": "💎 Özel Premium Teklif",
+            "description": "Sadece Premium üyeler için mevcut olan özel tekliflerden ve fırsatlardan yararlanın.",
+            "category": "promotional"
+          },
+          "inactiveReminder": {
+            "name": "Pasif Kullanıcı Hatırlatması",
+            "title": "🔔 Sizi Özledik!",
+            "description": "Bugün FlySky'e geri dönün ve günlük ödüllerinizi ve kazanç fırsatlarınızı kaçırmayın.",
+            "category": "reminders"
+          },
+          "maintenance": {
+            "name": "Planlı Bakım",
+            "title": "🛠️ Planlı Bakım",
+            "description": "Sistem bakımı [tarih/saat ekleyin] tarihinde gerçekleşecektir. Bazı kesintiler olabilir.",
+            "category": "system"
+          }
+        },
+        "actions": {
+          "select": "Seç",
+          "preview": "Önizle",
+          "close": "Kapat",
+          "search": "Şablon ara...",
+          "filterByCategory": "Kategoriye göre filtrele",
+          "allCategories": "Tüm Kategoriler"
+        },
+        "preview": {
+          "title": "Şablon Önizlemesi",
+          "templateName": "Şablon Adı",
+          "category": "Kategori",
+          "description": "Açıklama",
+          "content": "İçerik Önizlemesi",
+          "useThisTemplate": "Bu Şablonu Kullan"
+        },
+        "createNew": {
+          "title": "Yeni Şablon Oluştur",
+          "description": "Özel bildirim şablonu oluştur",
+          "templateName": "Şablon Adı",
+          "templateNamePlaceholder": "Şablon adını girin",
+          "notificationTitle": "Bildirim Başlığı",
+          "notificationTitlePlaceholder": "Bildirim başlığını girin",
+          "notificationMessage": "Bildirim Mesajı",
+          "notificationMessagePlaceholder": "Bildirim mesajını girin",
+          "category": "Kategori",
+          "targetAudience": "Hedef Kitle",
+          "platforms": "Platformlar",
+          "mobile": "Mobil",
+          "web": "Web",
+          "inbox": "Gelen Kutusu",
+          "cancel": "İptal",
+          "createTemplate": "Şablon Oluştur",
+          "allUsers": "Tüm Kullanıcılar",
+          "premiumUsers": "Premium Kullanıcılar",
+          "newUsers": "Yeni Kullanıcılar",
+          "inactiveUsers": "Pasif Kullanıcılar",
+          "marketing": "Pazarlama",
+          "system": "Sistem",
+          "announcement": "Duyuru",
+          "custom": "Özel"
+        }
+      },
+      "filters": {
+        "searchPlaceholder": "Bildirim ara...",
+        "allTypes": "Tüm Türler",
+        "allStatus": "Tüm Durumlar",
+        "allAudiences": "Tüm Kitleler",
+        "info": "Bilgi",
+        "success": "Başarı",
+        "warning": "Uyarı",
+        "error": "Hata",
+        "sent": "Gönderildi",
+        "scheduled": "Zamanlandı",
+        "draft": "Taslak",
+        "failed": "Başarısız",
+        "allUsers": "Tüm Kullanıcılar",
+        "premium": "Premium",
+        "newUsers": "Yeni Kullanıcılar",
+        "inactive": "Pasif",
+        "sortBy": {
+          "newestFirst": "En Yeni Önce",
+          "oldestFirst": "En Eski Önce",
+          "titleAZ": "Başlık A-Z",
+          "titleZA": "Başlık Z-A",
+          "mostRecipients": "En Çok Alıcı",
+          "mostOpened": "En Çok Açılan"
+        }
+      },
+      "bulkActions": {
+        "selectedNotifications": "{{count}} bildirim seçildi",
+        "resend": "Yeniden Gönder",
+        "duplicate": "Çoğalt",
+        "delete": "Sil",
+        "confirmDelete": "{{count}} bildirimi silmek istediğinizden emin misiniz?"
+      },
+      "mobile": {
+        "notifications": "Bildirimler",
+        "sent": "gönderildi",
+        "open": "açıldı",
+        "click": "tıklandı"
+      },
+      "sendModal": {
+        "title": "Bildirim Gönder",
+        "notificationTitle": "Bildirim Başlığı",
+        "titlePlaceholder": "Bildirim başlığını girin...",
+        "notificationMessage": "Bildirim Mesajı",
+        "messagePlaceholder": "Bildirim mesajını girin...",
+        "cancel": "İptal",
+        "send": "Gönder",
+        "sending": "Gönderiliyor...",
+        "pleaseEnterBoth": "Lütfen hem başlık hem de içerik girin.",
+        "noTokensFound": "Token bulunamadı. Bildirimler için kayıtlı kullanıcı yok.",
+        "notificationSent": "Bildirim başarıyla gönderildi!",
+        "failedToSend": "Bildirim gönderilemedi. Sunucu diyor: {{error}}",
+        "errorSending": "Bildirim gönderilirken hata oluştu."
+      },
+      "pagination": {
+        "showing": "{{current}} / {{total}} bildirim gösteriliyor",
+        "previous": "Önceki",
+        "next": "Sonraki"
+      },
+      "empty": {
+        "noNotifications": "Bildirim bulunamadı",
+        "loading": "Bildirimler yükleniyor..."
+      }
+    },
+    "rewards": {
+      "title": "Ödül Yönetimi",
+      "description": "Ödül programları oluşturun ve yönetin",
+      "staking": {
+        "title": "Staking",
+        "description": "Staking süreleri ve ödüllerini yapılandırın",
+        "duration": "Süre",
+        "reward": "Ödül",
+        "status": "Durum",
+        "addDuration": "Süre Ekle",
+        "plan": "Plan",
+        "units": {
+          "days": "Gün",
+          "weeks": "Hafta",
+          "months": "Ay",
+          "years": "Yıl"
+        },
+        "apy": "APY"
+      },
+      "referrals": {
+        "title": "Referanslar",
+        "description": "Referans seviyelerini ve ödüllerini yönetin",
+        "tier": "Seviye",
+        "referralRange": "Referans Aralığı",
+        "referrals": "Referans",
+        "reward": "Ödül",
+        "status": "Durum",
+        "addTier": "Seviye Ekle",
+        "name": "Ad",
+        "range": "Aralık",
+        "bonus": "Bonus"
+      },
+      "watchAds": {
+        "title": "Reklam İzle",
+        "description": "Reklam izleme ödüllerini yapılandırın",
+        "adsCount": "Reklam Sayısı",
+        "ads": "Reklam",
+        "reward": "Ödül",
+        "status": "Durum",
+        "addReward": "Ödül Ekle",
+        "dailyLimit": "Günlük Limit",
+        "collectBonus": "Bonus Topla"
+      },
+      "stats": {
+        "totalRewards": "Toplam Ödüller",
+        "activeRewards": "Aktif Ödüller",
+        "totalValue": "Toplam Değer",
+        "totalClaims": "Toplam Talepler"
+      },
+      "createReward": "Ödül Oluştur",
+      "createNew": "Yeni Ödül Oluştur",
+      "searchPlaceholder": "Ödül ara...",
+      "filters": {
+        "allTypes": "Tüm Türler",
+        "allStatus": "Tüm Durumlar",
+        "active": "Aktif",
+        "inactive": "Pasif",
+        "daily": "Günlük",
+        "weekly": "Haftalık",
+        "monthly": "Aylık",
+        "achievement": "Başarı",
+        "referral": "Referans",
+        "bonus": "Bonus",
+        "special": "Özel"
+      },
+      "rewardTypes": {
+        "daily": "Günlük",
+        "weekly": "Haftalık",
+        "monthly": "Aylık",
+        "achievement": "Başarı",
+        "referral": "Referans",
+        "bonus": "Bonus",
+        "special": "Özel"
+      },
+      "statusFilters": {
+        "all": "Tüm Durumlar",
+        "active": "Aktif",
+        "inactive": "Pasif"
+      },
+      "table": {
+        "name": "Ödül Adı",
+        "type": "Tür",
+        "amount": "Miktar",
+        "status": "Durum",
+        "claims": "Talep Sayısı",
+        "dates": "Aktif Dönem",
+        "actions": "İşlemler"
+      },
+      "form": {
+        "name": "Ödül Adı",
+        "description": "Açıklama",
+        "type": "Tür",
+        "amount": "Miktar",
+        "currency": "Para Birimi",
+        "maxClaims": "Maksimum Talep",
+        "startDate": "Başlangıç Tarihi",
+        "endDate": "Bitiş Tarihi",
+        "requirements": "Gereksinimler",
+        "addRequirement": "Gereksinim Ekle"
+      },
+      "actions": {
+        "view": "Görüntüle",
+        "edit": "Düzenle",
+        "delete": "Sil",
+        "activate": "Etkinleştir",
+        "deactivate": "Devre Dışı Bırak",
+        "viewDetails": "Detayları Görüntüle",
+        "create": "Oluştur",
+        "cancel": "İptal",
+        "close": "Kapat",
+        "actions": "İşlemler"
+      },
+      "status": {
+        "active": "Aktif",
+        "inactive": "Pasif"
+      },
+      "noData": "Henüz {{section}} verisi yok",
+      "startAdding": "İlk {{section}} yapılandırmanızı eklemeye başlayın",
+      "loading": "Ödüller yükleniyor...",
+      "clickToExpand": "Genişletmek için tıklayın",
+      "clickToCollapse": "Daraltmak için tıklayın",
+      "quickActions": "Hızlı İşlemler",
+      "quickActions.addStaking": "Staking Süresi Ekle",
+      "quickActions.addReferral": "Referans Seviyesi Ekle",
+      "quickActions.addWatchAd": "Reklam İzleme Ödülü Ekle",
+      "details": {
+        "title": "Ödül Detayları",
+        "basicInformation": "Temel Bilgiler",
+        "statistics": "İstatistikler",
+        "requirements": "Gereksinimler",
+        "id": "ID",
+        "type": "Tür",
+        "amount": "Miktar",
+        "status": "Durum",
+        "claims": "Talepler",
+        "period": "Dönem"
+      },
+      "createModal": {
+        "title": "Yeni Ödül Oluştur",
+        "namePlaceholder": "Ödül Adı",
+        "descriptionPlaceholder": "Açıklama",
+        "selectType": "Tür Seçin",
+        "amountPlaceholder": "Miktar",
+        "maxClaimsPlaceholder": "Maksimum Talep"
+      },
+      "sampleRewards": {
+        "dailyLogin": {
+          "name": "Günlük Giriş Bonusu",
+          "description": "Günlük giriş için ödül"
+        },
+        "weeklyMining": {
+          "name": "Haftalık Madencilik Ödülü",
+          "description": "Tutarlı madencilik aktivitesi için bonus"
+        },
+        "referralChampion": {
+          "name": "Referans Şampiyonu",
+          "description": "Yeni kullanıcı getirenler için ödül"
+        },
+        "firstClassAchievement": {
+          "name": "Birinci Sınıf Başarısı",
+          "description": "Premium üyeler için özel ödül"
+        },
+        "monthlyStaking": {
+          "name": "Aylık Staking Bonusu",
+          "description": "Uzun vadeli staking için ödül"
+        },
+        "specialEvent": {
+          "name": "Özel Etkinlik Ödülü",
+          "description": "Sınırlı süreli etkinlik ödülü"
+        }
+      },
+      "requirements": {
+        "loginDaily": "Günlük giriş yapın",
+        "completeProfile": "Profili tamamlayın",
+        "mineConsecutiveDays": "7 gün üst üste madencilik yapın",
+        "minimumMined": "Minimum 100 FSN madencilik",
+        "referActiveUsers": "10 aktif kullanıcı referans edin",
+        "usersCompleteKYC": "Kullanıcılar KYC'yi tamamlamalı",
+        "upgradeToFirstClass": "Birinci Sınıfa yükseltin",
+        "maintainForDays": "30 gün sürdürün",
+        "stakeMinimum": "Minimum 1000 FSN stake edin",
+        "holdForDays": "30 gün tutun",
+        "participateInEvent": "Etkinliğe katılın",
+        "completeAllChallenges": "Tüm meydan okumaları tamamlayın"
+      },
+      "noRewards": "Ödül bulunamadı"
+    },
+
+    "dashboard": {
+      "title": "Yönetici Paneli",
+      "subtitle": "Kullanıcıları, KYC ve ödemeleri yönetin",
+      "quickStatistics": "Hızlı İstatistikler",
+      "detailedStatistics": "Detaylı İstatistikler",
+      "totalUsers": "Toplam Kullanıcı",
+      "totalAdmins": "Toplam Yönetici",
+      "pendingKYC": "Bekleyen KYC",
+      "verifiedKYC": "Doğrulanmış KYC",
+      "premiumPlans": "Premium Planlar",
+      "totalBalance": "Toplam Bakiye",
+      "totalFSN": "Toplam FSN",
+      "businessPlans": "İş Planları",
+      "firstClassPlans": "Birinci Sınıf Planlar"
+    },
+    "goToDashboard": "Panele Git",
+    "goToDashboardShort": "Panel",
+    "tabs": {
+      "dashboard": "Panel",
+      "users": "Kullanıcı Yönetimi",
+      "kyc": "KYC Doğrulama",
+      "payments": "Manuel Ödemeler",
+      "transactions": "İşlemler",
+      "rewards": "Ödüller",
+      "notifications": "Bildirimler",
+      "content": "İçerik",
+      "memberships": "Üyelikler",
+      "sendNotification": "Bildirim Gönder",
+      "messages": "Mesajlar",
+      "short": {
+        "dashboard": "Panel",
+        "users": "Kullanıcı",
+        "kyc": "KYC",
+        "payments": "Ödeme",
+        "transactions": "İşlem",
+        "rewards": "Ödül",
+        "notifications": "Bildirim",
+        "content": "İçerik",
+        "memberships": "Üyelik",
+        "referralsAndBalances": "Ref & Bak"
+      }
+    },
+    "kyc": {
+      "title": "KYC Doğrulama",
+      "description": "Kullanıcı kimlik doğrulama isteklerini inceleyin ve yönetin",
+      "pendingRequests": "Bekleyen İstekler",
+      "approvedToday": "Bugün Onaylandı",
+      "rejectedToday": "Bugün Reddedildi",
+      "pendingKycRequests": "Bekleyen KYC İstekleri",
+      "reviewDocuments": "Kullanıcı doğrulama belgelerini inceleyin",
+      "loading": "KYC istekleri yükleniyor...",
+      "noPendingRequests": "Bekleyen İstek Yok",
+      "allProcessed": "Tüm KYC doğrulama istekleri işlendi",
+      "verificationInfo": "KYC doğrulama bilgileri",
+      "documents": "KYC Belgeleri",
+      "noDocuments": "KYC belgesi yüklenmedi",
+      "documentUploaded": "Belge yüklendi",
+      "viewDocument": "Belgeyi Görüntüle",
+      "approve": "KYC Onayla",
+      "reject": "KYC Reddet",
+      "viewDetails": "Detayları Görüntüle",
+      "unknownUser": "Bilinmeyen Kullanıcı",
+      "noEmail": "E-posta yok",
+      "userDetails": "Kullanıcı Detayları",
+      "fullName": "Tam Ad",
+      "email": "E-posta",
+      "userId": "Kullanıcı ID",
+      "registrationDate": "Kayıt Tarihi",
+      "notProvided": "Sağlanmadı",
+      "unknown": "Bilinmiyor",
+      "totalKYC": "Toplam KYC",
+      "pending": "Beklemede",
+      "approved": "Onaylandı",
+      "rejected": "Reddedildi",
+      "all": "Tümü",
+      "noKYCUsers": "KYC Kullanıcısı Yok",
+      "noApprovedUsers": "Onaylanmış Kullanıcı Yok",
+      "noRejectedUsers": "Reddedilmiş Kullanıcı Yok",
+      "noKYCUsersDesc": "Henüz hiçbir kullanıcı KYC belgesi göndermedi",
+      "noApprovedUsersDesc": "Henüz hiçbir kullanıcı onaylanmadı",
+      "noRejectedUsersDesc": "Henüz hiçbir kullanıcı reddedilmedi",
+      "refresh": "Yenile",
+      "refreshing": "Yenileniyor...",
+      "rejectionReason": "Red Nedeni",
+      "provideReason": "Lütfen bu KYC başvurusunu reddetme nedenini belirtin.",
+      "rejectionReasonPlaceholder": "Red nedenini girin...",
+      "rejectionReasonRequired": "Lütfen red nedenini belirtin",
+      "cancel": "İptal",
+      "rejectedOn": "Reddedildi",
+      "alreadyApproved": "Bu KYC zaten onaylandı",
+      "alreadyRejected": "Bu KYC zaten reddedildi"
+    },
+    "users": {
+      "title": "Kullanıcı Yönetimi",
+      "description": "Kullanıcı hesaplarını, planlarını ve durumlarını yönetin",
+      "searchPlaceholder": "Kullanıcı ara...",
+      "loading": "Kullanıcılar yükleniyor...",
+      "confirmDelete": "Bu kullanıcıyı silmek istediğinizden emin misiniz?",
+      "deleteUser": "Kullanıcıyı Sil",
+      "deleteWarning": "Uyarı: Bu işlem geri alınamaz",
+      "deleteWarningDescription": "Bu kullanıcıyı silmek, hesabını, bakiyesini ve tüm ilişkili verilerini sistemden kalıcı olarak kaldıracaktır.",
+      "userToDelete": "Silinecek Kullanıcı",
+      "updatePlan": "Kullanıcı Planını Güncelle",
+      "detailedInformation": "Ayrıntılı kullanıcı bilgileri ve istatistikler",
+      "location": "Konum",
+      "referrals": "Yönlendirmeler",
+      "lastDevice": "Son Cihaz",
+      "membership": "Üyelik ve Plan",
+      "planStartDate": "Plan Başlangıç Tarihi",
+      "planEndDate": "Plan Bitiş Tarihi",
+      "paymentMethod": "Ödeme Yöntemi",
+      "paymentMethods": {
+        "in_app_purchase": "Uygulama İçi Satın Alma"
+      },
+      "referralCode": "Yönlendirme Kodu",
+      "referredBy": "Yönlendiren",
+      "financialInformation": "Finansal Bilgiler",
+      "totalRewardsClaimed": "Toplam Talep Edilen Ödüller",
+      "totalDeposits": "Toplam Yatırılan",
+      "totalWithdrawals": "Toplam Çekilen",
+      "stakingEarnings": "Staking Kazançları",
+      "activeStakes": "Aktif Stakes",
+      "totalStaked": "Toplam Stakelenen",
+      "tabs": {
+        "basicInfo": "Temel Bilgiler",
+        "accountInfo": "Hesap",
+        "financialInfo": "Finans"
+      },
+      "plans": {
+        "economy": "Ekonomi",
+        "business": "İş",
+        "first6": "Birinci Sınıf-6",
+        "firstLifetime": "Birinci Sınıf-Yaşam Boyu"
+      },
+      "stats": {
+        "activeUsers": "Aktif Kullanıcılar",
+        "premiumPlans": "Premium Planlar",
+        "totalBalance": "Toplam Bakiye"
+      },
+      "filters": {
+        "all": "Tümü",
+        "active": "Aktif",
+        "inactive": "Pasif",
+        "verified": "Doğrulanmış",
+        "pending": "Beklemede",
+        "rejected": "Reddedildi",
+        "allStatus": "Tüm Durumlar",
+        "allPlans": "Tüm Planlar",
+        "economy": "Ekonomi",
+        "business": "İş",
+        "first6": "Birinci Sınıf-6",
+        "firstLifetime": "Birinci Sınıf-Yaşam Boyu"
+      },
+      "sort": {
+        "newestFirst": "En Yeni İlk",
+        "oldestFirst": "En Eski İlk",
+        "nameAZ": "İsim A-Z",
+        "nameZA": "İsim Z-A",
+        "balanceHighLow": "Bakiye Yüksek-Düşük",
+        "balanceLowHigh": "Bakiye Düşük-Yüksek"
+      },
+      "bulk": {
+        "selectedUsers": "{{count}} kullanıcı seçildi",
+        "pleaseSelectUsers": "Lütfen önce kullanıcıları seçin",
+        "confirmDelete": "{{count}} kullanıcıyı silmek istediğinizden emin misiniz?"
+      },
+      "table": {
+        "user": "Kullanıcı",
+        "name": "İsim",
+        "email": "E-posta",
+        "kyc": "KYC Durumu",
+        "plan": "Plan",
+        "balance": "Bakiye",
+        "staking": "Staking",
+        "status": "Durum",
+        "created": "Oluşturulma",
+        "joined": "Katılma Tarihi",
+        "lastLogin": "Son Giriş",
+        "actions": "İşlemler",
+        "id": "ID"
+      },
+      "modal": {
+        "updatePlan": "Kullanıcı Planını Güncelle",
+        "selectPlan": "Plan Seç"
+      },
+      "actions": {
+        "edit": "Düzenle",
+        "delete": "Sil",
+        "activate": "Etkinleştir",
+        "deactivate": "Devre Dışı Bırak",
+        "viewDetails": "Detayları Görüntüle"
+      },
+      "status": {
+        "active": "Aktif",
+        "inactive": "Pasif",
+        "suspended": "Askıya Alındı",
+        "verified": "Doğrulanmış",
+        "pending": "Beklemede",
+        "rejected": "Reddedildi",
+        "notActivated": "Aktif Değil"
+      },
+      "noUsers": "Kullanıcı bulunamadı"
+    },
+    "transactions": {
+      "title": "İşlem Yönetimi",
+      "noTransactions": "İşlem verisi yok",
+      "description": "İşlem verileri mevcut olduğunda burada gösterilecektir."
+    },
+    "content": {
+      "title": "İçerik Yönetimi",
+      "description": "Platform içeriği ve duyuruları yönetin",
+      "createNew": "Yeni İçerik Oluştur",
+      "searchPlaceholder": "İçerik ara...",
+      "stats": {
+        "totalContent": "Toplam İçerik",
+        "activeContent": "Aktif İçerik",
+        "totalViews": "Toplam Görüntüleme",
+        "totalClicks": "Toplam Tıklama"
+      },
+      "actions": {
+        "createContent": "İçerik Oluştur",
+        "view": "Görüntüle",
+        "edit": "Düzenle",
+        "delete": "Sil",
+        "create": "Oluştur",
+        "cancel": "İptal",
+        "close": "Kapat"
+      },
+      "search": {
+        "placeholder": "İçerik ara..."
+      },
+      "filters": {
+        "allTypes": "Tüm Türler",
+        "allStatus": "Tüm Durumlar"
+      },
+      "types": {
+        "banner": "Banner",
+        "announcement": "Duyuru",
+        "promotion": "Promosyon",
+        "video": "Video",
+        "news": "Haber"
+      },
+      "status": {
+        "active": "Aktif",
+        "inactive": "Pasif",
+        "draft": "Taslak"
+      },
+      "priority": "Öncelik",
+      "views": "Görüntüleme",
+      "clicks": "Tıklama",
+      "details": {
+        "title": "İçerik Detayları",
+        "basicInformation": "Temel Bilgiler",
+        "description": "Açıklama",
+        "performance": "Performans",
+        "schedule": "Program",
+        "id": "ID",
+        "type": "Tür",
+        "status": "Durum",
+        "priority": "Öncelik"
+      },
+      "createModal": {
+        "title": "Yeni İçerik Oluştur",
+        "titlePlaceholder": "İçerik Başlığı",
+        "descriptionPlaceholder": "Açıklama",
+        "selectType": "Tür Seçin",
+        "priorityPlaceholder": "Öncelik (1-10)"
+      },
+      "sampleData": {
+        "welcomeTitle": "FlySky Ağına Hoş Geldiniz",
+        "welcomeDescription": "Merkezi olmayan madenciliğin geleceğine katılın",
+        "miningRewardsTitle": "Yeni Madencilik Ödülleri Mevcut",
+        "miningRewardsDescription": "Yeni madencilik sistemimizle günde 3000 FSN'ye kadar kazanın",
+        "referralProgramTitle": "Referans Programı Başlatıldı",
+        "referralProgramDescription": "Arkadaşlarınızı davet edin ve her referans için 1000 FSN kazanın",
+        "tutorialVideoTitle": "Platform Eğitim Videosu",
+        "tutorialVideoDescription": "Madencilik verimliliğinizi nasıl maksimize edeceğinizi öğrenin",
+        "holidayEventTitle": "Tatil Özel Etkinliği",
+        "holidayEventDescription": "Tatil sezonu boyunca çifte ödüller"
+      },
+      "table": {
+        "title": "Başlık",
+        "type": "Tür",
+        "status": "Durum",
+        "views": "Görüntüleme",
+        "clicks": "Tıklama",
+        "created": "Oluşturulma",
+        "actions": "İşlemler"
+      },
+      "form": {
+        "title": "Başlık",
+        "content": "İçerik",
+        "type": "Tür",
+        "status": "Durum",
+        "image": "Resim",
+        "link": "Bağlantı"
+      },
+      "noContent": "İçerik bulunamadı",
+      "loading": "İçerik yükleniyor..."
+    },
+    "memberships": {
+      "title": "Üyelik Yönetimi",
+      "description": "Açıklama",
+      "createNew": "Yeni Plan Oluştur",
+      "searchPlaceholder": "Üyelik ara...",
+      "filters": {
+        "all": "Tüm Planlar",
+        "economy": "Ekonomi",
+        "business": "İş",
+        "first-6": "Birinci Sınıf (6 Ay)",
+        "first-lifetime": "Birinci Sınıf (Yaşam Boyu)"
+      },
+      "table": {
+        "user": "Kullanıcı",
+        "plan": "Plan",
+        "status": "Durum",
+        "startDate": "Başlangıç Tarihi",
+        "endDate": "Bitiş Tarihi",
+        "amount": "Miktar",
+        "actions": "İşlemler"
+      },
+      "form": {
+        "user": "Kullanıcı",
+        "plan": "Plan",
+        "duration": "Süre",
+        "amount": "Miktar",
+        "status": "Durum"
+      },
+      "actions": {
+        "edit": "Düzenle",
+        "cancel": "İptal",
+        "extend": "Uzat",
+        "viewDetails": "Detayları Görüntüle"
+      },
+      "status": "Durum",
+      "noMemberships": "Üyelik bulunamadı",
+      "loading": "Üyelikler yükleniyor...",
+      "createPlan": "Plan Oluştur",
+      "loadingPlans": "Üyelik planları yükleniyor...",
+      "mostPopular": "EN POPÜLER",
+      "subscribers": "Aboneler",
+      "revenue": "Gelir",
+      "view": "Görüntüle",
+      "edit": "Düzenle",
+      "disable": "Devre Dışı Bırak",
+      "enable": "Etkinleştir",
+      "delete": "Sil",
+      "createNewPlan": "Yeni Plan Oluştur",
+      "planName": "Plan Adı (örn: economy)",
+      "displayName": "Görünen Ad",
+      "price": "Fiyat",
+      "bonusFSN": "FSN Bonusu",
+      "miningRate": "Madencilik Oranı (örn: 600 FSN / 12 saat)",
+      "duration": "Süre",
+      "icon": "İkon",
+      "color": "Renk",
+      "monthly": "Aylık",
+      "yearly": "Yıllık",
+      "6months": "6 Ay",
+      "lifetime": "Yaşam Boyu",
+      "coins": "Madeni Para",
+      "gem": "Mücevher",
+      "star": "Yıldız",
+      "crown": "Taç",
+      "green": "Yeşil",
+      "purple": "Mor",
+      "blue": "Mavi",
+      "yellow": "Sarı",
+      "create": "Oluştur",
+      "cancel": "İptal",
+      "planDetails": "Plan Detayları",
+      "basicInformation": "Temel Bilgiler",
+      "name": "Ad",
+      "active": "Aktif",
+      "inactive": "Pasif",
+      "features": "Özellikler",
+      "statistics": "İstatistikler",
+      "close": "Kapat",
+      "editPlan": "Planı Düzenle",
+      "update": "Güncelle",
+      "fillRequiredFields": "Lütfen tüm gerekli alanları doldurun",
+      "createPlanFailed": "Plan oluşturulamadı. Lütfen tekrar deneyin.",
+      "updatePlanFailed": "Plan güncellenemedi. Lütfen tekrar deneyin.",
+      "deletePlanFailed": "Plan silinemedi. Lütfen tekrar deneyin.",
+      "confirmDelete": "Bu planı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "defaultPlans": {
+        "economy": {
+          "name": "Ekonomi Planı",
+          "description": "Temel kullanıcılar için ücretsiz plan"
+        },
+        "business": {
+          "name": "İş Planı",
+          "description": "İş kullanıcıları için profesyonel plan"
+        },
+        "first6": {
+          "name": "Birinci Sınıf 6 Ay",
+          "description": "Ciddi kullanıcılar için premium plan"
+        },
+        "firstLifetime": {
+          "name": "Birinci Sınıf Yaşam Boyu",
+          "description": "Yaşam boyu erişimli nihai plan"
+        }
+      },
+      "planId": "Plan ID (örn: economy, business)",
+      "durationDays": "Süre (gün)",
+      "days": "gün",
+      "dailyMiningReward": "Günlük Madencilik Ödülü (FSN)",
+      "createdAt": "Oluşturulma",
+      "featurePlaceholder": "Bir özellik yazın ve Ekle'ye tıklayın",
+      "addFeature": "Özellik Ekle",
+      "featuresHelper": "Her özelliği ayrı ayrı ekleyin. Aşağıdan öğeleri kaldırabilirsiniz."
+    },
+    "payments": {
+      "title": "Manuel Ödemeler",
+      "description": "Ödeme taleplerini inceleyin ve onaylayın",
+      "searchPlaceholder": "İsim, e-posta veya kullanıcı ID'sine göre ara",
+      "loading": "Ödemeler yükleniyor...",
+      "noPayments": "Manuel ödeme bulunamadı.",
+      "table": {
+        "user": "Kullanıcı",
+        "currency": "Para Birimi",
+        "txLink": "TX Bağlantısı",
+        "fromAddress": "Gönderen Adres",
+        "status": "Durum",
+        "proof": "Kanıt",
+        "date": "Tarih",
+        "actions": "İşlemler"
+      },
+      "status": {
+        "approved": "Onaylandı",
+        "rejected": "Reddedildi",
+        "pending": "Beklemede"
+      },
+      "actions": {
+        "approve": "Onayla",
+        "reject": "Reddet",
+        "view": "Görüntüle",
+        "download": "İndir"
+      },
+      "confirmDelete": "Bu ödemeyi silmek istediğinizden emin misiniz?",
+      "updateSuccess": "Ödeme durumu başarıyla güncellendi",
+      "updateError": "Ödeme durumu güncellenirken hata oluştu"
+    }
+  },
+  "enable": "Etkinleştir",
+  "enabled": "Etkinleştirildi",
+  "requesting": "İsteniyor...",
+  "pwa": {
+    "title": "FlySky Network uygulamasını yükleyin",
+    "subtitle": {
+      "ios": "Hızlı erişim için ana ekrana ekleyin",
+      "default": "Daha iyi deneyim için uygulamayı yükleyin"
+    },
+    "buttons": {
+      "howToInstall": "Nasıl Yüklenir",
+      "install": "Yükle"
+    },
+    "toast": {
+      "installed": "Uygulama başarıyla yüklendi!",
+      "installing": "Uygulama yükleniyor...",
+      "cancelled": "Yükleme iptal edildi"
+    },
+    "ios": {
+      "title": "Bu uygulamayı yüklemek için:",
+      "step1": "Paylaş düğmesine dokunun 📤",
+      "step2": "Aşağı kaydırın ve \"Ana Ekrana Ekle\"ye dokunun 🏠",
+      "step3": "Onaylamak için \"Ekle\"ye dokunun"
+    }
+  },
+  "landing": {
+    "hero": {
+      "brand": "FlySky Network",
+      "tagline": "Kaz. Kazan. Büyü.",
+      "desc": "FlySky, kullanıcıların günlük madencilik, staking, yönlendirme ve daha fazlasıyla kripto kazandığı bir Web3 platformudur.",
+      "alt": {
+        "heroBanner": "FlySky Network Ana Afiş",
+        "heroBannerMobile": "FlySky Network Ana Afiş (Mobil)"
+      }
+    },
+    "cta": {
+      "joinNow": "Hemen Katıl",
+      "openDashboard": "Paneli Aç",
+      "getStarted": "Başla",
+      "createEarning": "Kazanç Oluştur",
+      "readMore": "Daha Fazla Bilgi",
+      "tryForFree": "Ücretsiz Dene"
+    },
+    "store": {
+      "appStoreTop": "Şuradan indirin",
+      "appStore": "App Store",
+      "getItOn": "ŞURADAN EDİNİN",
+      "googlePlay": "Google Play"
+    },
+    "header": {
+      "toggleMenu": "Menüyü aç/kapat",
+      "closeMenu": "Menüyü kapat"
+    },
+    "menu": {
+      "about": "Hakkımızda",
+      "features": "Özellikler",
+      "plans": "Planlar",
+      "how-it-works": "Nasıl Çalışır",
+      "membership": "Üyelik"
+    },
+    "features": {
+      "titleMobile": "ÖZELLİKLERİMİZ",
+      "titleDesktop": "GÜÇLÜ ÖZELLİKLER",
+      "subtitle": "Bugün kripto kazanmaya başlamak için ihtiyacınız olan her şey",
+      "alt": {
+        "border": "Bölüm kenarlığı"
+      },
+      "items": {
+        "mining": {
+          "title": "GÜNLÜK MADENCİLİK",
+          "desc": "Otomatik madencilikle her gün kripto kazanın"
+        },
+        "membership": {
+          "title": "ÜYELİK PLANLARI",
+          "desc": "Ekonomi, İş veya Birinci Sınıf planları arasından seçin"
+        },
+        "staking": {
+          "title": "STAKING ÖDÜLLERİ",
+          "desc": "Tokenlarınızı stake edin ve yüksek APY ile pasif gelir elde edin"
+        },
+        "referral": {
+          "title": "YÖNLENDİRME PROGRAMI",
+          "desc": "Arkadaşlarınızı davet edin ve aktivitelerinden komisyon kazanın"
+        },
+        "watchToEarn": {
+          "title": "İZLE VE KAZAN",
+          "desc": "Reklamları izleyin ve zamanınız için ödül kazanın"
+        },
+        "playToEarn": {
+          "title": "OYNA VE KAZAN",
+          "desc": "Mini oyunlar oynayın ve FSN kazanmak için görevleri tamamlayın"
+        },
+        "amazingRewards": {
+          "title": "Harika Ödüller",
+          "desc": "Madencilik, staking ve referanslarla ödül kazanın"
+        }
+      }
+    },
+    "getStarted": {
+      "titlePart1": "Şimdi kazanmaya başlayın",
+      "titleEmphasis": "FlySky ile!",
+      "subtitle": "Her gün kripto kazanan binlerce kullanıcıya katılın",
+      "alt": "FlySky ile kazanmaya başlayın"
+    },
+    "who": {
+      "title": "BİZ KİMİZ",
+      "p1": "FlySky Network, madencilik, staking, oyun ve NFT'leri bir araya getiren yeni nesil dijital ekonomi platformudur.",
+      "p2": "Kullanıcıların keyifli etkileşimlerle kazanç sağlayıp varlıklarını büyütebilecekleri canlı bir ekosistem inşa etmeye kararlıyız."
+    },
+    "footer": {
+      "tagline": "Kaz. Kazan. Büyü.",
+      "language": "Dil",
+      "rights": "Tüm hakları saklıdır.",
+      "links": {
+        "terms": "Şartlar",
+        "privacy": "Gizlilik",
+        "contact": "İletişim"
+      }
+    }
+  },
+  "fsnInfo": {
+    "title": "FSN Tokenları Hakkında",
+    "description": "FSN tokenları yalnızca uygulama içinde Madencilik, Staking ve Yükseltme gibi özellikler için kullanılabilen sanal bir para birimidir. Dışarıya çekilemez, satılamaz veya takas edilemez.",
+    "miningRewards": {
+      "title": "Madencilik Ödülleri",
+      "desc": "Daha hızlı madencilik ve daha yüksek ödüller için FSN kullanın"
+    },
+    "stakingAccess": {
+      "title": "Staking Erişimi",
+      "desc": "Ek ödüller kazanmak için FSN stake edin"
+    },
+    "premiumFeatures": {
+      "title": "Premium Özellikler",
+      "desc": "Özel özelliklerin ve bonusların kilidini açın"
+    }
+  },
+  "transactions": {
+    "membershipBonus": "{{plan}} için üyelik bonusu alındı (+{{amount}} FSN)",
+    "miningReward": "Madencilik ödülü talep edildi (+{{amount}} FSN)",
+    "watchToEarnReward": "İzle-kazan ödülü talep edildi (+{{amount}} FSN)",
+    "stakingLock": "{{amount}} FSN {{duration}} ay için stake edildi",
+    "stakingReward": "Staking ödülü talep edildi (+{{amount}} FSN)"
+  },
+  "hiw": {
+    "title": "NASIL ÇALIŞIR",
+    "subtitle": "Yenilikçi platformumuzla kripto kazanan binlerce kullanıcıya katılın",
+    "steps": {
+      "1": {
+        "title": "Kayıt",
+        "desc": "Hesabınızı oluşturun ve kimliğinizi doğrulayarak kazanma yolculuğunuza başlayın",
+        "cta": "Kayıt Ol"
+      },
+      "2": {
+        "title": "Madenciliğe Başla",
+        "desc": "Otomatik madencilik sürecini başlatın",
+        "cta": "Madenciliğe Başla"
+      },
+      "3": {
+        "title": "ÖDÜLLERİ TALEP ET",
+        "desc": "Kazandığınız kripto ödüllerini doğrudan cüzdanınıza çekin",
+        "cta": "Şimdi Talep Et"
+      }
+    }
+  },
+  "who": {
+    "title": "BİZ KİMİZ",
+    "p1": "FlySky Network, madencilik, staking, oyun ve NFT'leri bir araya getiren yeni nesil dijital ekonomi platformudur.",
+    "p2": "Kullanıcıların keyifli etkileşimlerle kazanç sağlayıp varlıklarını büyütebilecekleri canlı bir ekosistem inşa etmeye kararlıyız."
+  },
+  "userBlocked": {
+    "title": "Hesap Engellendi",
+    "subtitle": "Hesabınız bir yönetici tarafından engellendi",
+    "reason": "Sebep",
+    "contactSupport": "Destek ile iletişime geçin",
+    "whatToDoTitle": "Ne yapabilirsiniz",
+    "reviewTerms": "Hizmet şartlarını inceleyin",
+    "autoUnblock": "Otomatik engel kaldırılmasını bekleyin",
+    "checkingStatus": "Hesap durumu kontrol ediliyor..."
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "confirm": "Onayla",
+    "create": "Oluştur",
+    "view": "Görüntüle",
+    "edit": "Düzenle"
+  },
+  "ApprovalLog": {
+    "title": "Onay Günlüğü",
+    "searchTerm": "Arama Terimi",
+    "searchType": "Arama Yeri",
+    "approvedUser": "Onaylanan Kullanıcı",
+    "referrer": "Yönlendiren",
+    "selectSearchType": "Arama türünü seçin",
+    "refresh": "Yenile",
+    "deleteAll": "Tümünü Sil",
+    "tableApprovedUser": "Onaylanan Kullanıcı",
+    "tableReferrer": "Yönlendiren",
+    "reward": "Ödül",
+    "date": "Tarih",
+    "claimStatus": "Talep Durumu",
+    "actions": "İşlemler",
+    "claimed": "Talep Edildi",
+    "notClaimed": "Talep Edilmedi",
+    "noLogs": "Onay Günlükleri Yok",
+    "noLogsDesc": "Henüz yönlendirilen kullanıcılar için KYC onayları günlüğe kaydedilmemiş.",
+    "deleteLog": "Günlüğü Sil",
+    "confirmDeleteLog": "Bu onay günlüğünü silmek istediğinizden emin misiniz?",
+    "confirmDeleteAllLogs": "TÜM onay günlüklerini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "logDeleted": "Onay günlüğü başarıyla silindi",
+    "deleteLogFailed": "Onay günlüğü silinemedi",
+    "allLogsDeleted": "Tüm onay günlükleri başarıyla silindi",
+    "deleteAllLogsFailed": "Tüm onay günlükleri silinemedi"
+  },
+  "gifttabtexts": {
+    "rewardsTitle": "Ödül Yönetimi",
+    "giftTitle": "Hediye Yönetimi",
+    "addGift": "Hediye Ekle",
+    "editGift": "Hediyeyi Düzenle",
+    "deleteGift": "Hediyeyi Sil",
+    "giftList": "Hediye Listesi",
+    "giftDescription": "Açıklama",
+    "giftPoints": "Gerekli Puanlar",
+    "saveChanges": "Değişiklikleri Kaydet",
+    "tabs": {
+      "allUsers": "Tüm Kullanıcılar",
+      "singleUser": "Tek Kullanıcı",
+      "multipleUsers": "Çoklu Kullanıcılar",
+      "byPlan": "Plana Göre",
+      "giftHistory": "Hediye Geçmişi & Raporlar"
+    },
+    "form": {
+      "giftTitle": "Hediye Başlığı *",
+      "amount": "Miktar (FSN) *",
+      "message": "Mesaj *",
+      "reason": "Sebep *",
+      "searchUser": "Kullanıcı Ara (E-posta veya İsim)",
+      "searchPlaceholder": "Kullanıcıları aramak için yazın...",
+      "selectedUser": "Seçildi: {{email}}",
+      "searchUsers": "Kullanıcıları Ara",
+      "usersSelected": "{{count}} kullanıcı{{plural}} seçildi",
+      "tableHeaders": {
+        "select": "Seç",
+        "email": "E-posta",
+        "name": "İsim",
+        "balance": "Bakiye"
+      },
+      "buttons": {
+        "cancel": "İptal",
+        "sendGifts": "Hediyeleri Gönder",
+        "processing": "İşleniyor...",
+        "sending": "Gönderiliyor..."
+      },
+      "selectPlan": "Bir plan seçin...",
+      "fsn": "FSN"
+    },
+    "history": {
+      "stats": {
+        "totalGifts": "Toplam Hediyeler",
+        "totalDistributed": "Toplam Dağıtılan",
+        "totalRecipients": "Toplam Alıcılar",
+        "successRate": "Başarı Oranı"
+      },
+      "title": "Hediye Dağıtım Geçmişi",
+      "subtitle": "Tüm hediye dağıtımlarını görüntüleyin ve yönetin",
+      "tableHeaders": {
+        "giftDetails": "Hediye Detayları",
+        "recipients": "Alıcılar",
+        "amount": "Miktar",
+        "status": "Durum",
+        "date": "Tarih",
+        "actions": "İşlemler"
+      },
+      "actions": {
+        "viewDetails": "Detayları Görüntüle",
+        "deleteGift": "Hediye Dağıtımını Sil"
+      },
+      "details": {
+        "message": "Mesaj",
+        "target": "Hedef:",
+        "plan": "Plan:",
+        "createdBy": "Oluşturan:",
+        "failures": "Başarısızlıklar:",
+        "recentLogs": "Son Günlükler",
+        "status": "başarılı"
+      },
+      "deleteModal": {
+        "title": "Hediye Dağıtımını Sil",
+        "message": "\"{{title}}\" hediye dağıtımını silmek istediğinizden emin misiniz?",
+        "warning": "Bu işlem geri alınamaz.",
+        "cancel": "İptal",
+        "delete": "Sil"
+      },
+      "empty": {
+        "title": "Hediye dağıtımı bulunamadı",
+        "subtitle": "Hediye dağıtımları oluşturulduktan sonra burada görünecek"
+      }
+    }
+  }
+}
