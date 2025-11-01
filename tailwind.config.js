@@ -51,10 +51,21 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '375px',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
+      },
+      backgroundImage: {
+        'landing-gradient': 'linear-gradient(to bottom, #1e1353, #2a1668, #331a7e, #3d1d94, #4620ab)',
+        'dark-landing-gradient': 'radial-gradient(ellipse at top, #1a1242 0%, #110D24 50%, #0c0918 100%)',
+        'header-gradient': 'radial-gradient(73.68% 73.68% at 50% 26.32%, rgba(7, 16, 104, 0.67) 0%, rgba(33, 28, 65, 0) 100%)',
+        'button-gradient': 'linear-gradient(90deg, #FABA33 27.38%, #4F46E5 73.83%)',
+        'button-gradient-hover': 'linear-gradient(90deg, #FABA33 27.38%, #4F46E5 73.83%)',
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))'
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -99,7 +110,8 @@ module.exports = {
         }
       },
       animation: {
-        'spin-slow': 'spin 8s linear infinite'
+        'spin-slow': 'spin 8s linear infinite',
+        'pulse-slow': 'pulse 8s linear infinite'
       }
     }
   },
