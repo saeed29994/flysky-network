@@ -37,6 +37,12 @@
         <meta-data
             android:name="firebase_appcheck_debug_token"
             android:value="true" />
+            
+        <!-- AdMob App ID -->
+        <!-- Replace with your actual AdMob App ID from https://apps.admob.com -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
 
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"

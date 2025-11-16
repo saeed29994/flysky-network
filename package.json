@@ -15,6 +15,7 @@
     "fix-subscriptions": "node scripts/fixSubscriptionDates.js"
   },
   "dependencies": {
+    "@capacitor-community/admob": "^7.2.0",
     "@capacitor-community/apple-sign-in": "^7.0.1",
     "@capacitor-firebase/app": "^7.3.0",
     "@capacitor-firebase/authentication": "^7.3.1",

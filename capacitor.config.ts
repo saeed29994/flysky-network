@@ -34,6 +34,12 @@ const config: CapacitorConfig = {
       // Apple Sign In configuration
       // This plugin doesn't require specific configuration
     },
+    AdMob: {
+      // AdMob configuration
+      // App IDs will be set in platform-specific files
+      // Android: AndroidManifest.xml
+      // iOS: Info.plist
+    },
   },
   android: {
     allowMixedContent: true,
