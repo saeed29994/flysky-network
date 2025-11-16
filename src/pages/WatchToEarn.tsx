@@ -21,7 +21,10 @@ const WatchToEarn = () => {
   // Config values fetched from Firestore; no static defaults
   const [requiredAds, setRequiredAds] = useState<number>(0);
   const [rewardForAll, setRewardForAll] = useState<number>(0);
-  // AdMob states
+  // Web timer states (for web platform)
+  const [adTimer, setAdTimer] = useState(20);
+  const [timerFinished, setTimerFinished] = useState(false);
+  // AdMob states (for native platforms)
   const [adLoading, setAdLoading] = useState(false);
   const [adReady, setAdReady] = useState(false);
   const [adError, setAdError] = useState<string | null>(null);
@@ -125,7 +128,21 @@ const WatchToEarn = () => {
     fetchConfigAndUserData();
   }, []);
 
-  // Remove fake timer effect - AdMob handles ad duration
+  // Timer effect for web platform (fake timer)
+  useEffect(() => {
+    if (!isNativePlatform && adStarted && adTimer > 0) {
+      const interval = setInterval(() => {
+        setAdTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    } else if (!isNativePlatform && adStarted && adTimer === 0) {
+      setTimerFinished(true);
+      // Auto-confirm after timer finishes (web only)
+      setTimeout(() => {
+        handleConfirmAdWatched();
+      }, 500);
+    }
+  }, [adStarted, adTimer, isNativePlatform]);
 
   useEffect(() => {
     if (countdown <= 0) return;
@@ -154,12 +171,16 @@ const WatchToEarn = () => {
       return;
     }
 
-    // If not native platform, show web fallback
+    // For web: use fake timer approach
     if (!isNativePlatform) {
-      toast.error('Ads are only available on mobile app (Android/iOS)');
+      setShowModal(true);
+      setAdTimer(20);
+      setTimerFinished(false);
+      setAdStarted(false);
       return;
     }
 
+    // For native: use AdMob
     // Check if ad is ready, if not prepare it
     if (!adReady && !adLoading) {
       await prepareAd();
@@ -174,14 +195,15 @@ const WatchToEarn = () => {
       return;
     }
 
+    // For web: start fake timer
     if (!isNativePlatform) {
-      // Web fallback - simulate ad for testing
-      setTimeout(() => {
-        handleConfirmAdWatched();
-      }, 2000);
+      setAdStarted(true);
+      setTimerFinished(false);
+      setAdTimer(20); // Reset timer
       return;
     }
 
+    // For native: show AdMob ad
     if (!adReady) {
       toast.error('Ad is not ready yet. Please wait...');
       if (!adLoading) {
@@ -341,6 +363,8 @@ const WatchToEarn = () => {
     setShowModal(false);
     setAdStarted(false);
     setAdError(null);
+    setAdTimer(20);
+    setTimerFinished(false);
   };
 
   const progressPercent = requiredAds > 0 ? (adsWatched / requiredAds) * 100 : 0;
@@ -610,43 +634,104 @@ const WatchToEarn = () => {
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4">
           {adStarted ? (
-            // Ad is showing (AdMob handles the actual ad display)
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 w-full max-w-sm shadow-2xl text-white relative border border-white/20 max-h-[90vh] overflow-y-auto"
-            >
-              {/* Header */}
-              <div className="text-center mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Video className="w-6 h-6 text-white" />
+            // Ad is showing
+            isNativePlatform ? (
+              // Native: AdMob handles the actual ad display
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 w-full max-w-sm shadow-2xl text-white relative border border-white/20 max-h-[90vh] overflow-y-auto"
+              >
+                {/* Header */}
+                <div className="text-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <Video className="w-6 h-6 text-white" />
+                  </div>
+                  <h2 className="text-lg font-bold mb-1">{t('watchToEarn.videoAd')}</h2>
+                  <p className="text-gray-400 text-sm">{t('watchToEarn.pleaseWatchCompleteAd')}</p>
                 </div>
-                <h2 className="text-lg font-bold mb-1">{t('watchToEarn.videoAd')}</h2>
-                <p className="text-gray-400 text-sm">{t('watchToEarn.pleaseWatchCompleteAd')}</p>
-              </div>
 
-              {/* Ad Info */}
-              <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 mb-4 border border-blue-500/30">
-                <div className="flex items-center justify-center gap-2 text-blue-400">
-                  <Video className="w-5 h-5" />
-                  <span className="text-sm font-medium">{t('watchToEarn.adIsPlaying')}</span>
+                {/* Ad Info */}
+                <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 mb-4 border border-blue-500/30">
+                  <div className="flex items-center justify-center gap-2 text-blue-400">
+                    <Video className="w-5 h-5" />
+                    <span className="text-sm font-medium">{t('watchToEarn.adIsPlaying')}</span>
+                  </div>
                 </div>
-              </div>
 
-              {/* Instructions */}
-              <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-3 mb-4 border border-yellow-500/30">
-                <div className="flex items-start gap-2 text-yellow-400">
-                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  <p className="text-xs">{t('watchToEarn.watchCompleteAdToEarn')}</p>
+                {/* Instructions */}
+                <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-3 mb-4 border border-yellow-500/30">
+                  <div className="flex items-start gap-2 text-yellow-400">
+                    <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <p className="text-xs">{t('watchToEarn.watchCompleteAdToEarn')}</p>
+                  </div>
                 </div>
-              </div>
 
-              {/* Loading Spinner */}
-              <div className="text-center">
-                <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                <p className="text-xs text-gray-400">{t('watchToEarn.processingAdCompletion')}</p>
-              </div>
-            </motion.div>
+                {/* Loading Spinner */}
+                <div className="text-center">
+                  <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                  <p className="text-xs text-gray-400">{t('watchToEarn.processingAdCompletion')}</p>
+                </div>
+              </motion.div>
+            ) : (
+              // Web: Show timer
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 w-full max-w-sm shadow-2xl text-white relative border border-white/20 max-h-[90vh] overflow-y-auto"
+              >
+                {/* Progress Indicator on Top */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gray-700 rounded-t-2xl overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-1000"
+                    style={{ width: `${((20 - adTimer) / 20) * 100}%` }}
+                  ></div>
+                </div>
+
+                {/* Header */}
+                <div className="text-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <Video className="w-6 h-6 text-white" />
+                  </div>
+                  <h2 className="text-lg font-bold mb-1">{t('watchToEarn.videoAd')}</h2>
+                  <p className="text-gray-400 text-sm">{t('watchToEarn.pleaseWatchCompleteAd')}</p>
+                </div>
+
+                {/* Timer Display */}
+                <div className="text-center mb-4">
+                  <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 border border-blue-500/30">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <Clock className="w-4 h-4 text-blue-400" />
+                      <span className="text-blue-400 font-bold">{adTimer}</span>
+                      <span className="text-blue-400 text-sm">{t('watchToEarn.seconds')}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ad Placeholder */}
+                <div className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-xl p-4 mb-4 text-center border border-gray-600">
+                  <div className="w-16 h-16 bg-gradient-to-r from-gray-500 to-gray-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <Play className="w-8 h-8 text-gray-300" />
+                  </div>
+                  <h3 className="text-sm font-semibold text-white mb-1">{t('watchToEarn.videoAdPlaceholder')}</h3>
+                  <p className="text-gray-400 text-xs">{t('watchToEarn.videoAdPlaceholderDescription')}</p>
+                </div>
+
+                {/* Progress Info */}
+                <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-3 mb-4 border border-blue-500/30">
+                  <div className="flex items-center justify-center gap-2 text-blue-400">
+                    <AlertCircle className="w-4 h-4" />
+                    <span className="text-sm font-medium">{t('watchToEarn.pleaseWaitForAdComplete')}</span>
+                  </div>
+                </div>
+
+                {/* Loading Spinner */}
+                <div className="text-center">
+                  <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                  <p className="text-xs text-gray-400">{t('watchToEarn.processingAdCompletion')}</p>
+                </div>
+              </motion.div>
+            )
           ) : (
             // Pre-ad Modal (before showing ad)
             <motion.div 
@@ -670,40 +755,57 @@ const WatchToEarn = () => {
                 <p className="text-gray-400 text-sm">{t('watchToEarn.watchVideoAdAndEarn')}</p>
               </div>
 
-              {/* Ad Status Display */}
-              {adError ? (
-                <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-xl p-4 mb-4 border border-red-500/30">
-                  <div className="flex items-center justify-center gap-2 text-red-400 mb-2">
-                    <AlertCircle className="w-5 h-5" />
-                    <span className="font-semibold">{t('watchToEarn.adError')}</span>
-                  </div>
-                  <p className="text-xs text-red-300 text-center">{adError}</p>
-                  <button
-                    onClick={prepareAd}
-                    className="mt-3 w-full py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg text-sm transition-colors"
-                  >
-                    {t('watchToEarn.retryLoadingAd')}
-                  </button>
-                </div>
-              ) : adLoading ? (
-                <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 mb-4 border border-blue-500/30">
-                  <div className="flex items-center justify-center gap-2 text-blue-400">
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    <span className="text-sm font-medium">{t('watchToEarn.loadingAd')}</span>
-                  </div>
-                </div>
-              ) : adReady ? (
-                <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-4 mb-4 border border-green-500/30">
-                  <div className="flex items-center justify-center gap-2 text-green-400">
-                    <CheckCircle className="w-5 h-5" />
-                    <span className="text-sm font-medium">{t('watchToEarn.adReady')}</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-4 mb-4 border border-yellow-500/30">
-                  <div className="flex items-center justify-center gap-2 text-yellow-400">
-                    <Clock className="w-5 h-5" />
-                    <span className="text-sm font-medium">{t('watchToEarn.preparingAd')}</span>
+              {/* Ad Status Display - Only for native platforms */}
+              {isNativePlatform && (
+                <>
+                  {adError ? (
+                    <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-xl p-4 mb-4 border border-red-500/30">
+                      <div className="flex items-center justify-center gap-2 text-red-400 mb-2">
+                        <AlertCircle className="w-5 h-5" />
+                        <span className="font-semibold">{t('watchToEarn.adError')}</span>
+                      </div>
+                      <p className="text-xs text-red-300 text-center">{adError}</p>
+                      <button
+                        onClick={prepareAd}
+                        className="mt-3 w-full py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg text-sm transition-colors"
+                      >
+                        {t('watchToEarn.retryLoadingAd')}
+                      </button>
+                    </div>
+                  ) : adLoading ? (
+                    <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-4 mb-4 border border-blue-500/30">
+                      <div className="flex items-center justify-center gap-2 text-blue-400">
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span className="text-sm font-medium">{t('watchToEarn.loadingAd')}</span>
+                      </div>
+                    </div>
+                  ) : adReady ? (
+                    <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-4 mb-4 border border-green-500/30">
+                      <div className="flex items-center justify-center gap-2 text-green-400">
+                        <CheckCircle className="w-5 h-5" />
+                        <span className="text-sm font-medium">{t('watchToEarn.adReady')}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-4 mb-4 border border-yellow-500/30">
+                      <div className="flex items-center justify-center gap-2 text-yellow-400">
+                        <Clock className="w-5 h-5" />
+                        <span className="text-sm font-medium">{t('watchToEarn.preparingAd')}</span>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* Timer Display - Only for web platform */}
+              {!isNativePlatform && (
+                <div className="text-center mb-4">
+                  <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-4 border border-yellow-500/30">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <Clock className="w-5 h-5 text-yellow-400" />
+                      <span className="text-yellow-400 font-bold">{t("watchToEarn.timer")}</span>
+                    </div>
+                    <div className="text-2xl font-bold text-yellow-400">{adTimer} {t("watchToEarn.seconds")}</div>
                   </div>
                 </div>
               )}
@@ -711,32 +813,50 @@ const WatchToEarn = () => {
               {/* Action Button */}
               <button 
                 onClick={handleStartVideoAd}
-                disabled={adLoading || !adReady || !!adError}
+                disabled={isNativePlatform && (adLoading || !adReady || !!adError)}
                 className={`w-full py-4 font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3 ${
-                  adLoading || !adReady || adError
+                  isNativePlatform && (adLoading || !adReady || adError)
                     ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                     : 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white'
                 }`}
               >
-                {adLoading ? (
+                {isNativePlatform ? (
                   <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    {t("watchToEarn.loadingAd")}
-                  </>
-                ) : adError ? (
-                  <>
-                    <AlertCircle className="w-5 h-5" />
-                    {t("watchToEarn.adNotAvailable")}
-                  </>
-                ) : adReady ? (
-                  <>
-                    <Play className="w-5 h-5" />
-                    {t("watchToEarn.openAd")}
+                    {adLoading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        {t("watchToEarn.loadingAd")}
+                      </>
+                    ) : adError ? (
+                      <>
+                        <AlertCircle className="w-5 h-5" />
+                        {t("watchToEarn.adNotAvailable")}
+                      </>
+                    ) : adReady ? (
+                      <>
+                        <Play className="w-5 h-5" />
+                        {t("watchToEarn.openAd")}
+                      </>
+                    ) : (
+                      <>
+                        <Clock className="w-5 h-5" />
+                        {t("watchToEarn.waitingForAd")}
+                      </>
+                    )}
                   </>
                 ) : (
                   <>
-                    <Clock className="w-5 h-5" />
-                    {t("watchToEarn.waitingForAd")}
+                    {timerFinished ? (
+                      <>
+                        <CheckCircle className="w-5 h-5" />
+                        {t("watchToEarn.confirmAdWatched")}
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-5 h-5" />
+                        {t("watchToEarn.openAd")}
+                      </>
+                    )}
                   </>
                 )}
               </button>
