@@ -42,9 +42,14 @@ const WatchToEarn = () => {
           // Pre-load ad when component mounts
           await prepareAd();
         } catch (error: any) {
-          console.error('Failed to initialize AdMob:', error);
-          setAdError('AdMob initialization failed');
+          // Only show error if it's not the expected UNIMPLEMENTED error
+          if (error?.code !== 'UNIMPLEMENTED') {
+            console.error('Failed to initialize AdMob:', error);
+            setAdError('AdMob initialization failed');
+          }
         }
+      } else {
+        console.log('📱 Running on web - AdMob features disabled (use native iOS/Android app for ads)');
       }
     };
     

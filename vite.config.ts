@@ -53,7 +53,7 @@ export default defineConfig({
         skipWaiting: true,
         clientsClaim: true
       },
-      includeAssets: ['fsn-logo.png', 'fsnicon.jpg'],
+      includeAssets: ['fsn-logo.png', 'fsnicon.jpg', 'app-ads.txt'],
       manifest: {
         name: 'Flysky Network',
         short_name: 'Flysky',

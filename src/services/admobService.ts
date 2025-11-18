@@ -29,7 +29,7 @@ class AdMobService {
 
     // Only initialize on native platforms (Android/iOS)
     if (!Capacitor.isNativePlatform()) {
-      console.warn('⚠️ AdMob only works on native platforms (Android/iOS). Skipping initialization on web.');
+      console.log('ℹ️ AdMob only works on native platforms (Android/iOS). Running in web mode - ads will be simulated.');
       return;
     }
 
@@ -53,6 +53,11 @@ class AdMobService {
       this.isInitialized = true;
       console.log(`✅ AdMob initialized successfully for ${platform}`);
     } catch (error: any) {
+      // Only log error if it's not the expected UNIMPLEMENTED error on web
+      if (error?.code === 'UNIMPLEMENTED') {
+        console.log('ℹ️ AdMob not available on web platform (expected behavior)');
+        return;
+      }
       console.error('❌ AdMob initialization failed:', error);
       throw new Error(`AdMob initialization failed: ${error.message}`);
     }
