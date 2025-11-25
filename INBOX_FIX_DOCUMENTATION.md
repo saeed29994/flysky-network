@@ -67,12 +67,3 @@ const handleNotificationClick = (notification: any) => {
 ## الملفات المتأثرة
 
 - `src/components/NotificationBell.tsx`: تم تعديل دالة `handleNotificationClick`
-
-## الاختبار
-
-تم تشغيل الخادم المحلي (`npm run dev`) للتأكد من عمل الحل بشكل صحيح.
-
----
-
-**تاريخ الإصلاح**: 31 أكتوبر 2025
-**المطور**: Kilo Code
